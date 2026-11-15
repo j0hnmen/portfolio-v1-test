@@ -817,6 +817,12 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 .plan.sig:hover .sigbg{transform:rotate(-2deg) translate(-8px,6px) scale(1.04)}
 /* suivis mensuels : plus de focus au clic (la carte restait « bloquée » en survol) */
 .fo2:focus:not(:hover){background:#fff}
+/* « The solution » : même tuile que la home, avec le logo Assets OS */
+#system .aoslogo{display:block;width:min(440px,100%);height:auto;color:var(--ink);overflow:visible;margin-bottom:clamp(44px,5.5vh,60px)}
+#system .aoslogo .lgtag{opacity:0;transform:translateY(14px);transition:transform .9s cubic-bezier(.2,.9,.2,1) .1s,opacity .6s .1s}
+#system .aoslogo .lgA,#system .aoslogo .lgO{transform-box:fill-box;transform-origin:50% 100%;opacity:0;transform:translateY(40%);transition:transform .9s cubic-bezier(.2,.9,.2,1),opacity .5s}
+#system .aoslogo .lgO{transform-origin:50% 50%;transform:scale(.4) rotate(-12deg);transition:transform .9s cubic-bezier(.3,1.5,.5,1) .18s,opacity .4s .18s}
+#system.seen .aoslogo .lgtag,#system.seen .aoslogo .lgA,#system.seen .aoslogo .lgO{opacity:1;transform:none}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
@@ -917,6 +923,12 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 .end.endfx.es-ph .row{opacity:1;translate:0 0;transition-delay:.85s}
 .end.endfx.es-ph .scrib{stroke-dashoffset:0!important;transition-delay:1s}
 @media (prefers-reduced-motion:reduce){.end.endfx .endlg,.end.endfx .h>span,.end.endfx .row{opacity:1!important;translate:none!important;filter:none!important;transform:none!important}.end.endfx .scrib{stroke-dashoffset:0!important}}
+footer.ftfx .flogo path{transform-box:fill-box;transform-origin:50% 100%;opacity:0;transform:translateY(55%);filter:blur(6px);transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .6s,filter .7s}
+footer.ftfx.ft-on .flogo path{opacity:1;transform:none;filter:blur(0)}
+footer.ftfx .fcap{opacity:0;transform:translateY(26px) scale(.96);transition:opacity .7s .5s,transform 1s cubic-bezier(.16,1,.3,1) .5s}
+footer.ftfx.ft-on .fcap{opacity:1;transform:none}
+footer.ftfx .flinks>a{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .8s cubic-bezier(.16,1,.3,1)}
+footer.ftfx.ft-on .flinks>a{opacity:1;transform:none}
 /*endswap-css-end*/
 </style>
 </head>
@@ -1076,5 +1088,18 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     // 2. il rapetisse (x3) et monte au-dessus de la phrase, qui arrive
     setTimeout(()=>{ const from=big(); lg.getAnimations().forEach(a=>a.cancel()); lg.animate([{opacity:1,filter:'blur(0px)',transform:from},{opacity:1,filter:'blur(0px)',transform:'none'}],{duration:1100,easing:'cubic-bezier(.65,0,.35,1)',fill:'forwards'}); sec.classList.add('es-ph'); },2500);
   },{threshold:.5}); io.observe(sec); }); }</script>
+<script>/*delight*/{ const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // logo de la tuile « The solution » (page Assets OS) : la signature se trace à l'arrivée
+  const lg=document.querySelector('#system .aoslogo.sigm'); if(lg){ if(RM) lg.classList.add('sigok'); else new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); setTimeout(()=>{ lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); setTimeout(()=>lg.classList.add('sigok'),1780); },700); } },{threshold:.3}).observe(lg); }
+  // frise : la bille passe d'une étape à l'autre, de gauche à droite, quand on arrive
+  const ol=document.querySelector('.tl2'), ball=ol&&ol.querySelector('.tball'); if(ol&&ball&&!RM){ const items=[...ol.querySelectorAll('.tli')]; let user=false; ol.addEventListener('mousemove',()=>user=true,{once:true});
+    const xs=()=>{ const r=ol.getBoundingClientRect(); return items.map(it=>it.querySelector('.tdot').getBoundingClientRect().left-r.left); };
+    new IntersectionObserver((es,o)=>{ if(!es[0].isIntersecting) return; o.disconnect(); const p=xs(); let k=0; ball.style.transition='none'; ball.style.transform=`translateX(${p[0]}px)`; items.forEach((it,i)=>it.classList.toggle('on',i===0)); void ball.offsetWidth;
+      const step=()=>{ if(user||k>=items.length-1) return; k++; ball.style.transition='transform .55s cubic-bezier(.3,1.3,.5,1)'; ball.style.transform=`translateX(${p[k]}px)`; items.forEach((it,i)=>it.classList.toggle('on',i===k)); setTimeout(step,620); };
+      setTimeout(step,700); },{threshold:.6}).observe(ol); }
+  // footer : le nom monte lettre par lettre, la carte « Let's build » et les liens suivent
+  const ft=document.querySelector('footer.ftr'); if(ft&&!RM){ ft.classList.add('ftfx'); ft.querySelectorAll('.flogo path').forEach((p,i)=>p.style.transitionDelay=(i*.06)+'s'); ft.querySelectorAll('.flinks>a').forEach((a,i)=>a.style.transitionDelay=(.7+i*.07)+'s');
+    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); } },{threshold:.25}).observe(ft); }
+}</script>
 </body>
 </html>
