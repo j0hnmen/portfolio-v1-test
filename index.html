@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nabil Amara — V1</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
 :root{
   --bg:#0a0918; --violet:#6B4BE0; --lav:#C9C3FF; --ink:#f4f2ec; --dim:rgba(244,242,236,.55); --blue:#554FFF; --paper:#f6f5f1;
@@ -223,9 +223,21 @@ body.is-canvas::before{display:none}
 .lv{position:absolute;left:0;top:0;width:100%;z-index:2;overflow:hidden;background:#fff;opacity:0;filter:blur(6px);transition:opacity 1.8s cubic-bezier(.4,0,.2,1),filter 1.8s cubic-bezier(.4,0,.2,1)}
 .lv.ready{opacity:1;filter:none}
 .lv iframe{width:1440px;height:900px;border:0;transform-origin:0 0;display:block;pointer-events:none}
-.node.using .lv iframe,.node.on .lv.ready iframe{pointer-events:auto} /* calque sélectionné = site utilisable ; on le déplace par sa barre du haut */
+.node.using .lv iframe{pointer-events:auto} /* ▷ = site utilisable ; sortir du calque rend la main au canvas (évite que le pincement zoome toute la page) */
+.node.using .clb{outline:2px solid #0D99FF;outline-offset:-1px;box-shadow:0 0 0 6px rgba(13,153,255,.18)}
 .node.on .clh{cursor:grab}
 .node.using .clic [data-cl=play]{background:rgba(13,153,255,.16)}
+/* badge « Live » au-dessus d'un calque de code activé */
+.livetag{position:absolute;left:6px;bottom:calc(100% + 10px);display:flex;align-items:center;gap:9px;font:700 26px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#EE3B2F;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .45s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.livetag i{width:11px;height:11px;border-radius:50%;background:#EE3B2F;box-shadow:0 0 0 0 rgba(238,59,47,.55);animation:livePulse 1.6s ease-out infinite}
+.node.using .livetag{opacity:1;transform:none}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(238,59,47,.55)}70%{box-shadow:0 0 0 10px rgba(238,59,47,0)}100%{box-shadow:0 0 0 0 rgba(238,59,47,0)}}
+/* gribouillis au feutre */
+.node.ink{background:none;box-shadow:none;border:0}
+.node.ink path{stroke-dasharray:1;stroke-dashoffset:1;animation:inkOn 1s cubic-bezier(.65,0,.25,1) var(--d,3s) forwards}
+.node.ink text{opacity:0;animation:inkTx .6s ease var(--d,3s) forwards}
+@keyframes inkOn{to{stroke-dashoffset:0}}@keyframes inkTx{to{opacity:1}}
+html.src .node.ink path{stroke:#7aa2ff}html.src .node.ink text{fill:#7aa2ff}
 /* calque de code (sites live) */
 .frame .fb.cl{background:#e2e2e2;border:1px solid rgba(32,32,32,.08);border-radius:14px;padding:0 10px 10px;box-shadow:0 22px 50px rgba(32,32,32,.14);overflow:visible;outline:none}
 .node.frame:has(.cl)>.nm{display:none}
@@ -910,7 +922,7 @@ const CV=(function(){
     { const [d,bx,by,w,h]=GLY.S, k=28/h; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-w*k/2,y:top+CAP*2+LG+46,w:w*k,h:28,r:0,
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#554FFF"/></svg>`})); }
     P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
-      html:p.link?`<div class="fb cl"><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
+      html:p.link?`<div class="fb cl"><div class="livetag" aria-hidden="true"><i></i>Live</div><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
         :`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"><div class="ft"><div class="eyebrow">0${i+1} — ${p.nat} — ${p.y}</div><h3>${p.t}</h3><p>${p.sub}</p><small>click to open</small></div></div>`}); });
     // sites intégrés : interface façon calque de code Figma ({ } nom, puis commentaire / agrandir / lancer)
     nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k==='open'||(k==='play'&&!LIVE)) return; e.preventDefault(); select(n); if(k==='play') liveUse(n); })));
@@ -923,6 +935,31 @@ const CV=(function(){
     add({type:'shape',cls:'rect',name:'Rectangle',x:990,y:130,w:210,h:130,r:-12,fill:'#202020'});
     const sc=[[8,58],[70,10],[170,6],[244,44],[200,96],[96,100]];
     add({type:'path',name:'Vector',x:-1230,y:-80,w:250,h:104,r:-8,html:vecHTML(sc,250,104,true)});
+    // gribouillis au feutre : entourés, soulignés, flèches, petites notes — ils se dessinent après l'arrivée
+    const IB='#554FFF', IK='#202020'; let di=0;
+    const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(3.2+(di++)*.22).toFixed(2);
+      add({type:'path',cls:'ink',name,x,y,w,h,r,html:`<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="--d:${dl}s;overflow:visible">${d?`<path d="${d}" pathLength="1" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`:''}${txt}</svg>`}); };
+    const note=(t,x,y,size=46,c=IB)=>`<text x="${x}" y="${y}" font-family="Caveat,cursive" font-weight="600" font-size="${size}" fill="${c}">${t}</text>`;
+    // le sous-titre entouré
+    ink('Scribble',-385,198,770,112,-1.5,'M70,22 C200,6 380,4 520,10 C660,16 712,38 700,66 C688,98 470,106 300,102 C130,98 10,86 14,60 C18,40 40,30 96,20');
+    // éclat à côté du nom
+    ink('Scribble',330,-330,90,90,8,'M45,6 L45,30 M45,60 L45,84 M6,45 L30,45 M60,45 L84,45 M17,17 L32,32 M58,58 L73,73 M73,17 L58,32 M32,58 L17,73',IK,5);
+    // « hello! » au-dessus du nom
+    ink('Note',-520,-370,240,90,-8,'M14,74 C70,62 150,62 214,70','#554FFF',4,note('hello!',18,52,58));
+    // Sport [Gen] coché
+    ink('Scribble',710,-708,70,60,0,'M6,32 L26,54 L64,6',IB,7);
+    // flèche vers L'Atelier Figma
+    ink('Arrow',260,-1000,230,170,0,'M220,24 C150,6 60,30 28,140 M28,140 L18,104 M28,140 L58,118',IK,5,note('latest',120,40,40,IK));
+    // le post-it Konami entouré + « try it! »
+    ink('Scribble',-1262,262,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22');
+    ink('Note',-1250,150,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IB,4,note('try it!',6,56,50));
+    // les calques de code : « live » avec flèche
+    ink('Arrow',-1120,520,230,150,0,'M20,130 C60,140 150,120 196,40 M196,40 L170,58 M196,40 L200,72',IB,5,note('live site',6,120,40));
+    ink('Arrow',935,360,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,42));
+    // ondulation entre Filly et Figma's ABC
+    ink('Scribble',260,840,220,40,-3,'M6,24 C26,4 40,4 52,22 C64,40 80,40 94,22 C108,4 124,4 136,22 C148,40 164,40 178,22 C192,4 206,6 214,18',IK,5);
+    // double soulignement sous la note
+    ink('Scribble',1000,-366,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IB,5);
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
   function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.95/2150,innerHeight*.95/1520,1); px=innerWidth/2; py=innerHeight/2; apply(); }
