@@ -58,7 +58,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
 { const sec=document.querySelector('.page .stack>.band.prob'), H=document.documentElement; if(sec){ const bg=document.createElement('div'); bg.className='darkbg'; bg.setAttribute('aria-hidden','true'); document.body.prepend(bg);
   const sys=document.getElementById('system'); let tk=0;
   const f=()=>{ tk=0; if(H.classList.contains('src')){ bg.style.opacity=0; H.classList.remove('darkon'); return; }
-    const v=innerHeight, r=sec.getBoundingClientRect(); const pin=Math.min(1,Math.max(0,(v*.9-r.top)/(v*.6)));
-    let pout=1; if(sys){ const s=sys.getBoundingClientRect(); pout=Math.min(1,Math.max(0,(s.top-v*.15)/(v*.55))); }
+    const v=innerHeight, r=sec.getBoundingClientRect(); const pin=Math.min(1,Math.max(0,(v*.5-r.top)/(v*.22))); /* arrive tard, se cale vite */
+    let pout=1; if(sys){ const s=sys.getBoundingClientRect(); pout=Math.min(1,Math.max(0,(s.top-v*.12)/(v*.22))); }
     const p=Math.min(pin,pout); bg.style.opacity=p.toFixed(3); H.classList.toggle('darkon',p>.5); };
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); f(); } }

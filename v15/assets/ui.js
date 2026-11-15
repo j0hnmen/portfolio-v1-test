@@ -66,15 +66,20 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
     let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; H.classList.toggle('endblue',r.top<=v*.3&&r.bottom>=v*.7&&!H.classList.contains('src')); };
     addEventListener('scroll',()=>{ if(!tkb) tkb=requestAnimationFrame(blue); },{passive:true}); addEventListener('resize',blue); blue();
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
-    /* la séquence avance avec le scroll pendant que la section est épinglée (et revient en arrière si on remonte) */
-    const pin=sec.closest('.endpin'); let st=0, tks=0;
+    /* tout est piloté par le scroll pendant que la section est épinglée : la signature se trace au fil du scroll, puis le trait sous « your system » (et tout revient en arrière si on remonte) */
+    const pin=sec.closest('.endpin'); let st=-1, tks=0; sec.classList.add('scrubfx');
     const prog=()=>{ tks=0; let p; if(pin){ const r=pin.getBoundingClientRect(); p=(-r.top)/Math.max(1,r.height-innerHeight); } else { const r=sec.getBoundingClientRect(); p=(innerHeight-r.top)/innerHeight-.5; }
-      const s=p<-.12?0:p<.42?1:p<.52?2:3;
-      if(s===st) return;
-      sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3);
-      if(s===1&&st===0) sig(sv1); if(s===3&&st<3) setTimeout(()=>sig(sv2),200); if(s<1){ sv1.classList.remove('sigok','sigplay'); sv1.classList.add('sigreset'); } if(s<3){ sv2.classList.remove('sigok','sigplay'); sv2.classList.add('sigreset'); }
-      st=s; };
+      const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
+      const s=p<-.15?0:p<.46?1:p<.54?2:3;
+      if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
+      scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
+/* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
+function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }
+  if(sv.__q===q) return; sv.__q=q;
+  if(document.documentElement.classList.contains('lite')&&sv.__liteSet){ sv.__liteSet(q); return; }
+  const t=q*sv.__T; sv.__seg.forEach(([p,d,u])=>{ const k=Math.min(1,Math.max(0,(t-d)/u)); p.style.strokeDashoffset=(1-k).toFixed(4); p.style.strokeOpacity=k>0?1:0; });
+  sv.classList.toggle('sigok',q>=1); }
 /*delight*/{ const RM=matchMedia('(prefers-reduced-motion:reduce)').matches, H=document.documentElement;
   // page AssetsOS : dégradés très légers sur les côtés, seulement pendant les tarifs
   const pr=document.querySelector('#pricing'); if(pr){ ['l','r'].forEach(k=>{ const g=document.createElement('div'); g.className='sideglow '+k; g.setAttribute('aria-hidden','true'); document.body.prepend(g); });
@@ -101,8 +106,8 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794785627'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794785627'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794785880'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794785880'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -127,7 +132,7 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
     const r=document.createElementNS(NS,'rect'); r.setAttribute('x',bb.x-20); r.setAttribute('y',bb.y-20); r.setAttribute('height',bb.height+40); r.setAttribute('width',0); cp.appendChild(r);
     d.parentNode.insertBefore(cp,d); d.setAttribute('clip-path',`url(#${id})`); const W=bb.width+40; let raf=0;
     const run=()=>{ cancelAnimationFrame(raf); const t0=performance.now(), D=1500; const f=now=>{ const p=Math.min(1,(now-t0)/D), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; r.setAttribute('width',(W*e).toFixed(1)); if(p<1) raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
-    const reset=()=>{ cancelAnimationFrame(raf); r.setAttribute('width',0); };
+    const reset=()=>{ cancelAnimationFrame(raf); r.setAttribute('width',0); }; sv.__liteSet=q=>{ cancelAnimationFrame(raf); r.setAttribute('width',(W*q).toFixed(1)); };
     new MutationObserver(()=>{ const c=sv.classList; if(c.contains('sigreset')) reset(); else if(c.contains('sigplay')&&!sv.__run){ sv.__run=1; run(); setTimeout(()=>sv.__run=0,1600); } }).observe(sv,{attributes:true,attributeFilter:['class']});
     if(sv.classList.contains('sigok')||sv.matches('.page .logo')){ run(); } };
   const all=()=>document.querySelectorAll('svg .sigan').forEach(a=>prep(a.ownerSVGElement||a.closest('svg')));

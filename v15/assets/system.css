@@ -275,3 +275,15 @@ html body .page main.aos>section#moment.wrap.rv{padding-top:clamp(56px,7vh,72px)
 html body header.top a.vbook{height:50px!important;padding:0 24px!important;font-size:17px!important}
 html body section.end .row .pill{height:64px!important;padding:0 34px!important;font-size:20px!important}
 @media (max-width:760px){html body header.top a.vbook{height:44px!important;padding:0 18px!important;font-size:16px!important}html body section.end .row .pill{height:56px!important;padding:0 26px!important;font-size:18px!important}}
+
+/* ===== Let's build piloté par le scroll : signature et trait suivent le scroll ===== */
+.sigm.sigscrub .sgw,.sigm.sigscrub .sgc{animation:none!important}
+.sigm.sigscrub:not(.sigok) .sigan{display:block!important}
+section.end.endfx.scrubfx .scrib{stroke-dashoffset:var(--sq,1)!important;transition:stroke .8s!important}
+html.lite .sigm.sigscrub .sigan{display:none!important}
+
+/* ===== space invader en bas de page : la bulle fait partie de la zone de survol (et lance le jeu) ===== */
+html.atend .toast{pointer-events:auto!important;cursor:pointer}
+html.atend .invader:has(+.toast:hover){scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
+html.atend .toast:hover{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .toast:hover::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}

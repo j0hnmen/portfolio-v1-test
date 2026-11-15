@@ -55,10 +55,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794785627'; }
-  if(g==='about'){ location.href='about.html?v=1794785627'; }
-  if(g==='contact'){ location.href='contact.html?v=1794785627'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794785627'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794785880'; }
+  if(g==='about'){ location.href='about.html?v=1794785880'; }
+  if(g==='contact'){ location.href='contact.html?v=1794785880'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794785880'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -185,3 +185,5 @@ const RADIO=(function(){
     if(/UUDDLRLR(BA){1,2}E$/.test(hist)){ hist=''; e.preventDefault(); toggle(); } });
 })();
 
+
+/*toastplay*/ { const t=document.getElementById('toast'); if(t) t.addEventListener('click',()=>{ if(document.documentElement.classList.contains('atend')) G.start(); }); }
