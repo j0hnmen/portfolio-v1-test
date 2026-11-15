@@ -969,24 +969,15 @@ const CV=(function(){
     setTool(tool); };
   cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
   // molette : pincer / Ctrl = zoom, glisser horizontal = déplacer, vertical = la page défile (le canvas dézoome)
-  let jumping=false; const wh=[];
   // pincer au pad n'importe où sur la vue canvas (barre d'outils, prompt, frames…) zoome le canvas, jamais la page entière
   addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey)||!isOn()||overlayOpen()||scrollY>innerHeight*.5||cv.contains(e.target)) return;
     e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); },{passive:false,capture:true});
   ['gesturestart','gesturechange'].forEach(t=>addEventListener(t,e=>{ if(isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5) e.preventDefault(); },{passive:false}));
   cv.addEventListener('wheel',e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); return zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); }
-    if(jumping){ e.preventDefault(); return; } // descente en cours : on avale l'inertie du geste
-    if(scrollY>0) return; // déjà dans la page : scroll normal
-    e.preventDefault(); const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d, y0=py, now=performance.now();
-    // vitesse du geste vers le bas sur les 120 dernières ms
-    wh.push([now,dy]); while(wh.length&&now-wh[0][0]>150) wh.shift(); const v=wh.reduce((a,q)=>a+Math.max(0,q[1]),0);
-    // geste rapide vers le bas = on descend vers la page ; geste lent = on se déplace dans le canvas
-    if(dy>0&&v>450){ wh.length=0; return goDown(); }
-    px-=dx; py-=dy; apply();
-    // bas du canvas atteint en allant doucement : l'indication s'allume pour montrer qu'on peut descendre
-    const sh=$('#scrollHint'); if(dy>0&&dy-(y0-py)>1&&sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; if(scrollY<1) sh.classList.remove('shgo'); },1400); } },{passive:false});
-  function goDown(){ const pr=document.querySelector('.pres'), sh=$('#scrollHint'); if(!pr) return; jumping=true; if(sh) sh.classList.add('shgo');
-    scrollTo({top:pr.getBoundingClientRect().top+scrollY,behavior:'smooth'}); setTimeout(()=>{ jumping=false; },1100); }
+    if(scrollY>0) return; // déjà dans la descente vers la page : scroll normal
+    e.preventDefault(); const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d, y0=py; px-=dx; py-=dy; apply();
+    // bas du canvas atteint : le reste du geste fait descendre la page, et l'indication s'allume
+    const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ scrollBy(0,left); if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; if(scrollY<1) sh.classList.remove('shgo'); },1400); } } } },{passive:false});
   function onScroll(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight));
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
     sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.3)*4)).toFixed(3)); sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.5?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
