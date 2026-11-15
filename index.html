@@ -220,8 +220,11 @@ body.is-canvas::before{display:none}
 .frame .fb{background:var(--paper);color:#161616;border-radius:4px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.55)}
 .frame .fb img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;pointer-events:none}
 .frame .fb{position:relative}
-.lv{position:absolute;left:0;top:0;width:100%;z-index:2;overflow:hidden;background:#fff}
+.lv{position:absolute;left:0;top:0;width:100%;z-index:2;overflow:hidden;background:#fff;opacity:0;filter:blur(6px);transition:opacity 1.8s cubic-bezier(.4,0,.2,1),filter 1.8s cubic-bezier(.4,0,.2,1)}
+.lv.ready{opacity:1;filter:none}
 .lv iframe{width:1440px;height:900px;border:0;transform-origin:0 0;display:block;pointer-events:none}
+.node.using .lv iframe{pointer-events:auto}
+.node.using .clic [data-cl=play]{background:rgba(13,153,255,.16)}
 /* calque de code (sites live) */
 .frame .fb.cl{background:#e2e2e2;border:1px solid rgba(32,32,32,.08);border-radius:14px;padding:0 10px 10px;box-shadow:0 22px 50px rgba(32,32,32,.14);overflow:visible;outline:none}
 .node.frame:has(.cl)>.nm{display:none}
@@ -249,13 +252,10 @@ html.src .ctrack img{filter:invert(.85)}
 .scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 3.4s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
 html.cvs .scrollhint{display:flex}
 .scrollhint span{writing-mode:vertical-rl}
-.scrollhint i{position:relative;width:2px;height:96px;background:rgba(32,32,32,.18);overflow:hidden;border-radius:2px;transition:height .45s cubic-bezier(.16,1,.3,1)}
-.scrollhint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:#554FFF;animation:shRun 1.6s cubic-bezier(.6,0,.3,1) infinite}
-.scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px}
+.scrollhint i{position:relative;width:3px;height:180px;background:rgba(32,32,32,.14);border-radius:3px;overflow:visible}
+.scrollhint i::after{content:"";position:absolute;left:0;top:0;width:100%;height:calc(var(--pg,0)*100%);border-radius:3px;background:linear-gradient(180deg,#8f8bff,#554FFF);box-shadow:0 0 calc(4px + var(--pg,0)*22px) calc(var(--pg,0)*3px) rgba(85,79,255,calc(.25 + var(--pg,0)*.6));transition:height .25s ease-out,box-shadow .25s ease-out}
+.scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px;opacity:calc(.35 + var(--pg,0)*.65)}
 .scrollhint:hover,.scrollhint.shgo{color:#554FFF}
-.scrollhint.shgo{transform:translateY(-50%) scale(1.15)}
-.scrollhint.shgo i{height:130px;background:rgba(85,79,255,.22)}
-.scrollhint.shgo i::after{animation-duration:.9s}
 @keyframes shIn{to{opacity:var(--sh,1)}}
 @keyframes shRun{to{top:100%}}
 html body .scrollhint{color:#202020}html body .scrollhint:hover,html body .scrollhint.shgo{color:#554FFF}
@@ -856,11 +856,11 @@ const CV=(function(){
   // limites : dézoom jusqu'à ~40 % de l'écran, et le contenu ne quitte jamais l'écran (jamais de vide)
   function bounds(){ let a=1e9,b=1e9,c=-1e9,d=-1e9; nodes.forEach(n=>{ a=Math.min(a,n.x); b=Math.min(b,n.y); c=Math.max(c,n.x+n.w); d=Math.max(d,n.y+n.h); }); return nodes.length?{a,b,c,d}:null; }
   function clampView(){ const B=bounds(); if(!B) return; const W=innerWidth, H=innerHeight, pad=Math.min(80,W*.06);
-    const zMin=Math.min(W*.4/(B.c-B.a),H*.4/(B.d-B.b)); if(z<zMin) z=zMin; // on peut dézoomer jusqu'à ce que tout tienne dans ~40 % de l'écran
+    const zMin=Math.min(W*.5/(B.c-B.a),H*.5/(B.d-B.b)); if(z<zMin) z=zMin; // dézoom max : tout le canvas tient dans la moitié de l'écran
     const L=B.a*z, R=B.c*z, T=B.b*z, Bo=B.d*z;
-    // largeur : si le contenu tient dans l'écran, il y reste entièrement ; sinon il couvre toujours tout l'écran
-    if(R-L<=W-pad*2){ px=Math.min(Math.max(px,pad-L),W-pad-R); } else { px=Math.min(Math.max(px,W-pad-R),pad-L); }
-    if(Bo-T<=H-pad*2){ py=Math.min(Math.max(py,pad-T),H-pad-Bo); } else { py=Math.min(Math.max(py,H-pad-Bo),pad-T); } }
+    // déplacement libre tant que le contenu occupe encore au moins la moitié de l'écran (ou tout le contenu s'il est plus petit)
+    const nx=Math.min(R-L,W*.7), ny=Math.min(Bo-T,H*.7);
+    px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,ny-Bo),H-ny-T); }
   const apply=()=>{ clampView(); const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk;
     world.style.transform=`translate(${X}px,${Y}px) scale(${Z})`; world.style.setProperty('--iz',1/Z); cv.style.backgroundSize=`${28*Z}px ${28*Z}px`; cv.style.backgroundPosition=`${X}px ${Y}px`; $('#zl').textContent=Math.round(z*100)+'%'; };
   const toW=e=>{ const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk; return {x:(e.clientX-X)/Z,y:(e.clientY-Y)/Z}; }, auto=n=>n.type==='frame'||n.type==='note'||n.type==='text';
@@ -891,7 +891,10 @@ const CV=(function(){
     const fb=n.el.querySelector('.clb')||n.el.querySelector('.fb'), w=document.createElement('div'); w.className='lv';
     w.innerHTML=`<iframe src="${p.link[1]}" title="${p.t} — live" allow="autoplay; fullscreen"></iframe>`;
     fb.appendChild(w); n.el.classList.add('islive'); fitLive(n);
+    const show=()=>setTimeout(()=>w.classList.add('ready'),450); w.querySelector('iframe').addEventListener('load',show,{once:true}); setTimeout(()=>w.classList.add('ready'),6000);
+    n.el.addEventListener('mouseleave',()=>n.el.classList.remove('using'));
   }
+  function liveUse(n){ document.querySelectorAll('.node.using').forEach(x=>x.classList.remove('using')); if(n.el.querySelector('.lv')) n.el.classList.add('using'); }
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
@@ -904,10 +907,10 @@ const CV=(function(){
     { const [d,bx,by,w,h]=GLY.S, k=28/h; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-w*k/2,y:top+CAP*2+LG+46,w:w*k,h:28,r:0,
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#554FFF"/></svg>`})); }
     P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
-      html:p.link?`<div class="fb cl"><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a><a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></a></span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
+      html:p.link?`<div class="fb cl"><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
         :`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"><div class="ft"><div class="eyebrow">0${i+1} — ${p.nat} — ${p.y}</div><h3>${p.t}</h3><p>${p.sub}</p><small>click to open</small></div></div>`}); });
     // sites intégrés : interface façon calque de code Figma ({ } nom, puis commentaire / agrandir / lancer)
-    nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k!=='case') return; e.preventDefault(); select(n); })));
+    nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k==='open'||(k==='play'&&!LIVE)) return; e.preventDefault(); select(n); if(k==='play') liveUse(n); })));
     // sites intégrés : le vrai site s'affiche directement dans la frame, sans texte, une fois l'arrivée terminée
     if(LIVE) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
     add({type:'note',name:'Note',x:1000,y:-520,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
@@ -939,7 +942,7 @@ const CV=(function(){
     // 3. enfin l'interface
     [['.top',2350,'0 -14px'],['#tools',2500,'0 18px'],['#chat',2600,'0 18px'],['#invader',2750,'0 12px']].forEach(([q,d,t])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:0},{translate:'0 0',opacity:1}],{duration:700,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
-  cv.addEventListener('pointerdown',e=>{ cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  cv.addEventListener('pointerdown',e=>{ document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(ptrs.size===2){ act=null; const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2}; return; }
     const w=toW(e), t=e.target, nel=t.closest&&t.closest('.node'), n=nel&&nel._n, pan=()=>{ act={k:'pan',sx:e.clientX,sy:e.clientY,px,py}; cv.style.cursor='grabbing'; };
     if(tool==='hand'||space||e.button===1) return pan();
@@ -979,24 +982,27 @@ const CV=(function(){
       if(scrollY<snapTop()&&Math.abs(dx)>Math.abs(dy)){ e.preventDefault(); px-=dx; apply(); } return; }
     e.preventDefault(); const y0=py; px-=dx; py-=dy; apply();
     // bas du canvas atteint : il faut insister un peu (résistance) avant que la page ne descende ; l'indication s'allume
-    const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; if(scrollY<1) sh.classList.remove('shgo'); },900); }
-      if(push>240){ scrollBy(0,push); push=0; } } } },{passive:false});
+    const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; setPg(); if(scrollY<1) sh.classList.remove('shgo'); },900); }
+      scrollBy(0,left*.45); } } setPg(); },{passive:false}); // descente progressive (freinée), jamais de saut
   // jamais coincé entre deux : à l'arrêt, on revient au canvas ou on se pose sur la bannière + About
   let push=0, snapT=0; const snapTop=()=>innerHeight*.94;
+  function setPg(){ const sh=$('#scrollHint'); if(sh) sh.style.setProperty('--pg',Math.min(1,Math.max(push/240*.3, scrollY>0?.3+.7*scrollY/snapTop():0)).toFixed(3)); }
+  addEventListener('scroll',setPg,{passive:true});
   function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2) scrollTo({top:y<T*.35?0:T,behavior:'smooth'}); },320); }
   addEventListener('scroll',()=>{ if(isOn()&&scrollY>0&&scrollY<snapTop()) armSnap(); },{passive:true});
   function onScroll(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight));
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
-    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.3)*4)).toFixed(3)); sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.5?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
+    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.95)*4)).toFixed(3)); sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>1?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
     ['#tools','#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
   addEventListener('scroll',onScroll,{passive:true});
   // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
   { const CL=[['sorare','Sorare'],['figma','Figma'],['sportgen','Sport [Gen]'],['smartgemini','Smart Gemini']], one=()=>CL.map(([f,n])=>`<img class="${f}" src="img/clients/${f}.png" alt="${n}">`).join(''), tr=$('#ctrack'); let setW=0;
     const fill=()=>{ if(!tr) return; tr.innerHTML=one(); setW=tr.scrollWidth||1;
       const need=Math.ceil((document.documentElement.scrollHeight*.9+innerWidth*2)/setW)+1; tr.innerHTML=Array(need).fill(one()).join(''); };
-    const move=()=>{ if(!tr||!setW) return; const W=tr.scrollWidth, v=scrollY*.9; let x=v-W; if(x>-setW) x=-setW+((x+setW)%setW); tr.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`; };
+    const move=()=>{ if(!tr||!setW) return; const W=tr.scrollWidth, v=scrollY*.9+innerWidth*Math.min(1,scrollY/(innerHeight*.6)); let x=v-W; if(x>-setW) x=-setW+((x+setW)%setW); tr.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`; };
     addEventListener('scroll',move,{passive:true}); addEventListener('resize',()=>{ fill(); move(); });
-    (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{ fill(); move(); }); }
+    const ready=()=>{ fill(); Promise.all([...tr.querySelectorAll('img')].slice(0,CL.length).map(im=>im.decode?im.decode().catch(()=>{}):0)).then(()=>{ fill(); move(); }); };
+    (document.fonts?document.fonts.ready:Promise.resolve()).then(ready); }
   addEventListener('keydown',e=>{ if(!isOn()||overlayOpen()) return; const k=e.key.toLowerCase(), T={v:'select',h:'hand',r:'rect',o:'ell',p:'pen'};
     if(T[k]&&!e.metaKey&&!e.ctrlKey) return setTool(T[k]);
     if(k===' '){ e.preventDefault(); if(!space){ space=true; cv.style.cursor='grab'; } return; }
