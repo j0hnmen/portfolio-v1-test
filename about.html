@@ -888,7 +888,7 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   const draw=(dur,from,to,ease)=>{ if(an) an.cancel(); an=p.animate([{strokeDashoffset:from},{strokeDashoffset:to}],{duration:dur,easing:ease,fill:'both'}); return an.finished; };
   p.style.strokeDashoffset=1; setTimeout(()=>draw(1700,1,0,'cubic-bezier(.65,0,.35,1)').then(()=>busy=false),delay);
   h.addEventListener('mouseenter',()=>{ if(busy) return; busy=true; draw(650,0,1,'cubic-bezier(.55,0,.75,.4)').then(()=>draw(1500,1,0,'cubic-bezier(.65,0,.35,1)')).then(()=>busy=false).catch(()=>busy=false); }); };
-SIG(document.getElementById('home'),location.hash==='#work'?200:2300); SIG(document.querySelector('.vmono'),400); }</script>
+SIG(document.getElementById('home'),location.hash==='#work'?200:1800); SIG(document.querySelector('.vmono'),150); }</script>
 <script>{ document.querySelectorAll('.mk-aos').forEach(a=>{ const lg=a.querySelector('.mlogo.sigm'); if(!lg) return; let t=0;
   a.addEventListener('mouseenter',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); t=setTimeout(()=>lg.classList.add('sigok'),1540); });
   a.addEventListener('mouseleave',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); }); }); }</script>
