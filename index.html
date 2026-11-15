@@ -1092,6 +1092,7 @@ body.is-list .whead .wcount{display:none}
 .peek{border-radius:0!important;box-shadow:0 30px 70px -30px rgba(32,32,32,.5)}
 @media (max-width:760px){body:not(.is-canvas) .whead{top:84px;left:18px}.wcount{font-size:32px}.list button{grid-template-columns:34px 1fr;gap:12px}.list button small{display:none}}
 body.is-list .list{z-index:12!important}.peek{z-index:5!important}.list button small.ly{white-space:nowrap}.list button{position:relative;z-index:1}
+.cvhint kbd{display:inline-grid;place-items:center;height:22px;padding:0 7px;margin:0 2px;border-radius:6px;background:#fff;box-shadow:inset 0 0 0 1px rgba(32,32,32,.16),0 1.5px 0 rgba(32,32,32,.1);font:600 12px/1 Inter,system-ui,sans-serif;vertical-align:1px}
 /* AOSX END */
 </style>
 </head>
@@ -1229,7 +1230,7 @@ body.is-list .list{z-index:12!important}.peek{z-index:5!important}.list button s
 </footer>
 </div>
 </section>
-<div class="cvhint" id="cvhint">Grab, rotate. <b>Click a project to open it.</b></div>
+<div class="cvhint" id="cvhint">Drag or hold <kbd>Space</kbd> to move. <b>Click a project to open it.</b></div>
 <div class="tools" id="tools" role="toolbar" aria-label="Outils du canvas">
   <button data-t="select" aria-pressed="true" title="Move (V)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 7.5-6.2 1.8L10.5 19z"/></svg></button>
   <button data-t="hand" aria-pressed="false" title="Hand (H or space)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11m0-6.5a1.5 1.5 0 0 1 3 0V11m0-5a1.5 1.5 0 0 1 3 0v8c0 4-2.5 7-6.5 7-3 0-4.6-1.4-6-4l-2-4c-.6-1.3 1-2.4 2-1.3L8 14"/></svg></button>
@@ -1597,21 +1598,13 @@ const CV=(function(){
   addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey)||!isOn()||overlayOpen()||scrollY>innerHeight*.5||cv.contains(e.target)) return;
     e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); },{passive:false,capture:true});
   ['gesturestart','gesturechange'].forEach(t=>addEventListener(t,e=>{ if(isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5) e.preventDefault(); },{passive:false}));
-  cv.addEventListener('wheel',e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); return zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); }
-    const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d; armSnap();
-    if(scrollY>0){ // entre le canvas et la page : un geste horizontal déplace encore le canvas, le reste est un scroll normal
-      if(scrollY<snapTop()&&Math.abs(dx)>Math.abs(dy)){ e.preventDefault(); px-=dx; apply(); } return; }
-    e.preventDefault(); const now=performance.now(); chain=(dy>0&&now-lastW<240)?chain+dy:Math.max(0,dy); lastW=now;
-    if(chain>480&&Math.abs(dy)>=Math.abs(dx)){ push=240; scrollBy(0,dy*.6); setPg(); return; } // on enchaîne vers le bas : on passe à la page sans traverser tout le canvas
-    const y0=py; px-=dx; py-=dy; apply();
-    // bas du canvas atteint : il faut insister un peu (résistance) avant que la page ne descende ; l'indication s'allume
-    const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; setPg(); if(scrollY<1) sh.classList.remove('shgo'); },900); }
-      scrollBy(0,left*.45); } } setPg(); },{passive:false}); // descente progressive (freinée), jamais de saut
+  // molette / deux doigts : scroll normal de la page. Seul le pincement zoome ; on se déplace en glissant ou en maintenant Espace
+  cv.addEventListener('wheel',e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); return zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); } },{passive:false});
   // jamais coincé entre deux : à l'arrêt, on revient au canvas ou on se pose sur la bannière + About
   let push=0, snapT=0, chain=0, lastW=0; const snapTop=()=>{ const c=document.getElementById('about'); return c?Math.max(innerHeight*.6,c.getBoundingClientRect().top+scrollY-innerHeight*.16):innerHeight*.94; };
   function setPg(){ const sh=$('#scrollHint'); if(sh) sh.style.setProperty('--pg',Math.min(1,Math.max(push/240*.3, scrollY>0?.3+.7*scrollY/snapTop():0)).toFixed(3)); }
   addEventListener('scroll',setPg,{passive:true});
-  function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2){ if(y<T*.08) scrollTo({top:0,behavior:'smooth'}); else if(y>T*.55) scrollTo({top:T,behavior:'smooth'}); } },420); } // une fois lancé, on termine la descente : jamais figé à mi-fondu
+  function armSnap(){ return; clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2){ if(y<T*.08) scrollTo({top:0,behavior:'smooth'}); else if(y>T*.55) scrollTo({top:T,behavior:'smooth'}); } },420); } // une fois lancé, on termine la descente : jamais figé à mi-fondu
   addEventListener('scroll',()=>{ if(isOn()&&scrollY>0&&scrollY<snapTop()) armSnap(); },{passive:true});
   function onScroll(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight));
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
@@ -1632,11 +1625,11 @@ const CV=(function(){
     (document.fonts?document.fonts.ready:Promise.resolve()).then(ready); }
   addEventListener('keydown',e=>{ if(!isOn()||overlayOpen()) return; const k=e.key.toLowerCase(), T={v:'select',h:'hand',r:'rect',o:'ell',p:'pen'};
     if(T[k]&&!e.metaKey&&!e.ctrlKey) return setTool(T[k]);
-    if(k===' '){ e.preventDefault(); if(!space){ space=true; cv.style.cursor='grab'; } return; }
+    if(k===' '){ if(scrollY>innerHeight*.3||(document.activeElement&&/INPUT|TEXTAREA/.test(document.activeElement.tagName))) return; e.preventDefault(); if(!space){ space=true; cv.style.cursor='grab'; document.documentElement.classList.add('cvgrab'); } return; }
     if(k==='1') return fit();
     if((k==='delete'||k==='backspace')&&sel&&sel.type!=='frame'&&!NAMEL.includes(sel)){ e.preventDefault(); sel.el.remove(); nodes=nodes.filter(n=>n!==sel); sel=null; return sClose(); }
     const D={arrowleft:[-1,0],arrowright:[1,0],arrowup:[0,-1],arrowdown:[0,1]}[k]; if(D&&sel){ e.preventDefault(); const st=(e.shiftKey?10:1)*10; sel.x+=D[0]*st; sel.y+=D[1]*st; place(sel); } });
-  addEventListener('keyup',e=>{ if(e.key===' '&&space){ space=false; setTool(tool); } });
+  addEventListener('keyup',e=>{ if(e.key===' '&&space){ space=false; setTool(tool); document.documentElement.classList.remove('cvgrab'); } });
   $('#tools').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.t) setTool(b.dataset.t); if(b.id==='zIn') zoomAt(innerWidth/2,innerHeight/2,1.25); if(b.id==='zOut') zoomAt(innerWidth/2,innerHeight/2,.8); if(b.id==='zFit') fit(); sTick(); });
   const hint=$('#cvhint'); let hT=0; function hintOff(){ hint.classList.remove('on'); clearTimeout(hT); }
   // ----- mode source : chaque calque affiche le code qui le dessine, mis à jour en direct
@@ -1736,8 +1729,9 @@ $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOp
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
   if(g==='work'){closeTop();setMode('ring')}
-  if(g==='about') $('#menuTxt').innerHTML='Designer, illustrator, painter, pianist. Ex-Sorare, Figma trainer. The rest of the page is on its way.';
-  if(g==='contact') $('#menuTxt').innerHTML='Write to me on LinkedIn or Instagram, links just below.'; sTick(); };
+  if(g==='about'){ closeTop(); goAbout(); }
+  if(g==='contact'){ closeTop(); window.open('https://www.linkedin.com/in/nabilamara/','_blank','noopener'); } sTick(); };
+function goAbout(){ if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -1902,7 +1896,9 @@ ol.addEventListener("mouseleave",rest);
 rest();addEventListener("resize",rest)})();
 document.querySelectorAll('.aosx [data-go="work"], .abt [data-go="work"]').forEach(a=>a.addEventListener("click",e=>{ e.preventDefault(); setMode("ring"); }));
 </script>
-<script>addEventListener('load',()=>{ if(location.hash==='#work') setTimeout(()=>setMode('ring'),60); else if(location.hash==='#about') setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-120}); },400); });</script>
+<script>{ const H=()=>{ const h=location.hash; if(h==='#work'||h==='#about') history.replaceState(null,'',location.pathname+location.search); if(h==='#work'){ closeTop(); setMode('ring'); } else if(h==='#about'){ closeTop(); goAbout(); } };
+ addEventListener('load',()=>setTimeout(H,60)); addEventListener('hashchange',H);
+ document.querySelectorAll('a[href="#about"]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); closeTop(); goAbout(); })); }</script>
 <script>{ /* signature : tracé à l'arrivée ; au survol elle s'efface à rebours puis se réécrit */
 const SIG=(h,delay)=>{ if(!h) return; const rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let t=0,busy=false; const TOT=1795;
   const restart=c=>{ h.classList.add('sigreset'); void h.getBoundingClientRect(); h.classList.remove('sigreset'); h.classList.add(c); };
