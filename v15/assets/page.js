@@ -30,22 +30,34 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f();
   rows.forEach(r=>r.addEventListener('pointerenter',()=>{ rows.forEach(x=>x.classList.toggle('on',x===r)); })); } }
 
-/*cstream*/ /* Case study : tout sort du même système, livré propre. Le flux avance tout seul, et plus vite quand on scrolle. */
-{ const belt=document.getElementById('csbelt'); if(belt){ const stage=belt.parentElement, RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const T=[['Landing page','land'],['Social post','post'],['Story','story'],['Email','mail'],['Ad banner','ad'],['Carousel','caro'],['LinkedIn post','post'],['Event badge','badge']];
+/*cstream*/ /* Case study : un prompt s'écrit dans la tuile AssetsOS, s'envoie, l'asset correspondant sort du système, le texte s'efface, prompt suivant… Le flux avance plus vite quand on scrolle. */
+{ const belt=document.getElementById('csbelt'); if(belt){ const stage=belt.parentElement, src=stage.querySelector('.cs-src'), RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const mock=k=>({land:'<i class="b w"></i><i class="l"></i><i class="l s"></i><i class="btn"></i>',post:'<i class="sq"></i><i class="l"></i>',story:'<i class="tall"></i><i class="l s"></i>',mail:'<i class="l"></i><i class="l s"></i><i class="b"></i><i class="l s"></i>',ad:'<i class="b w"></i><i class="btn"></i>',caro:'<i class="sq h"></i><i class="sq h"></i><i class="sq h"></i>',badge:'<i class="circ"></i><i class="l s"></i>'})[k];
-  const N=10, cards=[]; let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
-  for(let i=0;i<N;i++){ const [n,k]=T[i%T.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
-    cards.push({el:c,y:(((i*3)%5)-2)*82+(rnd()*2-1)*24,j:rnd(),s:.84+rnd()*.24,r:(rnd()*2-1)*5}); }
-  let off=0, last=performance.now(), lastY=scrollY, vis=false, raf=0;
-  const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY;
-    off+= (RM?0:dt*.045) + Math.max(0,dy)*.9;
-    const W=belt.offsetWidth, L=W*1.3, sp=L/N;
-    cards.forEach((c,i)=>{ let x=((off+i*sp+c.j*sp*.35)%L+L)%L; const t=Math.min(1,x/180); const yy=c.y*Math.min(1,.25+.75*t);
-      c.el.style.transform=`translate3d(${x.toFixed(1)}px,${yy.toFixed(1)}px,0) rotate(${(c.r*t).toFixed(2)}deg) scale(${((.5+.5*t)*c.s).toFixed(3)})`; c.el.style.opacity=(t*Math.min(1,(L-x)/140)).toFixed(3); });
+  const P=[['Announce the launch on LinkedIn','post','LinkedIn post'],['A story for Friday’s event','story','Story'],['Landing page for the webinar','land','Landing page'],['The March newsletter','mail','Email'],['3 ad banners for the sale','ad','Ad banner'],['Turn this article into a carousel','caro','Carousel'],['Badges for the summit','badge','Event badge'],['A post for the new hire','post','Social post']];
+  /* la barre de prompt dans la tuile */
+  const bar=document.createElement('div'); bar.className='cs-prompt'; bar.innerHTML='<span class="cs-pt"></span><i class="cs-caret"></i><b class="cs-send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></b>'; if(src) src.appendChild(bar);
+  const pt=bar.querySelector('.cs-pt');
+  let seed=11; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+  const live=[]; let lane=0;
+  const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
+    lane=(lane+2)%5; live.push({el:c,x:x0||0,y:(lane-2)*82+(rnd()*2-1)*22,s:.86+rnd()*.22,r:(rnd()*2-1)*5}); };
+  for(let i=0;i<6;i++) spawn(i+3,160+i*170);
+  let last=performance.now(), lastY=scrollY, vis=false, raf=0;
+  const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY; const W=belt.offsetWidth+160;
+    const mv=(RM?0:dt*.06)+Math.max(0,dy)*.8;
+    for(let j=live.length-1;j>=0;j--){ const c=live[j]; c.x+=mv; const t=Math.min(1,c.x/150), o=t*Math.min(1,(W-c.x)/140);
+      c.el.style.transform=`translate3d(${c.x.toFixed(1)}px,${(c.y*Math.min(1,.2+.8*t)).toFixed(1)}px,0) rotate(${(c.r*t).toFixed(2)}deg) scale(${((.45+.55*t)*c.s).toFixed(3)})`; c.el.style.opacity=Math.max(0,o).toFixed(3);
+      if(c.x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
-  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf){ last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(step); } },{rootMargin:'200px 0px'}).observe(stage);
-  document.addEventListener('visibilitychange',()=>{ if(document.hidden){ vis=false; } }); } }
+  /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
+  let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
+  const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
+      for(let i=1;i<=txt.length&&vis;i++){ pt.textContent=txt.slice(0,i); await wait(38+Math.random()*40); }
+      await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi,0); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
+      await wait(700); for(let i=txt.length;i>=0&&vis;i--){ pt.textContent=txt.slice(0,i); await wait(14); } await wait(320); pi++; }
+    on=false; };
+  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(step); } loop(); } else clearTimeout(timer); },{rootMargin:'100px 0px'}).observe(stage);
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden){ vis=false; clearTimeout(timer); } }); } }
 
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
 document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricing"]'); if(!a) return; const t=document.getElementById('pricing-title'); if(!t) return; e.preventDefault();
