@@ -292,7 +292,7 @@ html[lang=fr] .en-only,html:not([lang=fr]) .fr-only{display:none}
 .ncur.on span i{background-size:100% 2px}
 .ncur.plain span i{background-size:0 2px!important}
 .ncur.flip span{left:auto;right:4px;transform-origin:100% 0}
-.ncur .pv{position:absolute;left:22px;top:66px;width:230px;border-radius:10px;overflow:hidden;background:#eee;box-shadow:0 22px 50px rgba(32,32,32,.28);opacity:0;transform:scale(.6) rotate(-3deg);transform-origin:0 0;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .2s}
+.ncur .pv{position:absolute;left:22px;top:84px;width:230px;border-radius:10px;overflow:hidden;background:#eee;box-shadow:0 22px 50px rgba(32,32,32,.28);opacity:0;transform:scale(.6) rotate(-3deg);transform-origin:0 0;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .2s}
 .ncur .pv img{width:100%;height:auto;display:block}
 .ncur.on.img .pv{opacity:1;transform:rotate(-2deg)}
 .ncur.flip .pv{left:auto;right:4px;transform-origin:100% 0}
@@ -651,6 +651,10 @@ html,body{overflow-x:clip}
 .vlinks{margin-top:auto;display:flex;gap:18px;font-size:18px}.vlinks a{color:inherit}
 @media (max-width:760px){.vtop{padding:16px 18px}.vmono svg{height:48px}.vbook{display:none}.vmenu nav a{font-size:56px}}
 .hero{padding-top:clamp(96px,12vh,130px)!important}
+/* rythme : même espace avant et après « Let's build your system » que sur la home */
+.end{padding-top:clamp(120px,17vh,190px)!important;padding-bottom:0!important}
+.ftr{margin-top:clamp(120px,17vh,190px)!important}
+.ftr .fin{padding-top:0!important}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
@@ -968,6 +972,6 @@ m.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',c)); }<
 const SIG=(h,delay)=>{ if(!h) return; const rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let t=0;
   const play=()=>{ clearTimeout(t); h.classList.remove('sigok','sigplay'); h.classList.add('sigreset'); void h.getBoundingClientRect(); h.classList.remove('sigreset'); h.classList.add('sigplay'); t=setTimeout(()=>h.classList.add('sigok'),1780); };
   if(rm){ h.classList.add('sigok'); return; } setTimeout(play,delay); let busy=0; h.addEventListener('mouseenter',()=>{ if(!h.classList.contains('sigok')) return; play(); }); };
-SIG(document.getElementById('home'),3300); SIG(document.querySelector('.vmono'),400); }</script>
+SIG(document.getElementById('home'),location.hash==='#work'?200:3300); SIG(document.querySelector('.vmono'),400); }</script>
 </body>
 </html>
