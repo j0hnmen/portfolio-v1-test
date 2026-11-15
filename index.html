@@ -955,6 +955,10 @@ const CV=(function(){
     setTool(tool); };
   cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
   // molette : pincer / Ctrl = zoom, glisser horizontal = déplacer, vertical = la page défile (le canvas dézoome)
+  // pincer au pad n'importe où sur la vue canvas (barre d'outils, prompt, frames…) zoome le canvas, jamais la page entière
+  addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey)||!isOn()||overlayOpen()||scrollY>innerHeight*.5||cv.contains(e.target)) return;
+    e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); },{passive:false,capture:true});
+  ['gesturestart','gesturechange'].forEach(t=>addEventListener(t,e=>{ if(isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5) e.preventDefault(); },{passive:false}));
   cv.addEventListener('wheel',e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); return zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); }
     if(scrollY>0) return; // déjà dans la descente vers la page : scroll normal
     e.preventDefault(); const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d, y0=py; px-=dx; py-=dy; apply();
