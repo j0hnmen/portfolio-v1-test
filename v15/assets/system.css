@@ -228,7 +228,7 @@ html body .aoscard:hover .aoscta:not(:hover) svg{transform:none!important}
 .aoscard:hover::before{height:26%!important}
 
 /* ===== footer : dégradé plus haut ===== */
-.aosx .ftr::before{height:clamp(760px,100vh,1100px)!important;max-height:none!important}
+.aosx .ftr::before{height:100%!important;max-height:100%!important} /* le dégradé du footer s'arrête au niveau du nom */
 
 /* ===== mobile : la barre de chat laisse la place au space invader, à la même hauteur ===== */
 @media (max-width:760px){
@@ -245,3 +245,15 @@ html body .aoscard:hover .aoscta:not(:hover) svg{transform:none!important}
 .tl2 .tlm{background:#202020;transition:background-color .35s}
 .tl2 .tli.on .tlm,.tl2 .tli:hover .tlm{background:#564FFF;filter:none!important}
 html.src .tl2 .tlm{background:var(--c-tx)}
+
+/* ===== home About : les services passent au-dessus du titre ===== */
+.abt .svcs{margin:0 0 clamp(26px,3.6vh,40px)!important}
+
+/* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
+.node.islive .lv iframe{pointer-events:auto!important}
+
+/* ===== barre du bas (home) : encoche douce et arrondie entre les outils et la prompt box ===== */
+#cform.notched{-webkit-mask:radial-gradient(17px 8px at var(--nx) 0,#0000 88%,#000 100%) top/100% 51% no-repeat,radial-gradient(17px 8px at var(--nx) 100%,#0000 88%,#000 100%) bottom/100% 51% no-repeat;mask:radial-gradient(17px 8px at var(--nx) 0,#0000 88%,#000 100%) top/100% 51% no-repeat,radial-gradient(17px 8px at var(--nx) 100%,#0000 88%,#000 100%) bottom/100% 51% no-repeat}
+#cform.notched{box-shadow:none!important}
+#chat:has(#cform.notched){filter:drop-shadow(0 1px 0 rgba(32,32,32,.06)) drop-shadow(0 14px 26px rgba(32,32,32,.14))}
+#cform.notched #tools .sep:nth-of-type(2){opacity:0}

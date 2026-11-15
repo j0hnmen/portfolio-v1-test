@@ -34,13 +34,25 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 { const belt=document.getElementById('csbelt'); if(belt){ const stage=belt.parentElement, RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const T=[['Landing page','land'],['Social post','post'],['Story','story'],['Email','mail'],['Ad banner','ad'],['Carousel','caro'],['LinkedIn post','post'],['Event badge','badge']];
   const mock=k=>({land:'<i class="b w"></i><i class="l"></i><i class="l s"></i><i class="btn"></i>',post:'<i class="sq"></i><i class="l"></i>',story:'<i class="tall"></i><i class="l s"></i>',mail:'<i class="l"></i><i class="l s"></i><i class="b"></i><i class="l s"></i>',ad:'<i class="b w"></i><i class="btn"></i>',caro:'<i class="sq h"></i><i class="sq h"></i><i class="sq h"></i>',badge:'<i class="circ"></i><i class="l s"></i>'})[k];
-  const N=12, cards=[]; for(let i=0;i<N;i++){ const [n,k]=T[i%T.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c); cards.push({el:c,lane:i%3}); }
+  const N=10, cards=[]; let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+  for(let i=0;i<N;i++){ const [n,k]=T[i%T.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
+    cards.push({el:c,y:(((i*3)%5)-2)*82+(rnd()*2-1)*24,j:rnd(),s:.84+rnd()*.24,r:(rnd()*2-1)*5}); }
+  /* la source : le logo AssetsOS (copié de la tuile) dans une carte au design de la tuile */
+  { const src=stage.querySelector('.cs-src'), lg=document.querySelector('#system .aoslogo'); if(src&&lg&&!src.querySelector('svg')){ const c=lg.cloneNode(true); c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id')); const tg=c.querySelector('.lgtag'); if(tg) tg.remove(); c.setAttribute('viewBox','124 150 822 230'); c.classList.add('cs-logo','sigok'); src.insertBefore(c,src.firstChild); } }
   let off=0, last=performance.now(), lastY=scrollY, vis=false, raf=0;
   const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY;
     off+= (RM?0:dt*.045) + Math.max(0,dy)*.9;
-    const W=belt.offsetWidth, sp=W/(N/3)*1.05, L=sp*N/3;
-    cards.forEach((c,i)=>{ const base=Math.floor(i/3)*sp + (c.lane*sp/3); let x=((off+base)%L+L)%L; const t=Math.min(1,x/160);
-      c.el.style.transform=`translate3d(${x.toFixed(1)}px,${(c.lane-1)*112}px,0) scale(${(.55+.45*t).toFixed(3)})`; c.el.style.opacity=(t*Math.min(1,(L-x)/120)).toFixed(3); });
+    const W=belt.offsetWidth, L=W*1.3, sp=L/N;
+    cards.forEach((c,i)=>{ let x=((off+i*sp+c.j*sp*.35)%L+L)%L; const t=Math.min(1,x/180); const yy=c.y*Math.min(1,.25+.75*t);
+      c.el.style.transform=`translate3d(${x.toFixed(1)}px,${yy.toFixed(1)}px,0) rotate(${(c.r*t).toFixed(2)}deg) scale(${((.5+.5*t)*c.s).toFixed(3)})`; c.el.style.opacity=(t*Math.min(1,(L-x)/140)).toFixed(3); });
     if(vis) raf=requestAnimationFrame(step); };
   new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf){ last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(step); } },{rootMargin:'200px 0px'}).observe(stage);
   document.addEventListener('visibilitychange',()=>{ if(document.hidden){ vis=false; } }); } }
+
+/*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
+document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricing"]'); if(!a) return; const t=document.getElementById('pricing-title'); if(!t) return; e.preventDefault();
+  const y=t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*.14); const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto'; scrollTo(0,y); H.style.scrollBehavior=sb; history.replaceState(null,'','#pricing'); });
+
+/*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
+{ const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);
+  const t=document.createElement('p'); t.className='ysol2'; t.innerHTML='<span data-i="ysol2">On brand. <em>Every time.</em></span>'; e.after(t); } }

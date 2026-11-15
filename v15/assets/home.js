@@ -402,3 +402,8 @@ document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=do
     const r=sec.getBoundingClientRect(), v=innerHeight; const pin=Math.min(1,Math.max(0,(v*.95-r.top)/(v*.75))), pout=Math.min(1,Math.max(0,(r.bottom-v*.05)/(v*.6))); const p=Math.min(pin,pout);
     bg.style.opacity=p.toFixed(3); H.classList.toggle('blueon',p>.55); };
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); setTimeout(f,300); } }
+/*notch*/ /* barre du bas (home, en haut de page) : les outils et la prompt box séparés par une encoche douce et arrondie */
+{ const f=document.getElementById('cform'), t=document.getElementById('tools'); if(f&&t){ let tk=0;
+  const upd=()=>{ tk=0; const tr=t.getBoundingClientRect(), fr=f.getBoundingClientRect(); const on=t.parentElement===f&&tr.width>40&&getComputedStyle(t).opacity!=='0'&&getComputedStyle(t).display!=='none';
+    f.classList.toggle('notched',on); if(on){ const sp=t.querySelectorAll('.sep')[1]; const x=sp?sp.getBoundingClientRect().left+sp.offsetWidth/2:tr.right; f.style.setProperty('--nx',(x-fr.left).toFixed(1)+'px'); } };
+  const q=()=>{ if(!tk) tk=requestAnimationFrame(upd); }; addEventListener('scroll',q,{passive:true}); addEventListener('resize',q); if('ResizeObserver' in window) new ResizeObserver(q).observe(f); setTimeout(upd,400); setInterval(upd,1200); } }
