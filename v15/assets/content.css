@@ -715,9 +715,8 @@ html.blueon :where(.page) .bluebg:not(:where(.aosx,.aosx *)){opacity:1}
 .page .decay .ax span{background:var(--paper,#fff);padding-left:2px}
 
 /* ===== One Moment : prix centré sur la ligne du titre, bouton sur la dernière ligne ===== */
-#moment .one>.of{display:contents!important}
-#moment .one .of .pr{grid-column:2;grid-row:1;align-self:center;text-align:right;margin:0!important}
-#moment .one .of .pill{grid-column:2;grid-row:3;justify-self:end;align-self:end}
+
+
 @media (max-width:760px){#moment .one .of .pr,#moment .one .of .pill{grid-column:1;grid-row:auto;justify-self:start;text-align:left;margin-top:14px!important}}
 
 /* ===== Case study : le flux d'assets qui sortent du système ===== */
@@ -756,7 +755,6 @@ html.blueon :where(.page) .bluebg:not(:where(.aosx,.aosx *)){opacity:1}
 #system .aoscard .ysol{margin:0 0 10px!important}
 #system .aoscard .ysol2{margin:0 0 6px;font:400 clamp(20px,1.6vw,26px)/1.2 var(--text);color:#202020}
 #system .aoscard .ysol2 em{font-style:normal;color:#564FFF}
-#system .aoscard .aoslogo .lgtag{display:none}
 
 /* ===== Case study : la source = la tuile AssetsOS en petit (grille, dégradé bleu, logo) ===== */
 .page .cs-src{background:#fff!important;color:#202020!important;justify-content:space-between!important;padding:22px!important;overflow:hidden;isolation:isolate;box-shadow:0 0 0 1px rgba(32,32,32,.06),0 30px 70px -30px rgba(40,30,240,.45)!important}
@@ -768,5 +766,17 @@ html.blueon :where(.page) .bluebg:not(:where(.aosx,.aosx *)){opacity:1}
 /* ===== One Moment : le prix sur la même ligne de base que le titre ===== */
 #moment .one{align-items:start!important}
 #moment .one>.oh{grid-row:1;align-self:first baseline!important}
-#moment .one .of .pr{grid-row:1;align-self:first baseline!important}
+
 #moment .one .of .pr .d{display:block}
+
+/* ===== One Moment : haut de « €1,800 » = haut de « ONE MOMENT », bord droit du prix = bord droit du bouton ===== */
+#moment .one{align-items:start!important}
+#moment .one>.oh{grid-row:1;align-self:start!important}
+#moment .one .of .pr{display:flex!important;flex-direction:column;align-items:flex-end;text-align:right;margin:0!important;padding:0!important}
+#moment .one .of .pr .d{line-height:.8!important;display:block}
+#moment .one .oh h3{line-height:.8!important;margin:0!important}
+#moment .one .oh{align-items:flex-start!important}
+/* ===== Case study : la source reprend la tuile, logo AssetsOS avec accroche (Figma 816-5315) ===== */
+.page .cs-src{width:clamp(240px,24vw,320px)!important;aspect-ratio:auto!important;height:clamp(240px,24vw,320px);justify-content:flex-start!important;padding:24px 22px!important}
+.page .cs-src .cs-logo{width:100%;height:auto;color:#202020;overflow:visible}
+.page .cs-belt{left:clamp(260px,26vw,340px)!important}

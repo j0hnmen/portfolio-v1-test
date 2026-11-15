@@ -37,8 +37,6 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const N=10, cards=[]; let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
   for(let i=0;i<N;i++){ const [n,k]=T[i%T.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
     cards.push({el:c,y:(((i*3)%5)-2)*82+(rnd()*2-1)*24,j:rnd(),s:.84+rnd()*.24,r:(rnd()*2-1)*5}); }
-  /* la source : le logo AssetsOS (copié de la tuile) dans une carte au design de la tuile */
-  { const src=stage.querySelector('.cs-src'), lg=document.querySelector('#system .aoslogo'); if(src&&lg&&!src.querySelector('svg')){ const c=lg.cloneNode(true); c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id')); const tg=c.querySelector('.lgtag'); if(tg) tg.remove(); c.setAttribute('viewBox','124 150 822 230'); c.classList.add('cs-logo','sigok'); src.insertBefore(c,src.firstChild); } }
   let off=0, last=performance.now(), lastY=scrollY, vis=false, raf=0;
   const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY;
     off+= (RM?0:dt*.045) + Math.max(0,dy)*.9;
@@ -54,5 +52,4 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   const y=t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*.14); const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto'; scrollTo(0,y); H.style.scrollBehavior=sb; history.replaceState(null,'','#pricing'); });
 
 /*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
-{ const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);
-  const t=document.createElement('p'); t.className='ysol2'; t.innerHTML='<span data-i="ysol2">On brand. <em>Every time.</em></span>'; e.after(t); } }
+{ const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);} }

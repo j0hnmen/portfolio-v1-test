@@ -195,7 +195,7 @@ html.cvs:not(.endblue) .bluebg{transition:opacity .25s linear}
 #moment{padding-top:clamp(56px,8vh,96px)!important}
 #moment .one{display:grid!important;grid-template-columns:1fr auto;grid-template-rows:auto auto auto;column-gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(26px,3vw,36px) clamp(28px,3.4vw,44px)!important}
 #moment .one>.oh,#moment .one>p{grid-column:1}
-#moment .one>.of{grid-column:2;grid-row:1/4;display:flex!important;flex-direction:column;align-items:flex-end;gap:16px;margin:0!important}
+#moment .one>.of{grid-column:2;grid-row:1/4;display:flex!important;flex-direction:column;align-items:flex-end!important;justify-content:space-between!important;gap:16px;margin:0!important;padding:0!important;align-self:stretch!important}
 #moment .one .of .pill{opacity:1!important;transform:none!important}
 #moment .one .of .pr{text-align:right}
 @media (max-width:760px){#moment .one{grid-template-columns:1fr}#moment .one>.of{grid-column:1;grid-row:auto;align-items:flex-start;margin-top:18px!important}}
@@ -237,7 +237,7 @@ html body .aoscard:hover .aoscta:not(:hover) svg{transform:none!important}
 }
 
 /* ===== Let's build : la section reste épinglée le temps de profiter du fond bleu (elle occupe tout l'écran) ===== */
-.endpin{height:185vh;position:relative}
+.endpin{height:260vh;position:relative}
 .endpin>section.end{position:sticky!important;top:0;height:100vh;min-height:100vh!important;display:flex!important;flex-direction:column;justify-content:center;padding:0!important}
 .aosend{margin-top:0!important}
 
@@ -252,8 +252,21 @@ html.src .tl2 .tlm{background:var(--c-tx)}
 /* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
 .node.islive .lv iframe{pointer-events:auto!important}
 
-/* ===== barre du bas (home) : encoche douce et arrondie entre les outils et la prompt box ===== */
-#cform.notched{-webkit-mask:radial-gradient(17px 8px at var(--nx) 0,#0000 88%,#000 100%) top/100% 51% no-repeat,radial-gradient(17px 8px at var(--nx) 100%,#0000 88%,#000 100%) bottom/100% 51% no-repeat;mask:radial-gradient(17px 8px at var(--nx) 0,#0000 88%,#000 100%) top/100% 51% no-repeat,radial-gradient(17px 8px at var(--nx) 100%,#0000 88%,#000 100%) bottom/100% 51% no-repeat}
-#cform.notched{box-shadow:none!important}
-#chat:has(#cform.notched){filter:drop-shadow(0 1px 0 rgba(32,32,32,.06)) drop-shadow(0 14px 26px rgba(32,32,32,.14))}
-#cform.notched #tools .sep:nth-of-type(2){opacity:0}
+
+/* ===== The problem : plus de carte blanche, le contenu est posé sur la page (l'effet de recul flou reste) ===== */
+.page .stack>.band.prob{padding-left:0!important;padding-right:0!important;padding-top:0!important;padding-bottom:clamp(40px,6vh,72px)!important}
+.page .stack>.band.prob::before{display:none!important}
+
+/* ===== space invader en bas de page : survol spécial du « play? » ===== */
+html.atend .invader{transition:scale .35s cubic-bezier(.3,1.6,.5,1),color .3s}
+html.atend .invader:hover{scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
+@keyframes invjump{50%{translate:0 -6px}}
+html.atend .invader:hover+.toast{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .invader:hover+.toast::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
+@keyframes invblink{50%{opacity:0}}
+
+/* ===== Safari : signature dévoilée d'un seul trait (pas d'animation segment par segment) ===== */
+html.lite .sigan{display:none!important}
+html.lite .sigdone{opacity:1!important}
+/* offres ponctuelles : suite directe des tarifs, pas un écart de section */
+html body .page main.aos>section#moment.wrap.rv{padding-top:clamp(56px,7vh,72px)!important}
