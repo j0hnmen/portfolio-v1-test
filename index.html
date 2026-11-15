@@ -1235,7 +1235,7 @@ body.is-list .list{z-index:12!important}.peek{z-index:5!important}.list button s
 </a> <nav class="flinks">
 <a data-go="work" href="#"><span><span data-i="f4">Work</span></span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
 <a href="assets-os.html"><span>Assets OS</span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
-<a href="#about"><span><span data-i="f5">About</span></span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
+<a href="about.html"><span><span data-i="f5">About</span></span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
 <a href="https://www.linkedin.com/in/nabilamara/" rel="noopener" target="_blank"><span><span data-i="t2">Book a call</span></span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
 <a href="#"><span><span data-i="f10">Legal notice</span></span><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 300 40"><path d="M6,22 C80,12 200,10 294,18" pathlength="1"></path></svg></a>
 </nav>
@@ -1746,8 +1746,8 @@ $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOp
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
   if(g==='work'){closeTop();setMode('ring')}
-  if(g==='about'){ closeTop(); goAbout(); }
-  if(g==='contact'){ closeTop(); window.open('https://www.linkedin.com/in/nabilamara/','_blank','noopener'); } sTick(); };
+  if(g==='about'){ location.href='about.html'; }
+  if(g==='contact'){ location.href='contact.html'; } sTick(); };
 function goAbout(){ if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(viewer.classList.contains('on')) return closeViewer();
