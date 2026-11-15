@@ -239,14 +239,12 @@ body.is-canvas::before{display:none}
 .node.on .clb{outline:2px solid #0D99FF;outline-offset:-1px}
 html.src .frame .fb.cl{background:#1b1d22;border-color:#2e3139}html.src .clh{color:#8f95a3}html.src .clb{border-color:#2e3139}
 /* bannière clients : arrive de la gauche au scroll, puis défile vers la droite au fil du scroll */
-.clients{position:relative;width:100vw;margin:-10vh 0 12vh calc(50% - 50vw);overflow:hidden;background:#554FFF;color:#fff;height:82px;display:flex;align-items:center}
-.ctrack{display:flex;align-items:center;white-space:nowrap;will-change:transform;transform:translateX(-100%)}
-.ctrack span{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:38px;line-height:1;letter-spacing:.01em;padding:0 34px}
-.ctrack i{width:10px;height:10px;background:currentColor;transform:rotate(45deg);flex:none;opacity:.55}
-html.src .clients{background:#1b1d22;color:#cfd3dc;border-block:1px dashed rgba(122,118,255,.6)}
-html.src .ctrack span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600;font-stretch:normal;font-size:24px;text-transform:none}
-html.src .ctrack span::before{content:"<li>";color:#7aa2ff;font-size:.6em;margin-right:.4em}html.src .ctrack span::after{content:"</li>";color:#7aa2ff;font-size:.6em;margin-left:.4em}
-@media (max-width:760px){.clients{height:60px}.ctrack span{font-size:26px;padding:0 22px}}
+.clients{position:relative;width:100vw;margin:-10vh 0 12vh calc(50% - 50vw);overflow:hidden;height:96px;display:flex;align-items:center}
+.ctrack{display:flex;align-items:center;gap:110px;padding-right:110px;white-space:nowrap;will-change:transform;transform:translateX(-100%)}
+.ctrack img{display:block;width:auto;flex:none;pointer-events:none;user-select:none}
+.ctrack .sorare{height:36px}.ctrack .figma{height:38px}.ctrack .sportgen{height:28px}.ctrack .smartgemini{height:32px}
+html.src .ctrack img{filter:invert(.85)}
+@media (max-width:760px){.clients{height:70px}.ctrack{gap:64px;padding-right:64px}.ctrack img{transform:scale(.72)}}
 /* indication de scroll sur le canvas */
 .scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 3.4s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
 html.cvs .scrollhint{display:flex}
@@ -626,7 +624,7 @@ body::before,body::after{display:none}
 <div class="cv" id="cv"><div class="world" id="world"></div></div>
 <div class="cvspace" aria-hidden="true"></div>
 <section class="pres" id="pres" aria-label="About">
-  <div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini, Publicis, Superprof"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div>
+  <div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div>
   <div class="in">
     <div class="eyebrow">About</div>
     <h2>AI Creative Designer in Paris</h2>
@@ -995,9 +993,9 @@ const CV=(function(){
     ['#tools','#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
   addEventListener('scroll',onScroll,{passive:true});
   // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
-  { const CL=['Sorare','Figma','Sport [Gen]','Smart Gemini','Publicis','Superprof'], tr=$('#ctrack'); let setW=0;
-    const fill=()=>{ if(!tr) return; tr.innerHTML=CL.map(n=>`<span>${n}</span><i></i>`).join(''); setW=tr.scrollWidth||1;
-      const need=Math.ceil((document.documentElement.scrollHeight*.9+innerWidth*2)/setW)+1; tr.innerHTML=Array(need).fill(CL.map(n=>`<span>${n}</span><i></i>`).join('')).join(''); };
+  { const CL=[['sorare','Sorare'],['figma','Figma'],['sportgen','Sport [Gen]'],['smartgemini','Smart Gemini']], one=()=>CL.map(([f,n])=>`<img class="${f}" src="img/clients/${f}.png" alt="${n}">`).join(''), tr=$('#ctrack'); let setW=0;
+    const fill=()=>{ if(!tr) return; tr.innerHTML=one(); setW=tr.scrollWidth||1;
+      const need=Math.ceil((document.documentElement.scrollHeight*.9+innerWidth*2)/setW)+1; tr.innerHTML=Array(need).fill(one()).join(''); };
     const move=()=>{ if(!tr||!setW) return; const W=tr.scrollWidth, v=scrollY*.9; let x=v-W; if(x>-setW) x=-setW+((x+setW)%setW); tr.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`; };
     addEventListener('scroll',move,{passive:true}); addEventListener('resize',()=>{ fill(); move(); });
     (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{ fill(); move(); }); }
