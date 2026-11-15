@@ -998,10 +998,14 @@ const CV=(function(){
   addEventListener('scroll',onScroll,{passive:true});
   // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
   { const CL=[['sorare','Sorare'],['figma','Figma'],['sportgen','Sport [Gen]'],['smartgemini','Smart Gemini']], one=()=>CL.map(([f,n])=>`<img class="${f}" src="img/clients/${f}.png" alt="${n}">`).join(''), tr=$('#ctrack'); let setW=0;
-    const fill=()=>{ if(!tr) return; tr.innerHTML=one(); setW=tr.scrollWidth||1;
-      const need=Math.ceil((document.documentElement.scrollHeight*.9+innerWidth*2)/setW)+1; tr.innerHTML=Array(need).fill(one()).join(''); };
-    const move=()=>{ if(!tr||!setW) return; const W=tr.scrollWidth, v=scrollY*.9+innerWidth*Math.min(1,scrollY/(innerHeight*.6)); let x=v-W; if(x>-setW) x=-setW+((x+setW)%setW); tr.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`; };
-    addEventListener('scroll',move,{passive:true}); addEventListener('resize',()=>{ fill(); move(); });
+    const fill=()=>{ if(!tr) return; tr.innerHTML=one(); setW=tr.scrollWidth||1; tr.innerHTML=Array(Math.ceil(innerWidth/setW)+2).fill(one()).join(''); };
+    // la bande est déjà pleine : elle défile toute seule doucement vers la droite, et un peu plus quand on scrolle
+    let t0=performance.now(), on=false, raf=0;
+    const move=()=>{ if(!tr||!setW) return; const pos=(performance.now()-t0)*.028+scrollY*.18; tr.style.transform=`translate3d(${(pos%setW-setW).toFixed(1)}px,0,0)`; };
+    const loop=()=>{ move(); raf=on&&!document.hidden?requestAnimationFrame(loop):0; };
+    if('IntersectionObserver' in window) new IntersectionObserver(es=>{ on=es[0].isIntersecting; if(on&&!raf) raf=requestAnimationFrame(loop); }).observe(tr.parentNode);
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&on&&!raf) raf=requestAnimationFrame(loop); });
+    addEventListener('resize',()=>{ fill(); move(); });
     const ready=()=>{ fill(); Promise.all([...tr.querySelectorAll('img')].slice(0,CL.length).map(im=>im.decode?im.decode().catch(()=>{}):0)).then(()=>{ fill(); move(); }); };
     (document.fonts?document.fonts.ready:Promise.resolve()).then(ready); }
   addEventListener('keydown',e=>{ if(!isOn()||overlayOpen()) return; const k=e.key.toLowerCase(), T={v:'select',h:'hand',r:'rect',o:'ell',p:'pen'};
