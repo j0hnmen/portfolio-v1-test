@@ -287,3 +287,9 @@ html.atend .toast{pointer-events:auto!important;cursor:pointer}
 html.atend .invader:has(+.toast:hover){scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
 html.atend .toast:hover{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
 html.atend .toast:hover::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
+
+/* ===== home : pile « one-man studio » + tuile AssetsOS (même effet que The problem sur la page AssetsOS) ===== */
+.hstack.on #about{position:sticky;top:0;z-index:1}
+.hstack.on #about>section{will-change:transform,opacity,filter;transform-origin:50% 40%}
+.hstack.on #aos{position:sticky;top:var(--st,16px);z-index:2;margin-top:clamp(40px,8vh,90px)!important;padding-bottom:var(--sec)}
+.hstack.on{padding-bottom:30vh}

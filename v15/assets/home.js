@@ -399,6 +399,13 @@ document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=do
   /* le fond bleu monte progressivement pendant que la section About arrive (lié au scroll), le texte passe en blanc à mi-chemin */
   const f=()=>{ tk=0; const bg=document.querySelector('.bluebg'); if(!bg) return; if(!H.classList.contains('cvs')||H.classList.contains('src')){ bg.style.opacity=''; H.classList.remove('blueon'); return; }
     if(H.classList.contains('endblue')){ bg.style.opacity=''; return; }
-    const r=sec.getBoundingClientRect(), v=innerHeight; const pin=Math.min(1,Math.max(0,(v*.95-r.top)/(v*.75))), pout=Math.min(1,Math.max(0,(r.bottom-v*.05)/(v*.6))); const p=Math.min(pin,pout);
+    const r=sec.getBoundingClientRect(), v=innerHeight; const pin=Math.min(1,Math.max(0,(v*.95-r.top)/(v*.75))); const tl=document.querySelector('.hstack .aost'); let pout=Math.min(1,Math.max(0,(r.bottom-v*.05)/(v*.6))); if(tl){ const t=tl.getBoundingClientRect(); pout=Math.min(pout,Math.max(0,Math.min(1,(t.top-v*.12)/(v*.25)))); } const p=Math.min(pin,pout);
     bg.style.opacity=p.toFixed(3); H.classList.toggle('blueon',p>.55); };
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); setTimeout(f,300); } }
+
+/*hstack*/ /* home : comme sur la page AssetsOS, la section « Your one-man design studio » reste en place et recule (flou, échelle, fondu) pendant que la tuile AssetsOS monte par-dessus */
+{ const st=document.querySelector('.hstack'), ab=st&&st.querySelector('#about'), tl=st&&st.querySelector('#aos'); if(ab&&tl&&!matchMedia('(max-width:900px)').matches&&!matchMedia('(prefers-reduced-motion:reduce)').matches){ st.classList.add('on'); let tk=0;
+  const place=()=>{ const h=tl.offsetHeight, v=innerHeight; tl.style.setProperty('--st',Math.round(h<v-32?(v-h)/2:16)+'px'); };
+  const f=()=>{ tk=0; const v=innerHeight, r=tl.getBoundingClientRect(), top=parseFloat(getComputedStyle(tl).top)||0, k=Math.min(1,Math.max(0,1-(r.top-top)/(v*.7)));
+    const s=ab.firstElementChild||ab; s.style.opacity=(1-k).toFixed(3); s.style.transform=`scale(${(1-.06*k).toFixed(4)})`; s.style.filter=k>.001?`blur(${(6*k).toFixed(2)}px)`:''; };
+  addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',()=>{ place(); f(); }); document.fonts&&document.fonts.ready.then(place); place(); f(); } }
