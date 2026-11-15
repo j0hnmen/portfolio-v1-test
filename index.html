@@ -261,7 +261,7 @@ html.src .frame .fb.cl{background:#1b1d22;border-color:#2e3139}html.src .clh{col
 html.src .ctrack img{filter:invert(.85)}
 @media (max-width:760px){.clients{height:70px}.ctrack{gap:64px;padding-right:64px}.ctrack img{transform:scale(.72)}}
 /* indication de scroll sur le canvas */
-.scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 3.4s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
+.scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 4.6s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
 html.cvs .scrollhint{display:flex}
 .scrollhint span{writing-mode:vertical-rl}
 .scrollhint i{position:relative;width:14px;height:200px;background:#fff;border-radius:99px;overflow:hidden;box-shadow:0 0 0 1px rgba(32,32,32,.07),0 6px 18px rgba(32,32,32,.10),inset 0 1px 2px rgba(32,32,32,.06)}
@@ -934,7 +934,7 @@ const CV=(function(){
     add({type:'shape',cls:'rect',name:'Rectangle',x:990,y:130,w:210,h:130,r:-12,fill:'#202020'});
     // gribouillis au feutre : entourés, soulignés, flèches, petites notes — ils se dessinent après l'arrivée
     const IB='#554FFF', IK='#202020'; let di=0;
-    const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(3.2+(di++)*.22).toFixed(2);
+    const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(6.2+(di++)*.28).toFixed(2);
       add({type:'path',cls:'ink',name,x,y,w,h,r,html:`<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="--d:${dl}s;overflow:visible">${d?`<path d="${d}" pathLength="1" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`:''}${txt}</svg>`}); };
     const note=(t,x,y,size=46,c=IB)=>`<text x="${x}" y="${y}" font-family="Caveat,cursive" font-weight="600" font-size="${size}" fill="${c}">${t}</text>`;
     // le sous-titre entouré
@@ -956,7 +956,7 @@ const CV=(function(){
     ink('Scribble',1000,-366,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IB,5);
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
-  function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.95/2150,innerHeight*.95/1520,1); px=innerWidth/2; py=innerHeight/2; apply(); }
+  function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.84/2150,innerHeight*.84/1520,1); px=innerWidth/2; py=innerHeight/2; apply(); }
   // arrivée : chaque élément passe de x3 à x1 et de 0 à 100 % d'opacité, un par un, en 3 s
   // entrée en plusieurs temps : le canvas arrive d'abord en bloc (zoom arrière + flou), puis les lettres du nom
   // une à une avec un léger décalage irrégulier, puis le sous-titre, puis l'interface
@@ -969,12 +969,13 @@ const CV=(function(){
         {duration:o.dur,delay:o.delay,easing:E1,fill:'backwards'}); };
     // 1. le nom d'abord, lettre par lettre avec de petits décalages irréguliers
     const jit=[0,90,30,140,60,110,20,160,45,95];
-    NAMEL.filter(n=>n!==SUBN).forEach((n,i)=>zoomIn(n,2.2,{dur:1300,delay:200+jit[i%jit.length],blur:10}));
-    if(SUBN) zoomIn(SUBN,1.6,{dur:1000,delay:900,blur:6});
-    // 2. puis les projets et le reste du canvas, en bloc
-    nodes.filter(n=>!NAMEL.includes(n)).forEach(n=>zoomIn(n,1.45,{dur:1500,delay:1250+Math.random()*120,blur:14}));
+    NAMEL.filter(n=>n!==SUBN).forEach((n,i)=>zoomIn(n,2.2,{dur:2000,delay:300+jit[i%jit.length]*1.9,blur:10}));
+    if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:1500,blur:6});
+    // 2. puis les projets et le reste du canvas, un par un
+    const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))];
+    ord.forEach((n,i)=>zoomIn(n,1.45,{dur:1700,delay:2100+i*190,blur:14}));
     // 3. enfin l'interface
-    [['.top',2350,'0 -14px'],['#tools',2500,'0 18px'],['#chat',2600,'0 18px'],['#invader',2750,'0 12px']].forEach(([q,d,t])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:0},{translate:'0 0',opacity:1}],{duration:700,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['.top',3200,'0 -14px'],['#tools',3400,'0 18px'],['#chat',3550,'0 18px'],['#invader',3700,'0 12px']].forEach(([q,d,t])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:0},{translate:'0 0',opacity:1}],{duration:700,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   cv.addEventListener('pointerdown',e=>{ document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(ptrs.size===2){ act=null; const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2}; return; }
