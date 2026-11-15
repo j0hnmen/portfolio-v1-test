@@ -220,14 +220,8 @@ body.is-canvas::before{display:none}
 .frame .fb{background:var(--paper);color:#161616;border-radius:4px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.55)}
 .frame .fb img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;pointer-events:none}
 .frame .fb{position:relative}
-.livebtn{position:absolute;top:12px;right:12px;z-index:3;padding:8px 13px;border-radius:99px;background:rgba(255,255,255,.94);color:#202020;font:700 12px/1 system-ui,sans-serif;letter-spacing:.03em;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:background .2s,color .2s}
-.livebtn:hover{background:#554FFF;color:#fff}
-.frame.islive .livebtn{display:none}
 .lv{position:absolute;left:0;top:0;width:100%;z-index:2;overflow:hidden;background:#fff}
 .lv iframe{width:1440px;height:900px;border:0;transform-origin:0 0;display:block}
-.lvbar{position:absolute;left:8px;right:8px;bottom:8px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
-.lvbar a,.lvbar button{pointer-events:auto;padding:7px 11px;border-radius:99px;background:rgba(32,32,32,.85);color:#fff;font:600 11px/1 system-ui,sans-serif;text-decoration:none;cursor:pointer}
-.lvbar button:hover,.lvbar a:hover{background:#554FFF}
 /* indication de scroll sur le canvas */
 .scrollhint{display:none;position:fixed;right:34px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:14px;color:#202020;font:700 11px/1 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;pointer-events:auto;cursor:pointer;background:none;border:0;opacity:0;animation:shIn .9s 3.4s forwards}
 html.cvs .scrollhint{display:flex}
@@ -865,11 +859,9 @@ const CV=(function(){
   // (l'aperçu Claude bloque les iframes d'autres sites : bouton affiché seulement une fois hébergé)
   function liveOn(n){ const p=P[n.pi]; if(!p||!p.link||n.el.querySelector('.lv')) return;
     const fb=n.el.querySelector('.fb'), w=document.createElement('div'); w.className='lv';
-    w.innerHTML=`<iframe src="${p.link[1]}" title="${p.t} — live" allow="autoplay; fullscreen"></iframe><div class="lvbar"><a href="${p.link[1]}" target="_blank" rel="noopener">${p.link[0]} ↗</a><button data-unlive>✕ close</button></div>`;
+    w.innerHTML=`<iframe src="${p.link[1]}" title="${p.t} — live" allow="autoplay; fullscreen"></iframe>`;
     fb.appendChild(w); n.el.classList.add('islive'); fitLive(n);
-    w.querySelector('[data-unlive]').addEventListener('pointerdown',e=>{ e.stopPropagation(); liveOff(n); });
-    w.querySelector('a').addEventListener('pointerdown',e=>e.stopPropagation()); }
-  function liveOff(n){ const w=n.el.querySelector('.lv'); if(w) w.remove(); n.el.classList.remove('islive'); }
+  }
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
@@ -882,8 +874,10 @@ const CV=(function(){
     { const [d,bx,by,w,h]=GLY.S, k=28/h; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-w*k/2,y:top+CAP*2+LG+46,w:w*k,h:28,r:0,
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#554FFF"/></svg>`})); }
     P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
-      html:`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false">${p.link&&LIVE?`<button class="livebtn" data-live>● Live site</button>`:''}<div class="ft"><div class="eyebrow">0${i+1} — ${p.nat} — ${p.y}</div><h3>${p.t}</h3><p>${p.sub}</p><small>click to open</small></div></div>`}); });
-    nodes.forEach(n=>{ const b=n.el.querySelector('[data-live]'); if(b) b.addEventListener('pointerdown',e=>{ e.stopPropagation(); select(n); liveOn(n); }); });
+      html:p.link&&LIVE?`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div>`
+        :`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"><div class="ft"><div class="eyebrow">0${i+1} — ${p.nat} — ${p.y}</div><h3>${p.t}</h3><p>${p.sub}</p><small>click to open</small></div></div>`}); });
+    // sites intégrés : le vrai site s'affiche directement dans la frame, sans texte, une fois l'arrivée terminée
+    if(LIVE) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
     add({type:'note',name:'Note',x:1000,y:-520,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
     // post-it : le Konami code, à taper sur la page
     add({type:'note',cls:'postit',name:'Post-it',x:-1230,y:290,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
