@@ -238,15 +238,30 @@ body.is-canvas::before{display:none}
 .clb img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;pointer-events:none}
 .node.on .clb{outline:2px solid #0D99FF;outline-offset:-1px}
 html.src .frame .fb.cl{background:#1b1d22;border-color:#2e3139}html.src .clh{color:#8f95a3}html.src .clb{border-color:#2e3139}
+/* bannière clients : arrive de la gauche au scroll, puis défile vers la droite au fil du scroll */
+.clients{position:relative;width:100vw;margin:-10vh 0 12vh calc(50% - 50vw);overflow:hidden;background:#554FFF;color:#fff;height:82px;display:flex;align-items:center}
+.ctrack{display:flex;align-items:center;white-space:nowrap;will-change:transform;transform:translateX(-100%)}
+.ctrack span{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:38px;line-height:1;letter-spacing:.01em;padding:0 34px}
+.ctrack i{width:10px;height:10px;background:currentColor;transform:rotate(45deg);flex:none;opacity:.55}
+html.src .clients{background:#1b1d22;color:#cfd3dc;border-block:1px dashed rgba(122,118,255,.6)}
+html.src .ctrack span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600;font-stretch:normal;font-size:24px;text-transform:none}
+html.src .ctrack span::before{content:"<li>";color:#7aa2ff;font-size:.6em;margin-right:.4em}html.src .ctrack span::after{content:"</li>";color:#7aa2ff;font-size:.6em;margin-left:.4em}
+@media (max-width:760px){.clients{height:60px}.ctrack span{font-size:26px;padding:0 22px}}
 /* indication de scroll sur le canvas */
-.scrollhint{display:none;position:fixed;right:34px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:14px;color:#202020;font:700 11px/1 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;pointer-events:auto;cursor:pointer;background:none;border:0;opacity:0;animation:shIn .9s 3.4s forwards}
+.scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 3.4s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
 html.cvs .scrollhint{display:flex}
 .scrollhint span{writing-mode:vertical-rl}
-.scrollhint i{position:relative;width:1.5px;height:64px;background:rgba(32,32,32,.15);overflow:hidden}
-.scrollhint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:#554FFF;animation:shRun 1.8s cubic-bezier(.6,0,.3,1) infinite}
+.scrollhint i{position:relative;width:2px;height:96px;background:rgba(32,32,32,.18);overflow:hidden;border-radius:2px;transition:height .45s cubic-bezier(.16,1,.3,1)}
+.scrollhint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:#554FFF;animation:shRun 1.6s cubic-bezier(.6,0,.3,1) infinite}
+.scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px}
+.scrollhint:hover,.scrollhint.shgo{color:#554FFF}
+.scrollhint.shgo{transform:translateY(-50%) scale(1.15)}
+.scrollhint.shgo i{height:130px;background:rgba(85,79,255,.22)}
+.scrollhint.shgo i::after{animation-duration:.9s}
 @keyframes shIn{to{opacity:var(--sh,1)}}
 @keyframes shRun{to{top:100%}}
-html.src .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:rgba(207,211,220,.2)}
+html body .scrollhint{color:#202020}html body .scrollhint:hover,html body .scrollhint.shgo{color:#554FFF}
+html.src body .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:rgba(207,211,220,.2)}html.src body .scrollhint.shgo{color:#7aa2ff}
 @media (max-width:760px){.scrollhint{right:12px;top:auto;bottom:150px;transform:none}}
 .ft{padding:26px 28px 30px}
 .ft .eyebrow{font-size:11px}
@@ -611,6 +626,7 @@ body::before,body::after{display:none}
 <div class="cv" id="cv"><div class="world" id="world"></div></div>
 <div class="cvspace" aria-hidden="true"></div>
 <section class="pres" id="pres" aria-label="About">
+  <div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini, Publicis, Superprof"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div>
   <div class="in">
     <div class="eyebrow">About</div>
     <h2>AI Creative Designer in Paris</h2>
@@ -642,7 +658,7 @@ body::before,body::after{display:none}
 <div class="hint r"><b>← →</b> — Tourner</div>
 
 <button class="invader" id="invader" aria-label="Play the mini-game"></button>
-<button class="scrollhint" id="scrollHint" aria-label="Scroll down"><span>Scroll</span><i></i></button>
+<button class="scrollhint" id="scrollHint" aria-label="Scroll down"><span>Scroll</span><i></i><b></b></button>
 <div class="toast" id="toast">play?</div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
@@ -955,20 +971,36 @@ const CV=(function(){
     setTool(tool); };
   cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
   // molette : pincer / Ctrl = zoom, glisser horizontal = déplacer, vertical = la page défile (le canvas dézoome)
+  let jumping=false; const wh=[];
   // pincer au pad n'importe où sur la vue canvas (barre d'outils, prompt, frames…) zoome le canvas, jamais la page entière
   addEventListener('wheel',e=>{ if(!(e.ctrlKey||e.metaKey)||!isOn()||overlayOpen()||scrollY>innerHeight*.5||cv.contains(e.target)) return;
     e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); },{passive:false,capture:true});
   ['gesturestart','gesturechange'].forEach(t=>addEventListener(t,e=>{ if(isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5) e.preventDefault(); },{passive:false}));
   cv.addEventListener('wheel',e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); return zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); }
-    if(scrollY>0) return; // déjà dans la descente vers la page : scroll normal
-    e.preventDefault(); const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d, y0=py; px-=dx; py-=dy; apply();
-    // bas du canvas atteint : le reste du geste fait descendre la page
-    if(dy>0){ const left=dy-(y0-py); if(left>1) scrollBy(0,left); } },{passive:false});
+    if(jumping){ e.preventDefault(); return; } // descente en cours : on avale l'inertie du geste
+    if(scrollY>0) return; // déjà dans la page : scroll normal
+    e.preventDefault(); const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d, y0=py, now=performance.now();
+    // vitesse du geste vers le bas sur les 120 dernières ms
+    wh.push([now,dy]); while(wh.length&&now-wh[0][0]>150) wh.shift(); const v=wh.reduce((a,q)=>a+Math.max(0,q[1]),0);
+    // geste rapide vers le bas = on descend vers la page ; geste lent = on se déplace dans le canvas
+    if(dy>0&&v>450){ wh.length=0; return goDown(); }
+    px-=dx; py-=dy; apply();
+    // bas du canvas atteint en allant doucement : l'indication s'allume pour montrer qu'on peut descendre
+    const sh=$('#scrollHint'); if(dy>0&&dy-(y0-py)>1&&sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; if(scrollY<1) sh.classList.remove('shgo'); },1400); } },{passive:false});
+  function goDown(){ const pr=document.querySelector('.pres'), sh=$('#scrollHint'); if(!pr) return; jumping=true; if(sh) sh.classList.add('shgo');
+    scrollTo({top:pr.getBoundingClientRect().top+scrollY,behavior:'smooth'}); setTimeout(()=>{ jumping=false; },1100); }
   function onScroll(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight));
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
-    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,1-p*6).toFixed(3)); sh.style.pointerEvents=p>.15?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
+    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.3)*4)).toFixed(3)); sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.5?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
     ['#tools','#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
   addEventListener('scroll',onScroll,{passive:true});
+  // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
+  { const CL=['Sorare','Figma','Sport [Gen]','Smart Gemini','Publicis','Superprof'], tr=$('#ctrack'); let setW=0;
+    const fill=()=>{ if(!tr) return; tr.innerHTML=CL.map(n=>`<span>${n}</span><i></i>`).join(''); setW=tr.scrollWidth||1;
+      const need=Math.ceil((document.documentElement.scrollHeight*.9+innerWidth*2)/setW)+1; tr.innerHTML=Array(need).fill(CL.map(n=>`<span>${n}</span><i></i>`).join('')).join(''); };
+    const move=()=>{ if(!tr||!setW) return; const W=tr.scrollWidth, v=scrollY*.9; let x=v-W; if(x>-setW) x=-setW+((x+setW)%setW); tr.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`; };
+    addEventListener('scroll',move,{passive:true}); addEventListener('resize',()=>{ fill(); move(); });
+    (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{ fill(); move(); }); }
   addEventListener('keydown',e=>{ if(!isOn()||overlayOpen()) return; const k=e.key.toLowerCase(), T={v:'select',h:'hand',r:'rect',o:'ell',p:'pen'};
     if(T[k]&&!e.metaKey&&!e.ctrlKey) return setTool(T[k]);
     if(k===' '){ e.preventDefault(); if(!space){ space=true; cv.style.cursor='grab'; } return; }
@@ -1208,6 +1240,6 @@ setSound(false); rot=target-1.6; setMode(defMode());
 addEventListener('resize',layout);
 loop();
 </script>
-<script>document.getElementById('scrollHint').addEventListener('click',()=>scrollBy({top:innerHeight*.9,behavior:'smooth'}));</script>
+<script>document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=document.querySelector('.pres'); scrollTo({top:pr?pr.getBoundingClientRect().top+scrollY:innerHeight,behavior:'smooth'}); });</script>
 </body>
 </html>
