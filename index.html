@@ -446,7 +446,7 @@ body.is-canvas .tools{display:flex}
 @keyframes arrive{from{opacity:0;scale:3}to{opacity:1;scale:1}}
 .arr{animation:arrive var(--ad,6s) var(--at,0s) cubic-bezier(.33,1,.68,1) both}
 .cvspace,.pres{display:none}
-html.cvs,html.cvs body{height:auto;overflow-x:hidden;overflow-y:auto}
+html.cvs{height:auto;overflow-x:hidden;overflow-y:auto}html.cvs body{height:auto;overflow:visible} /* le body ne doit jamais être un conteneur de scroll : sinon il « avale » le geste et la page se bloque */
 html.cvs .cvspace{display:block;height:110vh;pointer-events:none}
 html.cvs .pres{display:block}
 .cv{transform-origin:50% 50%;will-change:transform,opacity}
@@ -1127,9 +1127,23 @@ body.is-list .list{z-index:12!important}.peek{z-index:5!important}.list button s
 
 /* burger : grille légère + dégradé bleu qui monte du bas, comme la tuile Assets OS */
 .menu,.vmenu{isolation:isolate;overflow:hidden;background:#fff}
-.menu::before,.vmenu::before{content:"";position:absolute;inset:auto 0 0 0;height:55%;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(86,79,255,0) 0%,rgba(86,79,255,.05) 25%,rgba(86,79,255,.16) 55%,rgba(86,79,255,.32) 80%,rgba(86,79,255,.48) 100%)}
 .menu::after,.vmenu::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(32,32,32,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(32,32,32,.045) 1px,transparent 1px);background-size:40px 40px;background-position:-1px -1px}
 .menu .radio{background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+html:not(.arr) .top .ntr,html:not(.arr) #menuBtn,html:not(.arr) #home,html:not(.arr) #invader{opacity:0}
+.menu::before,.vmenu::before{content:"";position:absolute;inset:auto 0 0 0;height:62%;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(86,79,255,0) 0%,rgba(86,79,255,.05) 14%,rgba(86,79,255,.16) 30%,rgba(86,79,255,.34) 48%,rgba(86,79,255,.58) 66%,rgba(86,79,255,.82) 84%,#564FFF 100%)}
+.menu .links a,.vmenu .vlinks a{color:#fff}
+/* ===== échelle typographique unique (toutes les pages) =====
+   eyebrow 14 · display 64→144 · H2 40→72 · H3 28→36 · lead 20→24 · texte 18 · petit 14 · boutons 16 · étiquettes 22 */
+.eb,.aosx .eb,.whead .eb{font-size:14px!important;line-height:1.3!important}
+.abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
+.abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.hsub .sub{font-size:clamp(28px,2.4vw,36px)!important;line-height:1!important}
+.abt .abtlead,.aossub,.abld,.ctl,.intro.big,.aosx .fcd,.fcd{font-size:clamp(20px,1.7vw,24px)!important;line-height:1.35!important}
+.aoscard .sysl li,.aosx .sysl li,.sysl li,.aosx .tlx,.tlx,.abrows span,.abcols p,.ctc b:not(.ctaddr),.intro:not(.big){font-size:18px!important;line-height:1.45!important}
+.aosx .tfof,.tfof,.ctwhere{font-size:14px!important;line-height:1.4!important}
+.ctc small{font-size:13px!important}
+.abtb,.aoscta,.pill,.aosx .pill,.ctopts a,.ctopts button{font-size:16px!important}
+.svc,.ctp{font-size:22px!important}
 /* AOSX END */
 </style>
 </head>
@@ -1575,7 +1589,7 @@ const CV=(function(){
   // arrivée : chaque élément passe de x3 à x1 et de 0 à 100 % d'opacité, un par un, en 3 s
   // entrée en plusieurs temps : le canvas arrive d'abord en bloc (zoom arrière + flou), puis les lettres du nom
   // une à une avec un léger décalage irrégulier, puis le sous-titre, puis l'interface
-  function arrive(){ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function arrive(){ document.documentElement.classList.add('arr'); if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const E1='cubic-bezier(.16,1,.3,1)';
     // zoom arrière autour du centre de l'écran (= centre du bloc nom + sous-titre, point 0,0 du canvas) :
     // chaque élément part de sa position agrandie depuis ce centre, pas de son propre centre
@@ -1961,5 +1975,6 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }<
 <script>{ document.querySelectorAll('.mk-aos').forEach(a=>{ const lg=a.querySelector('.mlogo.sigm'); if(!lg) return; let t=0;
   a.addEventListener('mouseenter',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); t=setTimeout(()=>lg.classList.add('sigok'),1540); });
   a.addEventListener('mouseleave',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); }); }); }</script>
+<script>{ const A=()=>document.documentElement.classList.add('arr'); if(location.hash==='#work'||matchMedia('(max-width:760px)').matches) A(); setTimeout(A,2600); }</script>
 </body>
 </html>
