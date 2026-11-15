@@ -126,10 +126,9 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 .tl2 .tball{background:var(--grad-blue)!important}
 
 /* ===== boutons : survol =====
-   noir -> blanc, texte et contour bleus · blanc -> texte grisé · Signature Ship -> bouton bleu dégradé (Figma 801-3405) */
-html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy):hover,html body .aoscard:hover .aoscta{background:#fff!important;color:#564FFF!important;box-shadow:inset 0 0 0 1.5px #564FFF,0 12px 26px -16px rgba(40,30,240,.45)!important;filter:none!important}
-html body :is(.btn-2,.abtb2,.pill.o,.ctopts a):hover{color:rgba(32,32,32,.45)!important;filter:none!important}
-html body .plan.sig .pill:hover{background:var(--grad-blue)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important}
+   noir -> bouton bleu dégradé (Figma 801-3405) · blanc -> texte bleu sur fond lavande très léger, liseré bleu fin */
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy):hover,html body .aoscard:hover .aoscta{background:var(--grad-blue)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important;filter:none!important}
+html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a):hover{background:#F4F3FF!important;color:#564FFF!important;box-shadow:inset 0 0 0 1px rgba(86,79,255,.4),0 10px 24px -18px rgba(40,30,240,.45)!important;filter:none!important}
 
 /* ===== page AssetsOS : la tuile arrive entière depuis le bas, sans fondu ===== */
 #system .aosx .rv.aost{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
@@ -169,3 +168,23 @@ html.src body:not(#x) :is(.ftr,.menu)::before,html.src body:not(#x) :is(.ftr,.me
 html.src body:not(#x) :is(.page,.aosx) :is(*)::before,html.src body:not(#x) :is(.page,.aosx) :is(*)::after{background-color:transparent!important;background-image:none!important;box-shadow:none!important}
 html.src body:not(#x) .faq summary::after{content:"[+]";width:auto!important;height:auto!important;rotate:none!important;font:400 16px/1 ui-monospace,"SF Mono",Menlo,monospace!important;color:var(--c-acc)!important}
 html.src body:not(#x) .faq details[open]:not(.closing) summary::after{content:"[−]"}
+
+/* ===== frise : ronds pleins, posés sur la ligne ; bleus une fois la bille passée ===== */
+.tl2 .tdot{background:#202020!important;box-shadow:none!important;translate:0 -1.5px}
+.tl2.tlfx .tli.past .tdot,.tl2 .tli.on .tdot{background:var(--grad-blue)!important;box-shadow:none!important}
+html.src .tl2 .tdot{background:var(--c-tx)!important}
+
+/* ===== Work : pas de compteur 01 / 06 ===== */
+.wcount{display:none!important}
+
+/* ===== passage au bleu (home) : suit le scroll ===== */
+html.cvs:not(.endblue) .bluebg{transition:opacity .25s linear}
+
+/* ===== One Moment : bandeau horizontal (texte à gauche, prix + bouton à droite), plus d'air au-dessus ===== */
+#moment{padding-top:clamp(56px,8vh,96px)!important}
+#moment .one{display:grid!important;grid-template-columns:1fr auto;grid-template-rows:auto auto auto;column-gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(26px,3vw,36px) clamp(28px,3.4vw,44px)!important}
+#moment .one>.oh,#moment .one>p{grid-column:1}
+#moment .one>.of{grid-column:2;grid-row:1/4;display:flex!important;flex-direction:column;align-items:flex-end;gap:16px;margin:0!important}
+#moment .one .of .pill{opacity:1!important;transform:none!important}
+#moment .one .of .pr{text-align:right}
+@media (max-width:760px){#moment .one{grid-template-columns:1fr}#moment .one>.of{grid-column:1;grid-row:auto;align-items:flex-start;margin-top:18px!important}}

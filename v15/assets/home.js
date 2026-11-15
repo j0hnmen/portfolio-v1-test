@@ -86,7 +86,7 @@ setMode=(orig=>{ let busy=0; const RM=matchMedia('(prefers-reduced-motion: reduc
 $('#mRing').onclick=()=>setMode('ring'); $('#mList').onclick=()=>setMode('list'); $('#mCanvas').onclick=()=>setMode('canvas');
 // le canvas est désormais la seule vue (anneau et liste retirés : la liste des projets est dans la présentation, en scrollant)
 const defMode=()=>window.WORKPAGE?'ring':'canvas';
-$('#home').onclick=e=>{ e.preventDefault(); closeTop(); setMode(defMode()); };
+$('#home').onclick=e=>{ e.preventDefault(); closeTop(); if(defMode()==='canvas'&&document.body.classList.contains('is-canvas')){ scrollTo({top:0,behavior:'smooth'}); try{ CV.home(1100); }catch(_){} } else setMode(defMode()); };
 
 /* ---------- mode immersif : chapitres qui s'ouvrent en plein écran, le précédent s'assombrit ---------- */
 
@@ -141,7 +141,7 @@ const CV=(function(){
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
-    const pos=MOB?[[-220,-1260,3],[-660,-820,-4],[220,-800,-2],[-660,330,2],[-200,620,-5],[240,320,4]]:[[-220,-880,3],[-1030,-680,-4],[590,-680,-2],[-1050,250,2],[-220,430,-5],[610,270,4]]; // plus d'air autour du nom
+    const pos=MOB?[[-660,-820,-4],[-220,-1260,3],[220,-800,-2],[-660,330,2],[-200,620,-5],[240,320,4]]:[[-1030,-680,-4],[-220,-880,3],[590,-680,-2],[-1050,250,2],[-220,430,-5],[610,270,4]]; // Figma en haut à gauche, Sorare en haut au milieu // plus d'air autour du nom
     // le nom et le sous-titre sont des vecteurs (lettres vectorisées depuis Mozer), chaque lettre du nom est un calque
     const K=.3, CAP=688*K, LG=100*K, top=-(CAP*2+LG+46+28)/2; const NAME=NAMEL;
     GLY.N.forEach((line,li)=>{ const x0=-GLY.W[li]*K/2, y0=top+li*(CAP+LG);
@@ -391,4 +391,10 @@ document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=do
  addEventListener('load',()=>setTimeout(H,60)); addEventListener('hashchange',H);
  document.querySelectorAll('a[href="#about"]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); closeTop(); goAbout(); })); }
 { const A=()=>document.documentElement.classList.add('cornin'); if(location.hash==='#work'||matchMedia('(max-width:760px)').matches) A(); setTimeout(A,2600); }
-{ const a=document.getElementById('about'); if(a&&'IntersectionObserver' in window) new IntersectionObserver(es=>{ document.documentElement.classList.toggle('blueon',es[0].isIntersecting&&document.documentElement.classList.contains('cvs')&&!document.documentElement.classList.contains('src')); },{rootMargin:'-38% 0px -38% 0px'}).observe(a.querySelector('section')||a); }
+{ const a=document.getElementById('about'), H=document.documentElement; if(a){ const sec=a.querySelector('section')||a; let tk=0;
+  /* le fond bleu monte progressivement pendant que la section About arrive (lié au scroll), le texte passe en blanc à mi-chemin */
+  const f=()=>{ tk=0; const bg=document.querySelector('.bluebg'); if(!bg) return; if(!H.classList.contains('cvs')||H.classList.contains('src')){ bg.style.opacity=''; H.classList.remove('blueon'); return; }
+    if(H.classList.contains('endblue')){ bg.style.opacity=''; return; }
+    const r=sec.getBoundingClientRect(), v=innerHeight; const pin=Math.min(1,Math.max(0,(v*.95-r.top)/(v*.75))), pout=Math.min(1,Math.max(0,(r.bottom-v*.05)/(v*.6))); const p=Math.min(pin,pout);
+    bg.style.opacity=p.toFixed(3); H.classList.toggle('blueon',p>.55); };
+  addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); setTimeout(f,300); } }

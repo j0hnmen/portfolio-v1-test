@@ -621,7 +621,7 @@ html.src .icode .v:not(:where(.page *:not(.aosx,.aosx *))),html.src .vcode .v:no
 @font-face{font-family:"Akke DA";src:url(../fonts/akke-micro-book.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Newsreader DA";src:url(../fonts/newsreader.woff2) format("woff2");font-weight:200 800;font-display:swap}
 :root{--bg:#f0f0f0;--ink:#202020;--dim:#5f5f5f;--lav:#564FFF;--violet:#564FFF;--paper:#fff;--display:"Mozer","Archivo DA",Impact,sans-serif;--text:"Akke DA","Newsreader DA",Georgia,serif}
-html,body{background:#f0f0f0 url(../img/paper.webp) center top/cover no-repeat fixed}
+html,body{background:#F3F2EE url(../img/paper-warm.webp) center top/cover no-repeat fixed}
 body::before,body::after{display:none}
 .top:not(:where(.page *:not(.aosx,.aosx *))){background:none}
 .mono:not(:where(.page *:not(.aosx,.aosx *))){color:#202020;display:block;line-height:0}
@@ -640,7 +640,7 @@ body::before,body::after{display:none}
 .viewer.on:not(:where(.page *:not(.aosx,.aosx *))){background:rgba(240,240,240,.94)}
 .vimg:not(:where(.page *:not(.aosx,.aosx *))){background-color:#e6e6e6;box-shadow:0 30px 70px rgba(32,32,32,.2)}
 .thumbs button:not(:where(.page *:not(.aosx,.aosx *))){outline-color:rgba(32,32,32,.2)}
-.case.on:not(:where(.page *:not(.aosx,.aosx *))){background:#f0f0f0 url(../img/paper.webp) center top/cover no-repeat fixed}
+.case.on:not(:where(.page *:not(.aosx,.aosx *))){background:#F3F2EE url(../img/paper-warm.webp) center top/cover no-repeat fixed}
 .case .side:not(:where(.page *:not(.aosx,.aosx *))){color:var(--ink)}
 .sheet:not(:where(.page *:not(.aosx,.aosx *))){box-shadow:0 30px 80px rgba(32,32,32,.12)}
 .veil:not(:where(.page *:not(.aosx,.aosx *))){background:rgba(240,240,240,.55)}
@@ -663,7 +663,7 @@ body::before,body::after{display:none}
 .pres:not(:where(.page *:not(.aosx,.aosx *))){background:none}
 .pres .facts:not(:where(.page *:not(.aosx,.aosx *))),.pres .plist:not(:where(.page *:not(.aosx,.aosx *))),.pres .plist button:not(:where(.page *:not(.aosx,.aosx *))){border-color:rgba(32,32,32,.14)}
 .pres .plist button:hover:not(:where(.page *:not(.aosx,.aosx *))){color:var(--blue)}
-.intro:not(:where(.page *:not(.aosx,.aosx *))){background:#f0f0f0 url(../img/paper.webp) center top/cover no-repeat}
+.intro:not(:where(.page *:not(.aosx,.aosx *))){background:#F3F2EE url(../img/paper-warm.webp) center top/cover no-repeat}
 .tip:not(:where(.page *:not(.aosx,.aosx *))){position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;display:none;align-items:flex-start;will-change:transform}
 .tip.live:not(:where(.page *:not(.aosx,.aosx *))){display:flex}
 .tip.out:not(:where(.page *:not(.aosx,.aosx *))){opacity:0}
@@ -1135,7 +1135,7 @@ body:not(.is-canvas) .whead .eb:not(:where(.page *:not(.aosx,.aosx *))){display:
 #caseCol .hero:not(:where(.page *:not(.aosx,.aosx *))){border-radius:16px 16px 0 0;overflow:hidden}
 .sheet:not(:where(.page *:not(.aosx,.aosx *))){border-radius:0 0 16px 16px}
 .case.on:not(:where(.page *:not(.aosx,.aosx *))),html .case.on:not(:where(.page *:not(.aosx,.aosx *))){background:transparent!important}
-.case:not(:where(.page *:not(.aosx,.aosx *)))::before{content:"";position:fixed;inset:0;z-index:-1;background:#f0f0f0 url(../img/paper.webp) center top/cover no-repeat;opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1)}
+.case:not(:where(.page *:not(.aosx,.aosx *)))::before{content:"";position:fixed;inset:0;z-index:-1;background:#F3F2EE url(../img/paper-warm.webp) center top/cover no-repeat;opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1)}
 .case.on:not(:where(.page *:not(.aosx,.aosx *)))::before{opacity:1}
 .case:not(:where(.page *:not(.aosx,.aosx *))){transition:visibility 0s linear .7s!important}
 .case.on:not(:where(.page *:not(.aosx,.aosx *))){transition:visibility 0s!important}
