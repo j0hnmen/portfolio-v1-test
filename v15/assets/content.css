@@ -820,3 +820,4 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .cs-belt{left:clamp(330px,33vw,440px)!important}
 .page .cstream .cs-stage{height:clamp(480px,64vh,620px)!important}
 @media (max-width:760px){.page .cs-src{width:220px!important;height:220px!important;padding:18px!important}.page .cs-belt{left:236px!important}}
+#system .aoscard .ysol{margin:clamp(-34px,-2.2vw,-20px) 0 clamp(26px,3vw,40px)!important} /* « Your solution » plus haut, détaché du logo */
