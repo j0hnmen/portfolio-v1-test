@@ -252,7 +252,11 @@ const CV=(function(){
     if(want){ addEventListener('wheel',wPinch,{passive:false,capture:true}); cv.addEventListener('wheel',wCv,{passive:false}); }
     else { removeEventListener('wheel',wPinch,{capture:true}); cv.removeEventListener('wheel',wCv); } };
   addEventListener('scroll',syncW,{passive:true}); setInterval(syncW,500); syncW();
-  ['gesturestart','gesturechange'].forEach(t=>addEventListener(t,e=>{ if(isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5) e.preventDefault(); },{passive:false}));
+  /* Safari (Mac) : le pincement du pad n'envoie pas de molette + ctrl, mais des « gesture » : on zoome avec eux */
+  { let gs=1; const ok=()=>isOn()&&!overlayOpen()&&scrollY<=innerHeight*.5;
+    addEventListener('gesturestart',e=>{ if(!ok()) return; e.preventDefault(); gs=e.scale||1; },{passive:false});
+    addEventListener('gesturechange',e=>{ if(!ok()) return; e.preventDefault(); const s=e.scale||1; const f=s/gs; gs=s; if(f>0&&isFinite(f)) zoomAt(e.clientX||innerWidth/2,e.clientY||innerHeight/2,f); },{passive:false});
+    addEventListener('gestureend',e=>{ if(ok()) e.preventDefault(); gs=1; },{passive:false}); }
   // molette / deux doigts : scroll normal de la page. Seul le pincement zoome ; on se déplace en glissant ou en maintenant Espace
 
   // jamais coincé entre deux : à l'arrêt, on revient au canvas ou on se pose sur la bannière + About

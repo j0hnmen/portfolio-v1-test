@@ -29,3 +29,18 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   let tk=0; const f=()=>{ tk=0; const c=innerHeight*.5; let best=null,bd=1e9; rows.forEach(r=>{ const b=r.getBoundingClientRect(); const d=Math.abs(b.top+b.height/2-c); if(d<bd&&b.bottom>0&&b.top<innerHeight){bd=d;best=r;} }); rows.forEach(r=>r.classList.toggle('on',r===best)); };
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f();
   rows.forEach(r=>r.addEventListener('pointerenter',()=>{ rows.forEach(x=>x.classList.toggle('on',x===r)); })); } }
+
+/*cstream*/ /* Case study : tout sort du même système, livré propre. Le flux avance tout seul, et plus vite quand on scrolle. */
+{ const belt=document.getElementById('csbelt'); if(belt){ const stage=belt.parentElement, RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const T=[['Landing page','land'],['Social post','post'],['Story','story'],['Email','mail'],['Ad banner','ad'],['Carousel','caro'],['LinkedIn post','post'],['Event badge','badge']];
+  const mock=k=>({land:'<i class="b w"></i><i class="l"></i><i class="l s"></i><i class="btn"></i>',post:'<i class="sq"></i><i class="l"></i>',story:'<i class="tall"></i><i class="l s"></i>',mail:'<i class="l"></i><i class="l s"></i><i class="b"></i><i class="l s"></i>',ad:'<i class="b w"></i><i class="btn"></i>',caro:'<i class="sq h"></i><i class="sq h"></i><i class="sq h"></i>',badge:'<i class="circ"></i><i class="l s"></i>'})[k];
+  const N=12, cards=[]; for(let i=0;i<N;i++){ const [n,k]=T[i%T.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c); cards.push({el:c,lane:i%3}); }
+  let off=0, last=performance.now(), lastY=scrollY, vis=false, raf=0;
+  const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY;
+    off+= (RM?0:dt*.045) + Math.max(0,dy)*.9;
+    const W=belt.offsetWidth, sp=W/(N/3)*1.05, L=sp*N/3;
+    cards.forEach((c,i)=>{ const base=Math.floor(i/3)*sp + (c.lane*sp/3); let x=((off+base)%L+L)%L; const t=Math.min(1,x/160);
+      c.el.style.transform=`translate3d(${x.toFixed(1)}px,${(c.lane-1)*112}px,0) scale(${(.55+.45*t).toFixed(3)})`; c.el.style.opacity=(t*Math.min(1,(L-x)/120)).toFixed(3); });
+    if(vis) raf=requestAnimationFrame(step); };
+  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf){ last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(step); } },{rootMargin:'200px 0px'}).observe(stage);
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden){ vis=false; } }); } }
