@@ -1149,7 +1149,7 @@ body:has(.viewer.on) .top:not(:where(.page *:not(.aosx,.aosx *))){z-index:86}
 .viewer .x:not(:where(.page *:not(.aosx,.aosx *))){left:50%!important;right:auto!important;top:26px!important;transform:translateX(-50%);font:500 14px/1 Inter,system-ui,sans-serif!important;padding:12px 18px!important;border-radius:999px!important;background:var(--ink)!important;color:#fff!important}
 body:has(.case.on) .modes:not(:where(.page *:not(.aosx,.aosx *))),body:has(.viewer.on) .modes:not(:where(.page *:not(.aosx,.aosx *))){opacity:0;pointer-events:none}
 .modes:not(:where(.page *:not(.aosx,.aosx *))){transition:opacity .3s}
-body.keepstage .hud:not(:where(.page *:not(.aosx,.aosx *))){display:block!important}
+body.keepstage .hud:not(:where(.page *:not(.aosx,.aosx *))){display:flex!important}
 .list .peek:not(:where(.page *:not(.aosx,.aosx *))){position:fixed;z-index:0!important;pointer-events:none}
 .list button:not(:where(.page *:not(.aosx,.aosx *))){position:relative;z-index:1}
 #list button{opacity:.8} /* sans !important : sinon les animations d'entrée/sortie des noms ne peuvent pas agir sur l'opacité */

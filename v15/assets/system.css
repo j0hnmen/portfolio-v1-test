@@ -102,7 +102,7 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 .aosx .fsoc a.btn svg{width:16px!important;height:16px!important;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 /* ===== Let's build : grand logo AssetsOS plus présent ===== */
-.end.endfx .endbig{width:min(86vw,1420px)!important}
+.end.endfx .endbig{width:min(70vw,1160px)!important}
 
 /* ===== footer : plus d'air entre le nom et « AI Creative Designer » ===== */
 .fsub{margin-top:clamp(28px,3.6vh,42px)!important}
@@ -125,25 +125,47 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 /* bille de la frise */
 .tl2 .tball{background:var(--grad-blue)!important}
 
-/* ===== mode console (Konami) : surfaces sombres, textes clairs, rien d'illisible ===== */
-html.src{--srcbg:#14131c;--srcsurf:#1c1b26;--srcline:rgba(233,231,242,.14);--srctx:#e9e7f2;--srcdim:rgba(233,231,242,.62)}
-html.src .bluebg{opacity:0!important}
-/* surfaces claires -> sombres */
-html.src :is(.svc,.aoscard,.aosx .chat,.figwin,.fcap,.toast,.btn-2,.pill.o,.abtb2){background:var(--srcsurf)!important;color:var(--srctx)!important;box-shadow:inset 0 0 0 1px var(--srcline)!important}
-html.src .aoscard{background:linear-gradient(180deg,var(--srcsurf) 45%,#2a2580 100%)!important}
-html.src :is(.btn:not(.btn-2),.pill:not(.o),.abtb1,.aoscta,.vbook){background:var(--srctx)!important;color:#14131c!important}
-/* textes sombres -> clairs */
-html.src :is(.svc,.svc *,.aoscard :is(p,li,span,b),.aosx .chat :is(div,p,span,b),.tlx,.thd,.tfof,.tld,.flinks a,.flinks a span,.fcap *,.fcd,.fct,.toast,.aoswho :is(p,span,small),.end .h,.end .h span:not(.mark)):not(.eb,.eb *,.aoscta,.aoscta *,.tli.on .tlx,.tli.on .tlx *){color:var(--srctx)!important}
-html.src :is(.tfof,.aosx .chat small,.aosx .chat em){color:var(--srcdim)!important}
-html.src .aosx .chat :is(.you,.m.u,.u){background:#2b2a37!important;color:var(--srctx)!important}
-/* logos et grand AssetsOS : ASSETS clair, OS reste en dégradé bleu */
-html.src :is(.endbig,.aoslogo,.tlogo.aos,.mlogo,.flogo){color:var(--srctx)!important}
-html.src .aoswho img.tlogo{filter:brightness(0) invert(.92)}
-html.src .aoswho .tfof img{filter:none}
-html.src .tl2 .tdot{background:var(--srcbg)!important;box-shadow:inset 0 0 0 2px var(--srctx)!important}
-html.src .tl2.tlfx .tli.past .tdot{background:#564FFF!important;box-shadow:inset 0 0 0 2px #564FFF!important}
-html.src .tl2::before,html.src .tl2 .tln{background:var(--srcline)!important}
-html.src .aoscta,html.src .aoscta *{color:#14131c!important}
-html.src .aosx .chat .chead{background:var(--srcsurf)!important;border-color:var(--srcline)!important}
-html.src .aosx .chat .chead *{color:var(--srcdim)!important}
-html.src .sysl b{background:transparent!important;color:var(--srctx)!important;box-shadow:inset 0 0 0 1.5px var(--srctx)!important}
+/* ===== boutons : survol =====
+   noir -> blanc, texte et contour bleus · blanc -> texte grisé · Signature Ship -> bouton bleu dégradé (Figma 801-3405) */
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy):hover,html body .aoscard:hover .aoscta{background:#fff!important;color:#564FFF!important;box-shadow:inset 0 0 0 1.5px #564FFF,0 12px 26px -16px rgba(40,30,240,.45)!important;filter:none!important}
+html body :is(.btn-2,.abtb2,.pill.o,.ctopts a):hover{color:rgba(32,32,32,.45)!important;filter:none!important}
+html body .plan.sig .pill:hover{background:var(--grad-blue)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important}
+
+/* ===== page AssetsOS : la tuile arrive entière depuis le bas, sans fondu ===== */
+#system .aosx .rv.aost{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+/* ===== offres ponctuelles : une seule carte ===== */
+#moment .ones{grid-template-columns:1fr!important}
+
+/* ===== frise : ASSETS passe en bleu sur l'étape active / au survol (la signature reste noire) ===== */
+.tl2 .tlogo.aos>path:first-child{transition:fill .3s}
+.tl2 .tli.on .tlogo.aos>path:first-child,.tl2 .tli:hover .tlogo.aos>path:first-child{fill:#564FFF}
+
+/* ===== MODE CONSOLE (Konami, sur toutes les pages) : le site affiché comme son code =====
+   fond sombre, tout en monospace, structure en pointillés, balises visibles sur les titres et paragraphes */
+html.src{--c-bg:#0f0e16;--c-tx:#e9e7f2;--c-dim:rgba(233,231,242,.55);--c-acc:#8f89ff;--c-line:rgba(143,137,255,.5)}
+html.src,html.src body{background:#0f0e16!important}
+html.src .bluebg,html.src .sideglow{opacity:0!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(*):not(svg,svg *,img,video,iframe){background:transparent!important;background-image:none!important;color:var(--c-tx)!important;box-shadow:none!important;text-shadow:none!important;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace!important;letter-spacing:0!important;border-color:rgba(233,231,242,.16)!important;-webkit-text-fill-color:currentColor!important;filter:none!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(article,section.band,.plan,.one,.ctc,.svc,.aoscard,.chat,.figwin,.fcap,details,.bar,.radio,.btn,.pill,.abtb,.aoscta,.vbook,.ctp,.ctopts a,.ctcopy,.x,.vx,.stack>section,.abp,.mrow){outline:1px dashed var(--c-line)!important;outline-offset:-1px}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(.eb,.eb *,.mark,.mark *,a:hover,a:hover *,summary:hover,summary:hover *,.tli.on *,.price *,.pr .d){color:var(--c-acc)!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(small,.note,.osub,.dl,.tfof,.tfof *,.il,.lb,.meta *){color:var(--c-dim)!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(h1,h2,h3,p)::before,html.src body:not(#x) :is(.page,.aosx,.menu) :is(h1,h2,h3,p)::after{font:400 max(12px,.32em)/1 ui-monospace,"SF Mono",Menlo,monospace!important;color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)!important;vertical-align:middle;letter-spacing:0;text-transform:none;opacity:.9;position:static!important;display:inline!important;background:none!important;width:auto!important;height:auto!important;border:0!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) p::before,html.src body:not(#x) :is(.page,.aosx,.menu) p::after{font-size:.8em!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) h1::before{content:"<h1> "}html.src body:not(#x) :is(.page,.aosx,.menu) h1::after{content:" </h1>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) h2::before{content:"<h2> "}html.src body:not(#x) :is(.page,.aosx,.menu) h2::after{content:" </h2>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) h3::before{content:"<h3> "}html.src body:not(#x) :is(.page,.aosx,.menu) h3::after{content:" </h3>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) p::before{content:"<p> "}html.src body:not(#x) :is(.page,.aosx,.menu) p::after{content:" </p>"}
+/* logos et grand AssetsOS : ASSETS clair, OS garde son dégradé */
+html.src :is(.endbig,.aoslogo,.tlogo.aos,.mlogo,.flogo,.page .logo){color:var(--c-tx)!important}
+html.src .aoswho img.tlogo,html.src .page .abl img{filter:brightness(0) invert(.9)!important}
+html.src .tl2 .tdot{background:var(--c-bg)!important;box-shadow:inset 0 0 0 2px var(--c-tx)!important}
+html.src .tl2.tlfx .tli.past .tdot,html.src .tl2 .tlfill{background:#564FFF!important;box-shadow:none!important}
+/* le panneau du burger */
+html.src .menu{background:#14131c!important;box-shadow:inset 0 0 0 1px var(--c-line)!important}
+html.src .menu nav .mk span{font-family:ui-monospace,"SF Mono",Menlo,monospace!important}
+html.src .toast{background:#14131c!important;color:var(--c-tx)!important;outline:1px dashed var(--c-line)}
+/* pseudo-éléments décoratifs (dégradé du footer, dégradé + grille du burger) : coupés en mode console */
+html.src body:not(#x) :is(.ftr,.menu)::before,html.src body:not(#x) :is(.ftr,.menu)::after{background:none!important;opacity:0!important}
+html.src body:not(#x) :is(.page,.aosx) :is(*)::before,html.src body:not(#x) :is(.page,.aosx) :is(*)::after{background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+html.src body:not(#x) .faq summary::after{content:"[+]";width:auto!important;height:auto!important;rotate:none!important;font:400 16px/1 ui-monospace,"SF Mono",Menlo,monospace!important;color:var(--c-acc)!important}
+html.src body:not(#x) .faq details[open]:not(.closing) summary::after{content:"[−]"}

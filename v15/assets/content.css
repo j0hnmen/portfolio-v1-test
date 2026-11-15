@@ -517,7 +517,7 @@ html[lang=fr] :where(.page) .en-only:not(:where(.aosx,.aosx *)),html:not([lang=f
 :where(.page) .plan.sig:hover .sigclip:not(:where(.aosx,.aosx *))::before{animation:sgdrift 5s ease-in-out infinite alternate}
 @keyframes sgdrift{0%{transform:translate(0,0) scale(1)}35%{transform:translate(-5%,4%) scale(1.08) rotate(-2deg)}70%{transform:translate(3%,-3%) scale(1.05) rotate(1.5deg)}100%{transform:translate(-2%,5%) scale(1.1)}}
 :where(.page) .plan.sig .sigbg:not(:where(.aosx,.aosx *)){transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
-:where(.page) .plan.sig:hover .sigbg:not(:where(.aosx,.aosx *)){transform:rotate(-2deg) translate(-8px,6px) scale(1.04)}
+
 :where(.page) .fo2:focus:not(:hover):not(:where(.aosx,.aosx *)){background:#fff}
 :where(.page) .sigm .sgw:not(:where(.aosx,.aosx *)),:where(.page) .sigm .sgc:not(:where(.aosx,.aosx *)){stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
 :where(.page) .sigm .sgw:not(:where(.aosx,.aosx *)){stroke-width:14}

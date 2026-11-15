@@ -264,7 +264,7 @@ const CV=(function(){
   let lastP=-1, sRaf=0; function onScroll(){ if(sRaf) return; sRaf=requestAnimationFrame(()=>{ sRaf=0; onScrollNow(); }); }
   function onScrollNow(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight)); if(p===lastP) return; lastP=p; if(p>.01&&!window.__arrDone){ window.__arrDone=1; document.querySelectorAll('#cv .node').forEach(el=>el.getAnimations().forEach(an=>{ try{an.finish()}catch(e){} })); } /* on scrolle pendant l'intro : on termine l'arrivée tout de suite pour que le fondu au scroll s'applique */
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
-    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*2.3).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.75)*4)).toFixed(3)); sh.style.visibility=p>=.99?'hidden':''; sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.8?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.1)*2.4).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
+    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*2.3).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.75)*4)).toFixed(3)); sh.style.visibility=p>=.99?'hidden':''; sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.8?'none':''; } cv.style.setProperty('--no',Math.max(0,Math.min(1,1-(p-.2)*2.7)).toFixed(3)); /* le nom part après le décor (décalé) */ cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
     ['#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
   addEventListener('scroll',onScroll,{passive:true});
   // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
@@ -378,26 +378,6 @@ function closeCase(){ const hero=$('#caseCol .hero'), c=kCard; kase.classList.ad
   kCard=null; }
 kase.onclick=e=>{ if(e.target===kase||e.target.id==='caseCol') closeTop(); };
 function openProject(i,el){ target=Math.round(target)+(mod(i-Math.round(target)+N/2,N)-N/2); const p=P[i]; p.kase?openCase(i,el):openViewer(p.imgs,0,p.t,el); }
-
-/* ---------- Konami code sur la home : ↑ ↑ ↓ ↓ ← → ← → B A Entrée → le site montre son code ---------- */
-(function(){
-  const SEQ=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a','Enter'];
-  let hist='', on=false, filled=false, tT;
-  const t=$('#srctoast'), bg=$('#srcbg');
-  const say=h=>{ t.innerHTML=h; t.classList.add('on'); clearTimeout(tT); tT=setTimeout(()=>t.classList.remove('on'),3200); };
-  function toggle(){ on=!on; document.documentElement.classList.toggle('src',on); if(on) document.documentElement.classList.remove('blueon','endblue'); /* en mode console, pas de fond bleu plein écran */ CV.src(on);
-    if(on&&!filled){ filled=true; const src=document.documentElement.outerHTML.replace(/<div class="srcbg"[\s\S]*?<\/div>/,''); const d=document.createElement('div'); d.textContent=src+'\n\n'+src; bg.appendChild(d);
-      ['#case','#viewer'].forEach(q=>{ const host=$(q); if(!host) return; const c=bg.cloneNode(true); c.removeAttribute('id'); c.classList.add('clone'); host.insertBefore(c,host.firstChild); }); }
-    // la bulle reste affichée tant que le mode console est actif, et sert de bouton pour en sortir
-    clearTimeout(tT);
-    if(on){ t.innerHTML='<b>console mode</b> <button type="button" id="srcQuit">quit console mode ✕</button>'; t.classList.add('on','stay'); $('#srcQuit').onclick=()=>{ if(on) toggle(); }; }
-    else { t.classList.remove('stay'); say('<b>console mode</b> off'); } }
-  addEventListener('keydown',e=>{ const a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return; if(e.repeat) return;
-    const m={ArrowUp:'U',ArrowDown:'D',ArrowLeft:'L',ArrowRight:'R',Enter:'E',NumpadEnter:'E',b:'B',B:'B',a:'A',A:'A'}, c=m[e.key]||(e.code==='KeyB'?'B':e.code==='KeyQ'||e.code==='KeyA'?'A':'.');
-    hist=(hist+c).slice(-16);
-    // ↑↑↓↓←→←→ puis B A (ou B A B A), puis Entrée
-    if(/UUDDLRLR(BA){1,2}E$/.test(hist)){ hist=''; e.preventDefault(); toggle(); } });
-})();
 
 // pas d'écran d'intro : on arrive directement sur le site (son coupé, activable avec le bouton son)
 setSound(false); rot=window.WORKPAGE?target:target-1.6; setMode(defMode());

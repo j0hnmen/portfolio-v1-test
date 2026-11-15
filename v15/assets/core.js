@@ -55,10 +55,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html'; }
-  if(g==='about'){ location.href='about.html'; }
-  if(g==='contact'){ location.href='contact.html'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794782033'; }
+  if(g==='about'){ location.href='about.html?v=1794782033'; }
+  if(g==='contact'){ location.href='contact.html?v=1794782033'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794782033'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -163,3 +163,24 @@ const RADIO=(function(){
   document.addEventListener('visibilitychange',()=>{ if(document.hidden&&!au.paused){ au.pause(); on(false); } });
   return {};
 })();
+
+/* ---------- Konami code (toutes les pages) : ↑ ↑ ↓ ↓ ← → ← → B A Entrée → le site montre son code ---------- */
+(function(){
+  const SEQ=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a','Enter'];
+  let hist='', on=false, filled=false, tT;
+  const t=$('#srctoast'), bg=$('#srcbg');
+  const say=h=>{ t.innerHTML=h; t.classList.add('on'); clearTimeout(tT); tT=setTimeout(()=>t.classList.remove('on'),3200); };
+  function toggle(){ on=!on; document.documentElement.classList.toggle('src',on); if(on) document.documentElement.classList.remove('blueon','endblue'); /* en mode console, pas de fond bleu plein écran */ if(typeof CV!=='undefined') CV.src(on);
+    if(on&&!filled){ filled=true; const src=document.documentElement.outerHTML.replace(/<div class="srcbg"[\s\S]*?<\/div>/,''); const d=document.createElement('div'); d.textContent=src+'\n\n'+src; bg.appendChild(d);
+      ['div.case#case','div.viewer#viewer'].forEach(q=>{ /* seulement les fenêtres projet de la home (la page AssetsOS a aussi une section #case) */ const host=$(q); if(!host) return; const c=bg.cloneNode(true); c.removeAttribute('id'); c.classList.add('clone'); host.insertBefore(c,host.firstChild); }); }
+    // la bulle reste affichée tant que le mode console est actif, et sert de bouton pour en sortir
+    clearTimeout(tT);
+    if(on){ t.innerHTML='<b>console mode</b> <button type="button" id="srcQuit">quit console mode ✕</button>'; t.classList.add('on','stay'); $('#srcQuit').onclick=()=>{ if(on) toggle(); }; }
+    else { t.classList.remove('stay'); say('<b>console mode</b> off'); } }
+  addEventListener('keydown',e=>{ const a=document.activeElement; if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.isContentEditable)) return; if(e.repeat) return;
+    const m={ArrowUp:'U',ArrowDown:'D',ArrowLeft:'L',ArrowRight:'R',Enter:'E',NumpadEnter:'E',b:'B',B:'B',a:'A',A:'A'}, c=m[e.key]||(e.code==='KeyB'?'B':e.code==='KeyQ'||e.code==='KeyA'?'A':'.');
+    hist=(hist+c).slice(-16);
+    // ↑↑↓↓←→←→ puis B A (ou B A B A), puis Entrée
+    if(/UUDDLRLR(BA){1,2}E$/.test(hist)){ hist=''; e.preventDefault(); toggle(); } });
+})();
+
