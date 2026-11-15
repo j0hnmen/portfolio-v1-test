@@ -916,7 +916,7 @@ const CV=(function(){
     const L=B.a*z, R=B.c*z, T=B.b*z, Bo=B.d*z;
     // déplacement libre tant que le contenu occupe encore au moins la moitié de l'écran (ou tout le contenu s'il est plus petit)
     const nx=Math.min(W*.5,(R-L)*.7), ny=Math.min(H*.5,(Bo-T)*.7); // zoomé ou dézoomé, les éléments peuvent sortir sur les côtés, jamais plus de la moitié
-    px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,Math.max(ny-Bo,H*.82-Bo)),H-ny-T); } // vers le bas on s'arrête plus tôt : la page arrive vite
+    px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,Math.max(ny-Bo,H*.68-Bo)),H-ny-T); } // vers le bas on s'arrête plus tôt : la page arrive vite
   const apply=()=>{ clampView(); const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk;
     world.style.transform=`translate(${X}px,${Y}px) scale(${Z})`; world.style.setProperty('--iz',1/Z); cv.style.backgroundSize=`${28*Z}px ${28*Z}px`; cv.style.backgroundPosition=`${X}px ${Y}px`; $('#zl').textContent=Math.round(z*100)+'%'; };
   const toW=e=>{ const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk; return {x:(e.clientX-X)/Z,y:(e.clientY-Y)/Z}; }, auto=n=>n.type==='frame'||n.type==='note'||n.type==='text';
@@ -1066,7 +1066,7 @@ const CV=(function(){
     if(scrollY>0){ // entre le canvas et la page : un geste horizontal déplace encore le canvas, le reste est un scroll normal
       if(scrollY<snapTop()&&Math.abs(dx)>Math.abs(dy)){ e.preventDefault(); px-=dx; apply(); } return; }
     e.preventDefault(); const now=performance.now(); chain=(dy>0&&now-lastW<240)?chain+dy:Math.max(0,dy); lastW=now;
-    if(chain>320&&Math.abs(dy)>=Math.abs(dx)){ push=240; scrollBy(0,dy*.6); setPg(); return; } // on enchaîne vers le bas : on passe à la page sans traverser tout le canvas
+    if(chain>480&&Math.abs(dy)>=Math.abs(dx)){ push=240; scrollBy(0,dy*.6); setPg(); return; } // on enchaîne vers le bas : on passe à la page sans traverser tout le canvas
     const y0=py; px-=dx; py-=dy; apply();
     // bas du canvas atteint : il faut insister un peu (résistance) avant que la page ne descende ; l'indication s'allume
     const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; setPg(); if(scrollY<1) sh.classList.remove('shgo'); },900); }
@@ -1075,11 +1075,11 @@ const CV=(function(){
   let push=0, snapT=0, chain=0, lastW=0; const snapTop=()=>{ const c=document.querySelector('.clients'); return c?Math.max(innerHeight*.6,c.getBoundingClientRect().top+scrollY-innerHeight*.16):innerHeight*.94; };
   function setPg(){ const sh=$('#scrollHint'); if(sh) sh.style.setProperty('--pg',Math.min(1,Math.max(push/240*.3, scrollY>0?.3+.7*scrollY/snapTop():0)).toFixed(3)); }
   addEventListener('scroll',setPg,{passive:true});
-  function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2) scrollTo({top:y<T*.35?0:T,behavior:'smooth'}); },320); }
+  function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2) scrollTo({top:y<T*.12?0:T,behavior:'smooth'}); },280); } // une fois lancé, on termine la descente : jamais figé à mi-fondu
   addEventListener('scroll',()=>{ if(isOn()&&scrollY>0&&scrollY<snapTop()) armSnap(); },{passive:true});
   function onScroll(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight));
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
-    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*1.9).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.75)*4)).toFixed(3)); sh.style.visibility=p>=.99?'hidden':''; sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.8?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
+    sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*2.3).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.75)*4)).toFixed(3)); sh.style.visibility=p>=.99?'hidden':''; sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.8?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.5)*1.2).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
     ['#tools','#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
   addEventListener('scroll',onScroll,{passive:true});
   // bannière clients liée au scroll : le bord droit de la bande suit le scroll, la liste se répète à l'infini
