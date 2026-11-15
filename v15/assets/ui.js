@@ -101,8 +101,8 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794785508'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794785508'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794785627'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794785627'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],

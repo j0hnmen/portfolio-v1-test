@@ -780,3 +780,23 @@ html.blueon :where(.page) .bluebg:not(:where(.aosx,.aosx *)){opacity:1}
 .page .cs-src{width:clamp(240px,24vw,320px)!important;aspect-ratio:auto!important;height:clamp(240px,24vw,320px);justify-content:flex-start!important;padding:24px 22px!important}
 .page .cs-src .cs-logo{width:100%;height:auto;color:#202020;overflow:visible}
 .page .cs-belt{left:clamp(260px,26vw,340px)!important}
+
+/* ===== « The problem » sur fond noir (fondu lié au scroll) ===== */
+.darkbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;background:#1b1b1d}
+.darkbg::after{content:"";position:absolute;inset:0;background:url(../img/paper-warm.webp) center top/cover no-repeat;mix-blend-mode:overlay;opacity:.35}
+html:has(.darkbg) main,html:has(.darkbg) footer,html:has(.darkbg) .pres-page{position:relative;z-index:1}
+.page .band.prob :is(.h2,.h2 span,.bar .lb,.bar .lb em),.page .band.prob .eb{transition:color .6s}
+html.darkon .page .band.prob .h2,html.darkon .page .band.prob .h2 span,html.darkon .page .band.prob .bar .lb,html.darkon .page .band.prob .bar:nth-of-type(n) .lb{color:#F3F2EE!important}
+html.darkon .page .band.prob .bar .lb em{color:rgba(243,242,238,.55)!important}
+html.darkon .page .band.prob .eb,html.darkon .page .band.prob .decay .ax{color:#8f89ff!important}
+html.darkon .page .band.prob .decay .ax::before{background:repeating-linear-gradient(90deg,#8f89ff 0 8px,transparent 8px 14px)!important}
+html.darkon .page .band.prob .decay .ax span{background:transparent!important}
+html.darkon .page .band.prob .decay{border-bottom-color:rgba(243,242,238,.8)!important}
+html.darkon .page .band.prob .decay::before{background:repeating-linear-gradient(to top,transparent 0,transparent calc(25% - 1px),rgba(243,242,238,.1) calc(25% - 1px),rgba(243,242,238,.1) 25%)!important}
+html.darkon .page .band.prob .trend path{stroke:#8f89ff!important}
+html.darkon .page .band.prob .dot{background:#1b1b1d!important;box-shadow:0 0 0 2.5px #8f89ff!important}
+/* barre du haut lisible sur le noir */
+#home,.invader{transition:color .5s}
+html.darkon #home,html.darkon .invader{color:#F3F2EE!important}
+html.darkon #home svg path{fill:#F3F2EE}
+html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}

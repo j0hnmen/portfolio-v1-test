@@ -53,3 +53,12 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
 
 /*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
 { const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);} }
+
+/*darkprob*/ /* « The problem » : un fond noir arrive doucement avec la section, puis repart quand la tuile AssetsOS monte */
+{ const sec=document.querySelector('.page .stack>.band.prob'), H=document.documentElement; if(sec){ const bg=document.createElement('div'); bg.className='darkbg'; bg.setAttribute('aria-hidden','true'); document.body.prepend(bg);
+  const sys=document.getElementById('system'); let tk=0;
+  const f=()=>{ tk=0; if(H.classList.contains('src')){ bg.style.opacity=0; H.classList.remove('darkon'); return; }
+    const v=innerHeight, r=sec.getBoundingClientRect(); const pin=Math.min(1,Math.max(0,(v*.9-r.top)/(v*.6)));
+    let pout=1; if(sys){ const s=sys.getBoundingClientRect(); pout=Math.min(1,Math.max(0,(s.top-v*.15)/(v*.55))); }
+    const p=Math.min(pin,pout); bg.style.opacity=p.toFixed(3); H.classList.toggle('darkon',p>.5); };
+  addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); f(); } }
