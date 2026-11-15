@@ -305,3 +305,5 @@ html.src .flinks a.fic{color:var(--c-tx)}
 /* ===== la tuile AssetsOS fait du « sur place » au scroll avant de partir (home + page AssetsOS) ===== */
 .hstack.on::after{content:"";display:block;height:70vh} /* espace de scroll pendant lequel la tuile reste en place (un padding ne compte pas pour sticky) */
 @media (min-width:901px){.page .stack::after{content:"";display:block;height:70vh}}
+/* ===== tuile AssetsOS : toujours à 100 % (pas de fondu ni de glissement d'entrée), home comme page AssetsOS ===== */
+.aosx .rv.aost,.aosx .rv.aost.seen{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
