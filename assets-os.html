@@ -676,18 +676,30 @@ html,body{overflow-x:clip}
 .menu .radio{background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .menu::before,.vmenu::before{content:"";position:absolute;inset:auto 0 0 0;height:62%;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(86,79,255,0) 0%,rgba(86,79,255,.05) 14%,rgba(86,79,255,.16) 30%,rgba(86,79,255,.34) 48%,rgba(86,79,255,.58) 66%,rgba(86,79,255,.82) 84%,#564FFF 100%)}
 .menu .links a,.vmenu .vlinks a{color:#fff}
-/* ===== échelle typographique unique (toutes les pages) =====
-   eyebrow 14 · display 64→144 · H2 40→72 · H3 28→36 · lead 20→24 · texte 18 · petit 14 · boutons 16 · étiquettes 22 */
-.eb,.aosx .eb,.whead .eb{font-size:14px!important;line-height:1.3!important}
+/* ===== 4 styles + légende, partout =====
+   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · Légende 13 (eyebrow en capitales bleues, notes) */
 .abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
 .aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
-.abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.hsub .sub{font-size:clamp(28px,2.4vw,36px)!important;line-height:1!important}
-.abt .abtlead,.aossub,.abld,.ctl,.intro.big,.aosx .fcd,.fcd{font-size:clamp(20px,1.7vw,24px)!important;line-height:1.35!important}
-.aoscard .sysl li,.aosx .sysl li,.sysl li,.aosx .tlx,.tlx,.abrows span,.abcols p,.ctc b:not(.ctaddr),.intro:not(.big){font-size:18px!important;line-height:1.45!important}
-.aosx .tfof,.tfof,.ctwhere{font-size:14px!important;line-height:1.4!important}
-.ctc small{font-size:13px!important}
+.abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.ctc b,.hsub .sub,.hero .sub,section p.sub{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.02!important}
+.abt .abtlead,.aossub,.abld,.ctl,.intro,.aosx .fcd,.fcd,.aoscard .sysl li,.aosx .sysl li,.sysl li,.abrows span,.abcols p{font-size:20px!important;line-height:1.45!important}
+.aosx .tlx,.tlx{font-size:16px!important;line-height:1.45!important}
+.eb,.aosx .eb,.whead .eb,.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+/* composants (pas des styles de texte) */
 .abtb,.aoscta,.pill,.aosx .pill,.ctopts a,.ctopts button{font-size:16px!important}
-.svc,.ctp{font-size:22px!important}
+.svc,.ctp{font-size:20px!important}
+/* pas de « retour » de page par un glissement horizontal du trackpad */
+html,body{overscroll-behavior-x:none}
+/* page Assets OS + reste : ramenés sur les mêmes styles */
+.mrow b.d,.mrow b.d span{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.price > span,.pr .d,.pr,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
+.ctc b{font-family:var(--display,"Mozer DA","Mozer"),sans-serif!important;font-weight:800!important;text-transform:uppercase}
+.hl,.hsub .hl,p.hl,.oneh,p.oneh,.sk summary .tx,summary .tx,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
+.oneh small.pz{font-size:13px!important}
+li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.dt,p.dt,.dw p,.dw p span{font-size:16px!important;line-height:1.45!important}
+.note,p.note,.osub,p.osub,.av,.meta .dl,.dl,.tipbox,.badge,.ax,.il,.bar .lb em,.lb em{font-size:13px!important;line-height:1.4!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
+.price .fro,.price .fro span{font-size:13px!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
