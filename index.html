@@ -254,6 +254,8 @@ html.cvs .backcv{display:inline-flex}
 .backcv:hover{color:var(--blue)}
 .backcv svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 html.src .backcv{background:#1b1d22;color:#cfd3dc;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+/* mobile : l'en-tête garde la mise en page du canvas mais n'est pas manipulable */
+@media (max-width:760px){html.cvs .cv{pointer-events:none;touch-action:auto}html.cvs .cv .node.frame{pointer-events:auto;touch-action:pan-y;cursor:pointer}html.cvs .cv .node .hd,html.cvs .cv .node .rz,html.cvs .cv .node .dim{display:none!important}html body .tools,html body .cvhint{display:none!important}html body .scrollhint{display:none!important}}
 /* gribouillis au feutre */
 .node.ink{background:none;box-shadow:none;border:0}
 .node.ink path{stroke-dasharray:1;stroke-dashoffset:1;animation:inkOn 1s cubic-bezier(.65,0,.25,1) var(--d,3s) forwards}
@@ -784,6 +786,7 @@ body::before,body::after{display:none}
 </div>
 
 <script>
+const MOB=matchMedia('(max-width:760px)').matches; // mobile : le canvas n'est qu'un en-tête, pas un espace de jeu
 const LIVE=/(^|\.)github\.io$|(^|\.)nabilamara\.com$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
 const P = [
  {id:'atelier', t:"L’Atelier Figma", y:'2026', sub:'L’Atelier Figma, 28 September 2026 in Paris. Creative Producer of the event.', nat:'Event · Set design', role:'Creative Producer', pos:'50% 50%',
@@ -948,7 +951,7 @@ const CV=(function(){
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
-    const pos=[[-220,-880,3],[-1030,-680,-4],[590,-680,-2],[-1050,250,2],[-220,430,-5],[610,270,4]]; // plus d'air autour du nom
+    const pos=MOB?[[-220,-1260,3],[-660,-820,-4],[220,-800,-2],[-660,330,2],[-200,620,-5],[240,320,4]]:[[-220,-880,3],[-1030,-680,-4],[590,-680,-2],[-1050,250,2],[-220,430,-5],[610,270,4]]; // plus d'air autour du nom
     // le nom et le sous-titre sont des vecteurs (lettres vectorisées depuis Archivo), chaque lettre du nom est un calque
     const K=.3, CAP=688*K, LG=100*K, top=-(CAP*2+LG+46+28)/2; const NAME=NAMEL;
     GLY.N.forEach((line,li)=>{ const x0=-GLY.W[li]*K/2, y0=top+li*(CAP+LG);
@@ -956,13 +959,15 @@ const CV=(function(){
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#202020"/></svg>`})); }); });
     { const [d,bx,by,w,h]=GLY.S, k=28/h; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-w*k/2,y:top+CAP*2+LG+46,w:w*k,h:28,r:0,
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#564FFF"/></svg>`})); }
+    // sous-titre secondaire, sous « AI Creative Designer » (en FR : « Studio tout-en-un »)
+    NAME.push(add({type:'path',cls:'vec tagline',name:'Your one-man studio',x:-220,y:322,w:440,h:44,r:0,html:'<svg viewBox="0 0 440 44" width="100%" height="100%"><text x="220" y="32" text-anchor="middle" font-family="Newsreader,Georgia,serif" font-style="italic" font-size="34" fill="#202020">Your one-man studio.</text></svg>'}));
     P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
       html:p.link?`<div class="fb cl"><div class="livetag" aria-hidden="true"><i></i>Live</div><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
         :`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"><div class="ft"><div class="eyebrow">0${i+1} — ${p.nat} — ${p.y}</div><h3>${p.t}</h3><p>${p.sub}</p><small>click to open</small></div></div>`}); });
     // sites intégrés : interface façon calque de code Figma ({ } nom, puis commentaire / agrandir / lancer)
     nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k==='open'||(k==='play'&&!LIVE)) return; e.preventDefault(); select(n); if(k==='play') liveUse(n); })));
     // sites intégrés : le vrai site s'affiche directement dans la frame, sans texte, une fois l'arrivée terminée
-    if(LIVE) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
+    if(LIVE&&!MOB) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
     add({type:'note',name:'Note',x:1130,y:-560,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
     // post-it : le Konami code, à taper sur la page
     add({type:'note',cls:'postit',name:'Post-it',x:-1370,y:330,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
@@ -986,11 +991,14 @@ const CV=(function(){
     ink('Arrow',1065,410,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
     // double soulignement sous la note
     ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
+    if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
+        if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
+      for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
-  function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1); px=innerWidth/2; py=innerHeight/2; apply(); }
+  function center(){ z=MOB?Math.min(innerWidth*.94/1320,innerHeight*.9/2450):innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1); px=innerWidth/2; py=innerHeight/2; apply(); }
   // retour à la vue d'ouverture (nom au centre), en glissant
-  let homeRaf=0; function home(ms=900){ cancelAnimationFrame(homeRaf); const z0=z,x0=px,y0=py, z1=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1), x1=innerWidth/2, y1=innerHeight/2, t0=performance.now();
+  let homeRaf=0; function home(ms=900){ cancelAnimationFrame(homeRaf); const z0=z,x0=px,y0=py, z1=MOB?Math.min(innerWidth*.94/1320,innerHeight*.9/2450):innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1), x1=innerWidth/2, y1=innerHeight/2, t0=performance.now();
     const st=t=>{ const k=Math.min(1,(t-t0)/ms), e=1-Math.pow(1-k,3); z=z0+(z1-z0)*e; px=x0+(x1-x0)*e; py=y0+(y1-y0)*e; apply(); if(k<1) homeRaf=requestAnimationFrame(st); }; homeRaf=requestAnimationFrame(st); }
   // revenu en haut après être descendu dans la page : le canvas se recentre sur le nom
   { let down=false; addEventListener('scroll',()=>{ if(scrollY>innerHeight*.6) down=true; else if(down&&scrollY<innerHeight*.35){ down=false; home(1100); } },{passive:true}); }
@@ -1016,7 +1024,8 @@ const CV=(function(){
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
     [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'360px 0',.1],['#tools',3450,'0 18px',0]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
-  cv.addEventListener('pointerdown',e=>{ document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
+  cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(ptrs.size===2){ act=null; const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2}; return; }
     const w=toW(e), t=e.target, nel=t.closest&&t.closest('.node'), n=nel&&nel._n, pan=()=>{ act={k:'pan',sx:e.clientX,sy:e.clientY,px,py}; cv.style.cursor='grabbing'; };
     if(tool==='hand'||space||e.button===1) return pan();
@@ -1055,12 +1064,14 @@ const CV=(function(){
     const d=e.deltaMode===1?16:1, dx=e.deltaX*d, dy=e.deltaY*d; armSnap();
     if(scrollY>0){ // entre le canvas et la page : un geste horizontal déplace encore le canvas, le reste est un scroll normal
       if(scrollY<snapTop()&&Math.abs(dx)>Math.abs(dy)){ e.preventDefault(); px-=dx; apply(); } return; }
-    e.preventDefault(); const y0=py; px-=dx; py-=dy; apply();
+    e.preventDefault(); const now=performance.now(); chain=(dy>0&&now-lastW<240)?chain+dy:Math.max(0,dy); lastW=now;
+    if(chain>650&&Math.abs(dy)>=Math.abs(dx)){ push=240; scrollBy(0,dy*.6); setPg(); return; } // on enchaîne vers le bas : on passe à la page sans traverser tout le canvas
+    const y0=py; px-=dx; py-=dy; apply();
     // bas du canvas atteint : il faut insister un peu (résistance) avant que la page ne descende ; l'indication s'allume
     const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; setPg(); if(scrollY<1) sh.classList.remove('shgo'); },900); }
       scrollBy(0,left*.45); } } setPg(); },{passive:false}); // descente progressive (freinée), jamais de saut
   // jamais coincé entre deux : à l'arrêt, on revient au canvas ou on se pose sur la bannière + About
-  let push=0, snapT=0; const snapTop=()=>{ const c=document.querySelector('.clients'); return c?Math.max(innerHeight*.6,c.getBoundingClientRect().top+scrollY-innerHeight*.16):innerHeight*.94; };
+  let push=0, snapT=0, chain=0, lastW=0; const snapTop=()=>{ const c=document.querySelector('.clients'); return c?Math.max(innerHeight*.6,c.getBoundingClientRect().top+scrollY-innerHeight*.16):innerHeight*.94; };
   function setPg(){ const sh=$('#scrollHint'); if(sh) sh.style.setProperty('--pg',Math.min(1,Math.max(push/240*.3, scrollY>0?.3+.7*scrollY/snapTop():0)).toFixed(3)); }
   addEventListener('scroll',setPg,{passive:true});
   function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2) scrollTo({top:y<T*.35?0:T,behavior:'smooth'}); },320); }
