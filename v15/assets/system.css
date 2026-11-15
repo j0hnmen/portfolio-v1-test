@@ -261,7 +261,7 @@ html.src .tl2 .tlm{background:var(--c-tx)}
 html.atend .invader{transition:scale .35s cubic-bezier(.3,1.6,.5,1),color .3s}
 html.atend .invader:hover{scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
 @keyframes invjump{50%{translate:0 -6px}}
-html.atend .invader:hover+.toast{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .invader:hover+.toast{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
 html.atend .invader:hover+.toast::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
 @keyframes invblink{50%{opacity:0}}
 
@@ -285,7 +285,7 @@ html.lite .sigm.sigscrub .sigan{display:none!important}
 /* ===== space invader en bas de page : la bulle fait partie de la zone de survol (et lance le jeu) ===== */
 html.atend .toast{pointer-events:auto!important;cursor:pointer}
 html.atend .invader:has(+.toast:hover){scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
-html.atend .toast:hover{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .toast:hover{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
 html.atend .toast:hover::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
 
 /* ===== home : pile « one-man studio » + tuile AssetsOS (même effet que The problem sur la page AssetsOS) ===== */

@@ -40,7 +40,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   let seed=11; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
   const live=[]; let lane=0; const START=270, INTRO=1250;
   const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k+(x0?' ok':''); c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
-    lane=(lane+2)%5; const y=(lane-2)*82+(rnd()*2-1)*22; live.push({el:c,x:x0||START,y,s:.88+rnd()*.2,r:0,ph:rnd()*6.28,born:x0?-1e5:performance.now(),sw:(y>0?-1:1)*(90+rnd()*70)});
+    lane=(lane+2)%5; const y=(lane-2)*82+(rnd()*2-1)*22; live.push({el:c,x:x0||START,y,s:.88+rnd()*.2,r:(rnd()*2-1)*5,ph:rnd()*6.28,born:x0?-1e5:performance.now(),sw:(y>0?-1:1)*(90+rnd()*70)});
     if(!x0) setTimeout(()=>c.classList.add('ok'),INTRO-150); };
   /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois */
   { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>START+150;x-=170) spawn(i++ +3,x); }
@@ -52,8 +52,8 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
         const t=ease(age/INTRO), u=1-t, P0=[-24,118], P1=[START*.42,c.y+c.sw], P2=[START,c.y];
         x=u*u*P0[0]+2*u*t*P1[0]+t*t*P2[0]; y=u*u*P0[1]+2*u*t*P1[1]+t*t*P2[1];
         const dx=2*u*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]), dy=2*u*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]);
-        rot=0; sc=c.s*(.28+.72*t); bl=10*u; op=Math.min(1,age/180); }
-      else { if(!RM) c.x+=.045*dt; x=c.x; y=c.y+fl*5; rot=0; sc=c.s; op=Math.min(1,(W-x)/140); }
+        rot=Math.atan2(dy,dx)*57.3*.35*u+c.r*t; sc=c.s*(.28+.72*t); bl=10*u; op=Math.min(1,age/180); }
+      else { if(!RM) c.x+=.045*dt; x=c.x; y=c.y+fl*5; rot=c.r+fl*1.2; sc=c.s; op=Math.min(1,(W-x)/140); }
       c.el.style.transform=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`; c.el.style.opacity=Math.max(0,op).toFixed(3); c.el.style.filter=bl>.2?`blur(${bl.toFixed(1)}px)`:'';
       if(x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
