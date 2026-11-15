@@ -307,3 +307,9 @@ html.src .flinks a.fic{color:var(--c-tx)}
 @media (min-width:901px){.page .stack::after{content:"";display:block;height:70vh}}
 /* ===== tuile AssetsOS : toujours à 100 % (pas de fondu ni de glissement d'entrée), home comme page AssetsOS ===== */
 .aosx .rv.aost,.aosx .rv.aost.seen{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+
+/* texte en dégradé bleu (Figma 801-3405) */
+.gradtx{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent}
+html.src .gradtx{background:none;color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)}
+/* frise : pendant le trajet de la bille, l'étape visée ne passe en bleu qu'à l'arrivée de la bille */
+.tl2.tlfx:not(.tldone) .tli.on:not(.past) .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #BEBDB9!important}

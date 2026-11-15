@@ -814,3 +814,9 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .cs-src.emit::after{box-shadow:0 0 0 16px rgba(86,79,255,.18)!important}
 
 .page .cstream .cs-stage{margin-top:0!important}
+/* Case study : tuile source plus grande */
+.page .cs-src{width:clamp(300px,30vw,400px)!important;height:clamp(300px,30vw,400px)!important;padding:30px 28px!important;border-radius:32px!important}
+.page .cs-prompt{height:52px;font-size:15px}
+.page .cs-belt{left:clamp(330px,33vw,440px)!important}
+.page .cstream .cs-stage{height:clamp(480px,64vh,620px)!important}
+@media (max-width:760px){.page .cs-src{width:220px!important;height:220px!important;padding:18px!important}.page .cs-belt{left:236px!important}}

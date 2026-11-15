@@ -30,7 +30,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f();
   rows.forEach(r=>r.addEventListener('pointerenter',()=>{ rows.forEach(x=>x.classList.toggle('on',x===r)); })); } }
 
-/*cstream*/ /* Case study : un prompt s'écrit dans la tuile AssetsOS, s'envoie, l'asset correspondant sort du système, le texte s'efface, prompt suivant… Le flux avance plus vite quand on scrolle. */
+/*cstream*/ /* Case study : un prompt s'écrit dans la tuile AssetsOS, s'envoie, l'asset correspondant sort du système, le texte s'efface, prompt suivant… Vitesse constante. */
 { const belt=document.getElementById('csbelt'); if(belt){ const stage=belt.parentElement, src=stage.querySelector('.cs-src'), RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const mock=k=>({land:'<i class="b w"></i><i class="l"></i><i class="l s"></i><i class="btn"></i>',post:'<i class="sq"></i><i class="l"></i>',story:'<i class="tall"></i><i class="l s"></i>',mail:'<i class="l"></i><i class="l s"></i><i class="b"></i><i class="l s"></i>',ad:'<i class="b w"></i><i class="btn"></i>',caro:'<i class="sq h"></i><i class="sq h"></i><i class="sq h"></i>',badge:'<i class="circ"></i><i class="l s"></i>'})[k];
   const P=[['Announce the launch on LinkedIn','post','LinkedIn post'],['A story for Friday’s event','story','Story'],['Landing page for the webinar','land','Landing page'],['The March newsletter','mail','Email'],['3 ad banners for the sale','ad','Ad banner'],['Turn this article into a carousel','caro','Carousel'],['Badges for the summit','badge','Event badge'],['A post for the new hire','post','Social post']];
@@ -41,10 +41,11 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const live=[]; let lane=0;
   const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
     lane=(lane+2)%5; live.push({el:c,x:x0||0,y:(lane-2)*82+(rnd()*2-1)*22,s:.86+rnd()*.22,r:(rnd()*2-1)*5}); };
-  for(let i=0;i<6;i++) spawn(i+3,160+i*170);
+  /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois (≈1 asset / 3,8 s à 0,045 px/ms ≈ 170 px d'écart) */
+  { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>20;x-=170) spawn(i++ +3,x); }
   let last=performance.now(), lastY=scrollY, vis=false, raf=0;
   const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY; const W=belt.offsetWidth+160;
-    const mv=(RM?0:dt*.06)+Math.max(0,dy)*.8;
+    const mv=RM?0:dt*.045; /* vitesse constante, sans effet de scroll */
     for(let j=live.length-1;j>=0;j--){ const c=live[j]; c.x+=mv; const t=Math.min(1,c.x/150), o=t*Math.min(1,(W-c.x)/140);
       c.el.style.transform=`translate3d(${c.x.toFixed(1)}px,${(c.y*Math.min(1,.2+.8*t)).toFixed(1)}px,0) rotate(${(c.r*t).toFixed(2)}deg) scale(${((.45+.55*t)*c.s).toFixed(3)})`; c.el.style.opacity=Math.max(0,o).toFixed(3);
       if(c.x>W){ c.el.remove(); live.splice(j,1); } }
