@@ -969,9 +969,11 @@ const CV=(function(){
     if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:1500,blur:6});
     // 2. puis les projets et le reste du canvas, un par un
     const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))];
-    ord.forEach((n,i)=>zoomIn(n,1.45,{dur:1700,delay:2100+i*190,blur:14}));
+    ord.forEach((n,i)=>{ const dl=2100+i*160; zoomIn(n,1.45,{dur:1700,delay:dl,blur:14});
+      const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
-    [['.top',3200,'0 -14px'],['#tools',3400,'0 18px'],['#chat',3550,'0 18px'],['#invader',3700,'0 12px']].forEach(([q,d,t])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:0},{translate:'0 0',opacity:1}],{duration:700,delay:d,easing:E1,fill:'backwards'}); }); }
+    // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
+    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'360px 0',.1],['#tools',3450,'0 18px',0]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }); }
   let tmp=null;
   cv.addEventListener('pointerdown',e=>{ document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
     if(ptrs.size===2){ act=null; const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2}; return; }
