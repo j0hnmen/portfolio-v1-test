@@ -38,29 +38,30 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const bar=document.createElement('div'); bar.className='cs-prompt'; bar.innerHTML='<span class="cs-pt"></span><i class="cs-caret"></i><b class="cs-send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></b>'; if(src) src.appendChild(bar);
   const pt=bar.querySelector('.cs-pt');
   let seed=11; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
-  const live=[]; let lane=0;
+  const live=[]; let lane=0; const START=270, INTRO=1250;
   const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k+(x0?' ok':''); c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
-    lane=(lane+2)%5; const o={el:c,x:x0||0,y:(lane-2)*82+(rnd()*2-1)*22,s:.86+rnd()*.22,r:(rnd()*2-1)*6,ph:rnd()*6.28,born:x0?-1e5:performance.now()}; live.push(o);
-    if(!x0) setTimeout(()=>c.classList.add('ok'),650); };
+    lane=(lane+2)%5; const y=(lane-2)*82+(rnd()*2-1)*22; live.push({el:c,x:x0||START,y,s:.88+rnd()*.2,r:(rnd()*2-1)*5,ph:rnd()*6.28,born:x0?-1e5:performance.now(),sw:(y>0?-1:1)*(90+rnd()*70)});
+    if(!x0) setTimeout(()=>c.classList.add('ok'),INTRO-150); };
   /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois */
-  { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>20;x-=170) spawn(i++ +3,x); }
+  { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>START+150;x-=170) spawn(i++ +3,x); }
   let last=performance.now(), vis=false, raf=0;
+  const ease=t=>1-Math.pow(1-t,4); /* sortie très douce */
   const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const W=belt.offsetWidth+160;
-    for(let j=live.length-1;j>=0;j--){ const c=live[j], age=now-c.born;
-      /* éjection : grosse vitesse au départ qui retombe vers la vitesse de croisière */
-      const v=RM?0:(.045+.55*Math.exp(-age/260)); c.x+=v*dt;
-      /* pop à ressort (dépasse puis se pose), puis flottement léger */
-      const sp=age<1600?1-Math.exp(-age/150)*Math.cos(age/75):1, fl=Math.sin(now/900+c.ph);
-      const t=Math.min(1,c.x/150), yy=c.y*Math.min(1,.15+.85*(1-Math.exp(-age/350)))+fl*5, rr=c.r*(1-Math.exp(-age/420))+fl*1.2;
-      const o=Math.min(1,age/120)*Math.min(1,(W-c.x)/140);
-      c.el.style.transform=`translate3d(${c.x.toFixed(1)}px,${yy.toFixed(1)}px,0) rotate(${rr.toFixed(2)}deg) scale(${(Math.max(.05,sp)*c.s).toFixed(3)})`; c.el.style.opacity=Math.max(0,o).toFixed(3);
-      if(c.x>W){ c.el.remove(); live.splice(j,1); } }
+    for(let j=live.length-1;j>=0;j--){ const c=live[j], age=now-c.born, fl=Math.sin(now/1100+c.ph); let x,y,rot,sc,bl=0,op;
+      if(age<INTRO&&!RM){ /* swoop : la carte sort du bouton d'envoi et décrit une courbe jusqu'à sa place */
+        const t=ease(age/INTRO), u=1-t, P0=[-24,118], P1=[START*.42,c.y+c.sw], P2=[START,c.y];
+        x=u*u*P0[0]+2*u*t*P1[0]+t*t*P2[0]; y=u*u*P0[1]+2*u*t*P1[1]+t*t*P2[1];
+        const dx=2*u*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]), dy=2*u*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]);
+        rot=Math.atan2(dy,dx)*57.3*.35*u+c.r*t; sc=c.s*(.28+.72*t); bl=10*u; op=Math.min(1,age/180); }
+      else { if(!RM) c.x+=.045*dt; x=c.x; y=c.y+fl*5; rot=c.r+fl*1.2; sc=c.s; op=Math.min(1,(W-x)/140); }
+      c.el.style.transform=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`; c.el.style.opacity=Math.max(0,op).toFixed(3); c.el.style.filter=bl>.2?`blur(${bl.toFixed(1)}px)`:'';
+      if(x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
       for(let i=1;i<=txt.length&&vis;i++){ pt.textContent=txt.slice(0,i); await wait(38+Math.random()*40); }
-      await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi,0); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
+      await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
       await wait(700); for(let i=txt.length;i>=0&&vis;i--){ pt.textContent=txt.slice(0,i); await wait(14); } await wait(320); pi++; }
     on=false; };
   new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(step); } loop(); } else clearTimeout(timer); },{rootMargin:'100px 0px'}).observe(stage);
