@@ -242,7 +242,7 @@ body.is-canvas::before{display:none}
 .node.on .clb{outline:2px solid #0D99FF;outline-offset:-1px}
 html.src .frame .fb.cl{background:#1b1d22;border-color:#2e3139}html.src .clh{color:#8f95a3}html.src .clb{border-color:#2e3139}
 /* bannière clients : arrive de la gauche au scroll, puis défile vers la droite au fil du scroll */
-.clients{position:absolute;left:0;top:calc(100vh + 4vh);width:100vw;overflow:hidden;height:96px;display:flex;align-items:center}
+.clients{position:relative;width:100vw;margin:0 0 7vh calc(50% - 50vw);overflow:hidden;height:96px;display:flex;align-items:center}
 .ctrack{display:flex;align-items:center;gap:110px;padding-right:110px;white-space:nowrap;will-change:transform;transform:translateX(-100%)}
 .ctrack img{display:block;width:auto;flex:none;pointer-events:none;user-select:none}
 .ctrack .sorare{height:36px}.ctrack .figma{height:38px}.ctrack .sportgen{height:28px}.ctrack .smartgemini{height:32px}
@@ -385,10 +385,10 @@ body.is-canvas .tools{display:flex}
 .arr{animation:arrive var(--ad,6s) var(--at,0s) cubic-bezier(.33,1,.68,1) both}
 .cvspace,.pres{display:none}
 html.cvs,html.cvs body{height:auto;overflow-x:hidden;overflow-y:auto}
-html.cvs .cvspace{display:block;height:125vh;pointer-events:none;position:relative;z-index:12}
+html.cvs .cvspace{display:block;height:110vh;pointer-events:none}
 html.cvs .pres{display:block}
 .cv{transform-origin:50% 50%;will-change:transform,opacity}
-.pres{position:relative;z-index:12;padding:22vh 8vw 22vh;background:linear-gradient(180deg,rgba(10,9,24,0),var(--bg) 14vh)}
+.pres{position:relative;z-index:12;padding:10vh 8vw 22vh;background:linear-gradient(180deg,rgba(10,9,24,0),var(--bg) 14vh)}
 .pres .in{max-width:1180px;margin:0 auto}
 .pres h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(56px,8.4vw,132px);line-height:.9;margin:22px 0 28px;font-weight:800;font-stretch:62%}
 .pres .lead{font-size:clamp(22px,2vw,30px);line-height:1.35;color:var(--ink);max-width:28ch}
@@ -622,8 +622,9 @@ body::before,body::after{display:none}
 <div class="peek" id="peek"><img alt=""></div>
 
 <div class="cv" id="cv"><div class="world" id="world"></div></div>
-<div class="cvspace" aria-hidden="true"><div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div></div>
+<div class="cvspace" aria-hidden="true"></div>
 <section class="pres" id="pres" aria-label="About">
+  <div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div>
 
   <div class="in">
     <div class="eyebrow">About</div>
@@ -985,7 +986,7 @@ const CV=(function(){
     const sh=$('#scrollHint'); if(dy>0){ const left=dy-(y0-py); if(left>1){ push+=left; if(sh){ sh._push=true; sh.classList.add('shgo'); clearTimeout(sh._t); sh._t=setTimeout(()=>{ sh._push=false; push=0; setPg(); if(scrollY<1) sh.classList.remove('shgo'); },900); }
       scrollBy(0,left*.45); } } setPg(); },{passive:false}); // descente progressive (freinée), jamais de saut
   // jamais coincé entre deux : à l'arrêt, on revient au canvas ou on se pose sur la bannière + About
-  let push=0, snapT=0; const snapTop=()=>innerHeight*.94;
+  let push=0, snapT=0; const snapTop=()=>{ const c=document.querySelector('.clients'); return c?Math.max(innerHeight*.6,c.getBoundingClientRect().top+scrollY-innerHeight*.16):innerHeight*.94; };
   function setPg(){ const sh=$('#scrollHint'); if(sh) sh.style.setProperty('--pg',Math.min(1,Math.max(push/240*.3, scrollY>0?.3+.7*scrollY/snapTop():0)).toFixed(3)); }
   addEventListener('scroll',setPg,{passive:true});
   function armSnap(){ clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2) scrollTo({top:y<T*.35?0:T,behavior:'smooth'}); },320); }
