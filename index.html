@@ -662,6 +662,20 @@ body::before,body::after{display:none}
 .pres .facts,.pres .plist,.pres .plist button{border-color:rgba(32,32,32,.14)}
 .pres .plist button:hover{color:var(--blue)}
 .intro{background:#f0f0f0 url(img/paper.webp) center top/cover no-repeat}
+
+/* curseur V temp */
+.tip{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;display:none;align-items:flex-start;will-change:transform}
+.tip.live{display:flex}
+.tip.out{opacity:0}
+.tip svg{width:26px;height:26px;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.tip.down svg{transform:scale(.85)}
+.tip span{position:absolute;left:22px;top:20px;background:#564FFF;color:#fff;font-family:var(--text);font-size:18px;line-height:1;padding:11px 18px 12px;border-radius:999px;white-space:nowrap;box-shadow:0 10px 24px rgba(86,79,255,.35);opacity:0;transform:scale(.5);transform-origin:0 0;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.tip.on span{opacity:1;transform:none}
+.tip span i{font-style:normal;background-image:linear-gradient(#fff,#fff);background-repeat:no-repeat;background-position:0 100%;background-size:0 2px;padding-bottom:3px;transition:background-size .4s .12s cubic-bezier(.6,0,.2,1)}
+.tip.on span i{background-size:100% 2px}
+.tip.plain span i{background-size:0 2px!important}
+.tip.flip span{left:auto;right:4px;transform-origin:100% 0}
+@media (hover:hover) and (pointer:fine){html.cc,html.cc *{cursor:none!important}}
 </style>
 </head>
 <body>
@@ -1348,5 +1362,20 @@ loop();
 <script>{ const b=document.getElementById('backCv'); if(b){ const up=()=>b.classList.toggle('on',scrollY>innerHeight*1.05); addEventListener('scroll',up,{passive:true}); up(); b.addEventListener('click',()=>{ scrollTo({top:0,behavior:'smooth'}); try{ CV.home(1100); }catch(e){} }); } }</script>
 <script>{ const i=document.getElementById('cin'), f=document.getElementById('cform'); if(i&&f) i.addEventListener('input',()=>f.classList.toggle('typing',!!i.value)); }</script>
 <script>document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=document.querySelector('.pres'); scrollTo({top:pr?pr.getBoundingClientRect().top+scrollY:innerHeight,behavior:'smooth'}); });</script>
+<div class="tip" id="tip" aria-hidden="true"><svg viewBox="0 0 80 78"><path d="M2.43566 10.2293C0.557465 5.39905 5.25275 0.609822 10.1193 2.39242L73.3458 25.5526C78.9768 27.6152 78.4617 35.7432 72.6153 37.078L47.5001 42.8104C46.8028 42.9697 46.2429 43.4878 46.0304 44.1707L37.6398 71.1424C35.9468 76.5842 28.3421 76.8476 26.2765 71.536L2.43566 10.2293Z" fill="#000" stroke="#fff" stroke-width="5"/></svg><span><i></i></span></div>
+<script>
+/* curseur de la V temp (nabilamara.com) : flèche noire contour blanc, bulle bleue sur [data-tip] */
+(()=>{if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+const t=document.getElementById('tip'),lab=t.querySelector('span i');document.documentElement.classList.add('cc');
+const mv=e=>{t.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;t.classList.add('live');t.classList.remove('out')};
+addEventListener('pointermove',mv,{passive:true});addEventListener('pointerdown',e=>{mv(e);t.classList.add('down')});addEventListener('pointerup',()=>t.classList.remove('down'));
+document.documentElement.addEventListener('pointerleave',()=>t.classList.add('out'));
+addEventListener('blur',()=>t.classList.add('out')); /* dans un site intégré (iframe), c'est le curseur du site qui prend le relais */
+document.addEventListener('pointerover',e=>{ if(e.target.tagName==='IFRAME') t.classList.add('out'); });
+document.addEventListener('pointerover',e=>{ const el=e.target.closest&&e.target.closest('[data-tip]'); if(!el||el.contains(e.relatedTarget)) return; lab.textContent=el.dataset.tip; t.classList.toggle('plain',el.hasAttribute('data-plain')); t.classList.add('on'); });
+document.addEventListener('pointerout',e=>{ const el=e.target.closest&&e.target.closest('[data-tip]'); if(el&&!el.contains(e.relatedTarget)) t.classList.remove('on'); });
+addEventListener('click',()=>t.classList.remove('on'),true);
+})();
+</script>
 </body>
 </html>
