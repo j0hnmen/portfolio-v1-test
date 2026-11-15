@@ -335,3 +335,7 @@ html.src .gradtx{background:none;color:var(--c-acc)!important;-webkit-text-fill-
 #aos .aoscard{align-items:start!important}
 #aos .aoscard .aosl{align-self:start;padding-top:clamp(4px,1vw,16px)}
 .aoscard .sysl li:last-child b::before{position:absolute;left:50%;top:50%;translate:-50% -50%;margin:0} /* coche parfaitement centrée */
+/* drapeau de langue : sans contour */
+html body .flag,html body #flag{box-shadow:none!important;border:0!important;outline:0!important}
+html body .flag:focus-visible{outline:2px solid #564FFF!important;outline-offset:2px}
+html body #flag svg{box-shadow:none!important}
