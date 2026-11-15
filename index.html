@@ -857,10 +857,10 @@ const CV=(function(){
   // limites : dézoom jusqu'à ~40 % de l'écran, et le contenu ne quitte jamais l'écran (jamais de vide)
   function bounds(){ let a=1e9,b=1e9,c=-1e9,d=-1e9; nodes.forEach(n=>{ a=Math.min(a,n.x); b=Math.min(b,n.y); c=Math.max(c,n.x+n.w); d=Math.max(d,n.y+n.h); }); return nodes.length?{a,b,c,d}:null; }
   function clampView(){ const B=bounds(); if(!B) return; const W=innerWidth, H=innerHeight, pad=Math.min(80,W*.06);
-    const zMin=Math.min(W*.5/(B.c-B.a),H*.5/(B.d-B.b)); if(z<zMin) z=zMin; // dézoom max : tout le canvas tient dans la moitié de l'écran
+    const zMin=Math.min(W*.92/(B.c-B.a),H*.92/(B.d-B.b)); if(z<zMin) z=zMin; // dézoom max : tout le canvas tient dans l'écran (fit all), jamais plus petit
     const L=B.a*z, R=B.c*z, T=B.b*z, Bo=B.d*z;
     // déplacement libre tant que le contenu occupe encore au moins la moitié de l'écran (ou tout le contenu s'il est plus petit)
-    const nx=Math.min(R-L,W*.7), ny=Math.min(Bo-T,H*.7);
+    const nx=Math.min(R-L,W*.5), ny=Math.min(Bo-T,H*.5);
     px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,ny-Bo),H-ny-T); }
   const apply=()=>{ clampView(); const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk;
     world.style.transform=`translate(${X}px,${Y}px) scale(${Z})`; world.style.setProperty('--iz',1/Z); cv.style.backgroundSize=`${28*Z}px ${28*Z}px`; cv.style.backgroundPosition=`${X}px ${Y}px`; $('#zl').textContent=Math.round(z*100)+'%'; };
