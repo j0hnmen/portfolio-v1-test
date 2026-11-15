@@ -232,14 +232,21 @@ body.is-canvas::before{display:none}
 .livetag i{width:11px;height:11px;border-radius:50%;background:#EE3B2F;box-shadow:0 0 0 0 rgba(238,59,47,.55);animation:livePulse 1.6s ease-out infinite}
 @keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(238,59,47,.55)}70%{box-shadow:0 0 0 10px rgba(238,59,47,0)}100%{box-shadow:0 0 0 0 rgba(238,59,47,0)}}
 ::selection{background:#FFF186;color:#202020}
+/* menu : au survol, Work s'entoure, About se souligne, Contact prend un éclat */
+.menu nav .mk{position:relative;align-self:flex-start}
+.menu nav .mk span{position:relative;z-index:1}
+.menu nav .mk svg{position:absolute;pointer-events:none;overflow:visible;fill:none;stroke:#564FFF;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.menu nav .mk path{stroke-dasharray:1;stroke-dashoffset:1;opacity:0;transition:stroke-dashoffset .55s cubic-bezier(.65,0,.25,1),opacity .1s .45s}
+.menu nav .mk:hover path,.menu nav .mk:focus-visible path{stroke-dashoffset:0;opacity:1;transition:stroke-dashoffset .55s cubic-bezier(.65,0,.25,1),opacity 0s}
+.menu nav .mk-circle svg{left:-20%;top:-26%;width:140%;height:150%}
+.menu nav .mk-under svg{left:-2%;bottom:-6%;width:104%;height:.36em}
+.menu nav .mk-burst svg{left:calc(100% + .12em);top:50%;width:.62em;height:.62em;transform:translateY(-50%)}
+.menu nav .mk-under path,.menu nav .mk-burst path{stroke-width:5}
 /* gribouillis au feutre */
 .node.ink{background:none;box-shadow:none;border:0}
 .node.ink path{stroke-dasharray:1;stroke-dashoffset:1;animation:inkOn 1s cubic-bezier(.65,0,.25,1) var(--d,3s) forwards}
 .node.ink text{opacity:0;animation:inkTx .6s ease var(--d,3s) forwards}
 @keyframes inkOn{to{stroke-dashoffset:0}}@keyframes inkTx{to{opacity:1}}
-/* vert : même teinte, mais un liseré plus sombre autour des traits et des lettres pour qu'on le lise sur le papier */
-.node.ink svg:has([stroke="#3BE9CE"],[fill="#3BE9CE"]){filter:drop-shadow(0 0 .6px #0E7A68) drop-shadow(0 0 .6px #0E7A68) drop-shadow(0 1px 0 rgba(14,122,104,.35))}
-.node.ink text[fill="#3BE9CE"]{stroke:#0E7A68;stroke-width:1.4px;paint-order:stroke fill}
 html.src .node.ink path{stroke:#7aa2ff}html.src .node.ink text{fill:#7aa2ff}
 /* calque de code (sites live) */
 .frame .fb.cl{background:#e2e2e2;border:1px solid rgba(32,32,32,.08);border-radius:14px;padding:0 10px 10px;box-shadow:0 22px 50px rgba(32,32,32,.14);overflow:visible;outline:none}
@@ -705,7 +712,7 @@ body::before,body::after{display:none}
 <div class="veil" id="veil"></div>
 <aside class="menu" id="menu" aria-label="Menu">
   <button class="x" data-close>close ✕</button>
-  <nav><button data-go="work">Work</button><button data-go="about">About</button><button data-go="contact">Contact</button></nav>
+  <nav><button data-go="work" class="mk mk-circle"><span>Work</span><svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M60,22 C130,4 250,6 284,40 C306,66 270,104 170,110 C80,116 16,98 12,64 C8,34 60,16 120,12"/></svg></button><button data-go="about" class="mk mk-under"><span>About</span><svg viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M6,22 C80,12 200,10 294,18 M40,34 C120,28 210,28 270,32"/></svg></button><button data-go="contact" class="mk mk-burst"><span>Contact</span><svg viewBox="0 0 90 90" aria-hidden="true"><path pathLength="1" d="M45,6 L45,30 M45,60 L45,84 M6,45 L30,45 M60,45 L84,45 M17,17 L32,32 M58,58 L73,73 M73,17 L58,32 M32,58 L17,73"/></svg></button></nav>
   <p id="menuTxt">AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.</p>
   <div class="radio" id="radio">
     <button class="rplay" id="rPlay" aria-label="Play the radio"><svg viewBox="0 0 24 24"><path class="pl" d="M8 5v14l11-7z"/><g class="pa"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></g></svg></button>
@@ -916,7 +923,7 @@ const CV=(function(){
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
-    const pos=[[-220,-800,3],[-920,-640,-4],[480,-640,-2],[-920,200,2],[-220,330,-5],[480,220,4]];
+    const pos=[[-220,-880,3],[-1030,-680,-4],[590,-680,-2],[-1050,250,2],[-220,430,-5],[610,270,4]]; // plus d'air autour du nom
     // le nom et le sous-titre sont des vecteurs (lettres vectorisées depuis Archivo), chaque lettre du nom est un calque
     const K=.3, CAP=688*K, LG=100*K, top=-(CAP*2+LG+46+28)/2; const NAME=NAMEL;
     GLY.N.forEach((line,li)=>{ const x0=-GLY.W[li]*K/2, y0=top+li*(CAP+LG);
@@ -931,32 +938,32 @@ const CV=(function(){
     nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k==='open'||(k==='play'&&!LIVE)) return; e.preventDefault(); select(n); if(k==='play') liveUse(n); })));
     // sites intégrés : le vrai site s'affiche directement dans la frame, sans texte, une fois l'arrivée terminée
     if(LIVE) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
-    add({type:'note',name:'Note',x:1000,y:-520,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
+    add({type:'note',name:'Note',x:1130,y:-560,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
     // post-it : le Konami code, à taper sur la page
-    add({type:'note',cls:'postit',name:'Post-it',x:-1230,y:290,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
-    add({type:'shape',cls:'ell',name:'Ellipse',x:1030,y:-170,w:170,h:170,r:0,fill:'#564FFF'});
-    add({type:'shape',cls:'rect',name:'Rectangle',x:990,y:130,w:210,h:130,r:-12,fill:'#3BE9CE'});
+    add({type:'note',cls:'postit',name:'Post-it',x:-1370,y:330,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
+    add({type:'shape',cls:'ell',name:'Ellipse',x:1160,y:-190,w:170,h:170,r:0,fill:'#564FFF'});
+    add({type:'shape',cls:'rect',name:'Rectangle',x:1130,y:120,w:210,h:130,r:-12,fill:'#3BE9CE'});
     // gribouillis au feutre : entourés, soulignés, flèches, petites notes — ils se dessinent après l'arrivée
-    const IB='#564FFF', IK='#202020', IG='#3BE9CE'; let di=0;
+    const IB='#564FFF', IK='#202020', IG='#12BFA2'; let di=0; // vert de la DA, un cran plus soutenu pour se lire sur le papier
     const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(6.2+(di++)*.28).toFixed(2);
       add({type:'path',cls:'ink',name,x,y,w,h,r,html:`<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="--d:${dl}s;overflow:visible">${d?`<path d="${d}" pathLength="1" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`:''}${txt}</svg>`}); };
     const note=(t,x,y,size=46,c=IB)=>`<text x="${x}" y="${y}" font-family="Caveat,cursive" font-weight="600" font-size="${size}" fill="${c}">${t}</text>`;
     // le sous-titre entouré
     ink('Scribble',-385,198,770,112,-1.5,'M70,22 C200,6 380,4 520,10 C660,16 712,38 700,66 C688,98 470,106 300,102 C130,98 10,86 14,60 C18,40 40,30 96,20');
     // « hello! » au-dessus du nom
-    ink('Note',-690,-150,240,90,-8,'M14,74 C70,62 150,62 214,70','#564FFF',5,note('hello!',18,52,46));
+    ink('Note',-760,-160,240,90,-8,'M14,74 C70,62 150,62 214,70','#564FFF',5,note('hello!',18,52,46));
     // flèche vers L'Atelier Figma
-    ink('Arrow',236,-930,270,150,0,'M92,60 C62,70 40,98 28,138 M28,138 L18,112 M28,138 L50,120',IK,5,note('latest',100,56,46,IK));
+    ink('Arrow',236,-1010,270,150,0,'M92,60 C62,70 40,98 28,138 M28,138 L18,112 M28,138 L50,120',IK,5,note('latest',100,56,46,IK));
     // le post-it Konami entouré + « try it! »
-    ink('Scribble',-1262,262,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22',IG,5);
-    ink('Note',-1250,150,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IG,5,note('try it!',6,56,46,IG));
+    ink('Scribble',-1402,302,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22',IG,5);
+    ink('Note',-1390,190,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IG,5,note('try it!',6,56,46,IG));
     // calque de code : « click me » avec flèche
-    ink('Arrow',935,360,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
+    ink('Arrow',1065,410,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
     // double soulignement sous la note
-    ink('Scribble',1000,-366,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
+    ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
-  function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.84/2150,innerHeight*.84/1520,1); px=innerWidth/2; py=innerHeight/2; apply(); }
+  function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1); px=innerWidth/2; py=innerHeight/2; apply(); }
   // arrivée : chaque élément passe de x3 à x1 et de 0 à 100 % d'opacité, un par un, en 3 s
   // entrée en plusieurs temps : le canvas arrive d'abord en bloc (zoom arrière + flou), puis les lettres du nom
   // une à une avec un léger décalage irrégulier, puis le sous-titre, puis l'interface
