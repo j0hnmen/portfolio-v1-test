@@ -281,11 +281,14 @@ html.cvs .scrollhint{display:flex}
 .scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px;opacity:calc(.35 + var(--pg,0)*.65)}
 .scrollhint:hover,.scrollhint.shgo{color:#564FFF}
 @keyframes shIn{to{opacity:var(--sh,1)}}
+.scrollhint .shm{width:24px;height:36px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;overflow:visible}
+.scrollhint .whl{animation:shWheel 1.9s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes shWheel{0%{transform:translateY(0);opacity:1}60%{transform:translateY(9px);opacity:0}61%{transform:translateY(0);opacity:0}100%{opacity:1}}
 /* incitation : tant qu'on n'a pas scrollé, la barre glisse un peu vers le bas et revient, et son remplissage pointe le bout du nez */
-.scrollhint:not(.shgo) i{animation:shNudge 2.6s cubic-bezier(.45,0,.25,1) 5s infinite}
-.scrollhint:not(.shgo) i::after{animation:shPeek 2.6s cubic-bezier(.45,0,.25,1) 5s infinite}
-@keyframes shNudge{0%,55%,100%{transform:translateY(0)}68%{transform:translateY(14px)}80%{transform:translateY(0)}88%{transform:translateY(6px)}}
-@keyframes shPeek{0%,55%,100%{height:14px}68%{height:46px}84%{height:14px}}
+.scrollhint:not(.shgo) i{animation:shNudge 3.6s cubic-bezier(.45,0,.55,1) 5s infinite}
+.scrollhint:not(.shgo) i::after{animation:shPeek 3.6s cubic-bezier(.45,0,.55,1) 5s infinite}
+@keyframes shNudge{0%,50%,100%{transform:translateY(0)}75%{transform:translateY(6px)}}
+@keyframes shPeek{0%,50%,100%{height:14px}75%{height:30px}}
 @keyframes shRun{to{top:100%}}
 html body .scrollhint{color:#202020}html body .scrollhint:hover,html body .scrollhint.shgo{color:#564FFF}
 html.src body .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:#2a2d35;box-shadow:none}html.src body .scrollhint.shgo{color:#7aa2ff}
@@ -458,21 +461,25 @@ html.cvs .pres{display:block}
 
 /* ---------- mini-moi : prompt box ---------- */
 .pbox{position:fixed;right:36px;bottom:26px;z-index:42;width:min(400px,calc(100vw - 32px));display:flex;flex-direction:column;gap:8px}
-.pform{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:6px 6px 6px 6px;box-shadow:0 14px 36px rgba(32,32,32,.14),0 0 0 1px rgba(32,32,32,.08);transition:box-shadow .25s}
-.pform:focus-within{box-shadow:0 14px 36px rgba(86,79,255,.22),0 0 0 2px var(--blue)}
-.mm{flex:none;width:40px;height:40px;border-radius:50%;background:var(--blue);display:grid;place-items:center;cursor:text}
-.mm svg{width:30px;height:30px;overflow:visible}
+.pform{position:relative;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-radius:18px;padding:7px 7px 7px 8px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px rgba(32,32,32,.08),0 18px 40px -12px rgba(32,32,32,.22);transition:box-shadow .3s,transform .3s}
+.pform::before{content:"";position:absolute;inset:-1px;border-radius:19px;padding:1px;background:linear-gradient(120deg,#564FFF,#3BE9CE 55%,#FFF186);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s;pointer-events:none}
+.pform:focus-within{box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 22px 50px -14px rgba(86,79,255,.4)}
+.pform:focus-within::before{opacity:1}
+.pform .kbd{flex:none;font:600 11px/1 Inter,system-ui,sans-serif;color:#9a9a9a;border:1px solid rgba(32,32,32,.12);border-radius:6px;padding:4px 6px;transition:opacity .2s}
+.pform:focus-within .kbd,.pform.typing .kbd{opacity:0;width:0;padding:0;border:0;overflow:hidden}
+.mm{flex:none;width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#6f69ff,#564FFF);box-shadow:0 4px 12px -2px rgba(86,79,255,.55);display:grid;place-items:center;cursor:text}
+.mm svg{width:27px;height:27px;overflow:visible}
 .mm .ey,.mm .mo{transform-origin:center;transform-box:fill-box}
 .mm .ey{animation:blink 4.6s infinite}
 .mm.talk .mo{animation:yap .22s steps(2) infinite}
 @keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
 @keyframes yap{50%{transform:scaleY(2.2)}}
-.pform input{flex:1;min-width:0;font:inherit;font-size:17px;border:0;background:none;outline:none;color:var(--ink);padding:8px 2px}
-.pform input::placeholder{color:#8a8a8a}
-.pform button{flex:none;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;transition:transform .2s,opacity .2s}
-.pform button:hover{transform:scale(1.06)}
-.pform button:disabled{opacity:.3}
-.pform svg.send{width:18px;height:18px}
+.pform input{flex:1;min-width:0;font:500 15px/1.2 Inter,system-ui,sans-serif;letter-spacing:-.01em;border:0;background:none;outline:none;color:var(--ink);padding:9px 2px}
+.pform input::placeholder{color:#8e8e8e}
+.pform button{flex:none;width:34px;height:34px;border-radius:11px;background:var(--ink);color:#fff;display:grid;place-items:center;transition:transform .2s,opacity .2s,background .2s}
+.pform button:hover{transform:translateY(-1px);background:var(--blue)}
+.pform button:disabled{opacity:.25}
+.pform svg.send{width:16px;height:16px;transform:rotate(-90deg)}
 .pthread{display:none;flex-direction:column;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(32,32,32,.16),0 0 0 1px rgba(32,32,32,.06);max-height:min(460px,calc(100vh - 220px));overflow:hidden}
 body.chat-on .pthread.has{display:flex;animation:pin .35s cubic-bezier(.2,.9,.2,1)}
 @keyframes pin{from{opacity:0;transform:translateY(10px)}}
@@ -489,8 +496,8 @@ body.chat-on .pthread.has{display:flex;animation:pin .35s cubic-bezier(.2,.9,.2,
 .clog .m a{color:var(--blue)}
 .chips{display:none;flex-wrap:wrap;justify-content:flex-end;gap:6px}
 body.chat-on .chips:not(:empty){display:flex}
-.chips button{font-size:15px;background:#fff;border:1px solid rgba(86,79,255,.35);color:var(--blue);border-radius:999px;padding:7px 13px;box-shadow:0 6px 16px rgba(32,32,32,.08)}
-.chips button:hover{background:#f2f1ff}
+.chips button{font:500 13px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(32,32,32,.1);color:var(--ink);border-radius:10px;padding:9px 12px;box-shadow:0 8px 20px -10px rgba(32,32,32,.3);transition:border-color .2s,color .2s}
+.chips button:hover{border-color:var(--blue);color:var(--blue)}
 @media (max-width:1240px){body.is-canvas .pbox{bottom:84px}}
 @media (max-width:760px){.pbox{left:12px;right:12px;bottom:12px;width:auto}body.is-canvas .pbox{bottom:12px}.invader{bottom:84px}.round{bottom:80px}.hud{bottom:150px!important}}
 
@@ -532,7 +539,7 @@ html.src .node.glyph .code{padding:4px;font-size:9px;line-height:1.3;color:#8f95
 html.src .code .t{color:#7aa2ff}html.src .code .a{color:#89d6c8}html.src .code .v{color:#e3d98a}html.src .code .c{color:#6b7280}
 html.src .node .nm{color:#7aa2ff}
 html.src .mono,html.src #menuBtn,html.src .tools,html.src .pbox .pform,html.src #invader{outline:1px dashed #7a76ff;outline-offset:6px}
-html.src .pform{background:#1b1d22;box-shadow:none}html.src .pform input{color:#cfd3dc}html.src .tools{background:#1b1d22;border-color:#2e3139}html.src .tools button{color:#cfd3dc}
+html.src .pform{background:#1b1d22;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}html.src .pform input{color:#cfd3dc}html.src .tools{background:#1b1d22;border-color:#2e3139}html.src .tools button{color:#cfd3dc}
 html.src .mono,html.src .burger i{color:#cfd3dc}html.src .burger i{background:#cfd3dc}
 html.src .pres{color:#cfd3dc}html.src .pres .facts,html.src .pres .plist,html.src .pres .plist button{border-color:rgba(207,211,220,.16)}
 html.src .pres h2,html.src .pres .plist b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600;font-stretch:normal;letter-spacing:-.02em}
@@ -686,7 +693,7 @@ body::before,body::after{display:none}
 <div class="hint r"><b>← →</b> — Tourner</div>
 
 <button class="invader" id="invader" aria-label="Play the mini-game"></button>
-<button class="scrollhint" id="scrollHint" aria-label="Scroll down"><span>Scroll</span><i></i><b></b></button>
+<button class="scrollhint" id="scrollHint" aria-label="Scroll down"><svg class="shm" viewBox="0 0 24 36" aria-hidden="true"><rect x="2" y="2" width="20" height="32" rx="10"/><line class="whl" x1="12" y1="9" x2="12" y2="14"/></svg><i></i><b></b></button>
 <div class="toast" id="toast">play?</div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
@@ -749,7 +756,7 @@ body::before,body::after{display:none}
     <g class="ey"><circle cx="19" cy="25" r="1.6" fill="#fff" stroke="none"/><circle cx="29.5" cy="25" r="1.6" fill="#fff" stroke="none"/></g>
     <path class="mo" d="M20.5 32c2 1.4 5 1.4 7 0"/>
   </svg></span>
-    <input id="cin" maxlength="300" autocomplete="off" placeholder="Ask me about my work…" aria-label="Your question to Nabil’s mini-me">
+    <input id="cin" maxlength="300" autocomplete="off" placeholder="Ask me about my work…" aria-label="Your question to Nabil’s mini-me"><kbd class="kbd" aria-hidden="true">↵</kbd>
     <button id="csend" aria-label="Send"><svg class="send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </form>
 </div>
@@ -1296,6 +1303,7 @@ setSound(false); rot=target-1.6; setMode(defMode());
 addEventListener('resize',layout);
 loop();
 </script>
+<script>{ const i=document.getElementById('cin'), f=document.getElementById('cform'); if(i&&f) i.addEventListener('input',()=>f.classList.toggle('typing',!!i.value)); }</script>
 <script>document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=document.querySelector('.pres'); scrollTo({top:pr?pr.getBoundingClientRect().top+scrollY:innerHeight,behavior:'smooth'}); });</script>
 </body>
 </html>
