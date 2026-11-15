@@ -237,6 +237,9 @@ body.is-canvas::before{display:none}
 .node.ink path{stroke-dasharray:1;stroke-dashoffset:1;animation:inkOn 1s cubic-bezier(.65,0,.25,1) var(--d,3s) forwards}
 .node.ink text{opacity:0;animation:inkTx .6s ease var(--d,3s) forwards}
 @keyframes inkOn{to{stroke-dashoffset:0}}@keyframes inkTx{to{opacity:1}}
+/* vert : même teinte, mais un liseré plus sombre autour des traits et des lettres pour qu'on le lise sur le papier */
+.node.ink svg:has([stroke="#3BE9CE"],[fill="#3BE9CE"]){filter:drop-shadow(0 0 .6px #0E7A68) drop-shadow(0 0 .6px #0E7A68) drop-shadow(0 1px 0 rgba(14,122,104,.35))}
+.node.ink text[fill="#3BE9CE"]{stroke:#0E7A68;stroke-width:1.4px;paint-order:stroke fill}
 html.src .node.ink path{stroke:#7aa2ff}html.src .node.ink text{fill:#7aa2ff}
 /* calque de code (sites live) */
 .frame .fb.cl{background:#e2e2e2;border:1px solid rgba(32,32,32,.08);border-radius:14px;padding:0 10px 10px;box-shadow:0 22px 50px rgba(32,32,32,.14);overflow:visible;outline:none}
