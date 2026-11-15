@@ -838,3 +838,7 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 #moment .pr .lo{order:3;margin:10px 0 0}
 #moment .pr>.d{display:flex!important;align-items:baseline}
 #moment .pr s.was{color:rgba(243,242,238,.5)}
+
+/* onde bleue plein écran à chaque asset qui sort */
+.cs-wave{position:fixed;z-index:0;width:240vmax;height:240vmax;margin:-120vmax 0 0 -120vmax;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(86,79,255,0) 52%,rgba(86,79,255,.22) 64%,rgba(87,81,255,.1) 68%,rgba(86,79,255,0) 71%);transform:scale(.05);opacity:1;animation:cswave 2.3s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes cswave{to{transform:scale(1);opacity:0}}
