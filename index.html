@@ -252,14 +252,15 @@ html.src .ctrack img{filter:invert(.85)}
 .scrollhint{display:none;position:fixed;right:30px;top:50%;z-index:30;transform:translateY(-50%);flex-direction:column;align-items:center;gap:16px;color:#202020;font:800 13px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:10px 6px;opacity:0;animation:shIn .9s 3.4s forwards;transition:color .35s,transform .45s cubic-bezier(.16,1,.3,1)}
 html.cvs .scrollhint{display:flex}
 .scrollhint span{writing-mode:vertical-rl}
-.scrollhint i{position:relative;width:3px;height:180px;background:rgba(32,32,32,.14);border-radius:3px;overflow:visible}
-.scrollhint i::after{content:"";position:absolute;left:0;top:0;width:100%;height:calc(var(--pg,0)*100%);border-radius:3px;background:linear-gradient(180deg,#8f8bff,#554FFF);box-shadow:0 0 calc(4px + var(--pg,0)*22px) calc(var(--pg,0)*3px) rgba(85,79,255,calc(.25 + var(--pg,0)*.6));transition:height .25s ease-out,box-shadow .25s ease-out}
+.scrollhint i{position:relative;width:14px;height:200px;background:#fff;border-radius:99px;overflow:hidden;box-shadow:0 0 0 1px rgba(32,32,32,.07),0 6px 18px rgba(32,32,32,.10),inset 0 1px 2px rgba(32,32,32,.06)}
+.scrollhint i::after{content:"";position:absolute;left:0;top:0;width:100%;height:max(14px,calc(var(--pg,0)*100%));border-radius:99px;background:linear-gradient(180deg,#7f7aff,#554FFF 60%);opacity:calc(.55 + var(--pg,0)*.45);transition:height .25s ease-out,opacity .25s}
+.scrollhint{filter:drop-shadow(0 0 calc(var(--pg,0)*18px) rgba(85,79,255,calc(var(--pg,0)*.75)))}
 .scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px;opacity:calc(.35 + var(--pg,0)*.65)}
 .scrollhint:hover,.scrollhint.shgo{color:#554FFF}
 @keyframes shIn{to{opacity:var(--sh,1)}}
 @keyframes shRun{to{top:100%}}
 html body .scrollhint{color:#202020}html body .scrollhint:hover,html body .scrollhint.shgo{color:#554FFF}
-html.src body .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:rgba(207,211,220,.2)}html.src body .scrollhint.shgo{color:#7aa2ff}
+html.src body .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:#2a2d35;box-shadow:none}html.src body .scrollhint.shgo{color:#7aa2ff}
 @media (max-width:760px){.scrollhint{right:12px;top:auto;bottom:150px;transform:none}}
 .ft{padding:26px 28px 30px}
 .ft .eyebrow{font-size:11px}
