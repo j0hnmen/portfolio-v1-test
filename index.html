@@ -989,6 +989,11 @@ const CV=(function(){
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
   function center(){ z=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1); px=innerWidth/2; py=innerHeight/2; apply(); }
+  // retour à la vue d'ouverture (nom au centre), en glissant
+  let homeRaf=0; function home(ms=900){ cancelAnimationFrame(homeRaf); const z0=z,x0=px,y0=py, z1=innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400,innerHeight*.86/1680,1), x1=innerWidth/2, y1=innerHeight/2, t0=performance.now();
+    const st=t=>{ const k=Math.min(1,(t-t0)/ms), e=1-Math.pow(1-k,3); z=z0+(z1-z0)*e; px=x0+(x1-x0)*e; py=y0+(y1-y0)*e; apply(); if(k<1) homeRaf=requestAnimationFrame(st); }; homeRaf=requestAnimationFrame(st); }
+  // revenu en haut après être descendu dans la page : le canvas se recentre sur le nom
+  { let down=false; addEventListener('scroll',()=>{ if(scrollY>innerHeight*.6) down=true; else if(down&&scrollY<innerHeight*.35){ down=false; home(1100); } },{passive:true}); }
   // arrivée : chaque élément passe de x3 à x1 et de 0 à 100 % d'opacité, un par un, en 3 s
   // entrée en plusieurs temps : le canvas arrive d'abord en bloc (zoom arrière + flou), puis les lettres du nom
   // une à une avec un léger décalage irrégulier, puis le sous-titre, puis l'interface
@@ -1101,7 +1106,7 @@ const CV=(function(){
     else { h=`${T('&lt;div')}${A('class',(n.cls||'shape'))}\n ${geo(n)}${A('fill',n.fill||'#564FFF')}${T('&gt;&lt;/div&gt;')}`; }
     c.innerHTML=h; }
   function srcMode(on){ SRC=on; if(on) nodes.forEach(codeOf); }
-  return { src:srcMode, enter(){ document.documentElement.classList.add('cvs');
+  return { src:srcMode, home, enter(){ document.documentElement.classList.add('cvs');
       if(!inited){ init(); arrive(); setTimeout(()=>{ if(!scrollY){ hint.classList.add('on'); hT=setTimeout(hintOff,9000); } },3600); } else apply(); onScroll(); },
     leave(){ document.documentElement.classList.remove('cvs'); scrollTo(0,0); sk=1; cv.style.transform=cv.style.opacity=cv.style.pointerEvents=cv.style.visibility=''; cv.style.removeProperty('--po'); cv.style.removeProperty('--no'); ['#tools','#cvhint'].forEach(q=>{ $(q).style.opacity=$(q).style.pointerEvents=''; }); } };
 })();
@@ -1316,7 +1321,7 @@ setSound(false); rot=target-1.6; setMode(defMode());
 addEventListener('resize',layout);
 loop();
 </script>
-<script>{ const b=document.getElementById('backCv'); if(b){ const up=()=>b.classList.toggle('on',scrollY>innerHeight*1.05); addEventListener('scroll',up,{passive:true}); up(); b.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'})); } }</script>
+<script>{ const b=document.getElementById('backCv'); if(b){ const up=()=>b.classList.toggle('on',scrollY>innerHeight*1.05); addEventListener('scroll',up,{passive:true}); up(); b.addEventListener('click',()=>{ scrollTo({top:0,behavior:'smooth'}); try{ CV.home(1100); }catch(e){} }); } }</script>
 <script>{ const i=document.getElementById('cin'), f=document.getElementById('cform'); if(i&&f) i.addEventListener('input',()=>f.classList.toggle('typing',!!i.value)); }</script>
 <script>document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=document.querySelector('.pres'); scrollTo({top:pr?pr.getBoundingClientRect().top+scrollY:innerHeight,behavior:'smooth'}); });</script>
 </body>
