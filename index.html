@@ -858,7 +858,7 @@ const CV=(function(){
   // limites : dézoom jusqu'à ~40 % de l'écran, et le contenu ne quitte jamais l'écran (jamais de vide)
   function bounds(){ let a=1e9,b=1e9,c=-1e9,d=-1e9; nodes.forEach(n=>{ a=Math.min(a,n.x); b=Math.min(b,n.y); c=Math.max(c,n.x+n.w); d=Math.max(d,n.y+n.h); }); return nodes.length?{a,b,c,d}:null; }
   function clampView(){ const B=bounds(); if(!B) return; const W=innerWidth, H=innerHeight, pad=Math.min(80,W*.06);
-    const zMin=.68*Math.min(W*.92/(B.c-B.a),H*.92/(B.d-B.b)); if(z<zMin) z=zMin; // on peut dézoomer un peu au-delà du fit all, sans que tout devienne minuscule
+    const zMin=.45*Math.min(W*.92/(B.c-B.a),H*.92/(B.d-B.b)); if(z<zMin) z=zMin; // on peut dézoomer un peu au-delà du fit all, sans que tout devienne minuscule
     const L=B.a*z, R=B.c*z, T=B.b*z, Bo=B.d*z;
     // déplacement libre tant que le contenu occupe encore au moins la moitié de l'écran (ou tout le contenu s'il est plus petit)
     const nx=Math.min(W*.5,(R-L)*.7), ny=Math.min(H*.5,(Bo-T)*.7); // zoomé ou dézoomé, les éléments peuvent sortir sur les côtés, jamais plus de la moitié
