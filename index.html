@@ -281,6 +281,11 @@ html.cvs .scrollhint{display:flex}
 .scrollhint b{width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-10px;opacity:calc(.35 + var(--pg,0)*.65)}
 .scrollhint:hover,.scrollhint.shgo{color:#564FFF}
 @keyframes shIn{to{opacity:var(--sh,1)}}
+/* incitation : tant qu'on n'a pas scrollé, la barre glisse un peu vers le bas et revient, et son remplissage pointe le bout du nez */
+.scrollhint:not(.shgo) i{animation:shNudge 2.6s cubic-bezier(.45,0,.25,1) 5s infinite}
+.scrollhint:not(.shgo) i::after{animation:shPeek 2.6s cubic-bezier(.45,0,.25,1) 5s infinite}
+@keyframes shNudge{0%,55%,100%{transform:translateY(0)}68%{transform:translateY(14px)}80%{transform:translateY(0)}88%{transform:translateY(6px)}}
+@keyframes shPeek{0%,55%,100%{height:14px}68%{height:46px}84%{height:14px}}
 @keyframes shRun{to{top:100%}}
 html body .scrollhint{color:#202020}html body .scrollhint:hover,html body .scrollhint.shgo{color:#564FFF}
 html.src body .scrollhint{color:#cfd3dc}html.src .scrollhint i{background:#2a2d35;box-shadow:none}html.src body .scrollhint.shgo{color:#7aa2ff}
