@@ -223,7 +223,8 @@ body.is-canvas::before{display:none}
 .lv{position:absolute;left:0;top:0;width:100%;z-index:2;overflow:hidden;background:#fff;opacity:0;filter:blur(6px);transition:opacity 1.8s cubic-bezier(.4,0,.2,1),filter 1.8s cubic-bezier(.4,0,.2,1)}
 .lv.ready{opacity:1;filter:none}
 .lv iframe{width:1440px;height:900px;border:0;transform-origin:0 0;display:block;pointer-events:none}
-.node.using .lv iframe{pointer-events:auto}
+.node.using .lv iframe,.node.on .lv.ready iframe{pointer-events:auto} /* calque sélectionné = site utilisable ; on le déplace par sa barre du haut */
+.node.on .clh{cursor:grab}
 .node.using .clic [data-cl=play]{background:rgba(13,153,255,.16)}
 /* calque de code (sites live) */
 .frame .fb.cl{background:#e2e2e2;border:1px solid rgba(32,32,32,.08);border-radius:14px;padding:0 10px 10px;box-shadow:0 22px 50px rgba(32,32,32,.14);overflow:visible;outline:none}
