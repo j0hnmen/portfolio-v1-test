@@ -676,6 +676,11 @@ html,body{overflow-x:clip}
 .menu .radio{background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .menu::before,.vmenu::before{content:"";position:absolute;inset:auto 0 0 0;height:62%;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(86,79,255,0) 0%,rgba(86,79,255,.05) 14%,rgba(86,79,255,.16) 30%,rgba(86,79,255,.34) 48%,rgba(86,79,255,.58) 66%,rgba(86,79,255,.82) 84%,#564FFF 100%)}
 .menu .links a,.vmenu .vlinks a{color:#fff}
+
+/* burger : écarts égaux entre les 4 lignes (la ligne Assets OS est un logo, elle remontait trop bas) */
+.menu nav > .mk-aos,.vmenu .mk-aos{translate:0 -5px}
+.menu nav > :nth-child(3),.vmenu nav > :nth-child(3){translate:0 -2px}
+.menu nav > :nth-child(4),.vmenu nav > :nth-child(4){translate:0 -1px}
 /* ===== 4 styles + légende, partout =====
    H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · Légende 13 (eyebrow en capitales bleues, notes) */
 .abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
