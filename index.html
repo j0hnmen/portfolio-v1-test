@@ -259,7 +259,8 @@ html.src .backcv{background:#1b1d22;color:#cfd3dc;font-family:ui-monospace,SFMon
 /* mobile : l'en-tête garde la mise en page du canvas mais n'est pas manipulable */
 @media (max-width:760px){html.cvs .cv{pointer-events:none;touch-action:auto}html.cvs .cv .node.frame{pointer-events:auto;touch-action:pan-y;cursor:pointer}html.cvs .cv .node .hd,html.cvs .cv .node .rz,html.cvs .cv .node .dim{display:none!important}html body .tools,html body .cvhint{display:none!important}html body .scrollhint{display:none!important}}
 /* canvas simplifié : pas de barre d'outils ; prompt box en bas au centre, qui glisse en bas à droite (et le space invader apparaît) quand on descend vers la section 1 */
-html body .tools{display:none!important}
+html body .tools{top:20px;bottom:auto} /* barre d’outils revenue, en haut au centre ; l’indication passe dessous */
+html body .cvhint{top:84px}
 @media (min-width:761px){
   html.cvs .pbox{transition:transform 1s ease-in-out}
   html.cvs body.attop .pbox{transform:translateX(calc(-1 * ((100vw - 400px) / 2 - 36px)))}
@@ -1051,7 +1052,7 @@ const CV=(function(){
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
-    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'0 140px',1],['#tools',3450,'0 18px',0]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'0 140px',1],['#tools',3450,'0 -24px',0]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
   cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
