@@ -334,3 +334,4 @@ html.src .gradtx{background:none;color:var(--c-acc)!important;-webkit-text-fill-
 /* home : dans la tuile AssetsOS, le logo est calé en haut à gauche (pas centré verticalement) */
 #aos .aoscard{align-items:start!important}
 #aos .aoscard .aosl{align-self:start;padding-top:clamp(4px,1vw,16px)}
+.aoscard .sysl li:last-child b::before{position:absolute;left:50%;top:50%;translate:-50% -50%;margin:0} /* coche parfaitement centrée */
