@@ -940,18 +940,14 @@ const CV=(function(){
     // le sous-titre entouré
     ink('Scribble',-385,198,770,112,-1.5,'M70,22 C200,6 380,4 520,10 C660,16 712,38 700,66 C688,98 470,106 300,102 C130,98 10,86 14,60 C18,40 40,30 96,20');
     // « hello! » au-dessus du nom
-    ink('Note',-520,-370,240,90,-8,'M14,74 C70,62 150,62 214,70','#554FFF',5,note('hello!',18,52,46));
-    // Sport [Gen] coché
-    ink('Scribble',710,-708,70,60,0,'M6,32 L26,54 L64,6',IB,5);
+    ink('Note',-560,-150,240,90,-8,'M14,74 C70,62 150,62 214,70','#554FFF',5,note('hello!',18,52,46));
     // flèche vers L'Atelier Figma
-    ink('Arrow',260,-1000,230,170,0,'M220,24 C150,6 60,30 28,140 M28,140 L18,104 M28,140 L58,118',IK,5,note('latest',120,40,46,IK));
+    ink('Arrow',236,-930,270,150,0,'M92,60 C62,70 40,98 28,138 M28,138 L18,112 M28,138 L50,120',IK,5,note('latest',100,56,46,IK));
     // le post-it Konami entouré + « try it! »
     ink('Scribble',-1262,262,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22');
     ink('Note',-1250,150,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IB,5,note('try it!',6,56,46));
     // calque de code : « click me » avec flèche
     ink('Arrow',935,360,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
-    // ondulation entre Filly et Figma's ABC
-    ink('Scribble',260,840,220,40,-3,'M6,24 C26,4 40,4 52,22 C64,40 80,40 94,22 C108,4 124,4 136,22 C148,40 164,40 178,22 C192,4 206,6 214,18',IK,5);
     // double soulignement sous la note
     ink('Scribble',1000,-366,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IB,5);
     center(); }
@@ -986,6 +982,7 @@ const CV=(function(){
     if(n&&(t.classList.contains('rot')||t.hasAttribute('data-rz'))){ act={k:'rot',n,a0:Math.atan2(w.y-(n.y+n.h/2),w.x-(n.x+n.w/2))*180/Math.PI-n.r}; return; }
     if(n&&t.dataset.h){ const h=t.dataset.h, sx=h.includes('e')?1:-1, sy=h[0]==='s'?1:-1, a=n.r*Math.PI/180, c=Math.cos(a), si=Math.sin(a), lx=-sx*n.w/2, ly=-sy*n.h/2;
       act={k:'size',n,sx,sy,c,si,ax:n.x+n.w/2+lx*c-ly*si,ay:n.y+n.h/2+lx*si+ly*c}; return; }
+    if(n&&n===sel&&n.el.querySelector('.lv.ready')&&t.closest('.clb')){ liveUse(n); return; } // 2e clic sur un calque sélectionné = on utilise le site
     if(n){ const now=performance.now(); if(n.type==='frame'&&lastN===n&&now-lastT<380&&!n.el.querySelector('.cl')){ lastN=null; openProject(n.pi,null); return; } lastN=n; lastT=now; select(n); act={k:'move',n,ox:w.x-n.x,oy:w.y-n.y,sx:e.clientX,sy:e.clientY,t:now}; return; }
     select(null); pan(); });
   cv.addEventListener('pointermove',e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
