@@ -829,3 +829,12 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .cs-src.emit{animation:csemit .45s cubic-bezier(.3,1.6,.5,1)}
 @keyframes csemit{30%{scale:1.025}}
 .page .cs-src::after{transition:box-shadow .45s}
+
+/* ===== offre de lancement −10 % ===== */
+.page .lo{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:999px;background:#FFE45C;color:#202020;font:400 13px/1 var(--text);letter-spacing:0;text-transform:none;white-space:nowrap;vertical-align:middle;box-shadow:0 6px 14px -8px rgba(180,150,0,.6);rotate:-3deg}
+.page .price{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px}
+.page .price .lo{margin-left:4px}
+.page s.was{font-size:.48em;font-weight:600;color:#9a9a9a;text-decoration-thickness:2px;text-decoration-color:#564FFF;margin-right:.35em;vertical-align:.45em}
+#moment .pr .lo{order:3;margin:10px 0 0}
+#moment .pr>.d{display:flex!important;align-items:baseline}
+#moment .pr s.was{color:rgba(243,242,238,.5)}
