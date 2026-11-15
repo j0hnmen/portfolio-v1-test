@@ -681,14 +681,18 @@ html,body{overflow-x:clip}
 .menu nav > .mk-aos,.vmenu .mk-aos{translate:0 -5px}
 .menu nav > :nth-child(3),.vmenu nav > :nth-child(3){translate:0 -2px}
 .menu nav > :nth-child(4),.vmenu nav > :nth-child(4){translate:0 -1px}
+
+.brand .logo{overflow:visible}
 /* ===== 4 styles + légende, partout =====
-   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · Légende 13 (eyebrow en capitales bleues, notes) */
+   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · En-tête (eyebrow) 16 · Légende 13 */
 .abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
 .aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
 .abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.ctc b,.hsub .sub,.hero .sub,section p.sub{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.02!important}
 .abt .abtlead,.aossub,.abld,.ctl,.intro,.aosx .fcd,.fcd,.aoscard .sysl li,.aosx .sysl li,.sysl li,.abrows span,.abcols p{font-size:20px!important;line-height:1.45!important}
 .aosx .tlx,.tlx{font-size:16px!important;line-height:1.45!important}
-.eb,.aosx .eb,.whead .eb,.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+/* en-têtes (eyebrows) : 16 px, comme avant */
+.eb,.aosx .eb,.whead .eb{font-size:16px!important;line-height:1.3!important}
 /* composants (pas des styles de texte) */
 .abtb,.aoscta,.pill,.aosx .pill,.ctopts a,.ctopts button{font-size:16px!important}
 .svc,.ctp{font-size:20px!important}
@@ -696,15 +700,110 @@ html,body{overflow-x:clip}
 html,body{overscroll-behavior-x:none}
 /* page Assets OS + reste : ramenés sur les mêmes styles */
 .mrow b.d,.mrow b.d span{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
-.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.price > span,.pr .d,.pr,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
+.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
 .ctc b{font-family:var(--display,"Mozer DA","Mozer"),sans-serif!important;font-weight:800!important;text-transform:uppercase}
-.hl,.hsub .hl,p.hl,.oneh,p.oneh,.sk summary .tx,summary .tx,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
+.hl,.hsub .hl,p.hl,.oneh,p.oneh,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
 .oneh small.pz{font-size:13px!important}
 li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.dt,p.dt,.dw p,.dw p span{font-size:16px!important;line-height:1.45!important}
 .note,p.note,.osub,p.osub,.av,.meta .dl,.dl,.tipbox,.badge,.ax,.il,.bar .lb em,.lb em{font-size:13px!important;line-height:1.4!important}
 .tld,.bar .lb,span.lb{font-size:20px!important}
-.price .fro,.price .fro span{font-size:13px!important}
 .tld,.bar .lb,span.lb{font-size:20px!important}
+
+/* liste « What does your Claude skill do » : en H3 (taille), comme avant */
+.sk summary .tx,summary .tx{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.2!important}
+/* ===== rythme vertical commun (toutes les pages) ===== */
+.eb{margin-bottom:18px!important}
+.abtlead,.abld,.ctl{max-width:46ch!important;margin-top:clamp(32px,4.4vh,48px)!important}
+.abtcta,.abhero .abtcta,.ctin .ctopts{margin-top:clamp(36px,4.8vh,52px)!important}
+.svcs{margin-top:clamp(36px,4.8vh,52px)!important;gap:10px!important}
+.abt .svcs,.abhero .svcs{max-width:1240px!important}
+/* frise : plus d'air partout (home, About, Assets OS) */
+.tl2{margin-top:clamp(64px,9vh,104px)!important;column-gap:40px!important}
+.tl2 .thd{margin-top:26px!important}
+.tl2 .tlx{margin-top:16px!important;max-width:24ch}
+.tl2 .tfof{margin-top:14px!important}
+.intro,.intro.big,p.intro{max-width:34ch}
+/* prix : on garde leurs tailles d'origine (chiffres, pas des titres) */
+.aost.seen .sysl li:nth-child(1){transition-delay:.85s}
+.aost.seen .sysl li:nth-child(2){transition-delay:.95s}
+.aost.seen .sysl li:nth-child(3){transition-delay:1.05s}
+.aost .chat .ex{transition-delay:calc(var(--i)*1.1s + .9s)}
+.aost .chat .ex .cl{transition-delay:calc(var(--i)*1.1s + 1.45s)}
+.aost .chat .you{transform:scale(.6);transform-origin:100% 100%;opacity:0;transition:transform .55s cubic-bezier(.3,1.6,.5,1),opacity .25s;transition-delay:inherit}
+.aost .chat .ex{transition-property:opacity}
+.aost.seen .chat .you{transform:none;opacity:1}
+.aost .chat .cl .av{transform:scale(0);transition:transform .45s cubic-bezier(.3,1.6,.5,1);transition-delay:inherit}
+.aost.seen .chat .cl .av{transform:none}
+.aost .chat .th{transform:scale(.3) translateY(10px);opacity:0;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .3s}
+.aost.seen .chat .ex .th{transform:none;opacity:1}
+.aost .chat .ex .th:nth-child(1){transition-delay:calc(var(--i)*1.1s + 1.6s)}
+.aost .chat .ex .th:nth-child(2){transition-delay:calc(var(--i)*1.1s + 1.7s)}
+.aost .chat .ex .th:nth-child(3){transition-delay:calc(var(--i)*1.1s + 1.8s)}
+.aost .chat .ex .th:nth-child(4){transition-delay:calc(var(--i)*1.1s + 1.9s)}
+.aost .chat .ok{transform:scale(.4);opacity:0;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .3s;transition-delay:calc(var(--i)*1.1s + 2s)}
+.aost.seen .chat .ok{transform:none;opacity:1}
+.aost .chat .ex[style*="--i:0"] .ok{transition-delay:2s}
+.aost .chat .ex[style*="--i:1"] .ok{transition-delay:3.1s}
+.aost .chat .ex[style*="--i:2"] .ok{transition-delay:4.2s}
+/* la conversation se rejoue toute seule */
+.aost.seen .chat.replay .ex,.aost.seen .chat.replay .ex .cl,.aost.seen .chat.replay .you,.aost.seen .chat.replay .th,.aost.seen .chat.replay .ok,.aost.seen .chat.replay .av{opacity:0!important;transition:none!important}
+.aost.seen .chat.replay .you{transform:scale(.6)!important}
+.aost.seen .chat.replay .th{transform:scale(.3)!important}
+.aost.seen .chat.replay .av{transform:scale(0)!important}
+.aoswins{position:relative;padding:0}
+.aoswins .chat{position:relative;z-index:2}
+.figwin{position:absolute;left:8%;right:-30px;bottom:-150px;z-index:3;background:#2c2c2c;border-radius:16px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(32,32,32,.6);transform:rotate(-1.5deg)}
+.fghead{display:flex;align-items:center;gap:10px;height:34px;padding:0 12px;background:#1f1f1f;border-bottom:1px solid #3a3a3a}
+.fghead .dots{display:flex;gap:5px}
+.fghead .dots i{width:8px;height:8px;border-radius:50%;background:#4a4a4a}
+.fgw{height:11px;width:auto;filter:invert(1);opacity:.9}
+.fgfile{margin-left:auto;font:500 10px/1 Inter,system-ui,sans-serif;color:#a9a9a9}
+.fgbody{display:flex;height:250px}
+.fglayers{width:22%;padding:10px 8px;border-right:1px solid #3a3a3a;display:flex;flex-direction:column;gap:7px}
+.fglayers b{height:6px;width:60%;border-radius:2px;background:#5a5a5a;margin-bottom:4px}
+.fglayers i{height:5px;border-radius:2px;background:#444}
+.fglayers i:nth-child(odd){width:80%}
+.fglayers i.on{background:#564FFF}
+.fgcanvas{position:relative;flex:1;background:#e9e9ec}
+.fgf{position:absolute;border-radius:4px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.fgf span{position:absolute;left:12%;right:30%;bottom:14%;height:9%;border-radius:2px;background:rgba(255,255,255,.9)}
+.fgf em{position:absolute;left:12%;top:14%;width:34%;height:8%;border-radius:2px;background:rgba(255,255,255,.55)}
+.fg1{left:6%;top:10%;width:28%;height:40%;background:#564FFF}
+.fg2{left:38%;top:10%;width:16%;height:56%;background:#202020}
+.fg3{left:58%;top:10%;width:34%;height:27%;background:#3BE9CE}
+.fg3 span{background:#202020}
+.fg3 em{background:rgba(32,32,32,.4)}
+.fg4{left:58%;top:42%;width:34%;height:27%;background:#FFF186}
+.fg4 span{background:#202020}
+.fg4 em{background:rgba(32,32,32,.35)}
+.fgsel{position:absolute;left:calc(6% - 3px);top:calc(10% - 3px);width:calc(28% + 6px);height:calc(40% + 6px);border:1.5px solid #0D99FF;pointer-events:none}
+.fgsel i{position:absolute;width:6px;height:6px;background:#fff;border:1.5px solid #0D99FF}
+.fgsel i:nth-child(1){left:-4px;top:-4px}
+.fgsel i:nth-child(2){right:-4px;top:-4px}
+.fgsel i:nth-child(3){left:-4px;bottom:-4px}
+.fgsel i:nth-child(4){right:-4px;bottom:-4px}
+.aost .figwin{transform:translateY(calc(100% + 260px)) rotate(-1.5deg);transition:transform 1.1s cubic-bezier(.2,.9,.2,1) 3.7s}
+.aost.seen .figwin{transform:rotate(-1.5deg)}
+.aost .fgf{opacity:0;transform:scale(.6);transition:opacity .3s,transform .55s cubic-bezier(.3,1.6,.5,1)}
+.aost.seen .fgf{opacity:1;transform:none}
+.aost.seen .fg1{transition-delay:4.6s}
+.aost.seen .fg2{transition-delay:5.05s}
+.aost.seen .fg3{transition-delay:5.5s}
+.aost.seen .fg4{transition-delay:5.9s}
+.aost .fgsel{opacity:0;transition:opacity .3s 4.9s}
+.aost.seen .fgsel{opacity:1;animation:fgselmove 2.2s cubic-bezier(.65,0,.35,1) 5.2s 1 both}
+.figwin{left:4%;right:-10px}
+@keyframes fgselmove{0%{left:calc(6% - 3px);top:calc(10% - 3px);width:calc(28% + 6px);height:calc(40% + 6px)}33%{left:calc(38% - 3px);top:calc(10% - 3px);width:calc(16% + 6px);height:calc(56% + 6px)}66%{left:calc(58% - 3px);top:calc(10% - 3px);width:calc(34% + 6px);height:calc(27% + 6px)}100%{left:calc(58% - 3px);top:calc(42% - 3px);width:calc(34% + 6px);height:calc(27% + 6px)}}
+/* page Assets OS : même écran Claude + Figma que la tuile de la home */
+.aost:not(.seen) .chat .ex,.aost:not(.seen) .chat .ex .cl{opacity:0}
+.aost .chat .ex,.aost .chat .ex .cl{transition:opacity .6s}
+.aost .aoswins{opacity:0;transform:translateX(50px) rotate(1.5deg);transition:opacity .8s .3s,transform 1.1s cubic-bezier(.2,.9,.2,1) .3s}
+.aost.seen .aoswins{opacity:1;transform:none}
+#system .aoswins{margin-bottom:120px}
+#system .figwin{bottom:-110px}
+#system{overflow:hidden}
+.aost .sysl li{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .8s cubic-bezier(.2,.9,.2,1)}
+.aost.seen .sysl li{opacity:1;transform:none}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
@@ -758,13 +857,15 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 .abcols p{margin:12px 0 0;font-size:18px;line-height:1.4;color:#2a2a2a}
 @media (max-width:900px){.abhero{grid-template-columns:1fr;min-height:auto}.abstack{height:420px}.abrows li{grid-template-columns:1fr;gap:6px}.abcols{grid-template-columns:1fr}.abcols>div{border-right:0;margin-right:0;padding-right:0}}
 /* ===== 4 styles + légende, partout =====
-   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · Légende 13 (eyebrow en capitales bleues, notes) */
+   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · En-tête (eyebrow) 16 · Légende 13 */
 .abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
 .aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
 .abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.ctc b,.hsub .sub,.hero .sub,section p.sub{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.02!important}
 .abt .abtlead,.aossub,.abld,.ctl,.intro,.aosx .fcd,.fcd,.aoscard .sysl li,.aosx .sysl li,.sysl li,.abrows span,.abcols p{font-size:20px!important;line-height:1.45!important}
 .aosx .tlx,.tlx{font-size:16px!important;line-height:1.45!important}
-.eb,.aosx .eb,.whead .eb,.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+/* en-têtes (eyebrows) : 16 px, comme avant */
+.eb,.aosx .eb,.whead .eb{font-size:16px!important;line-height:1.3!important}
 /* composants (pas des styles de texte) */
 .abtb,.aoscta,.pill,.aosx .pill,.ctopts a,.ctopts button{font-size:16px!important}
 .svc,.ctp{font-size:20px!important}
@@ -772,15 +873,30 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 html,body{overscroll-behavior-x:none}
 /* page Assets OS + reste : ramenés sur les mêmes styles */
 .mrow b.d,.mrow b.d span{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
-.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.price > span,.pr .d,.pr,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
+.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
 .ctc b{font-family:var(--display,"Mozer DA","Mozer"),sans-serif!important;font-weight:800!important;text-transform:uppercase}
-.hl,.hsub .hl,p.hl,.oneh,p.oneh,.sk summary .tx,summary .tx,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
+.hl,.hsub .hl,p.hl,.oneh,p.oneh,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
 .oneh small.pz{font-size:13px!important}
 li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.dt,p.dt,.dw p,.dw p span{font-size:16px!important;line-height:1.45!important}
 .note,p.note,.osub,p.osub,.av,.meta .dl,.dl,.tipbox,.badge,.ax,.il,.bar .lb em,.lb em{font-size:13px!important;line-height:1.4!important}
 .tld,.bar .lb,span.lb{font-size:20px!important}
-.price .fro,.price .fro span{font-size:13px!important}
 .tld,.bar .lb,span.lb{font-size:20px!important}
+
+/* liste « What does your Claude skill do » : en H3 (taille), comme avant */
+.sk summary .tx,summary .tx{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.2!important}
+/* ===== rythme vertical commun (toutes les pages) ===== */
+.eb{margin-bottom:18px!important}
+.abtlead,.abld,.ctl{max-width:46ch!important;margin-top:clamp(32px,4.4vh,48px)!important}
+.abtcta,.abhero .abtcta,.ctin .ctopts{margin-top:clamp(36px,4.8vh,52px)!important}
+.svcs{margin-top:clamp(36px,4.8vh,52px)!important;gap:10px!important}
+.abt .svcs,.abhero .svcs{max-width:1240px!important}
+/* frise : plus d'air partout (home, About, Assets OS) */
+.tl2{margin-top:clamp(64px,9vh,104px)!important;column-gap:40px!important}
+.tl2 .thd{margin-top:26px!important}
+.tl2 .tlx{margin-top:16px!important;max-width:24ch}
+.tl2 .tfof{margin-top:14px!important}
+.intro,.intro.big,p.intro{max-width:34ch}
+/* prix : on garde leurs tailles d'origine (chiffres, pas des titres) */
 </style>
 </head>
 <body id="top">
