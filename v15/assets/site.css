@@ -1152,8 +1152,8 @@ body:has(.case.on) .modes:not(:where(.page *:not(.aosx,.aosx *))),body:has(.view
 body.keepstage .hud:not(:where(.page *:not(.aosx,.aosx *))){display:block!important}
 .list .peek:not(:where(.page *:not(.aosx,.aosx *))){position:fixed;z-index:0!important;pointer-events:none}
 .list button:not(:where(.page *:not(.aosx,.aosx *))){position:relative;z-index:1}
-.list button:not(:where(.page *:not(.aosx,.aosx *))){opacity:.8!important}
-.list button:hover:not(:where(.page *:not(.aosx,.aosx *))){opacity:1!important}
+#list button{opacity:.8} /* sans !important : sinon les animations d'entrée/sortie des noms ne peuvent pas agir sur l'opacité */
+#list button:hover{opacity:1}
 .bluebg:not(:where(.page *:not(.aosx,.aosx *)))::after{content:"";position:absolute;inset:0;background:url(../img/paper.webp) center top/cover no-repeat;mix-blend-mode:multiply;opacity:.6}
 .aoscard .aossub:not(:where(.page *:not(.aosx,.aosx *))){margin-top:clamp(44px,5.5vh,60px)!important}
 .toast:not(:where(.page *:not(.aosx,.aosx *))){background:#fff!important;color:var(--ink)!important;font:800 18px/1 var(--display)!important;text-transform:uppercase;letter-spacing:.02em;padding:11px 16px!important;border-radius:999px 999px 999px 6px!important;box-shadow:0 0 0 1px rgba(32,32,32,.06),0 14px 30px -12px rgba(32,32,32,.35);display:flex;align-items:center;gap:8px}

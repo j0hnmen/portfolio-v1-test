@@ -147,7 +147,7 @@ const CV=(function(){
     GLY.N.forEach((line,li)=>{ const x0=-GLY.W[li]*K/2, y0=top+li*(CAP+LG);
       line.forEach(([ch,x,w,h,bx,by,d])=>{ NAME.push(add({type:'path',cls:'vec glyph',name:ch,x:x0+x*K,y:y0+(688-by)*K,w:w*K,h:h*K,r:0,
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#202020"/></svg>`})); }); });
-    { const [d,bx,by,w,h]=GLY.S, k=28/h, W=w*k; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-W/2,y:top+CAP*2+LG+92,w:W,h:46,r:0,
+    { const [d,bx,by,w,h]=GLY.S, k=28/h, W=w*k; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-W/2,y:top+CAP*2+LG+60,w:W,h:46,r:0,
         html:`<span class="subtxt">AI Creative Designer</span>`})); } /* sous-titre en style en-tête (Akke, casse normale) */
     P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
       html:p.link?`<div class="fb cl"><div class="livetag" aria-hidden="true"><i></i>Live</div><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
@@ -385,7 +385,7 @@ function openProject(i,el){ target=Math.round(target)+(mod(i-Math.round(target)+
   let hist='', on=false, filled=false, tT;
   const t=$('#srctoast'), bg=$('#srcbg');
   const say=h=>{ t.innerHTML=h; t.classList.add('on'); clearTimeout(tT); tT=setTimeout(()=>t.classList.remove('on'),3200); };
-  function toggle(){ on=!on; document.documentElement.classList.toggle('src',on); CV.src(on);
+  function toggle(){ on=!on; document.documentElement.classList.toggle('src',on); if(on) document.documentElement.classList.remove('blueon','endblue'); /* en mode console, pas de fond bleu plein écran */ CV.src(on);
     if(on&&!filled){ filled=true; const src=document.documentElement.outerHTML.replace(/<div class="srcbg"[\s\S]*?<\/div>/,''); const d=document.createElement('div'); d.textContent=src+'\n\n'+src; bg.appendChild(d);
       ['#case','#viewer'].forEach(q=>{ const host=$(q); if(!host) return; const c=bg.cloneNode(true); c.removeAttribute('id'); c.classList.add('clone'); host.insertBefore(c,host.firstChild); }); }
     // la bulle reste affichée tant que le mode console est actif, et sert de bouton pour en sortir
@@ -411,4 +411,4 @@ document.getElementById('scrollHint').addEventListener('click',()=>{ const pr=do
  addEventListener('load',()=>setTimeout(H,60)); addEventListener('hashchange',H);
  document.querySelectorAll('a[href="#about"]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); closeTop(); goAbout(); })); }
 { const A=()=>document.documentElement.classList.add('cornin'); if(location.hash==='#work'||matchMedia('(max-width:760px)').matches) A(); setTimeout(A,2600); }
-{ const a=document.getElementById('about'); if(a&&'IntersectionObserver' in window) new IntersectionObserver(es=>{ document.documentElement.classList.toggle('blueon',es[0].isIntersecting&&document.documentElement.classList.contains('cvs')); },{rootMargin:'-38% 0px -38% 0px'}).observe(a.querySelector('section')||a); }
+{ const a=document.getElementById('about'); if(a&&'IntersectionObserver' in window) new IntersectionObserver(es=>{ document.documentElement.classList.toggle('blueon',es[0].isIntersecting&&document.documentElement.classList.contains('cvs')&&!document.documentElement.classList.contains('src')); },{rootMargin:'-38% 0px -38% 0px'}).observe(a.querySelector('section')||a); }

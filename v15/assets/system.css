@@ -64,7 +64,10 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 .mono:hover,.vmono:hover{transform:scale(1.04)!important}
 .svc:hover .svi,a.ctc:hover .cti{transform:scale(1.06)!important}
 /* logo AssetsOS dans la frise et dans le burger : ASSETS + signature en noir */
-.tlogo.aos,.aosx .tlogo.aos,.aosx .tli.on .tlogo.aos,.tli.on .tlogo.aos,.mk-aos .mlogo,.mk-aos:hover .mlogo{color:var(--ink)!important} /* burger : ASSETS bleu (dans le SVG), signature noire */
+.tlogo.aos,.aosx .tlogo.aos,.aosx .tli.on .tlogo.aos,.tli.on .tlogo.aos,.mk-aos .mlogo,.mk-aos:hover .mlogo{color:var(--ink)!important}
+/* burger : au survol, ASSETS passe en bleu (la signature reste noire) */
+.mk-aos .mlogo>path:first-child{transition:fill .25s}
+.mk-aos:hover .mlogo>path:first-child,.mk-aos:focus-visible .mlogo>path:first-child{fill:#564FFF}
 /* « Back to the canvas » : discret (pilule translucide, petit) */
 .backcv{height:34px;padding:0 14px 0 11px!important;gap:6px!important;border-radius:999px!important;font:400 14px/1 var(--text)!important;letter-spacing:0!important;color:rgba(32,32,32,.75)!important;background:rgba(255,255,255,.55)!important;box-shadow:0 0 0 1px rgba(32,32,32,.08)!important}
 .backcv:hover{color:var(--ink)!important;background:rgba(255,255,255,.8)!important}
@@ -109,3 +112,38 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 
 /* ===== mobile : « Back to the canvas » masqué (il passait sous la barre du haut) ===== */
 @media (max-width:760px){.backcv{display:none!important}}
+
+/* ===== prompt box : une seule taille (celle de la home après scroll), sauf la home en haut avec ses outils ===== */
+@media (min-width:761px){
+  html.pg .pbox,html.pg body.attop .pbox,html.wkpg .pbox,html:not(.cvs) body:not(.is-canvas) .pbox{left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:480px!important}
+}
+
+/* ===== dégradé bleu du bouton (Figma 801-3405) : #5751FF → #1C14F2, de haut en bas ===== */
+:root{--grad-blue:linear-gradient(180deg,#5751FF 0%,#1C14F2 100%)}
+/* « OS » de chaque logo AssetsOS */
+:is(.endlogo,.aoslogo,.mlogo,.tlogo,.page .logo) path:is([fill="#564FFF"],[fill="#564fff"]):not(.lgtag *){fill:url(#osgrad)}
+/* bille de la frise */
+.tl2 .tball{background:var(--grad-blue)!important}
+
+/* ===== mode console (Konami) : surfaces sombres, textes clairs, rien d'illisible ===== */
+html.src{--srcbg:#14131c;--srcsurf:#1c1b26;--srcline:rgba(233,231,242,.14);--srctx:#e9e7f2;--srcdim:rgba(233,231,242,.62)}
+html.src .bluebg{opacity:0!important}
+/* surfaces claires -> sombres */
+html.src :is(.svc,.aoscard,.aosx .chat,.figwin,.fcap,.toast,.btn-2,.pill.o,.abtb2){background:var(--srcsurf)!important;color:var(--srctx)!important;box-shadow:inset 0 0 0 1px var(--srcline)!important}
+html.src .aoscard{background:linear-gradient(180deg,var(--srcsurf) 45%,#2a2580 100%)!important}
+html.src :is(.btn:not(.btn-2),.pill:not(.o),.abtb1,.aoscta,.vbook){background:var(--srctx)!important;color:#14131c!important}
+/* textes sombres -> clairs */
+html.src :is(.svc,.svc *,.aoscard :is(p,li,span,b),.aosx .chat :is(div,p,span,b),.tlx,.thd,.tfof,.tld,.flinks a,.flinks a span,.fcap *,.fcd,.fct,.toast,.aoswho :is(p,span,small),.end .h,.end .h span:not(.mark)):not(.eb,.eb *,.aoscta,.aoscta *,.tli.on .tlx,.tli.on .tlx *){color:var(--srctx)!important}
+html.src :is(.tfof,.aosx .chat small,.aosx .chat em){color:var(--srcdim)!important}
+html.src .aosx .chat :is(.you,.m.u,.u){background:#2b2a37!important;color:var(--srctx)!important}
+/* logos et grand AssetsOS : ASSETS clair, OS reste en dégradé bleu */
+html.src :is(.endbig,.aoslogo,.tlogo.aos,.mlogo,.flogo){color:var(--srctx)!important}
+html.src .aoswho img.tlogo{filter:brightness(0) invert(.92)}
+html.src .aoswho .tfof img{filter:none}
+html.src .tl2 .tdot{background:var(--srcbg)!important;box-shadow:inset 0 0 0 2px var(--srctx)!important}
+html.src .tl2.tlfx .tli.past .tdot{background:#564FFF!important;box-shadow:inset 0 0 0 2px #564FFF!important}
+html.src .tl2::before,html.src .tl2 .tln{background:var(--srcline)!important}
+html.src .aoscta,html.src .aoscta *{color:#14131c!important}
+html.src .aosx .chat .chead{background:var(--srcsurf)!important;border-color:var(--srcline)!important}
+html.src .aosx .chat .chead *{color:var(--srcdim)!important}
+html.src .sysl b{background:transparent!important;color:var(--srctx)!important;box-shadow:inset 0 0 0 1.5px var(--srctx)!important}

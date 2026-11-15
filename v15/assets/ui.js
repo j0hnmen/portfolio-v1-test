@@ -36,7 +36,7 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   const draw=(dur,from,to,ease)=>{ if(an) an.cancel(); an=p.animate([{strokeDashoffset:from},{strokeDashoffset:to}],{duration:dur,easing:ease,fill:'both'}); return an.finished; };
   p.style.strokeDashoffset=1; setTimeout(()=>draw(1700,1,0,'cubic-bezier(.65,0,.35,1)').then(()=>busy=false),delay);
   h.addEventListener('mouseenter',()=>{ if(busy) return; busy=true; draw(650,0,1,'cubic-bezier(.55,0,.75,.4)').then(()=>draw(1500,1,0,'cubic-bezier(.65,0,.35,1)')).then(()=>busy=false).catch(()=>busy=false); }); };
-SIG(document.getElementById('home'),(location.hash==='#work'||window.WORKPAGE)?150:1800); SIG(document.querySelector('.vmono'),150); }
+SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150); }
 { const lg=document.querySelector('.aoslogo.sigm'), sec=lg&&lg.closest('.aost'); if(lg){ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const play=()=>{ lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); setTimeout(()=>lg.classList.add('sigok'),1780); };
   if(rm) lg.classList.add('sigok'); else new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ setTimeout(play,500); o.disconnect(); } },{threshold:.25}).observe(sec);
@@ -63,7 +63,7 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
     if(!document.querySelector('.bluebg')){ const b=document.createElement('div'); b.className='bluebg'; b.setAttribute('aria-hidden','true'); document.body.prepend(b); }
     if(!window.WORKPAGE) H.classList.add('bluepg');
     /* bleu seulement quand la section occupe vraiment l'écran (sinon la FAQ ou la frise passaient en bleu) */
-    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; H.classList.toggle('endblue',r.top<=v*.3&&r.bottom>=v*.7); };
+    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; H.classList.toggle('endblue',r.top<=v*.3&&r.bottom>=v*.7&&!H.classList.contains('src')); };
     addEventListener('scroll',()=>{ if(!tkb) tkb=requestAnimationFrame(blue); },{passive:true}); addEventListener('resize',blue); blue();
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
     const io=new IntersectionObserver(es=>{ if(!es[0].isIntersecting) return; io.disconnect(); sec.classList.add('es-lg');
@@ -76,8 +76,8 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
   const ol=document.querySelector('.tl2'), ball=ol&&ol.querySelector('.tball'); if(ol&&ball&&!RM){ const items=[...ol.querySelectorAll('.tli')]; let run=true, k=0;
     const fill=document.createElement('i'); fill.className='tlfill'; ol.appendChild(fill); ol.classList.add('tlfx');
     const xs=()=>{ const r=ol.getBoundingClientRect(); return items.map(it=>it.querySelector('.tdot').getBoundingClientRect().left-r.left); };
-    const mark=x=>{ const p=xs(); fill.style.width=Math.max(0,x)+'px'; items.forEach((it,j)=>it.classList.toggle('past',p[j]<x-3)); };
-    const show=i=>{ const x=xs()[i]; ball.style.transition='transform .55s cubic-bezier(.3,1.3,.5,1)'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='width .55s cubic-bezier(.3,1.1,.5,1)'; mark(x); items.forEach((it,j)=>it.classList.toggle('on',j===i)); };
+    const mark=x=>{ const p=xs(); fill.style.width=Math.max(0,x)+'px'; items.forEach((it,j)=>it.classList.toggle('past',p[j]<x+2)); };
+    const show=i=>{ const x=xs()[i]; ball.style.transition='transform .6s cubic-bezier(.65,0,.35,1)'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='width .6s cubic-bezier(.65,0,.35,1)'; /* sans rebond : la bille couvre toujours le rond */ mark(x); items.forEach((it,j)=>it.classList.toggle('on',j===i)); };
     ['mousemove','mouseover'].forEach(t=>ol.addEventListener(t,e=>{ if(run) e.stopImmediatePropagation(); },true));
     const follow=()=>{ if(run) return; const m=/translateX\(([-\d.]+)px\)/.exec(ball.style.transform||''); if(m){ fill.style.transition=ball.style.transition.replace('transform','width'); mark(+m[1]); } };
     ol.addEventListener('mousemove',()=>requestAnimationFrame(follow)); ol.addEventListener('mouseleave',()=>{ if(run) show(k); else setTimeout(follow,20); });
