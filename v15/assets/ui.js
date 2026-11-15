@@ -105,3 +105,4 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
     const bc=document.getElementById('backCv'); if(bc){ const t=[...bc.childNodes].find(n=>n.nodeType===3); if(t) t.nodeValue=fr?'Retour au canvas':'Back to the canvas'; }
     document.querySelectorAll('.stage .card .open').forEach(o=>{ const v=o.textContent; if(/images|images/.test(v)&&/see|voir/.test(v)) o.textContent=fr?'voir les images ↗':'see the images ↗'; else if(/project|projet/.test(v)) o.textContent=fr?'lire le projet ↓':'read the project ↓'; }); };
   new MutationObserver(swap).observe(H,{attributes:true,attributeFilter:['lang']}); swap(); }
+/*unboot*/requestAnimationFrame(()=>document.documentElement.classList.remove('boot'));
