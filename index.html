@@ -228,7 +228,7 @@ body.is-canvas::before{display:none}
 .node.on .clh{cursor:grab}
 .node.using .clic [data-cl=play]{background:rgba(13,153,255,.16)}
 /* badge « Live » au-dessus d'un calque de code activé */
-.livetag{position:absolute;left:6px;bottom:calc(100% + 12px);display:flex;align-items:center;gap:10px;font:700 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#EE3B2F;opacity:1;transform:none;transition:opacity .35s,transform .45s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.livetag{position:absolute;left:6px;bottom:calc(100% + 12px);display:flex;align-items:center;gap:10px;font:700 28px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#EE3B2F;opacity:1;transform:none;transition:opacity .35s,transform .45s cubic-bezier(.16,1,.3,1);pointer-events:none}
 .livetag i{width:11px;height:11px;border-radius:50%;background:#EE3B2F;box-shadow:0 0 0 0 rgba(238,59,47,.55);animation:livePulse 1.6s ease-out infinite}
 @keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(238,59,47,.55)}70%{box-shadow:0 0 0 10px rgba(238,59,47,0)}100%{box-shadow:0 0 0 0 rgba(238,59,47,0)}}
 /* gribouillis au feutre */
@@ -940,16 +940,16 @@ const CV=(function(){
     // le sous-titre entouré
     ink('Scribble',-385,198,770,112,-1.5,'M70,22 C200,6 380,4 520,10 C660,16 712,38 700,66 C688,98 470,106 300,102 C130,98 10,86 14,60 C18,40 40,30 96,20');
     // « hello! » au-dessus du nom
-    ink('Note',-520,-370,240,90,-8,'M14,74 C70,62 150,62 214,70','#554FFF',4,note('hello!',18,52,58));
+    ink('Note',-520,-370,240,90,-8,'M14,74 C70,62 150,62 214,70','#554FFF',5,note('hello!',18,52,46));
     // Sport [Gen] coché
-    ink('Scribble',710,-708,70,60,0,'M6,32 L26,54 L64,6',IB,7);
+    ink('Scribble',710,-708,70,60,0,'M6,32 L26,54 L64,6',IB,5);
     // flèche vers L'Atelier Figma
-    ink('Arrow',260,-1000,230,170,0,'M220,24 C150,6 60,30 28,140 M28,140 L18,104 M28,140 L58,118',IK,5,note('latest',120,40,40,IK));
+    ink('Arrow',260,-1000,230,170,0,'M220,24 C150,6 60,30 28,140 M28,140 L18,104 M28,140 L58,118',IK,5,note('latest',120,40,46,IK));
     // le post-it Konami entouré + « try it! »
     ink('Scribble',-1262,262,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22');
-    ink('Note',-1250,150,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IB,4,note('try it!',6,56,50));
+    ink('Note',-1250,150,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IB,5,note('try it!',6,56,46));
     // calque de code : « click me » avec flèche
-    ink('Arrow',935,360,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,42));
+    ink('Arrow',935,360,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
     // ondulation entre Filly et Figma's ABC
     ink('Scribble',260,840,220,40,-3,'M6,24 C26,4 40,4 52,22 C64,40 80,40 94,22 C108,4 124,4 136,22 C148,40 164,40 178,22 C192,4 206,6 214,18',IK,5);
     // double soulignement sous la note
