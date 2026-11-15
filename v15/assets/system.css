@@ -291,5 +291,17 @@ html.atend .toast:hover::after{content:"  ▶▶";letter-spacing:-2px;animation:
 /* ===== home : pile « one-man studio » + tuile AssetsOS (même effet que The problem sur la page AssetsOS) ===== */
 .hstack.on #about{position:sticky;top:0;z-index:1}
 .hstack.on #about>section{will-change:transform,opacity,filter;transform-origin:50% 40%}
-.hstack.on #aos{position:sticky;top:var(--st,16px);z-index:2;margin-top:clamp(40px,8vh,90px)!important;padding-bottom:var(--sec)}
-.hstack.on{padding-bottom:30vh}
+.hstack.on #aos{position:sticky;top:var(--st,16px);z-index:2;margin-top:clamp(40px,8vh,90px)!important}
+
+/* ===== footer : icônes réseaux intégrées à la ligne de liens ===== */
+.flinks{align-items:center!important}
+.flinks .fsep{width:1px;height:18px;background:currentColor;opacity:.25;margin:0 6px}
+.flinks a.fic{display:inline-grid!important;place-items:center;width:34px;height:34px;padding:0!important;border-radius:50%;color:#202020;transition:color .25s,background-color .25s,scale .35s cubic-bezier(.3,1.6,.5,1)}
+.flinks a.fic::before,.flinks a.fic::after{display:none!important}
+.flinks a.fic svg{width:21px!important;height:21px!important;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;position:static!important;opacity:1!important;transform:none!important}
+.flinks a.fic:hover{color:#564FFF;background-color:rgba(255,255,255,.75);scale:1.08}
+html.src .flinks a.fic{color:var(--c-tx)}
+.flinks a.fic+a.fic{margin-left:-14px}
+/* ===== la tuile AssetsOS fait du « sur place » au scroll avant de partir (home + page AssetsOS) ===== */
+.hstack.on::after{content:"";display:block;height:70vh} /* espace de scroll pendant lequel la tuile reste en place (un padding ne compte pas pour sticky) */
+@media (min-width:901px){.page .stack::after{content:"";display:block;height:70vh}}
