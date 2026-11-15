@@ -815,6 +815,8 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 @keyframes sgdrift{0%{transform:translate(0,0) scale(1)}35%{transform:translate(-5%,4%) scale(1.08) rotate(-2deg)}70%{transform:translate(3%,-3%) scale(1.05) rotate(1.5deg)}100%{transform:translate(-2%,5%) scale(1.1)}}
 .plan.sig .sigbg{transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 .plan.sig:hover .sigbg{transform:rotate(-2deg) translate(-8px,6px) scale(1.04)}
+/* suivis mensuels : plus de focus au clic (la carte restait « bloquée » en survol) */
+.fo2:focus:not(:hover){background:#fff}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
@@ -1022,8 +1024,8 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
   <div class="fol">
     <p class="oneh"><span data-i="t45">Monthly follow-up <small class="pz">· pause anytime</small></span></p>
     <div class="folr">
-      <span class="fo2" tabindex="0"><span class="foh2"><span class="foi"><svg viewBox="0 0 24 24"><path d="M19 8a7.5 7.5 0 0 0-13.2 1.5M5 16a7.5 7.5 0 0 0 13.2-1.5"/><path d="M19 3.5V8h-4.5M5 20.5V16h4.5"/></svg></span><b class="d">Simple Checks</b><span class="pr"><span class="d" data-i="p2">€600</span><small data-i="t51">/month</small></span></span><span class="fod"><span><span class="fodi"><span data-i="t46">2 calls a month. I debug and fine-tune your templates, visuals included.</span></span></span></span></span>
-      <span class="fo2" tabindex="0"><span class="foh2"><span class="foi"><svg viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></svg></span><b class="d">Grow Bigger</b><span class="pr"><small data-i="t52">From</small><span class="d" data-i="p3">€1,200</span><small data-i="t51">/month</small></span></span><span class="fod"><span><span class="fodi"><span data-i="t47">2 calls a month, plus</span> <span data-i="t48">new templates</span> <span data-i="t49">as you need them.</span></span></span></span></span>
+      <span class="fo2"><span class="foh2"><span class="foi"><svg viewBox="0 0 24 24"><path d="M19 8a7.5 7.5 0 0 0-13.2 1.5M5 16a7.5 7.5 0 0 0 13.2-1.5"/><path d="M19 3.5V8h-4.5M5 20.5V16h4.5"/></svg></span><b class="d">Simple Checks</b><span class="pr"><span class="d" data-i="p2">€600</span><small data-i="t51">/month</small></span></span><span class="fod"><span><span class="fodi"><span data-i="t46">2 calls a month. I debug and fine-tune your templates, visuals included.</span></span></span></span></span>
+      <span class="fo2"><span class="foh2"><span class="foi"><svg viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></svg></span><b class="d">Grow Bigger</b><span class="pr"><small data-i="t52">From</small><span class="d" data-i="p3">€1,200</span><small data-i="t51">/month</small></span></span><span class="fod"><span><span class="fodi"><span data-i="t47">2 calls a month, plus</span> <span data-i="t48">new templates</span> <span data-i="t49">as you need them.</span></span></span></span></span>
     </div>
   </div>
 </section>
