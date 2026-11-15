@@ -126,9 +126,15 @@ html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!i
 .tl2 .tball{background:var(--grad-blue)!important}
 
 /* ===== boutons : survol =====
-   noir -> bouton bleu dégradé (Figma 801-3405) · blanc -> texte bleu sur fond lavande très léger, liseré bleu fin */
-html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy):hover,html body .aoscard:hover .aoscta{background:var(--grad-blue)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important;filter:none!important}
-html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a):hover{background:#F4F3FF!important;color:#564FFF!important;box-shadow:inset 0 0 0 1px rgba(86,79,255,.4),0 10px 24px -18px rgba(40,30,240,.45)!important;filter:none!important}
+   noir -> le dégradé bleu (Figma 801-3405) apparaît en fondu par-dessus le noir (calque ::before, aucun état intermédiaire)
+   blanc -> texte bleu sur fond lavande très léger, liseré bleu fin */
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy):not(.x){position:relative;isolation:isolate;overflow:hidden}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx){transition:scale .35s cubic-bezier(.2,.8,.2,1),box-shadow .45s cubic-bezier(.2,.8,.2,1),color .3s!important}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx)::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grad-blue);opacity:0;transition:opacity .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx):hover::before,html body .aoscard:hover .aoscta::before{opacity:1}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx):hover,html body .aoscard:hover .aoscta{color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important;filter:none!important}
+html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a){transition:scale .35s cubic-bezier(.2,.8,.2,1),background-color .35s,color .3s,box-shadow .35s!important}
+html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a):hover{background-color:#F4F3FF!important;color:#564FFF!important;box-shadow:inset 0 0 0 1px rgba(86,79,255,.4),0 10px 24px -18px rgba(40,30,240,.45)!important;filter:none!important}
 
 /* ===== page AssetsOS : la tuile arrive entière depuis le bas, sans fondu ===== */
 #system .aosx .rv.aost{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
@@ -170,8 +176,13 @@ html.src body:not(#x) .faq summary::after{content:"[+]";width:auto!important;hei
 html.src body:not(#x) .faq details[open]:not(.closing) summary::after{content:"[−]"}
 
 /* ===== frise : ronds pleins, posés sur la ligne ; bleus une fois la bille passée ===== */
-.tl2 .tdot{background:#202020!important;box-shadow:none!important;translate:0 -1.5px}
-.tl2.tlfx .tli.past .tdot,.tl2 .tli.on .tdot{background:var(--grad-blue)!important;box-shadow:none!important}
+.tl2 .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #202020!important;translate:0 -1.5px}
+/* plus d'opacité sur l'étape entière (le trait se voyait à travers le rond) : on atténue le texte, le rond reste plein */
+.tl2.tlfx .tli{opacity:1!important}
+.tl2.tlfx .tli:not(.past):not(.on)>*:not(.tdot){opacity:.32;transition:opacity .6s}
+.tl2.tlfx.tldone .tli>*{opacity:1}
+.tl2.tlfx .tli:not(.past):not(.on) .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #BEBDB9!important}
+.tl2.tlfx .tli.past .tdot,.tl2 .tli.on .tdot,.tl2.tldone .tdot{background:var(--grad-blue)!important;box-shadow:none!important}
 html.src .tl2 .tdot{background:var(--c-tx)!important}
 
 /* ===== Work : pas de compteur 01 / 06 ===== */
@@ -188,3 +199,24 @@ html.cvs:not(.endblue) .bluebg{transition:opacity .25s linear}
 #moment .one .of .pill{opacity:1!important;transform:none!important}
 #moment .one .of .pr{text-align:right}
 @media (max-width:760px){#moment .one{grid-template-columns:1fr}#moment .one>.of{grid-column:1;grid-row:auto;align-items:flex-start;margin-top:18px!important}}
+
+/* ===== rythme vertical : un seul écart entre sections, partout (audit du 15/11) ===== */
+:root{--sec:clamp(104px,13vh,150px)}
+.page main>section:not(.band):not(.hero):not(#system),.page main>.stack>section:not(.band):not(#system){padding-top:var(--sec)!important;padding-bottom:0!important;margin-top:0!important}
+.page main .band{margin-top:var(--sec)!important}
+.page main>#moment{padding-top:clamp(48px,6vh,72px)!important}
+.aosx.aoswho,.aosx#aos{margin-top:var(--sec)!important}
+.aosend{margin-top:var(--sec)!important}
+.aosx section.end,section.end{min-height:0!important;padding-top:0!important;padding-bottom:var(--sec)!important}
+.aosend .ftr{margin-top:0!important}
+.pres-page{padding-top:0!important}
+
+/* ===== services (Branding, Websites…) : une liste, plus des boutons ===== */
+.svcs{gap:14px 30px!important;align-items:center}
+.svc,.abt .seen .svc,.abt .seen .svc:hover,.svc:hover{background:none!important;box-shadow:none!important;padding:0!important;border-radius:0!important;transform:none!important;cursor:default;gap:10px!important;color:inherit}
+.svi,.svc:hover .svi,.svc-all .svi{width:auto!important;height:auto!important;background:none!important;transform:none!important;border-radius:0!important}
+.svi svg,.svc:hover .svi svg,.svc-all .svi svg{width:22px!important;height:22px!important;stroke:#564FFF!important}
+html.blueon .abt .svc{color:#fff!important}
+html.blueon .abt .svi svg{stroke:#fff!important}
+.svc+.svc{position:relative}
+.svc+.svc::before{content:"";position:absolute;left:-16px;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:currentColor;opacity:.35}

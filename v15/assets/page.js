@@ -23,3 +23,9 @@ addEventListener('scroll',f,{passive:true});addEventListener('resize',()=>{place
 /* Contact : copier l'adresse */
 { const b=document.getElementById('ctcopy'); if(b) b.addEventListener('click',()=>{ const done=()=>{ const t=b.textContent; b.classList.add('ok'); b.textContent=document.documentElement.lang==='fr'?'Copié ✓':'Copied ✓'; setTimeout(()=>{ b.classList.remove('ok'); b.textContent=t; },1600); }; (navigator.clipboard?navigator.clipboard.writeText('hello@nabilamara.com'):Promise.reject()).then(done,()=>{ const r=document.createRange(); r.selectNodeContents(document.querySelector('.ctaddr')); getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand('copy'); done(); }); });
 document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add('seen'),120)); }
+
+/*mani*/ /* Impact · Clarity · Value : les lignes se tracent, les mots montent ; le mot le plus proche du centre de l'écran passe en dégradé bleu */
+{ const m=document.querySelector('.page .mani'); if(m){ const rows=[...m.querySelectorAll('.mrow')]; m.classList.add('manifx'); rows.forEach((r,i)=>r.style.setProperty('--i',i));
+  let tk=0; const f=()=>{ tk=0; const c=innerHeight*.5; let best=null,bd=1e9; rows.forEach(r=>{ const b=r.getBoundingClientRect(); const d=Math.abs(b.top+b.height/2-c); if(d<bd&&b.bottom>0&&b.top<innerHeight){bd=d;best=r;} }); rows.forEach(r=>r.classList.toggle('on',r===best)); };
+  addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f();
+  rows.forEach(r=>r.addEventListener('pointerenter',()=>{ rows.forEach(x=>x.classList.toggle('on',x===r)); })); } }
