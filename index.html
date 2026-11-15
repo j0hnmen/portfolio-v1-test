@@ -900,7 +900,7 @@ const CV=(function(){
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;
     w.style.height=img.offsetHeight+'px'; w.querySelector('iframe').style.transform=`scale(${W/1440})`; }
   function init(){ inited=true;
-    const pos=[[-920,-640,-4],[-220,-800,3],[480,-640,-2],[-920,200,2],[-220,330,-5],[480,220,4]];
+    const pos=[[-220,-800,3],[-920,-640,-4],[480,-640,-2],[-920,200,2],[-220,330,-5],[480,220,4]];
     // le nom et le sous-titre sont des vecteurs (lettres vectorisées depuis Archivo), chaque lettre du nom est un calque
     const K=.3, CAP=688*K, LG=100*K, top=-(CAP*2+LG+46+28)/2; const NAME=NAMEL;
     GLY.N.forEach((line,li)=>{ const x0=-GLY.W[li]*K/2, y0=top+li*(CAP+LG);
