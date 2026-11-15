@@ -1,0 +1,4 @@
+/* page Work : rien du canvas, entrée propre */
+html.wkpg .cv,html.wkpg .pres,html.wkpg .cvspace,html.wkpg .scrollhint,html.wkpg .cvhint,html.wkpg .backcv{display:none!important}
+html.wkpg .stage,html.wkpg .hud,html.wkpg .modes,html.wkpg .whead{opacity:0}
+html.wkpg.wk-in .stage,html.wkpg.wk-in .hud,html.wkpg.wk-in .modes,html.wkpg.wk-in .whead{opacity:1}

@@ -1,0 +1,111 @@
+/* V1.5 — system.css : le design system commun à toutes les pages (échelle typo, boutons, eyebrows, labels). Chargé en dernier, s'applique partout. */
+/* ===== 4 styles + légende, partout =====
+   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · En-tête (eyebrow) 20→28 en minuscules, 0 interlettrage · Légende 13 */
+.abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
+.abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.ctc b,.hsub .sub,.hero .sub,section p.sub{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.02!important}
+.abt .abtlead,.aossub,.abld,.ctl,.intro,.aosx .fcd,.fcd,.aoscard .sysl li,.aosx .sysl li,.sysl li,.abrows span,.abcols p{font-size:20px!important;line-height:1.45!important}
+.aosx .tlx,.tlx{font-size:16px!important;line-height:1.45!important}
+.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+/* en-têtes (eyebrows) : 16 px, comme avant */
+.eb,.aosx .eb,.whead .eb{font-size:clamp(20px,1.9vw,28px)!important;line-height:1.15!important;text-transform:none!important;letter-spacing:0!important}
+/* composants (pas des styles de texte) */
+.svc,.ctp{font-size:20px!important}
+/* pas de « retour » de page par un glissement horizontal du trackpad */
+html,body{overscroll-behavior-x:none}
+/* page Assets OS + reste : ramenés sur les mêmes styles */
+.mrow b.d,.mrow b.d span{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
+.ctc b{font-family:var(--display,"Mozer DA","Mozer"),sans-serif!important;font-weight:800!important;text-transform:uppercase}
+.hl,.hsub .hl,p.hl,.oneh,p.oneh,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
+.oneh small.pz{font-size:13px!important}
+li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.dt,p.dt,.dw p,.dw p span{font-size:16px!important;line-height:1.45!important}
+.note,p.note,.osub,p.osub,.av,.meta .dl,.dl,.tipbox,.badge,.ax,.il,.bar .lb em,.lb em{font-size:13px!important;line-height:1.4!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
+
+/* liste « What does your Claude skill do » : en H3 (taille), comme avant */
+.sk summary .tx,summary .tx{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.2!important}
+/* ===== rythme vertical commun (toutes les pages) ===== */
+.eb{margin-bottom:18px!important}
+.abtlead,.abld,.ctl{max-width:46ch!important;margin-top:clamp(32px,4.4vh,48px)!important}
+.abtcta,.abhero .abtcta,.ctin .ctopts{margin-top:clamp(36px,4.8vh,52px)!important}
+.svcs{margin-top:clamp(36px,4.8vh,52px)!important;gap:10px!important}
+.abt .svcs,.abhero .svcs{max-width:1240px!important}
+/* frise : plus d'air partout (home, About, Assets OS) */
+.tl2{margin-top:clamp(64px,9vh,104px)!important;column-gap:40px!important}
+.tl2 .thd{margin-top:26px!important}
+.tl2 .tlx{margin-top:16px!important;max-width:24ch}
+.tl2 .tfof{margin-top:14px!important}
+.intro,.intro.big,p.intro{max-width:34ch}
+/* prix : on garde leurs tailles d'origine (chiffres, pas des titres) */
+
+/* barre de défilement aux couleurs du site */
+html{scrollbar-color:#564FFF transparent;scrollbar-width:thin}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#564FFF;border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#4a43ef;background-clip:padding-box}
+/* liens du footer en Akke */
+.flinks a,.flinks a span{font-family:var(--text)!important;font-weight:400!important;letter-spacing:0!important}
+
+/* ===== COMPOSANT BOUTON (Figma 801-3405) — une seule définition pour tout le site =====
+   Nom canonique : .btn (primaire noir) · .btn.btn-2 (secondaire blanc) · .btn-s (petit). Les autres classes listées sont des alias historiques.
+   .btn-l (grand) : 56 px, Akke 18 · .btn-s (petit, barre du haut / fermer) : 44 px, Akke 16
+   primaire = noir ; secondaire = blanc ; (bleu dégradé gardé en réserve : .btn-blue) ; liseré clair ; survol = léger zoom, jamais d'inclinaison */
+html body :is(.btn,.abtb,.pill,.aoscta,.vbook,.x,.vx,.ctcopy,.ctopts a){display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;height:56px!important;min-height:0!important;padding:0 28px!important;font-family:var(--text)!important;font-weight:400!important;font-size:18px!important;line-height:1!important;letter-spacing:0!important;text-transform:none!important;white-space:nowrap!important;text-decoration:none!important;border:0!important;border-radius:999px!important;filter:none;transition:scale .35s cubic-bezier(.2,.8,.2,1),filter .25s,background .6s,color .6s!important}
+html body :is(.btn-s,.vbook,.x,.vx,.ctcopy,.ctopts a){height:44px!important;padding:0 20px!important;font-size:16px!important}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy){background:#202020!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 12px 26px -16px rgba(20,20,20,.6)!important}
+html body .btn.btn-blue,html body .btn-blue{background:linear-gradient(180deg,#5751FF 0%,#1C14F2 100%)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 14px 30px -16px rgba(40,30,240,.7)!important}
+html body :is(.btn-2,.abtb2,.pill.o,.ctopts a){background:#fff!important;color:#202020!important;box-shadow:inset 0 0 0 1px rgba(32,32,32,.16),0 10px 24px -18px rgba(20,20,20,.45)!important}
+html body :is(.btn,.abtb,.pill,.aoscta) svg{width:18px!important;height:18px!important;flex:none;stroke:currentColor;fill:none;margin:0!important;transform:none!important}
+html body :is(.btn,.abtb,.pill,.aoscta,.vbook,.x,.vx,.ctcopy,.ctopts a):hover,html body .aoscard:hover .aoscta{scale:1.03;filter:brightness(1.08);transform:none}
+html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!important}
+.mono:hover,.vmono:hover{transform:scale(1.04)!important}
+.svc:hover .svi,a.ctc:hover .cti{transform:scale(1.06)!important}
+/* logo AssetsOS dans la frise et dans le burger : ASSETS + signature en noir */
+.tlogo.aos,.aosx .tlogo.aos,.aosx .tli.on .tlogo.aos,.tli.on .tlogo.aos,.mk-aos .mlogo,.mk-aos:hover .mlogo{color:var(--ink)!important} /* burger : ASSETS bleu (dans le SVG), signature noire */
+/* « Back to the canvas » : discret (pilule translucide, petit) */
+.backcv{height:34px;padding:0 14px 0 11px!important;gap:6px!important;border-radius:999px!important;font:400 14px/1 var(--text)!important;letter-spacing:0!important;color:rgba(32,32,32,.75)!important;background:rgba(255,255,255,.55)!important;box-shadow:0 0 0 1px rgba(32,32,32,.08)!important}
+.backcv:hover{color:var(--ink)!important;background:rgba(255,255,255,.8)!important}
+.backcv svg{width:13px!important;height:13px!important}
+/* petits libellés : même logique que les en-têtes (minuscules, sans interlettrage), en taille légende */
+.data dt,.il,.il span,.ctc small,.ctq,.fe .fc,.fe .fy,.rinfo small{text-transform:none!important;letter-spacing:0!important;font-family:var(--text)!important;font-weight:400!important}
+.data dt,.il,.il span,.ctc small,.ctq{font-size:15px!important}
+.fe .fc,.fe .fy,.rinfo small{font-size:13px!important}
+/* ===== fin échelle ===== */
+
+/* ===== rythme vertical : espace entre sections, le même partout ===== */
+:root{--sec:clamp(120px,17vh,190px)}
+
+/* ===== accordéon (FAQ) : un seul composant ===== */
+.faq{margin-top:clamp(40px,6vh,64px);border-top:1px solid rgba(32,32,32,.14)}
+.faq details{border-bottom:1px solid rgba(32,32,32,.14)}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 40px;align-items:center;gap:24px;padding:clamp(22px,3vh,30px) 0;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.1vw,30px);line-height:1.05;color:#202020;transition:color .25s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";justify-self:end;width:40px;height:40px;border-radius:50%;color:#564FFF;box-shadow:inset 0 0 0 1px rgba(86,79,255,.35);
+  background:linear-gradient(currentColor,currentColor) center/14px 1.5px no-repeat,linear-gradient(currentColor,currentColor) center/1.5px 14px no-repeat;
+  transition:rotate .4s cubic-bezier(.2,.8,.2,1),background-color .25s,color .25s,box-shadow .25s}
+.faq summary:hover,.faq details[open]:not(.closing) summary{color:#564FFF}
+.faq summary:hover::after,.faq details[open]:not(.closing) summary::after{background-color:#564FFF;color:#fff;box-shadow:none}
+.faq details[open]:not(.closing) summary::after{rotate:45deg}
+.faq .dw{overflow:hidden}
+.faq .dw p,.faq .dw p span{font-family:var(--text);font-size:clamp(18px,1.35vw,20px);line-height:1.5;color:#3a3a3a}
+.faq .dw p{max-width:46em;padding:0 64px clamp(22px,3vh,30px) 0}
+
+/* ===== footer : liens réseaux = petits boutons secondaires ===== */
+.aosx .fsoc{display:flex;gap:10px!important;margin-top:24px!important;justify-content:center}
+.aosx .fsoc a.btn{width:auto!important;height:44px!important;border-radius:999px!important;background:#fff!important;color:#202020!important}
+.aosx .fsoc a.btn svg{width:16px!important;height:16px!important;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Let's build : grand logo AssetsOS plus présent ===== */
+.end.endfx .endbig{width:min(86vw,1420px)!important}
+
+/* ===== footer : plus d'air entre le nom et « AI Creative Designer » ===== */
+.fsub{margin-top:clamp(28px,3.6vh,42px)!important}
+
+/* ===== fonds bleus plein écran : léger retour vers le fond du site en bas ===== */
+.bluebg::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(240,240,240,0) 58%,rgba(240,240,240,.92) 100%);pointer-events:none}
+
+/* ===== mobile : « Back to the canvas » masqué (il passait sous la barre du haut) ===== */
+@media (max-width:760px){.backcv{display:none!important}}
