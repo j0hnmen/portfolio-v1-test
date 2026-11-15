@@ -1166,6 +1166,18 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 .tl2 .tfof{margin-top:14px!important}
 .intro,.intro.big,p.intro{max-width:34ch}
 /* prix : on garde leurs tailles d'origine (chiffres, pas des titres) */
+/* « Your one-man design studio » : au scroll, toute la section passe en fond bleu / texte blanc, puis revient au blanc */
+.bluebg{position:fixed;inset:0;z-index:11;background:radial-gradient(70% 60% at 80% 0%,#7a75ff 0%,rgba(122,117,255,0) 70%),#564FFF;opacity:0;pointer-events:none;transition:opacity .8s cubic-bezier(.4,0,.2,1)}
+html.blueon .bluebg{opacity:1}
+#home,#invader{transition:color .8s}html.blueon #home,html.blueon #invader{color:#fff}
+.abt .eb,.abt .abth,.abt .abtlead{transition:color .8s cubic-bezier(.4,0,.2,1)}
+.abt .scrib{transition:stroke .8s}
+.abt .abtb1,.abt .abtb2{transition:transform .35s cubic-bezier(.3,1.6,.5,1),background .8s,color .8s,box-shadow .8s}
+html.blueon .abt .eb,html.blueon .abt .abth,html.blueon .abt .abtlead{color:#fff!important}
+html.blueon .abt .scrib{stroke:#fff}
+html.blueon .abt .abtb1{background:#fff;color:var(--blue);box-shadow:0 14px 34px -12px rgba(20,16,90,.55)}
+html.blueon .abt .abtb2{background:transparent;color:#fff;box-shadow:0 0 0 1.5px #fff inset}
+html.blueon .abt .svc{box-shadow:0 10px 30px -14px rgba(20,16,90,.55)}
 /* AOSX END */
 </style>
 </head>
@@ -1194,7 +1206,8 @@ li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.d
 <div class="peek" id="peek"><img alt=""></div>
 
 <div class="cv" id="cv"><div class="world" id="world"></div></div>
-<div class="cvspace" aria-hidden="true"></div>
+<div class="cvspace" aria-hidden="true"><div class="bluebg" aria-hidden="true"></div>
+</div>
 <section class="pres" id="pres" aria-label="About">
 
   <div class="aosx abt" id="about">
@@ -1701,7 +1714,7 @@ const CV=(function(){
   function armSnap(){ return; clearTimeout(snapT); snapT=setTimeout(()=>{ if(!isOn()||overlayOpen()) return; const y=scrollY, T=snapTop(); if(y>0&&y<T-2){ if(y<T*.08) scrollTo({top:0,behavior:'smooth'}); else if(y>T*.55) scrollTo({top:T,behavior:'smooth'}); } },420); } // une fois lancé, on termine la descente : jamais figé à mi-fondu
 
   let lastP=-1, sRaf=0; function onScroll(){ if(sRaf) return; sRaf=requestAnimationFrame(()=>{ sRaf=0; onScrollNow(); }); }
-  function onScrollNow(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight)); if(p===lastP) return; lastP=p;
+  function onScrollNow(){ if(!isOn()) return; const p=Math.min(1,Math.max(0,scrollY/innerHeight)); if(p===lastP) return; lastP=p; if(p>.01&&!window.__arrDone){ window.__arrDone=1; document.querySelectorAll('#cv .node').forEach(el=>el.getAnimations().forEach(an=>{ try{an.finish()}catch(e){} })); } /* on scrolle pendant l'intro : on termine l'arrivée tout de suite pour que le fondu au scroll s'applique */
     // comme une intro de jeu : le décor (projets, formes, grille) s'efface vite, le nom reste plus longtemps
     sk=1-.55*p; apply(); cv.style.setProperty('--po',Math.max(0,1-p*2.3).toFixed(3)); const sh=$('#scrollHint'); if(sh){ sh.style.setProperty('--sh',Math.max(0,Math.min(1,1-(p-.75)*4)).toFixed(3)); sh.style.visibility=p>=.99?'hidden':''; sh.classList.toggle('shgo',!!(p>0.003||sh._push)); sh.style.pointerEvents=p>.8?'none':''; } cv.style.setProperty('--no',Math.max(0,1-Math.pow(p,1.1)*2.4).toFixed(3)); cv.style.visibility=p>=.99?'hidden':''; cv.style.pointerEvents=p>.5?'none':'';
     ['#cvhint'].forEach(q=>{ const el=$(q); el.style.opacity=p?String(Math.max(0,1-p*2.2)):''; el.style.pointerEvents=p>.3?'none':''; }); }
@@ -2019,5 +2032,6 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }<
   a.addEventListener('mouseenter',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); t=setTimeout(()=>lg.classList.add('sigok'),1540); });
   a.addEventListener('mouseleave',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); }); }); }</script>
 <script>{ const A=()=>document.documentElement.classList.add('cornin'); if(location.hash==='#work'||matchMedia('(max-width:760px)').matches) A(); setTimeout(A,2600); }</script>
+<script>{ const a=document.getElementById('about'); if(a&&'IntersectionObserver' in window) new IntersectionObserver(es=>{ document.documentElement.classList.toggle('blueon',es[0].isIntersecting&&document.documentElement.classList.contains('cvs')); },{rootMargin:'-38% 0px -38% 0px'}).observe(a.querySelector('section')||a); }</script>
 </body>
 </html>
