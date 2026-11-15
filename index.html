@@ -1061,7 +1061,7 @@ body::before,body::after{display:none}
 .menu nav .mk-aos .mlogo,.vmenu nav .mk-aos .mlogo{display:block;height:.7em;width:auto;margin:.15em 0;overflow:visible;color:currentColor}
 
 .menu nav .mk-aos .mlogo,.vmenu nav .mk-aos .mlogo{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:auto!important;stroke:none!important}
-.menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path,.menu nav .mk-aos .mlogo use,.vmenu nav .mk-aos .mlogo use{opacity:1!important;stroke-dasharray:none!important;transition:none!important}
+.menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path,.menu nav .mk-aos .mlogo .sigan use,.vmenu nav .mk-aos .mlogo .sigan use{opacity:1!important;stroke-dasharray:none!important;transition:none!important}
 
 /* page Work, à la charte : papier + grille légère, en-tête serif bleu, cartes à bords carrés, logos clients, infos à filets, liste en lignes */
 .wgrid,.whead{display:none}
@@ -1116,6 +1116,7 @@ body.is-list .list{z-index:12!important}.peek{z-index:5!important}.list button s
 
 .menu nav .mk-aos .mlogo mask path,.vmenu nav .mk-aos .mlogo mask path{opacity:1!important;stroke:#fff!important;transition:none!important}
 .menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path{stroke:none!important}
+.mk-aos .mlogo .sigdone{opacity:0!important}.mk-aos .mlogo.sigok .sigdone{opacity:1!important}
 /* AOSX END */
 </style>
 </head>
@@ -1584,7 +1585,7 @@ const CV=(function(){
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
-    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['#home',1000,'-180px 0',1],['#invader',1100,'-180px 0',1],['#menuBtn',1000,'180px 0',.1],['.top .ntr',1000,'180px 0',.1],['#chat',1200,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
   cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -1937,7 +1938,7 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   const draw=(dur,from,to,ease)=>{ if(an) an.cancel(); an=p.animate([{strokeDashoffset:from},{strokeDashoffset:to}],{duration:dur,easing:ease,fill:'both'}); return an.finished; };
   p.style.strokeDashoffset=1; setTimeout(()=>draw(1700,1,0,'cubic-bezier(.65,0,.35,1)').then(()=>busy=false),delay);
   h.addEventListener('mouseenter',()=>{ if(busy) return; busy=true; draw(650,0,1,'cubic-bezier(.55,0,.75,.4)').then(()=>draw(1500,1,0,'cubic-bezier(.65,0,.35,1)')).then(()=>busy=false).catch(()=>busy=false); }); };
-SIG(document.getElementById('home'),location.hash==='#work'?200:3300); SIG(document.querySelector('.vmono'),400); }</script>
+SIG(document.getElementById('home'),location.hash==='#work'?200:1300); SIG(document.querySelector('.vmono'),400); }</script>
 <script>{ const lg=document.querySelector('.aoslogo.sigm'), sec=lg&&lg.closest('.aost'); if(lg){ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const play=()=>{ lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); setTimeout(()=>lg.classList.add('sigok'),1780); };
   if(rm) lg.classList.add('sigok'); else new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ setTimeout(play,500); o.disconnect(); } },{threshold:.25}).observe(sec);

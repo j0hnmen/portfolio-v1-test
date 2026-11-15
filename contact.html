@@ -661,10 +661,12 @@ html,body{overflow-x:clip}
 .vmenu nav .mk-aos .mlogo{display:block;height:.7em;width:auto;margin:.15em 0;overflow:visible}
 
 .menu nav .mk-aos .mlogo,.vmenu nav .mk-aos .mlogo{position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:auto!important;stroke:none!important}
-.menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path,.menu nav .mk-aos .mlogo use,.vmenu nav .mk-aos .mlogo use{opacity:1!important;stroke-dasharray:none!important;transition:none!important}
+.menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path,.menu nav .mk-aos .mlogo .sigan use,.vmenu nav .mk-aos .mlogo .sigan use{opacity:1!important;stroke-dasharray:none!important;transition:none!important}
 
 .menu nav .mk-aos .mlogo mask path,.vmenu nav .mk-aos .mlogo mask path{opacity:1!important;stroke:#fff!important;transition:none!important}
 .menu nav .mk-aos .mlogo > path,.vmenu nav .mk-aos .mlogo > path{stroke:none!important}
+
+.mk-aos .mlogo .sigdone{opacity:0!important}.mk-aos .mlogo.sigok .sigdone{opacity:1!important}
 /* signature du coin : tracée à l'arrivée et rejouée au survol, comme sur la page Assets OS */
 @keyframes sgk{0%{stroke-dashoffset:1;stroke-opacity:0}.5%{stroke-opacity:1}100%{stroke-dashoffset:0;stroke-opacity:1}}
 .sigm .sgw,.sigm .sgc{stroke:#fff;stroke-dasharray:1 1;stroke-dashoffset:1;stroke-opacity:0;animation-name:sgk;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
@@ -851,7 +853,7 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   const draw=(dur,from,to,ease)=>{ if(an) an.cancel(); an=p.animate([{strokeDashoffset:from},{strokeDashoffset:to}],{duration:dur,easing:ease,fill:'both'}); return an.finished; };
   p.style.strokeDashoffset=1; setTimeout(()=>draw(1700,1,0,'cubic-bezier(.65,0,.35,1)').then(()=>busy=false),delay);
   h.addEventListener('mouseenter',()=>{ if(busy) return; busy=true; draw(650,0,1,'cubic-bezier(.55,0,.75,.4)').then(()=>draw(1500,1,0,'cubic-bezier(.65,0,.35,1)')).then(()=>busy=false).catch(()=>busy=false); }); };
-SIG(document.getElementById('home'),location.hash==='#work'?200:3300); SIG(document.querySelector('.vmono'),400); }</script>
+SIG(document.getElementById('home'),location.hash==='#work'?200:1300); SIG(document.querySelector('.vmono'),400); }</script>
 <script>{ document.querySelectorAll('.mk-aos').forEach(a=>{ const lg=a.querySelector('.mlogo.sigm'); if(!lg) return; let t=0;
   a.addEventListener('mouseenter',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); t=setTimeout(()=>lg.classList.add('sigok'),1780); });
   a.addEventListener('mouseleave',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); }); }); }</script>
