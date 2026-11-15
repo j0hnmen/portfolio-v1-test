@@ -39,15 +39,21 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const pt=bar.querySelector('.cs-pt');
   let seed=11; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
   const live=[]; let lane=0;
-  const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k; c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
-    lane=(lane+2)%5; live.push({el:c,x:x0||0,y:(lane-2)*82+(rnd()*2-1)*22,s:.86+rnd()*.22,r:(rnd()*2-1)*5}); };
-  /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois (≈1 asset / 3,8 s à 0,045 px/ms ≈ 170 px d'écart) */
+  const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k+(x0?' ok':''); c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
+    lane=(lane+2)%5; const o={el:c,x:x0||0,y:(lane-2)*82+(rnd()*2-1)*22,s:.86+rnd()*.22,r:(rnd()*2-1)*6,ph:rnd()*6.28,born:x0?-1e5:performance.now()}; live.push(o);
+    if(!x0) setTimeout(()=>c.classList.add('ok'),650); };
+  /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois */
   { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>20;x-=170) spawn(i++ +3,x); }
-  let last=performance.now(), lastY=scrollY, vis=false, raf=0;
-  const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const dy=scrollY-lastY; lastY=scrollY; const W=belt.offsetWidth+160;
-    const mv=RM?0:dt*.045; /* vitesse constante, sans effet de scroll */
-    for(let j=live.length-1;j>=0;j--){ const c=live[j]; c.x+=mv; const t=Math.min(1,c.x/150), o=t*Math.min(1,(W-c.x)/140);
-      c.el.style.transform=`translate3d(${c.x.toFixed(1)}px,${(c.y*Math.min(1,.2+.8*t)).toFixed(1)}px,0) rotate(${(c.r*t).toFixed(2)}deg) scale(${((.45+.55*t)*c.s).toFixed(3)})`; c.el.style.opacity=Math.max(0,o).toFixed(3);
+  let last=performance.now(), vis=false, raf=0;
+  const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const W=belt.offsetWidth+160;
+    for(let j=live.length-1;j>=0;j--){ const c=live[j], age=now-c.born;
+      /* éjection : grosse vitesse au départ qui retombe vers la vitesse de croisière */
+      const v=RM?0:(.045+.55*Math.exp(-age/260)); c.x+=v*dt;
+      /* pop à ressort (dépasse puis se pose), puis flottement léger */
+      const sp=age<1600?1-Math.exp(-age/150)*Math.cos(age/75):1, fl=Math.sin(now/900+c.ph);
+      const t=Math.min(1,c.x/150), yy=c.y*Math.min(1,.15+.85*(1-Math.exp(-age/350)))+fl*5, rr=c.r*(1-Math.exp(-age/420))+fl*1.2;
+      const o=Math.min(1,age/120)*Math.min(1,(W-c.x)/140);
+      c.el.style.transform=`translate3d(${c.x.toFixed(1)}px,${yy.toFixed(1)}px,0) rotate(${rr.toFixed(2)}deg) scale(${(Math.max(.05,sp)*c.s).toFixed(3)})`; c.el.style.opacity=Math.max(0,o).toFixed(3);
       if(c.x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
@@ -57,7 +63,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi,0); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
       await wait(700); for(let i=txt.length;i>=0&&vis;i--){ pt.textContent=txt.slice(0,i); await wait(14); } await wait(320); pi++; }
     on=false; };
-  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); lastY=scrollY; raf=requestAnimationFrame(step); } loop(); } else clearTimeout(timer); },{rootMargin:'100px 0px'}).observe(stage);
+  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(step); } loop(); } else clearTimeout(timer); },{rootMargin:'100px 0px'}).observe(stage);
   document.addEventListener('visibilitychange',()=>{ if(document.hidden){ vis=false; clearTimeout(timer); } }); } }
 
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
