@@ -258,12 +258,17 @@ html.cvs .backcv{display:inline-flex}
 html.src .backcv{background:#1b1d22;color:#cfd3dc;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 /* mobile : l'en-tête garde la mise en page du canvas mais n'est pas manipulable */
 @media (max-width:760px){html.cvs .cv{pointer-events:none;touch-action:auto}html.cvs .cv .node.frame{pointer-events:auto;touch-action:pan-y;cursor:pointer}html.cvs .cv .node .hd,html.cvs .cv .node .rz,html.cvs .cv .node .dim{display:none!important}html body .tools,html body .cvhint{display:none!important}html body .scrollhint{display:none!important}}
-/* canvas simplifié : pas de barre d'outils ; prompt box en bas au centre, qui glisse en bas à droite (et le space invader apparaît) quand on descend vers la section 1 */
-html body .tools{top:20px;bottom:auto} /* barre d’outils revenue, en haut au centre ; l’indication passe dessous */
-html body .cvhint{top:84px}
+/* une seule barre en bas au centre : outils du canvas + chat ; au scroll, les outils se replient et le chat reste seul au milieu */
 @media (min-width:761px){
-  html.cvs .pbox{transition:transform 1s ease-in-out}
-  html.cvs body.attop .pbox{transform:translateX(calc(-1 * ((100vw - 400px) / 2 - 36px)))}
+  html.cvs .pbox{left:50%;right:auto;transform:translateX(-50%);width:480px;transition:width .6s cubic-bezier(.65,0,.35,1)}
+  html.cvs body.attop .pbox{width:700px}
+  html.cvs .pform .tools{position:static;transform:none;display:flex;flex:none;align-items:center;gap:2px;padding:0;margin:0 2px 0 0;background:none;border:0;box-shadow:none;border-radius:0;max-width:260px;overflow:hidden;white-space:nowrap;opacity:1;transition:max-width .6s cubic-bezier(.65,0,.35,1),opacity .35s,margin .6s}
+  html.cvs body:not(.attop) .pform .tools{max-width:0;opacity:0;margin:0;pointer-events:none}
+  html.cvs .pform .tools button{width:34px;height:34px;border-radius:10px;background:none;color:var(--ink)}
+  html.cvs .pform .tools button:hover{background:rgba(32,32,32,.06)}
+  html.cvs .pform .tools button[aria-pressed=true]{background:#0D99FF;color:#fff}
+  html.cvs .pform .tools .sep{margin:0 5px;flex:none}
+  html.cvs .pform .tools #zOut,html.cvs .pform .tools #zIn,html.cvs .pform .tools #zFit,html.cvs .pform .tools .zl,html.cvs .pform .tools .sep:last-of-type{display:none}
 }
 html.cvs .invader{transition:opacity .6s,translate .8s cubic-bezier(.16,1,.3,1),visibility 0s}
 /* space invader : visible tout le temps */
@@ -680,6 +685,37 @@ body::before,body::after{display:none}
 .tip.plain span i{background-size:0 2px!important}
 .tip.flip span{left:auto;right:4px;transform-origin:100% 0}
 @media (hover:hover) and (pointer:fine){html.cc,html.cc *{cursor:none!important}}
+
+/* tuile Assets OS : première chose qu'on voit en descendant */
+.pres .aosw{margin-bottom:16vh}
+.aos{position:relative;overflow:hidden;display:grid;grid-template-columns:1.05fr 1fr;gap:28px clamp(28px,4vw,64px);background:#fff;border-radius:28px;padding:clamp(28px,4vw,56px);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px rgba(32,32,32,.06),0 40px 80px -30px rgba(32,32,32,.28)}
+.aos::before{content:"";position:absolute;left:0;top:0;right:0;height:6px;background:linear-gradient(90deg,#564FFF,#3BE9CE 60%,#FFF186)}
+.aosb{display:flex;align-items:center;gap:12px}
+.aosn{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:20px;letter-spacing:.08em;color:#564FFF}
+.aosnew{font:600 12px/1 Inter,system-ui,sans-serif;color:#202020;background:#FFF186;border-radius:999px;padding:6px 10px}
+.pres .aos .aosh{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:clamp(40px,4.6vw,72px);line-height:.92;margin:22px 0 14px;color:#202020}
+.aoss{font-size:clamp(20px,1.6vw,24px);line-height:1.35;color:#202020;margin:0}
+.aossteps{list-style:none;margin:34px 0 0;padding:0;display:grid;gap:14px}
+.aossteps li{display:flex;align-items:center;gap:14px;font-size:18px;line-height:1.3;color:#202020}
+.aossteps b{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#564FFF;color:#fff;font:600 14px/1 Inter,system-ui,sans-serif}
+.aosr{display:flex;flex-direction:column;gap:14px}
+.aoso{border:1px solid rgba(32,32,32,.12);border-radius:20px;padding:20px 22px;transition:border-color .3s,transform .3s}
+.aoso.rec{border-color:#564FFF;box-shadow:0 0 0 1px #564FFF inset}
+.aoso:hover{transform:translateY(-2px)}
+.aosoh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.aosoh b{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:28px;line-height:1;color:#202020}
+.aostag{font:600 12px/1 Inter,system-ui,sans-serif;color:#fff;background:#564FFF;border-radius:999px;padding:6px 10px}
+.aosfor{margin:6px 0 12px;font-size:16px;color:#5f5f5f}
+.aosp{display:flex;align-items:baseline;gap:12px;font-family:var(--display);font-weight:800;font-stretch:62%;font-size:40px;line-height:1;color:#202020}
+.aosp em{font-style:normal;font-size:18px;color:#5f5f5f}
+.aosp small{font:500 14px/1.2 Inter,system-ui,sans-serif;color:#12BFA2;margin-left:auto}
+.aosinc{margin:12px 0 0;font-size:15px;line-height:1.4;color:#202020}
+.aosf{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:15px;color:#5f5f5f}
+.aoscta{display:inline-flex;align-items:center;gap:8px;background:#202020;color:#fff!important;border-radius:999px;padding:13px 20px;font:600 15px/1 Inter,system-ui,sans-serif;text-decoration:none;transition:background .25s,transform .25s}
+.aoscta:hover{background:#564FFF;transform:translateY(-1px)}
+.aoscta svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.aosbig{grid-column:1/-1;margin:8px 0 0;font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:clamp(28px,3vw,44px);line-height:1;color:rgba(32,32,32,.08);letter-spacing:.01em}
+@media (max-width:860px){.aos{grid-template-columns:1fr}.aosp small{margin-left:0}.aosp{flex-wrap:wrap}}
 </style>
 </head>
 <body>
@@ -707,6 +743,37 @@ body::before,body::after{display:none}
 <div class="cvspace" aria-hidden="true"></div>
 <section class="pres" id="pres" aria-label="About">
   <div class="clients" aria-label="Clients: Sorare, Figma, Sport [Gen], Smart Gemini"><div class="ctrack" id="ctrack" aria-hidden="true"></div></div>
+
+  <div class="in aosw">
+    <article class="aos" aria-label="Assets OS">
+      <div class="aosl">
+        <div class="aosb"><span class="aosn">Assets OS</span><span class="aosnew">New</span></div>
+        <h3 class="aosh">Your brand, packaged as a Claude skill.</h3>
+        <p class="aoss">Your team makes the assets, every day.</p>
+        <ol class="aossteps">
+          <li><b>1</b>I design your system once.</li>
+          <li><b>2</b>Your team asks Claude, in plain words.</li>
+          <li><b>3</b>Every asset comes out on brand.</li>
+        </ol>
+      </div>
+      <div class="aosr">
+        <div class="aoso rec">
+          <div class="aosoh"><b>Complete Build</b><span class="aostag">Recommended</span></div>
+          <p class="aosfor">If you already have a brand.</p>
+          <div class="aosp">€2,300<small>Delivered in 10 days</small></div>
+          <p class="aosinc">Claude skill · Landing page, 1 page · 10 templates</p>
+        </div>
+        <div class="aoso">
+          <div class="aosoh"><b>Signature Ship</b></div>
+          <p class="aosfor">When you need a new one.</p>
+          <div class="aosp"><em>From</em> €4,200<small>Delivered in 15 days</small></div>
+          <p class="aosinc">Identity design · Claude skill · Website, 3 pages · 15 templates</p>
+        </div>
+        <div class="aosf"><span>Monthly follow-up from €600/month · 1 month included</span><a class="aoscta" href="https://www.linkedin.com/in/nabilamara/" target="_blank" rel="noopener" data-tip="Let’s talk">Book a call <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <p class="aosbig" aria-hidden="true">Built once. Used every day.</p>
+    </article>
+  </div>
 
   <div class="in">
     <div class="eyebrow">About</div>
@@ -1052,7 +1119,7 @@ const CV=(function(){
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
-    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'0 140px',1],['#tools',3450,'0 -24px',0]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['#home',3200,'-180px 0',1],['#invader',3300,'-180px 0',1],['#menuBtn',3200,'180px 0',.1],['#chat',3350,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el) el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1000,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
   cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -1381,5 +1448,6 @@ document.addEventListener('pointerout',e=>{ const el=e.target.closest&&e.target.
 addEventListener('click',()=>t.classList.remove('on'),true);
 })();
 </script>
+<script>{ if(!matchMedia('(max-width:760px)').matches){ const t=document.getElementById('tools'), f=document.getElementById('cform'); if(t&&f){ t.querySelectorAll('button').forEach(b=>b.type='button'); f.insertBefore(t,f.firstChild); } } }</script>
 </body>
 </html>
