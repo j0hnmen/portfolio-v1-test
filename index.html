@@ -258,7 +258,7 @@ html.src .backcv{background:#1b1d22;color:#cfd3dc;font-family:ui-monospace,SFMon
 /* canvas simplifié : pas de barre d'outils ; prompt box en bas au centre, qui glisse en bas à droite (et le space invader apparaît) quand on descend vers la section 1 */
 html body .tools{display:none!important}
 @media (min-width:761px){
-  html.cvs .pbox{transition:transform 1.9s cubic-bezier(.45,.05,.25,1)}
+  html.cvs .pbox{transition:transform 1s ease-in-out}
   html.cvs body.attop .pbox{transform:translateX(calc(-1 * ((100vw - 400px) / 2 - 36px)))}
 }
 html.cvs .invader{transition:opacity .6s,translate .8s cubic-bezier(.16,1,.3,1),visibility 0s}
