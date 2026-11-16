@@ -250,7 +250,9 @@ html.src .tl2 .tlm{background:var(--c-tx)}
 .abt .svcs{margin:0 0 clamp(26px,3.6vh,40px)!important}
 
 /* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
-.node.islive .lv iframe{pointer-events:auto!important}
+/* zoom/déplacement du canvas toujours actifs au-dessus d’un code layer : le site ne capte la souris qu’après un clic dessus (.using), et la rend en sortant */
+.node.islive .lv iframe{pointer-events:none!important}
+.node.islive.using .lv iframe{pointer-events:auto!important}
 
 
 /* ===== The problem : plus de carte blanche, le contenu est posé sur la page (l'effet de recul flou reste) ===== */
@@ -643,8 +645,10 @@ html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
 .node [data-cl=stop]{display:none}
 .node.islive [data-cl=stop]{display:grid}
 /* footer : le nom arrive comme sur le canvas (animé en JS) */
-footer.ftzoom .flogo path{opacity:1!important;filter:none!important;transition:none!important;transform:none;transform-box:view-box!important;transform-origin:50% 50%!important}
-footer.ftzoom .fsub{opacity:1!important;transition:none!important;transform:none;transform-origin:50% 50%}
+footer.ftfx.ftzoom{overflow-x:clip;overflow-y:visible} /* le nom zoomé et flou ne doit pas être coupé */
+footer.ftfx.ftzoom .flogo path{opacity:0} /* état de base : invisible ; l’animation JS (attributs SVG, compatibles Safari) le fait apparaître */
+footer.ftfx.ftzoom.ft-shown .flogo path{opacity:1}
+footer.ftfx.ftzoom .fsub{opacity:0;transition:none;transform:none}footer.ftfx.ftzoom.ft-on .fsub{opacity:1}
 footer.ftzoom .flogo{overflow:visible!important}
 /* grande signature noire en fond de « Your one-man design studio » */
 .abt section{position:relative;isolation:isolate}
@@ -655,4 +659,248 @@ footer.ftzoom .flogo{overflow:visible!important}
 .absig .absc{fill:none;stroke:#fff;stroke-width:36;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
 .absig .absf{fill:#202020}
 @media (max-width:760px){.absig{width:120vw;right:-30vw;opacity:.07}}
-.abt:not(.abtleft) section>.absig{right:auto!important;left:50%!important;translate:-50% -50%!important}
+.abt:not(.abtleft) section>.absig{left:auto!important;right:-6%!important;translate:0 -46%!important} /* home : signature décalée à droite */
+/* pas de mot seul en bout de paragraphe : lignes équilibrées sur les textes courts, « pretty » sur les paragraphes */
+.page :is(.fodi,.ev-sub,.hl,.oneh,.ones,.note,.fq p,.mrow span,.plan .for,.incl){text-wrap:balance}
+.page p,.page li{text-wrap:pretty}
+/* fenêtre Figma (« Your solution ») : même taille et même place qu'avant, mais à la même échelle d'interface que Claude (barre, points, texte, coins, ombre) ; thème sombre */
+.aoswins .figwin{border-radius:24px;box-shadow:0 0 0 1px rgba(0,0,0,.25),0 40px 90px -36px rgba(20,18,40,.6)}
+.aoswins .fghead{height:auto;gap:12px;padding:14px 18px;background:#1f1f1f;border-bottom:1px solid #3a3a3a}
+.aoswins .fghead .dots{gap:6px}
+.aoswins .fghead .dots i{width:10px;height:10px;background:#4a4a4a}
+.aoswins .fgw{height:15px}
+.aoswins .fgfile{font:500 12px/1 var(--ui,Inter,system-ui,sans-serif);color:#a9a9a9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.aoswins .fgbody{height:250px}
+.aoswins .fglayers{width:28%;padding:14px 12px;gap:10px}
+.aoswins .fglayers b{height:8px;margin-bottom:4px}
+.aoswins .fglayers i{height:7px}
+.aoswins .fgf{border-radius:6px}
+
+/* FAQ : les réponses prennent le style paragraphe du site (20 px), plus la taille des petites listes */
+.dw p,.dw p span{font-size:20px!important;line-height:1.45!important}
+/* logos des frises (home + About) : la couleur vient uniquement du fond du masque — aucun filtre par-dessus, sinon le bleu passe par du gris pendant la transition */
+.page .vlm,.tl2 .tlm{filter:none!important;transition:background-color .45s ease!important}
+/* scroll fort après le footer : marée bleue + jauge, puis le chat s'ouvre */
+.pullgo{position:fixed;inset:auto 0 0 0;height:0;z-index:41;pointer-events:none}
+.pullgo .pg-tide{position:fixed;left:0;right:0;bottom:0;height:calc(var(--pull,0) * 55vh);background:linear-gradient(to top,rgba(28,20,242,.95),rgba(87,81,255,.55) 55%,rgba(87,81,255,0));transition:height .12s linear,opacity .5s;opacity:0}
+.pullgo.on .pg-tide,.pullgo.go .pg-tide{opacity:1}
+.pullgo .pg-pill{position:fixed;left:50%;bottom:96px;translate:-50% 0;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:#fff;box-shadow:0 0 0 1px rgba(32,32,32,.08),0 16px 36px -14px rgba(28,20,242,.55);font:500 15px/1 var(--ui,Inter,system-ui,sans-serif);color:#202020;opacity:0;scale:.9;transition:opacity .35s,scale .45s cubic-bezier(.3,1.5,.5,1);white-space:nowrap}
+.pullgo.on .pg-pill{opacity:1;scale:1}
+.pullgo .pg-pill svg{width:30px;height:30px;rotate:-90deg}
+.pullgo .pg-bg{fill:none;stroke:rgba(86,79,255,.15);stroke-width:4}
+.pullgo .pg-ring{fill:none;stroke:#564FFF;stroke-width:4;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1}
+.pullgo.go .pg-pill{opacity:0;scale:1.15;transition:opacity .5s,scale .5s}
+.pullgo.go .pg-tide{opacity:0;transition:opacity .7s}
+body.chat-on .pullgo{display:none}
+.pullroom{height:0;background:#5650FF;transition:height .7s cubic-bezier(.65,0,.35,1)} /* le bleu du footer continue dans la place ajoutée */
+/* « Let's build your system » : bouton Book a call un peu plus gros, toujours noir */
+html body section.end .row .pill{height:74px!important;padding:0 42px!important;font-size:23px!important}
+@media (max-width:760px){html body section.end .row .pill{height:62px!important;padding:0 30px!important;font-size:20px!important}}
+/* frise de la home : textes plus légers au repos (le bleu de l'étape active reste plein) */
+.tl2 .tlx{color:rgba(32,32,32,.6)}
+.tl2 .tfof,.tl2 .tfof a{color:rgba(32,32,32,.48)}
+/* marée dans le footer, sous ses éléments */
+footer.ftr.hastide{position:relative}
+footer.ftr.hastide>.pg-tide{position:absolute;left:0;right:0;bottom:0;top:auto;z-index:0;height:min(calc(var(--pull,0) * 55vh),100%);pointer-events:none}
+footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
+.pg-tide.on,.pg-tide.go{opacity:1}
+.pg-tide.go{opacity:0;transition:opacity .7s}
+/* Nabil's AIntern : le « AI » en bleu pour que le jeu de mots se lise, même en capitales */
+.pbox header b .aint{color:#564FFF}
+/* logo de l'AIntern : la spirale, vivante — respire doucement, tourne sur elle-même au survol, s'anime de temps en temps, tourne quand il répond */
+.mm .aint{width:26px;height:26px;display:block;overflow:visible;animation:aintIdle 5.5s ease-in-out infinite}
+.mm .aint .aic{stroke-dasharray:1;stroke-dashoffset:0}
+.mm.spin .aint{animation:aintSpin .95s cubic-bezier(.45,0,.2,1)}
+.mm.wig .aint{animation:aintWig .9s cubic-bezier(.3,1.4,.5,1)}
+.mm.talk .aint{animation:aintSpin 1.1s linear infinite}
+@keyframes aintIdle{0%,100%{rotate:0deg;scale:1}50%{rotate:-10deg;scale:1.05}}
+@keyframes aintSpin{from{rotate:0deg}to{rotate:360deg}}
+@keyframes aintWig{0%{rotate:0deg}30%{rotate:-28deg;scale:1.08}65%{rotate:12deg}100%{rotate:0deg;scale:1}}
+@media (prefers-reduced-motion:reduce){.mm .aint{animation:none!important}}
+/* prompt box : léger grossissement au survol (souris uniquement) */
+@media (hover:hover){#chat .pform{transition:scale .45s cubic-bezier(.3,1.5,.5,1),box-shadow .35s}
+#chat .pform:hover,#chat .pform:focus-within{scale:1.025}}
+.mm.spinr .aint{animation:aintSpin .95s cubic-bezier(.45,0,.2,1) reverse}
+#chat .chips{flex-wrap:nowrap}
+#chat .chips button{white-space:nowrap;flex:none}
+#chat .chips{justify-content:center;overflow:visible} /* une seule ligne, centrée : elle peut déborder des deux côtés */
+@media (max-width:760px){#chat .chips{flex-wrap:wrap;justify-content:flex-end;gap:6px}#chat .chips button{font-size:13px}} /* mobile : sur deux lignes, comme avant */
+/* « Let's build your system » : Book a call plus gros, contour blanc, plus près du titre ; au survol le dégradé arrive en fondu (le fond ne saute plus au bleu) */
+html body section.end .row{margin-top:clamp(22px,2.6vw,36px)!important}
+html body section.end .row .pill{height:84px!important;padding:0 52px!important;font-size:26px!important;isolation:isolate;box-shadow:0 0 0 0 #fff,0 18px 40px -18px rgba(20,16,120,.55)!important;transition:box-shadow .5s cubic-bezier(.4,0,.2,1),scale .4s cubic-bezier(.3,1.5,.5,1)!important} /* contour blanc : seulement au survol */
+html body section.end .row .pill:hover{background:var(--ink)!important;box-shadow:0 0 0 2px #fff,0 22px 46px -16px rgba(40,30,240,.75)!important}
+html body section.end .row .pill::before{transition:opacity .7s cubic-bezier(.4,0,.2,1)!important}
+@media (max-width:760px){html body section.end .row .pill{height:66px!important;padding:0 34px!important;font-size:22px!important}}
+/* jauge « Keep scrolling » à la charte : pastille noire comme les boutons, texte serif, anneau aux trois couleurs */
+.pullgo .pg-pill{background:#202020;color:#fff;font:400 18px/1 var(--text);letter-spacing:0;padding:8px 20px 8px 9px;gap:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 14px 30px -14px rgba(20,16,120,.6)}
+.pullgo .pg-bg{stroke:rgba(255,255,255,.14)}
+.pullgo .pg-ring{stroke:url(#pgg)}
+
+/* Témoignages : carrousel qui défile tout seul, pause au survol, arrêté hors écran */
+.testi{overflow:visible;padding-top:clamp(64px,9vh,110px)!important;padding-bottom:clamp(40px,6vh,80px)}
+.testi .tmh{text-align:center;margin:0 auto}
+.testi .tmsub{text-align:center;margin:16px auto 0!important;color:#5f5e5a}
+.testi .tmq{margin-top:clamp(28px,4vh,44px);width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);padding:16px 0 36px}
+.testi .tmtrack{display:flex;gap:24px;width:max-content;animation:tmmove 110s linear infinite}
+.testi:not(.tmon) .tmtrack{animation-play-state:paused}
+@media (hover:hover){.testi .tmq:hover .tmtrack{animation-play-state:paused}}
+@keyframes tmmove{to{transform:translateX(calc(-50% - 12px))}}
+.testi .tmc{flex:none;width:min(520px,82vw);margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:32px 34px;background:#fff;border-radius:24px;box-shadow:0 0 0 1px rgba(32,32,32,.06),0 24px 50px -32px rgba(32,32,32,.35)}
+.testi blockquote{margin:0;font:400 21px/1.42 var(--text);color:#202020;text-wrap:pretty}
+.testi figcaption{display:flex;align-items:center;gap:14px}
+.testi .tmav{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none}
+.testi .tmin{display:grid;place-items:center;background:var(--grad-blue,linear-gradient(135deg,#5751FF,#1C14F2));color:#fff;font:800 17px/1 var(--display);font-stretch:62%;letter-spacing:.02em}
+.testi .tmwho{display:flex;flex-direction:column;gap:4px}
+.testi .tmwho b{font:800 19px/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.01em;color:#202020}
+.testi .tmwho small{font:400 15px/1.3 var(--text);color:#6b6a66}
+@media (prefers-reduced-motion:reduce){.testi .tmtrack{animation:none}.testi .tmq{overflow-x:auto}}
+@media (max-width:760px){.testi blockquote{font-size:18px}.testi .tmc{padding:24px}}
+
+/* cartes témoignages : grand guillemet bleu, auteur séparé par un filet, logo de l'entreprise, survol qui soulève */
+.testi .tmc{position:relative;width:min(540px,84vw);padding:30px 36px 28px;border-radius:28px;gap:26px;transition:translate .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.testi .tmq-mark{display:block;height:44px;margin:0 0 -4px -3px;font:400 96px/1 var(--text);color:#564FFF}
+.testi blockquote{font-size:22px;line-height:1.42}
+.testi figcaption{padding-top:20px;border-top:1px solid rgba(32,32,32,.09)}
+.testi .tmlogo{margin-left:auto;width:86px;height:24px;background:#202020;opacity:.32;-webkit-mask-position:right center;mask-position:right center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+@media (hover:hover){.testi .tmc:hover{translate:0 -6px;box-shadow:0 0 0 1px rgba(86,79,255,.25),0 34px 60px -34px rgba(40,30,240,.45)}}
+@media (max-width:760px){.testi .tmc{padding:24px 24px 22px}.testi .tmq-mark{font-size:76px;height:34px}.testi blockquote{font-size:18px}.testi .tmlogo{width:64px}}
+/* témoignages : espacements alignés sur le rythme des sections (--sec), titre → cartes comme les autres sections */
+html body section.testi{padding-top:var(--sec)!important;padding-bottom:var(--sec)!important;margin:0!important}
+.testi .tmsub{margin-top:18px!important}
+.testi .tmq{margin-top:clamp(40px,5vh,56px)!important;padding:12px 0 28px!important}
+.testi .tmc{justify-content:flex-start!important}
+.testi blockquote{flex:1}
+.testi .tmq-mark{height:40px;margin:0 0 6px -3px}
+/* barre d'outils du canvas : outil actif sur le dégradé bleu de la charte (comme la page provisoire), pas le bleu Figma */
+html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[aria-pressed=true]{background:linear-gradient(135deg,#5751FF,#1C14F2)!important;color:#fff!important}
+/* prompt bar : contour aux trois couleurs plus épais (2 px) */
+#chat .pform::before{inset:-2px!important;padding:2px!important;border-radius:20px!important}
+.testi .tmc{gap:18px!important}
+.testi .tmq-mark{height:30px!important;line-height:.95!important;margin:0 0 -2px -3px!important;font-size:84px!important}
+.testi figcaption{margin-top:12px}
+/* carrousel : assez de place en haut et en bas pour que l'ombre des cartes (et leur montée au survol) ne soit jamais coupée ; marges négatives pour garder le même espacement */
+.testi .tmq{padding:40px 0 90px!important;margin-top:calc(clamp(40px,5vh,56px) - 40px)!important;margin-bottom:-90px!important}
+/* témoignages : défilement piloté en JS (glissable), ne s'arrête plus au survol ; logo à 100 % ; contour dégradé bleu au survol */
+.testi .tmtrack{animation:none!important;will-change:transform;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.testi .tmtrack.drag{cursor:grabbing}
+.testi .tmtrack img{pointer-events:none}
+.testi .tmlogo{opacity:1!important}
+.testi .tmc::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .45s cubic-bezier(.4,0,.2,1);pointer-events:none}
+@media (hover:hover){.testi .tmc:hover::after{opacity:1}.testi .tmc:hover{box-shadow:0 34px 60px -34px rgba(40,30,240,.45)!important}}
+.testi .tmlogo{width:76px!important;height:18px!important}
+
+/* home : Impact / Clarity / Value, un par un, défilement horizontal piloté par le scroll, très grosse typo */
+.hvx{position:relative;height:340vh}
+.hvx-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
+.hvx-track{display:flex;width:300vw;will-change:transform}
+.hvx-p{flex:none;width:100vw;padding:0 clamp(24px,7vw,120px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.hvx-n{font:400 clamp(18px,1.6vw,24px)/1 var(--text);color:#564FFF;margin-bottom:clamp(8px,1.4vh,18px)}
+.hvx-w{display:block;font-size:clamp(110px,24vw,420px)!important;line-height:.8!important;letter-spacing:-.01em;color:#202020;white-space:nowrap}
+.hvx-p:nth-child(2) .hvx-w{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hvx-s{margin:clamp(18px,3vh,36px) 0 0;font:400 clamp(22px,2.4vw,38px)/1.2 var(--text);color:#3a3a3a}
+.hvx-bar{position:absolute;left:clamp(24px,7vw,120px);right:clamp(24px,7vw,120px);bottom:clamp(90px,13vh,130px);height:2px;background:rgba(32,32,32,.1);border-radius:2px;overflow:hidden}
+.hvx-bar i{display:block;height:100%;width:100%;transform-origin:left;transform:scaleX(var(--hp,0));background:linear-gradient(90deg,#564FFF,#3BE9CE 55%,#FFF186)}
+@media (prefers-reduced-motion:reduce){.hvx{height:auto}.hvx-pin{position:static;height:auto;overflow:visible}.hvx-track{flex-direction:column;width:auto}.hvx-p{width:auto;padding:12vh clamp(24px,7vw,120px)}}
+.hvx-w,.hvx-w span{font-family:var(--display)!important;font-weight:800!important;font-stretch:62%!important;text-transform:uppercase!important}
+.hvx-w{font-size:clamp(120px,27vw,470px)!important;line-height:.82!important}
+@media (max-width:760px){.hvx-w{font-size:clamp(90px,24vw,170px)!important}.hvx-p{padding:0 24px}}
+
+/* Think with Clarity / Communicate with Impact / Create Value : un peu moins gros, rien de rogné */
+.hvx-w{font-size:clamp(96px,17vw,300px)!important;line-height:.92!important;padding:.04em .02em 0 0}
+.hvx-p:nth-child(2) .hvx-w{background:none;color:#202020}
+.hvx-p:nth-child(1) .hvx-w span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-pre{font:400 clamp(26px,3vw,48px)/1.1 var(--text);color:#202020;margin-bottom:clamp(4px,1vh,12px)}
+.hvx-nf{font:400 clamp(16px,1.4vw,22px)/1 var(--text)!important;text-transform:none!important;letter-spacing:0;color:#8a8984;vertical-align:top;margin-left:.6em;white-space:nowrap}
+.hvx-n{margin-bottom:clamp(14px,2vh,22px)}
+@media (max-width:760px){.hvx-w{font-size:clamp(70px,20vw,140px)!important}.hvx-nf{display:block;margin:10px 0 0}}
+/* fonds par mot : Clarity sur blanc, Impact sur bleu (texte blanc), Value sur le papier avec le mot en dégradé bleu */
+.hvx-pin{align-items:stretch}
+.hvx-track{height:100%}
+.hvx-p{height:100%}
+.hvx-p:nth-child(1){background:#fff}
+.hvx-p:nth-child(2){background:linear-gradient(135deg,#5751FF,#1C14F2)}
+.hvx-p:nth-child(2) :is(.hvx-n,.hvx-pre,.hvx-w,.hvx-s,.hvx-s span){color:#fff!important}
+.hvx-p:nth-child(2) .hvx-nf{color:rgba(255,255,255,.7)!important}
+.hvx-p:nth-child(3) .hvx-w span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-bar{z-index:2}
+/* pleine largeur de l'écran (la section était prise dans les marges du contenu → mots coupés net) */
+.hvx{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+.hvx-pin{width:100vw}
+
+/* continu, centré, mots plus gros, sans numéros ni barre */
+.pres{overflow-x:clip}
+.hvx-p{align-items:center!important;text-align:center}
+.hvx-w{font-size:clamp(120px,22vw,400px)!important}
+.hvx-nf{position:absolute;margin:0!important;transform:translate(.4em,.2em)}
+.hvx-p:nth-child(2) .hvx-w{position:relative}
+.hvx-s{margin-left:auto;margin-right:auto}
+@media (max-width:760px){.hvx-w{font-size:clamp(80px,22vw,150px)!important}.hvx-nf{position:static;display:block;margin:10px auto 0!important;transform:none}}
+
+/* fond fixe en fondu (plus de fond par « slide ») */
+.hvx-p:nth-child(n){background:none!important}
+.hvx-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hvx-bw{background:#fff;opacity:1}
+.hvx-bb{background:linear-gradient(135deg,#5751FF,#1C14F2);opacity:0}
+.hvx-track{position:relative;z-index:1}
+
+/* v3 : fond fixe en fondu derrière toute la page, seul le mot glisse, en-tête et sous-titre fixes en fondu */
+.hvx-bg{display:none}
+.hvx-fbg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0}
+.hvx-fw{background:#fff}
+.hvx-fb{background:linear-gradient(135deg,#5751FF,#1C14F2)}
+.hvx-pin{flex-direction:column;justify-content:center;align-items:stretch!important}
+.hvx-stack{display:grid;justify-items:center;text-align:center}
+.hvx-stack>*{grid-area:1/1;margin:0!important;opacity:0}
+.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}
+.hvx-row{width:100vw;overflow:hidden}
+.hvx-track{height:auto!important}
+.hvx-p{height:auto!important;padding:clamp(10px,2vh,24px) 24px!important}
+.hvx-pres{margin-bottom:0}
+.hvx-subs{margin-top:0}
+.hvx-grad span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-white{color:#fff!important;position:relative}
+.hvx-white .hvx-nf{color:rgba(255,255,255,.75)!important}
+.hvx-p:nth-child(n) .hvx-w{background:none}
+@media (prefers-reduced-motion:reduce){.hvx-stack>*{opacity:1}}
+
+.hvx-fbg{z-index:0}
+.hvx-pin>.hvx-stack,.hvx-pin>.hvx-row{position:relative;z-index:1}
+.hvx-black,.hvx-black span{color:#202020!important;background:none!important}
+
+/* fin de page : le grand logo AssetsOS apparaît en grossissant au fil du scroll, dès que la section arrive */
+.end.endfx.scrubfx:not(.es-out) .endbig{opacity:var(--lq,0)!important;scale:calc(.45 + .55 * var(--lq,0))!important;filter:blur(calc((1 - var(--lq,0)) * 12px))!important;transition:none!important}
+
+/* VALUE : lueurs bleues sur les côtés, déséquilibrées et vivantes (même esprit que Pricing) */
+.hvx-glow{background:radial-gradient(42% 60% at 0% 78%,rgba(86,79,255,.42),rgba(86,79,255,0) 70%),radial-gradient(28% 40% at 100% 18%,rgba(28,20,242,.32),rgba(28,20,242,0) 70%),radial-gradient(22% 30% at 96% 92%,rgba(86,79,255,.18),rgba(86,79,255,0) 70%);animation:hvxglow 9s ease-in-out infinite alternate}
+@keyframes hvxglow{0%{background-position:0 0,0 0,0 0;filter:saturate(1)}100%{background-position:0 -6vh,0 5vh,0 0;filter:saturate(1.15)}}
+@media (prefers-reduced-motion:reduce){.hvx-glow{animation:none}}
+.hvx-glow{inset:-12vh 0!important;background-repeat:no-repeat!important;animation:hvxglow2 9s ease-in-out infinite alternate!important}
+@keyframes hvxglow2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-4vh,0) scale(1.04)}}
+
+html.hvxdark #home,html.hvxdark #invader{color:#fff!important}
+html.hvxdark #home svg path{fill:#fff}
+html.hvxdark .burger span,html.hvxdark #menuBtn span,html.hvxdark .burger i{background:#fff!important}
+html.hvxdark .top .vbook{background:#fff!important;color:#202020!important}
+html.hvxdark #toast{opacity:0!important}
+
+/* IMPACT : fond dégradé papier → bleu (comme la tuile AssetsOS), plus doux que le bleu plein ; texte en noir */
+.hvx-fb{background:linear-gradient(180deg,#f3f2ee 0%,#e9e8fb 30%,#b9b6ff 62%,#7b76ff 85%,#5650FF 100%)!important}
+.hvx-white,.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#202020!important}
+.hvx-white .hvx-nf{color:#8a8984!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w,.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w.hvx-white{color:#202020!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-nf{color:#8a8984!important}
+.hvx-fw{display:none!important} /* Clarity : fond papier normal */
+/* « together » souligné au trait à la main, tracé à l'arrivée */
+.testi .tmh .mark{position:relative;display:inline-block;color:#564FFF}
+.testi .tmh .mark svg{position:absolute;left:-3%;bottom:-.14em;width:106%;height:.26em;overflow:visible;pointer-events:none}
+.testi .tmh .scrib{fill:none;stroke:#564FFF;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.6,0,.2,1) .25s}
+.testi.tmdraw .tmh .scrib{stroke-dashoffset:0}
+/* sous-titre : même taille que les autres chapôs de la home (22 px) */
+.testi .tmsub,.testi .tmsub span{font-size:clamp(19px,1.6vw,22px)!important}
+
+/* IMPACT en blanc sur le dégradé */
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w,.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w.hvx-white{color:#fff!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-nf{color:rgba(255,255,255,.8)!important}
+/* fond IMPACT un peu plus bleu derrière le mot pour que le blanc se lise ; textes du haut et du bas en blanc aussi */
+.hvx-fb{background:linear-gradient(180deg,#dcdafc 0%,#aaa6ff 28%,#7e79ff 55%,#5650FF 100%)!important}
+.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}

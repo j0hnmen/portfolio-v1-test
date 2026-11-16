@@ -78,8 +78,21 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   document.addEventListener('visibilitychange',()=>{ if(document.hidden) vis=false; }); } }
 
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
-document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricing"]'); if(!a) return; const t=document.getElementById('pricing-title'); if(!t) return; e.preventDefault();
-  const y=t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*.14); const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto'; scrollTo(0,y); H.style.scrollBehavior=sb; history.replaceState(null,'','#pricing'); });
+/*smoothanchor*/ /* ancres internes (See pricing…) : défilement fluide, avec une courbe douce ; la cible est remesurée à chaque image (les sections qui apparaissent peuvent décaler la page) ; la molette ou le doigt reprennent la main */
+{ const RMq=matchMedia('(prefers-reduced-motion:reduce)'); let stop=null;
+  /* « Pricing » arrive pile à hauteur de la barre du haut : son centre aligné sur le centre de « Book a call » */
+  const barMid=()=>{ const b=document.querySelector('.top .ntr'); if(!b) return 44; const r=b.getBoundingClientRect(); return r.height?r.top+r.height/2:44; };
+  const dest=(id)=>{ const t=id==='pricing'?(document.getElementById('pricing-title')||document.getElementById('pricing')):document.getElementById(id); if(!t) return null; const r=t.getBoundingClientRect();
+    const off=id==='pricing'?barMid()-r.height/2:Math.round(innerHeight*.08);
+    return Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight, Math.round(r.top+scrollY-off))); };
+  const go=(id)=>{ if(stop) stop(); const y0=scrollY, d0=dest(id); if(d0==null) return false; const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto';
+    if(RMq.matches){ scrollTo(0,d0); H.style.scrollBehavior=sb; return true; }
+    const dur=Math.min(1300,Math.max(650,Math.abs(d0-y0)*.45)), t0=performance.now(), ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; let raf=0;
+    const end=()=>{ cancelAnimationFrame(raf); H.style.scrollBehavior=sb; ['wheel','touchstart','keydown'].forEach(ev=>removeEventListener(ev,end)); stop=null; };
+    ['wheel','touchstart','keydown'].forEach(ev=>addEventListener(ev,end,{passive:true})); stop=end;
+    const step=now=>{ const k=Math.min(1,(now-t0)/dur), d=dest(id); scrollTo(0,y0+(d-y0)*ease(k)); if(k<1) raf=requestAnimationFrame(step); else end(); }; raf=requestAnimationFrame(step); return true; };
+  document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"]'); if(!a||e.defaultPrevented) return; const id=decodeURIComponent(a.getAttribute('href').slice(1)); if(!id) return;
+    if(go(id)){ e.preventDefault(); history.replaceState(null,'','#'+id); } }); }
 
 /*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
 { const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);} }
@@ -114,9 +127,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        badge:t('May 12','12 mai'), cta:t('Join the beta','Rejoindre la bêta')+' →'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',img:'ev-img',quote:'ev-quote',badge:'ev-badge',cta:'ev-cta'},
      kind:{en:'Launch post',fr:'Post de lancement'}, title:{en:'Launch week is here',fr:'La semaine du lancement'},
-     req:{en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
-          fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']},
-     fmt:['4/5','4/5','4/5','9/16','9/16','9/16'], theme:[0,0,0,0,0,'dark'],
+     req:{en:['Add a quote from our founder','Add the launch date','Switch to our dark theme'],
+          fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe en thème sombre']},
+     fmt:['4/5','4/5','4/5','4/5'], theme:[0,0,0,'dark'],
      S:[{logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[7,51,86,43]},
         {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43]},
         {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43],badge:[70,3,24,0]},
@@ -127,9 +140,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        date:t('June 3 · Main stage','3 juin · Grande scène'), partners:'<i></i><i></i><i></i>'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',photo:'ev-photo',talk:'ev-talk',date:'ev-date',partners:'ev-partners'},
      kind:{en:'Speaker card',fr:'Carte speaker'}, title:{en:'Nina Moreau',fr:'Nina Moreau'},
-     req:{en:['Add her talk title','Add the date and the stage','Make the LinkedIn banner version','Add our partners’ logos','Use the yellow edition colors'],
-          fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Fais la version bannière LinkedIn','Ajoute les logos de nos partenaires','Passe aux couleurs de l’édition jaune']},
-     fmt:['1/1','1/1','1/1','16/9','16/9','16/9'], theme:[0,0,0,0,0,'yellow'],
+     req:{en:['Add her talk title','Add the date and the stage','Use the yellow edition colors'],
+          fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Passe aux couleurs de l’édition jaune']},
+     fmt:['1/1','1/1','1/1','1/1'], theme:[0,0,0,'yellow'],
      S:[{logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70]},
         {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,56,48,29]},
         {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,52,48,27],date:[7,85,48,7]},
@@ -141,9 +154,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        logos:'<small>'+t('Trusted by','Ils nous font confiance')+'</small><i></i><i></i><i></i><i></i>'},
      cls:{ann:'ev-ann',nav:'ev-nav',title:'ev-title',sub:'ev-subl',cta:'ev-cta',shot:'ev-shot',quote:'ev-quote',logos:'ev-logos'},
      kind:{en:'Header',fr:'Header'}, title:{en:'Ship faster with Orbit',fr:'Livrez plus vite avec Orbit'},
-     req:{en:['Add a row of customer logos','Add a testimonial','Make the mobile version','Add an announcement banner','Switch to the spring campaign colors'],
-          fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Fais la version mobile','Ajoute un bandeau d’annonce','Passe aux couleurs de la campagne de printemps']},
-     fmt:['16/10','16/10','16/10','9/16','9/16','9/16'], theme:[0,0,0,0,0,'mint'],
+     req:{en:['Add a row of customer logos','Add a testimonial','Switch to the spring campaign colors'],
+          fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Passe aux couleurs de la campagne de printemps']},
+     fmt:['16/10','16/10','16/10','16/10'], theme:[0,0,0,'mint'],
      S:[{nav:[4,5,92,8],title:[4,22,46,28],sub:[4,53,38,9],cta:[4,67,20,8],shot:[54,20,42,64]},
         {nav:[4,5,92,8],title:[4,20,46,26],sub:[4,48,38,9],cta:[4,61,20,8],shot:[54,19,42,58],logos:[4,85,92,8]},
         {nav:[4,5,92,8],title:[4,18,46,22],sub:[4,42,38,8],cta:[4,53,20,7.5],quote:[4,64,46,16],shot:[54,18,42,60],logos:[4,85,92,8]},
@@ -155,7 +168,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
       e.innerHTML=n==='title'?'<span class="evtt"></span><i class="ev-caret"></i>':c.blocks[n]; post.appendChild(e); B[n]=e; }
     tEl=post.querySelector('.evtt'); };
   const lang=(lg)=>{ txtLang=lg; post.querySelectorAll('.evt').forEach(e=>e.textContent=e.dataset[lg]); };
-  const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,c.S.length-1)];
+  const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,2)]; /* v4 = même mise en page que v3, seul le thème change */
     post.style.aspectRatio=c.fmt[k]; post.classList.toggle('wide',c.fmt[k]==='16/9'||c.fmt[k]==='16/10'); post.classList.remove('dark','yellow','mint'); if(c.theme[k]) post.classList.add(c.theme[k]);
     for(const n in B){ const p=st[n], e=B[n];
       if(!p){ e.classList.add('off'); continue; }
@@ -172,7 +185,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   const loop=async()=>{ const id=++run, c=CASES[C]; bar.classList.remove('ship','sent'); ship.tabIndex=-1;
     build(); lang(L()); vlab.textContent=(fr()?'Template dynamique — ':'Active Template — ')+c.kind[L()]; ver.textContent='v1'; apply(0,false); pEl.textContent='';
     await wait(350); if(!await type(tEl,c.title[L()],70,id)) return;
-    for(let k=0;k<5;k++){ if(id!==run) return; await wait(1100);
+    for(let k=0;k<c.req.en.length;k++){ /* 3 demandes : v1 → v4 */ if(id!==run) return; await wait(1100);
       if(!await type(pEl,c.req[L()][k],34,id)) return; await wait(320);
       bar.classList.add('sent'); apply(k+1,true); bump(k+2);
       await wait(500); bar.classList.remove('sent'); pEl.textContent=''; }
@@ -181,7 +194,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     post.classList.add('fly'); await wait(720);
     C=(C+1)%CASES.length; post.classList.add('enter'); post.classList.remove('fly'); build(); lang(L()); apply(0,false); void post.offsetWidth;
     post.classList.remove('enter'); await wait(500); if(vis) loop(); });
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ build(); lang(L()); apply(5,false); typeTitle(CASES[0].title[L()]); ver.textContent='v6'; return; }
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ build(); lang(L()); apply(3,false); typeTitle(CASES[0].title[L()]); ver.textContent='v4'; return; }
   build(); apply(0,false);
   new IntersectionObserver(es=>es.forEach(en=>{ const was=vis; vis=en.isIntersecting; if(vis&&!was&&!bar.classList.contains('ship')) loop(); else if(!vis) run++; }),{threshold:.25}).observe(post);
   new MutationObserver(()=>{ if(vis) loop(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
@@ -192,3 +205,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     const m=document.createElement('span'); m.className=im.className+' vlm'; m.setAttribute('role','img'); m.setAttribute('aria-label',im.alt||'');
     const u=im.currentSrc||im.src; m.style.cssText=`display:block;height:${h}px;aspect-ratio:${nw}/${nh};max-width:100%;-webkit-mask:url("${u}") left center/contain no-repeat;mask:url("${u}") left center/contain no-repeat;`; im.replaceWith(m); };
   if(im.complete&&im.naturalWidth) go(); else im.addEventListener('load',go,{once:true}); }); }
+
+/*plansin*/ /* Pricing : les deux cartes glissent légèrement depuis la gauche et la droite, puis se posent */
+{ const pl=document.querySelector('#pricing .plans'); if(pl&&'IntersectionObserver' in window){ pl.classList.add('plpre');
+  new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); requestAnimationFrame(()=>pl.classList.add('plin')); } },{threshold:.18}).observe(pl); } }

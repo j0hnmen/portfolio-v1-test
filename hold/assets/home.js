@@ -103,7 +103,7 @@ const CV=(function(){
     const L=B.a*z, R=B.c*z, T=B.b*z, Bo=B.d*z;
     // déplacement libre tant que le contenu occupe encore au moins la moitié de l'écran (ou tout le contenu s'il est plus petit)
     const nx=Math.min(W*.5,(R-L)*.7), ny=Math.min(H*.5,(Bo-T)*.7); // zoomé ou dézoomé, les éléments peuvent sortir sur les côtés, jamais plus de la moitié
-    px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,Math.max(ny-Bo,H*.68-Bo)),H-ny-T); } // vers le bas on s'arrête plus tôt : la page arrive vite
+    px=Math.min(Math.max(px,nx-R),W-nx-L); py=Math.min(Math.max(py,ny-Bo),H-ny-T); } // même marge en haut et en bas : on peut faire monter le contenu autant que le descendre
   const apply=()=>{ clampView(); const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk;
     world.style.transform=`translate(${X}px,${Y}px) scale(${Z})`; world.style.setProperty('--iz',1/Z); cv.style.backgroundSize=`${28*Z}px ${28*Z}px`; cv.style.backgroundPosition=`${X}px ${Y}px`; $('#zl').textContent=Math.round(z*100)+'%'; };
   const toW=e=>{ const cx=innerWidth/2, cy=innerHeight/2, Z=z*sk, X=cx-(cx-px)*sk, Y=cy-(cy-py)*sk; return {x:(e.clientX-X)/Z,y:(e.clientY-Y)/Z}; }, auto=n=>n.type==='frame'||n.type==='note'||n.type==='text';
@@ -223,7 +223,7 @@ const CV=(function(){
     if(n&&(t.classList.contains('rot')||t.hasAttribute('data-rz'))){ act={k:'rot',n,a0:Math.atan2(w.y-(n.y+n.h/2),w.x-(n.x+n.w/2))*180/Math.PI-n.r}; return; }
     if(n&&t.dataset.h){ const h=t.dataset.h, sx=h.includes('e')?1:-1, sy=h[0]==='s'?1:-1, a=n.r*Math.PI/180, c=Math.cos(a), si=Math.sin(a), lx=-sx*n.w/2, ly=-sy*n.h/2;
       act={k:'size',n,sx,sy,c,si,ax:n.x+n.w/2+lx*c-ly*si,ay:n.y+n.h/2+lx*si+ly*c}; return; }
-    if(n&&n===sel&&n.el.querySelector('.lv.ready')&&t.closest('.clb')){ liveUse(n); return; } // 2e clic sur un calque sélectionné = on utilise le site
+    if(n&&n===sel&&n.el.querySelector('.lv.ready')&&t.closest('.clb')){ liveUse(n); return; } // 2e clic sur un calque sélectionné = on utilise le site ; avant ça, molette et zoom restent au canvas
     if(n){ const now=performance.now(); if(n.type==='frame'&&lastN===n&&now-lastT<380&&!n.el.querySelector('.cl')){ lastN=null; openProject(n.pi,null); return; } lastN=n; lastT=now; select(n); act={k:'move',n,ox:w.x-n.x,oy:w.y-n.y,sx:e.clientX,sy:e.clientY,t:now}; return; }
     select(null); pan(); });
   cv.addEventListener('pointermove',e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
