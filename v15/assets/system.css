@@ -811,3 +811,25 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-nf{font:400 clamp(16px,1.4vw,22px)/1 var(--text)!important;text-transform:none!important;letter-spacing:0;color:#8a8984;vertical-align:top;margin-left:.6em;white-space:nowrap}
 .hvx-n{margin-bottom:clamp(14px,2vh,22px)}
 @media (max-width:760px){.hvx-w{font-size:clamp(70px,20vw,140px)!important}.hvx-nf{display:block;margin:10px 0 0}}
+/* fonds par mot : Clarity sur blanc, Impact sur bleu (texte blanc), Value sur le papier avec le mot en dégradé bleu */
+.hvx-pin{align-items:stretch}
+.hvx-track{height:100%}
+.hvx-p{height:100%}
+.hvx-p:nth-child(1){background:#fff}
+.hvx-p:nth-child(2){background:linear-gradient(135deg,#5751FF,#1C14F2)}
+.hvx-p:nth-child(2) :is(.hvx-n,.hvx-pre,.hvx-w,.hvx-s,.hvx-s span){color:#fff!important}
+.hvx-p:nth-child(2) .hvx-nf{color:rgba(255,255,255,.7)!important}
+.hvx-p:nth-child(3) .hvx-w span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-bar{z-index:2}
+/* pleine largeur de l'écran (la section était prise dans les marges du contenu → mots coupés net) */
+.hvx{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+.hvx-pin{width:100vw}
+
+/* continu, centré, mots plus gros, sans numéros ni barre */
+.pres{overflow-x:clip}
+.hvx-p{align-items:center!important;text-align:center}
+.hvx-w{font-size:clamp(120px,22vw,400px)!important}
+.hvx-nf{position:absolute;margin:0!important;transform:translate(.4em,.2em)}
+.hvx-p:nth-child(2) .hvx-w{position:relative}
+.hvx-s{margin-left:auto;margin-right:auto}
+@media (max-width:760px){.hvx-w{font-size:clamp(80px,22vw,150px)!important}.hvx-nf{position:static;display:block;margin:10px auto 0!important;transform:none}}
