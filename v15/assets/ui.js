@@ -129,7 +129,7 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     const follow=()=>{ if(run) return; const m=/translateX\(([-\d.]+)px\)/.exec(ball.style.transform||''); if(m){ fill.style.transition='none'; mark(+m[1]); } };
     /* survol : la bille ne quitte plus le fil du scroll */
     /* la bille suit le scroll (plus d'animation automatique) : de la 1re étape quand la frise entre dans l'écran, à la dernière quand elle arrive vers le haut */
-    ol.classList.add('tlscroll'); { const pw=ol.closest('.aoswho'); if(pw&&!ol.closest('.page')) pw.classList.add('tlpin'); } let raf=0;
+    ol.classList.add('tlscroll'); { const pw=ol.closest('.aoswho'); if(pw) pw.classList.add('tlpin'); } let raf=0;
     const upd=()=>{ raf=0; if(innerWidth<=900) return; const r=ol.getBoundingClientRect(), H=innerHeight, p=xs(), n=p.length-1; const pin=ol.closest('.aoswho'), pr=pin&&pin.classList.contains('tlpin')?pin.getBoundingClientRect():null; const k=pr?Math.max(0,Math.min(1,(-pr.top)/Math.max(1,pr.height-H))):Math.max(0,Math.min(1,(H*.88-r.top)/(H*.5))); /* section épinglée : la bille avance pendant que la section reste bloquée */
       const x=p[0]+(p[n]-p[0])*k; ball.style.transition='none'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='none'; fill.style.width=Math.max(0,x)+'px';
       let on=0; p.forEach((v,j)=>{ if(v<=x+4) on=j; }); items.forEach((it,j)=>{ it.classList.toggle('past',p[j]<=x+4); it.classList.toggle('on',j===on); }); ol.classList.toggle('tldone',k>=1); };
