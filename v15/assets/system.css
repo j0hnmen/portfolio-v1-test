@@ -778,3 +778,11 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .testi figcaption{margin-top:12px}
 /* carrousel : assez de place en haut et en bas pour que l'ombre des cartes (et leur montée au survol) ne soit jamais coupée ; marges négatives pour garder le même espacement */
 .testi .tmq{padding:40px 0 90px!important;margin-top:calc(clamp(40px,5vh,56px) - 40px)!important;margin-bottom:-90px!important}
+/* témoignages : défilement piloté en JS (glissable), ne s'arrête plus au survol ; logo à 100 % ; contour dégradé bleu au survol */
+.testi .tmtrack{animation:none!important;will-change:transform;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.testi .tmtrack.drag{cursor:grabbing}
+.testi .tmtrack img{pointer-events:none}
+.testi .tmlogo{opacity:1!important}
+.testi .tmc::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .45s cubic-bezier(.4,0,.2,1);pointer-events:none}
+@media (hover:hover){.testi .tmc:hover::after{opacity:1}.testi .tmc:hover{box-shadow:0 34px 60px -34px rgba(40,30,240,.45)!important}}
+.testi .tmlogo{width:76px!important;height:18px!important}

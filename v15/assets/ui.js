@@ -141,8 +141,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794834081'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794834081'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794834405'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794834405'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -175,5 +175,23 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 
 /*sysin*/ { document.querySelectorAll('.aosx .sysl').forEach(l=>new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting){ l.classList.add('sysin'); o.disconnect(); } }),{rootMargin:'0px 0px -18% 0px'}).observe(l)); }
 
-/*testi*/ /* témoignages : le carrousel ne tourne que quand il est à l'écran */
-{ document.querySelectorAll('.testi').forEach(t=>{ if(!('IntersectionObserver' in window)){ t.classList.add('tmon'); return; } new IntersectionObserver(es=>t.classList.toggle('tmon',es[0].isIntersecting)).observe(t); }); }
+/*testi*/ /* témoignages : défile tout seul (même au survol), glissable à la souris et au doigt, ne tourne que quand il est à l'écran */
+{ document.querySelectorAll('.testi').forEach(t=>{ const tr=t.querySelector('.tmtrack'); if(!tr) return;
+    const RM=matchMedia('(prefers-reduced-motion:reduce)').matches; let x=0, on=false, last=0, drag=null, vel=0, raf=0;
+    const loopW=()=>(tr.scrollWidth+24)/2; /* la piste contient deux fois la même série */
+    const wrap=()=>{ const W=loopW(); if(!W) return; x=((x%W)+W)%W; x=x-W; if(x<-W) x+=W; };
+    const speed=()=>innerWidth<760?19:30; /* px / s */
+    const tick=now=>{ raf=0; const dt=last?Math.min(64,now-last):16; last=now;
+      if(!drag){ if(Math.abs(vel)>.02){ x+=vel*dt; vel*=Math.pow(.94,dt/16); } if(!RM) x-=speed()*dt/1000; }
+      wrap(); tr.style.transform=`translate3d(${x.toFixed(2)}px,0,0)`; if(on||drag||Math.abs(vel)>.02) raf=requestAnimationFrame(tick); else last=0; };
+    const go=()=>{ if(!raf) raf=requestAnimationFrame(tick); };
+    tr.addEventListener('pointerdown',e=>{ if(e.button>0) return; drag={x0:e.clientX,y0:e.clientY,x:x,t:performance.now(),px:e.clientX,moved:false}; vel=0; go(); });
+    addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-drag.x0;
+      if(!drag.moved){ if(Math.abs(dx)<6) return; if(e.pointerType==='touch'&&Math.abs(e.clientY-drag.y0)>Math.abs(dx)){ drag=null; return; } drag.moved=true; tr.classList.add('drag'); try{ tr.setPointerCapture(e.pointerId); }catch(_){} }
+      const now=performance.now(); vel=(e.clientX-drag.px)/Math.max(8,now-drag.t); drag.px=e.clientX; drag.t=now; x=drag.x+dx; go(); });
+    const up=()=>{ if(!drag) return; drag=null; tr.classList.remove('drag'); vel=Math.max(-3,Math.min(3,vel)); go(); };
+    addEventListener('pointerup',up); addEventListener('pointercancel',up);
+    tr.addEventListener('dragstart',e=>e.preventDefault());
+    if(!('IntersectionObserver' in window)){ on=true; go(); return; }
+    new IntersectionObserver(es=>{ on=es[0].isIntersecting; t.classList.toggle('tmon',on); if(on) go(); }).observe(t);
+    document.addEventListener('visibilitychange',()=>{ last=0; }); }); }
