@@ -80,8 +80,11 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
 /*smoothanchor*/ /* ancres internes (See pricing…) : défilement fluide, avec une courbe douce ; la cible est remesurée à chaque image (les sections qui apparaissent peuvent décaler la page) ; la molette ou le doigt reprennent la main */
 { const RMq=matchMedia('(prefers-reduced-motion:reduce)'); let stop=null;
-  const dest=(id)=>{ const t=id==='pricing'?(document.getElementById('pricing-title')||document.getElementById('pricing')):document.getElementById(id); if(!t) return null;
-    return Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight, t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*(id==='pricing'?.14:.08)))); };
+  /* « Pricing » arrive pile à hauteur de la barre du haut : son centre aligné sur le centre de « Book a call » */
+  const barMid=()=>{ const b=document.querySelector('.top .ntr'); if(!b) return 44; const r=b.getBoundingClientRect(); return r.height?r.top+r.height/2:44; };
+  const dest=(id)=>{ const t=id==='pricing'?(document.getElementById('pricing-title')||document.getElementById('pricing')):document.getElementById(id); if(!t) return null; const r=t.getBoundingClientRect();
+    const off=id==='pricing'?barMid()-r.height/2:Math.round(innerHeight*.08);
+    return Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight, Math.round(r.top+scrollY-off))); };
   const go=(id)=>{ if(stop) stop(); const y0=scrollY, d0=dest(id); if(d0==null) return false; const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto';
     if(RMq.matches){ scrollTo(0,d0); H.style.scrollBehavior=sb; return true; }
     const dur=Math.min(1300,Math.max(650,Math.abs(d0-y0)*.45)), t0=performance.now(), ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; let raf=0;
