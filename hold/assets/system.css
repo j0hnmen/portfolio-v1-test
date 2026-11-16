@@ -646,3 +646,13 @@ html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
 footer.ftzoom .flogo path{opacity:1!important;filter:none!important;transition:none!important;transform:none;transform-box:view-box!important;transform-origin:50% 50%!important}
 footer.ftzoom .fsub{opacity:1!important;transition:none!important;transform:none;transform-origin:50% 50%}
 footer.ftzoom .flogo{overflow:visible!important}
+/* grande signature noire en fond de « Your one-man design studio » */
+.abt section{position:relative;isolation:isolate}
+.abt section>.absig{top:50%!important;margin:0!important}
+.absig,html body .abt section>.absig{position:absolute!important;z-index:-1;pointer-events:none;right:-2%;top:50%;translate:0 -50%;width:min(62vw,820px);opacity:.09}
+.abt.abtleft .absig{right:-4%}
+.absig svg{display:block;width:100%;height:auto;overflow:visible}
+.absig .absc{fill:none;stroke:#fff;stroke-width:36;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+.absig .absf{fill:#202020}
+@media (max-width:760px){.absig{width:120vw;right:-30vw;opacity:.07}}
+.abt:not(.abtleft) section>.absig{right:auto!important;left:50%!important;translate:-50% -50%!important}

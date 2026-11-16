@@ -36,7 +36,14 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   const draw=(dur,from,to,ease)=>{ if(an) an.cancel(); an=p.animate([{strokeDashoffset:from},{strokeDashoffset:to}],{duration:dur,easing:ease,fill:'both'}); return an.finished; };
   p.style.strokeDashoffset=1; setTimeout(()=>draw(1700,1,0,'cubic-bezier(.65,0,.35,1)').then(()=>busy=false),delay);
   h.addEventListener('mouseenter',()=>{ if(busy) return; busy=true; draw(650,0,1,'cubic-bezier(.55,0,.75,.4)').then(()=>draw(1500,1,0,'cubic-bezier(.65,0,.35,1)')).then(()=>busy=false).catch(()=>busy=false); }); };
-SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150); }
+SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
+/*abtsig*/ /* « Your one-man design studio » : grande signature noire en fond, qui se dessine à l'arrivée */
+{ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  document.querySelectorAll('.abt section').forEach((sec,i)=>{ const id='absm'+i, w=document.createElement('div'); w.className='absig'; w.setAttribute('aria-hidden','true');
+    w.innerHTML=`<svg viewBox="${pick[0]}"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1200"><path class="absc" pathLength="1" d="${pick[1]}"/></mask></defs><g mask="url(#${id})"><path class="absf" d="${pick[2]}" transform="${pick[3]}"/></g></svg>`;
+    sec.prepend(w); const c=w.querySelector('.absc'); if(rm||!c.animate) return; c.style.strokeDashoffset=1;
+    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:2600,delay:350,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); } },{threshold:.3}).observe(sec); }); } }
+
 { const lg=document.querySelector('.aoslogo.sigm'), sec=lg&&lg.closest('.aost'); if(lg){ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const play=()=>{ lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); setTimeout(()=>lg.classList.add('sigok'),1780); };
   if(rm) lg.classList.add('sigok'); else new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ setTimeout(play,500); o.disconnect(); } },{threshold:0,rootMargin:'0px 0px -20% 0px'}).observe(sec);
@@ -105,8 +112,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     /* nom du footer : même arrivée que le canvas — lettre par lettre, en zoom arrière depuis le centre du nom, avec flou */
     const fps=[...ft.querySelectorAll('.flogo path')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>Math.abs(a.b.y-b.b.y)>40?a.b.y-b.b.y:a.b.x-b.b.x).map(o=>o.p);
     const fsub=ft.querySelector('.fsub'), E1='cubic-bezier(.16,1,.3,1)';
-    const zoom=()=>{ fps.forEach((p,i)=>p.animate([{transform:'scale(2.2)',opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:2000,delay:150+i*120,easing:E1,fill:'backwards'}));
-      if(fsub) fsub.animate([{transform:'scale(1.6)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); };
+    const zoom=()=>{ fps.forEach((p,i)=>p.animate([{transform:'scale(1.35)',opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1500,delay:150+i*110,easing:E1,fill:'backwards'})); /* chaque lettre depuis son propre centre : l'animation reste dans le nom */
+      if(fsub) fsub.animate([{transform:'scale(1.3)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); };
     new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); zoom(); } },{threshold:.25}).observe(ft); }
   // « AssetsOS » en casse normale, « ASSETS OS » quand le texte est en capitales
   const fix=()=>{ const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('AssetsOS')?1:2}); let n; while(n=w.nextNode()){ const p=n.parentElement; if(p&&getComputedStyle(p).textTransform==='uppercase') n.nodeValue=n.nodeValue.replace(/AssetsOS/g,'Assets OS'); } };
