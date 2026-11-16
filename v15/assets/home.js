@@ -219,7 +219,7 @@ const CV=(function(){
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
-    [['#home',1700,'-180px 0',1],['#invader',1800,'-180px 0',1],['#menuBtn',1700,'180px 0',0],['.top .ntr',1700,'180px 0',0],['#chat',1900,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1500,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['#home',1700,'-180px 0',1],['#invader',1800,'-180px 0',1],['#menuBtn',1700,'180px 0',0],['#mus',1750,'180px 0',0],['.top .ntr',1700,'180px 0',0],['#chat',1900,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1500,delay:d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
   cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});

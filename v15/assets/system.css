@@ -1024,17 +1024,11 @@ html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
 /* Work : vue liste seulement — le sélecteur Tiles / List disparaît */
 .top .modes{display:none!important}
 
-/* signature propre (CSIG) */
-.csig{display:block;line-height:0;color:#202020}
-.csig svg{display:block;width:100%;height:auto;overflow:visible}
-.csig use{fill:currentColor}
-.csig .csw{stroke-dasharray:1 1;stroke-dashoffset:1;animation:csd linear forwards paused;animation-delay:calc(var(--dl)*var(--csp,1));animation-duration:calc(var(--du)*var(--csp,1))}
-.csig.play .csw{animation-play-state:running}
-.csig.reset .csw{animation:none}
-.csig .csdn{opacity:0}
-.csig.done .csdn{opacity:1}.csig.done .csan{opacity:0}
-@keyframes csd{to{stroke-dashoffset:0}}
-.absig .csig{color:#202020}
+/* grande signature (BSIG) : la même que celle du logo du haut */
+.bsig{display:block;line-height:0;color:#202020}
+.bsig svg{display:block;width:100%;height:auto;overflow:visible}
+.bsig .bsc{fill:none;stroke:#fff;stroke-width:70;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+.bsig .bsf{fill:currentColor}
 
 /* Clarity / Impact / Value : marques tracées à la main, en noir */
 .hvx .hvx-w{position:relative}
@@ -1047,7 +1041,7 @@ html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
 .hvx .hvx-u{position:relative;display:inline-block}
 .hvx .hvxm-u{left:-2%;width:104%;bottom:-.02em;height:.2em}
 .hvx .hvx-sig{position:absolute;right:-.24em;bottom:-.1em;width:1.08em;color:#202020;-webkit-text-fill-color:initial;pointer-events:none}
-.hvx .hvx-grad .hvx-sig use{fill:#202020}
+.hvx .hvx-sig .bsf{fill:#202020}
 html.src .hvx .hvxm,html.src .hvx .hvx-sig{display:none}
 
 .hvx .hvx-row,.hvx .hvx-track,.hvx .hvx-p{overflow-y:visible!important}
@@ -1060,3 +1054,20 @@ html body .page .abt .abth .om{color:#564FFF!important;-webkit-text-fill-color:#
 html body .page .abt .abth .mark .scrib{stroke:#564FFF!important}
 html.blueon .pres .abt .abth .om{color:#202020!important}
 html.blueon .pres .abt .abth .mark .scrib{stroke:#202020!important}
+
+/* Clarity : entourée en bleu */
+.hvx .hvxm-c{stroke:#564FFF}
+/* Let's build : « your system » en noir, souligné en blanc */
+html body section.end .h .mark,html body section.end .h .mark [data-i="t74"]{color:#202020!important;-webkit-text-fill-color:#202020}
+html body section.end .h .mark .scrib{stroke:#fff!important}
+/* bloc son : arrive comme les autres éléments du header (caché tant que l'intro du canvas n'est pas finie) */
+html:not(.cornin) .mus{opacity:0}
+/* Value : reflet brillant qui traverse le mot au scroll */
+.hvx .hvx-grad span[data-i="m3t"]{background:linear-gradient(105deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 58%) var(--sh,130%) 0/250% 100% no-repeat,linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hvx .hvx-w{transform-origin:center;will-change:scale,letter-spacing}
+html.src .hvx .hvx-grad span[data-i="m3t"]{background:none}
+/* frise (home) : la section se bloque, la bille avance au scroll, puis on repart */
+@media (min-width:901px){
+  .aoswho.tlpin{height:220vh;position:relative}
+  .aoswho.tlpin>section.who{position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
+}
