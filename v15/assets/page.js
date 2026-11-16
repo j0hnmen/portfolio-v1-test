@@ -52,7 +52,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
         const t=ease(age/INTRO), u=1-t, P0=[-24,118], P1=[START*.5,c.y+c.sw*.4], P2=[START,c.y];
         x=u*u*P0[0]+2*u*t*P1[0]+t*t*P2[0]+V*age; y=u*u*P0[1]+2*u*t*P1[1]+t*t*P2[1]; c.x=x;
         const dx=2*u*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]), dy=2*u*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]);
-        rot=Math.atan2(dy,dx)*57.3*.35*u+c.r*t; sc=c.s*(.7+.3*t); bl=4*u; op=Math.min(1,age/600); }
+        rot=Math.atan2(dy,dx)*57.3*.35*u+c.r*t; sc=c.s*(.7+.3*t); bl=4*u; op=Math.min(1,age/220); }
       else { if(!RM) c.x+=V*dt; x=c.x; y=c.y+fl*5; rot=c.r+fl*1.2; sc=c.s; op=Math.min(1,(W-x)/140); }
       c.el.style.transform=`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)})`; c.el.style.opacity=Math.max(0,op).toFixed(3); c.el.style.filter=bl>.2?`blur(${bl.toFixed(1)}px)`:'';
       if(x>W){ c.el.remove(); live.splice(j,1); } }
@@ -62,7 +62,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     /* l'onde est accrochée à la page (pas à l'écran) : elle suit la tuile quand on scrolle */
     if(!wl){ wl=document.createElement('div'); wl.className='cs-wavelayer'; wl.setAttribute('aria-hidden','true'); document.body.appendChild(wl); }
     wl.style.height=document.documentElement.scrollHeight+'px';
-    const r=src.getBoundingClientRect(); [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+scrollX+r.width/2)+'px'; w.style.top=(r.top+scrollY+r.height/2)+'px'; w.style.animationDelay=d+'ms'; wl.appendChild(w); setTimeout(()=>w.remove(),2700+d); }); };
+    const r=belt.getBoundingClientRect(); /* l'onde part du point de sortie de l'asset */ [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+scrollX-24)+'px'; w.style.top=(r.top+scrollY+118)+'px'; w.style.animationDelay=d+'ms'; wl.appendChild(w); setTimeout(()=>w.remove(),2700+d); }); };
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];

@@ -845,3 +845,6 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 @keyframes cswave{0%{width:0;height:0}100%{width:220vmax;height:220vmax}}
 @keyframes cswavestroke{0%{border-width:2px}100%{border-width:4px}}
 @keyframes cswavefade{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
+
+/* Case study : plus de découpe nette de l'ombre de la tuile (le cadre coupait à gauche) — on ne coupe qu'au bord droit de l'écran */
+.page .cstream .cs-stage{overflow:visible!important;clip-path:inset(-400px 0 -400px -400px)}
