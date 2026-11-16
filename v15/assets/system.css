@@ -888,3 +888,10 @@ html.hvxdark #toast{opacity:0!important}
 .hvx .hvx-track .hvx-p:nth-child(2) .hvx-w,.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w.hvx-white{color:#202020!important}
 .hvx .hvx-track .hvx-p:nth-child(2) .hvx-nf{color:#8a8984!important}
 .hvx-fw{display:none!important} /* Clarity : fond papier normal */
+/* « together » souligné au trait à la main, tracé à l'arrivée */
+.testi .tmh .mark{position:relative;display:inline-block;color:#564FFF}
+.testi .tmh .mark svg{position:absolute;left:-3%;bottom:-.14em;width:106%;height:.26em;overflow:visible;pointer-events:none}
+.testi .tmh .scrib{fill:none;stroke:#564FFF;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.6,0,.2,1) .25s}
+.testi.tmdraw .tmh .scrib{stroke-dashoffset:0}
+/* sous-titre : même taille que les autres chapôs de la home (22 px) */
+.testi .tmsub,.testi .tmsub span{font-size:clamp(19px,1.6vw,22px)!important}
