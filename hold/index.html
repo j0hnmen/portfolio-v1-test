@@ -77,6 +77,12 @@ html[data-hold] button.vbook{border:0;cursor:pointer;font:inherit}
   html[data-hold] .mbox .opt small{font-size:12px!important}
   html[data-hold] .mbox .x{top:12px!important;right:12px!important;width:34px!important;height:34px!important}
 }
+/* bouton ✕ de la boîte mail : style d'origine (le système de boutons V1.5 le transformait) */
+html[data-hold] .mwrap .mbox button.x{box-sizing:border-box!important;position:absolute!important;top:16px!important;right:16px!important;width:38px!important;height:38px!important;border-radius:50%!important;background:#fff!important;color:#202020!important;font:400 18px/1 system-ui,sans-serif!important;display:grid!important;place-items:center!important;cursor:pointer!important;box-shadow:0 2px 8px rgba(0,0,0,.08)!important;transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .2s,color .2s!important;padding:0!important;border:0!important;min-width:0!important;gap:0!important;translate:none!important;scale:none!important;filter:none!important}
+html[data-hold] .mwrap .mbox button.x::before,html[data-hold] .mwrap .mbox button.x::after{content:none!important;display:none!important}
+html[data-hold] .mwrap .mbox button.x:hover{transform:rotate(90deg)!important;background:#202020!important;color:#fff!important}
+html[data-hold] .mwrap .mbox button.x:focus-visible{outline:2px solid #564FFF;outline-offset:2px}
+@media (max-width:760px){html[data-hold] .mwrap .mbox button.x{top:12px!important;right:12px!important;width:34px!important;height:34px!important}}
 .mwrap a,.mwrap a *{text-decoration:none!important;background-image:none!important}
 html[data-hold] .ntr{display:flex!important;align-items:center}
 .mbuild{display:none}
