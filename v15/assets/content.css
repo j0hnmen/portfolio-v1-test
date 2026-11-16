@@ -842,7 +842,7 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .cs-wavelayer{position:absolute;left:0;top:0;width:100%;overflow:hidden;pointer-events:none;z-index:0}
 .cs-wave{position:absolute;z-index:0;width:0;height:0;translate:-50% -50%;border-radius:50%;pointer-events:none;border:2px solid rgba(86,79,255,.55);box-shadow:0 0 50px 6px rgba(86,79,255,.18),inset 0 0 60px 4px rgba(86,79,255,.12);opacity:0;animation:cswave 12.6s cubic-bezier(.25,.6,.3,1) forwards,cswavefade 1s ease-out forwards,cswavestroke 2.2s ease-out forwards}
 .cs-wave.w2{border-color:rgba(86,79,255,.22)}
-@keyframes cswave{0%{width:0;height:0}100%{width:220vmax;height:220vmax}}
+@keyframes cswave{0%{width:var(--w0,0px);height:var(--w0,0px)}100%{width:220vmax;height:220vmax}}
 @keyframes cswavestroke{0%{border-width:2px}100%{border-width:4px}}
 @keyframes cswavefade{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
 
