@@ -142,8 +142,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835485'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835485'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835516'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835516'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -207,6 +207,6 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
     const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));
-    bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3); gl.style.opacity=(Math.max(0,Math.min(1,pos-1))*cl(r.bottom/H*1.6)).toFixed(3);
+    bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3); gl.style.opacity=(Math.max(0,Math.min(1,pos-1))*cl((r.bottom-H*.35)/(H*.65))).toFixed(3); document.documentElement.classList.toggle('hvxdark',b*Math.min(enter,leave>0?1:0)>.5); /* barre du haut en blanc sur le fond noir */
     pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }

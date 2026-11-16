@@ -876,3 +876,9 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 @keyframes hvxglow2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-4vh,0) scale(1.04)}}
 /* essai : IMPACT sur fond noir */
 .hvx-fb{background:#202020!important}
+
+html.hvxdark #home,html.hvxdark #invader{color:#fff!important}
+html.hvxdark #home svg path{fill:#fff}
+html.hvxdark .burger span,html.hvxdark #menuBtn span,html.hvxdark .burger i{background:#fff!important}
+html.hvxdark .top .vbook{background:#fff!important;color:#202020!important}
+html.hvxdark #toast{opacity:0!important}
