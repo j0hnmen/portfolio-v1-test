@@ -186,3 +186,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   new IntersectionObserver(es=>es.forEach(en=>{ const was=vis; vis=en.isIntersecting; if(vis&&!was&&!bar.classList.contains('ship')) loop(); else if(!vis) run++; }),{threshold:.25}).observe(post);
   new MutationObserver(()=>{ if(vis) loop(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
+
+/*vlmask*/ /* frise À propos : logos en masque CSS (Safari recolorait mal les filtres → Sephora rose) */
+{ document.querySelectorAll('.vlist img.vlogo:not(.vabc)').forEach(im=>{ const go=()=>{ const h=im.offsetHeight, nw=im.naturalWidth, nh=im.naturalHeight; if(!h||!nw) return;
+    const m=document.createElement('span'); m.className=im.className+' vlm'; m.setAttribute('role','img'); m.setAttribute('aria-label',im.alt||'');
+    const u=im.currentSrc||im.src; m.style.cssText=`display:block;height:${h}px;aspect-ratio:${nw}/${nh};max-width:100%;-webkit-mask:url("${u}") left center/contain no-repeat;mask:url("${u}") left center/contain no-repeat;`; im.replaceWith(m); };
+  if(im.complete&&im.naturalWidth) go(); else im.addEventListener('load',go,{once:true}); }); }

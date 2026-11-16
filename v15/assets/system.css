@@ -615,3 +615,7 @@ html.touch body{background:transparent!important} /* le calque papier fixe doit 
 .page .vti.on .vfr{color:var(--blue,#564FFF)}
 .page .vti.vmid .vtx{font-size:clamp(18px,1.5vw,22px)}
 @media (max-width:760px){.page .vti.vmid{padding-bottom:56px!important}.page .vfr svg{height:26px}.page .vfr b{font-size:26px}}
+.page .vlm{background:#202020;transition:background .4s}
+.page .vti.on .vlm{background:var(--blue,#564FFF)}
+@media (max-width:760px){.mtop{height:calc(92px + env(safe-area-inset-top))!important}}
+.page img.vlogo.vink{max-height:clamp(40px,3.6vw,52px)}
