@@ -91,3 +91,13 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     let pout=1; if(sys){ const s=sys.getBoundingClientRect(); pout=Math.min(1,Math.max(0,(s.top-v*.12)/(v*.22))); }
     const p=Math.min(pin,pout); bg.style.opacity=p.toFixed(3); H.classList.toggle('darkon',p>.5); };
   addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); addEventListener('resize',f); f(); } }
+
+/*abtl*/ /* À propos : frise verticale — la ligne se remplit au scroll, la bille suit, l'année géante change */
+(()=>{ const L=document.querySelector('.vlist'); if(!L) return; const its=[...L.querySelectorAll('.vti')], yr=document.querySelector('.vyr'), line=L.querySelector('.vline'); let cur=-1, raf=0;
+  const set=i=>{ if(i===cur||!yr) return; cur=i; const it=its[i], y=it.dataset.y, now=it.classList.contains('vnow');
+    yr.classList.add('flip'); clearTimeout(yr._t); yr._t=setTimeout(()=>{ yr.textContent=y; yr.classList.toggle('now',now); yr.classList.remove('flip'); },180); };
+  const upd=()=>{ raf=0; const lr=line.getBoundingClientRect(), mid=innerHeight*.5;
+    const p=Math.max(0,Math.min(1,(mid-lr.top)/lr.height)); L.style.setProperty('--vp',p.toFixed(4));
+    let on=0; its.forEach((it,i)=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); const past=d.top+8<=mid; it.classList.toggle('past',past); if(past) on=i; });
+    its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
+  addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); })();

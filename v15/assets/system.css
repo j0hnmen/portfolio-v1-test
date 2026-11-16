@@ -343,3 +343,39 @@ html body #flag svg{box-shadow:none!important}
 .tip span i,.tip.on span i{background-image:none!important;padding-bottom:0!important}
 /* panneau du burger : fin contour + ombre douce */
 html body .menu{box-shadow:inset 0 0 0 1px rgba(32,32,32,.1),0 30px 70px -30px rgba(32,32,32,.35)!important}
+
+/* ===== À propos : frise verticale dynamique ===== */
+.page .abtl{padding-top:var(--sec)}
+.page .vtl{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,80px);margin-top:clamp(48px,8vh,96px)}
+.page .vyear{position:relative}
+.page .vyr{position:sticky;top:calc(50vh - .5em);display:block;font-family:var(--display);font-weight:800;font-size:clamp(96px,15vw,240px);line-height:1;letter-spacing:-.02em;color:var(--ink);transition:opacity .25s,translate .35s cubic-bezier(.2,.8,.2,1),filter .25s}
+.page .vyr.flip{opacity:0;translate:0 18px;filter:blur(6px)}
+.page .vyr.now{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
+.page .vlist{position:relative;list-style:none;margin:0;padding:6vh 0 30vh 56px}
+.page .vline{position:absolute;left:11px;top:0;bottom:30vh;width:2px;background:#DEDCD6;border-radius:2px}
+.page .vfill{position:absolute;left:0;top:0;width:100%;height:calc(var(--vp,0)*100%);background:linear-gradient(#5751FF,#1C14F2);border-radius:2px}
+.page .vball{position:absolute;left:50%;top:calc(var(--vp,0)*100%);width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--grad-blue);box-shadow:0 0 0 6px rgba(86,79,255,.15),0 8px 20px -4px rgba(40,30,240,.6)}
+.page .vti{position:relative;padding:0 0 clamp(90px,16vh,170px);opacity:.28;filter:blur(2px);translate:0 14px;transition:opacity .6s,filter .6s,translate .6s cubic-bezier(.2,.8,.2,1)}
+.page .vti:last-child{padding-bottom:0}
+.page .vti.past,.page .vti.on{opacity:1;filter:none;translate:0 0}
+.page .vti.past:not(.on){opacity:.55}
+.page .vdot{position:absolute;left:-52px;top:4px;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid #BEBDB9;transition:background .4s,border-color .4s}
+.page .vti.past .vdot,.page .vti.on .vdot{background:var(--grad-blue);border-color:transparent}
+.page .vnow.on .vdot::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(86,79,255,.5);animation:vpulse 1.8s ease-out infinite}
+@keyframes vpulse{0%{scale:.5;opacity:1}100%{scale:1.6;opacity:0}}
+.page .vtd{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#8a8984;margin-bottom:14px;transition:color .4s}
+.page .vti.on .vtd{color:var(--blue)}
+.page .vth{min-height:30px;display:flex;align-items:center;margin-bottom:14px}
+.page .vlogo{display:block;height:28px;width:auto}
+.page .vlogo.vsg{height:22px}
+.page .vlogo.vaos{height:54px;color:var(--ink)}
+.page .vtword{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(28px,2.6vw,40px);line-height:1}
+.page .vtx{margin:0;font-size:clamp(20px,1.7vw,26px);line-height:1.3;max-width:30ch;color:var(--ink)}
+.page .vts{margin:10px 0 0;font-size:16px;line-height:1.45;color:#6f6e69}
+.page .vtlink{display:inline-flex;gap:6px;align-items:center;margin-top:16px;font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;transition:color .25s}
+.page .vtlink:hover{color:var(--blue)}
+@media (max-width:900px){.page .vtl{grid-template-columns:1fr}.page .vyear{display:none}.page .vlist{padding-left:44px;padding-bottom:10vh}.page .vline{left:7px;bottom:10vh}.page .vdot{left:-44px}}
+@media (prefers-reduced-motion:reduce){.page .vti{opacity:1;filter:none;translate:none}}
+.page .vlogo:not(.vaos){filter:brightness(0);transition:filter .4s}
+.page .vti.on .vlogo:not(.vaos){filter:brightness(0) saturate(100%) invert(31%) sepia(91%) saturate(4000%) hue-rotate(240deg) brightness(101%)}
+.page .vti.on .vlogo.vaos{color:var(--ink)}
