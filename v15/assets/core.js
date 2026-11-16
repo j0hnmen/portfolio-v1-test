@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832463'; }
-  if(g==='about'){ location.href='about.html?v=1794832463'; }
-  if(g==='contact'){ location.href='contact.html?v=1794832463'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832463'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832490'; }
+  if(g==='about'){ location.href='about.html?v=1794832490'; }
+  if(g==='contact'){ location.href='contact.html?v=1794832490'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832490'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -151,8 +151,8 @@ ${FICHE}`;
     el.classList.remove('talk'); busy=false; send.disabled=false; log.scrollTop=log.scrollHeight; }
   el.onclick=()=>inp.focus();
   /* la spirale : un tour sur elle-même au survol, et de temps en temps un petit geste (tour ou balancement), jamais onglet caché */
-  { const play=c=>{ if(el.classList.contains('talk')) return; el.classList.remove('spin','wig'); void el.offsetWidth; el.classList.add(c); };
-    el.addEventListener('animationend',()=>el.classList.remove('spin','wig'));
+  { const play=c=>{ if(el.classList.contains('talk')) return; el.classList.remove('spin','spinr','wig'); void el.offsetWidth; el.classList.add(c); };
+    el.addEventListener('animationend',()=>el.classList.remove('spin','spinr','wig'));
     /* survol : la spirale s'efface puis se retrace, comme la signature */
     const aic=el.querySelector('.aic'); let drawing=false;
     const redraw=()=>{ if(!aic||!aic.animate||drawing||el.classList.contains('talk')) return; drawing=true;
@@ -162,7 +162,7 @@ ${FICHE}`;
     box.addEventListener('mouseenter',redraw);
     /* home : un tour sur elle-même quand on passe du canvas à la section 1 (et inversement) */
     let top=document.body.classList.contains('attop');
-    new MutationObserver(()=>{ const t=document.body.classList.contains('attop'); if(t!==top){ top=t; if(document.body.classList.contains('is-canvas')||document.getElementById('cv')) play('spin'); } }).observe(document.body,{attributes:true,attributeFilter:['class']});
+    new MutationObserver(()=>{ const t=document.body.classList.contains('attop'); if(t!==top){ top=t; if(document.body.classList.contains('is-canvas')||document.getElementById('cv')) play(t?'spinr':'spin'); } /* vers la section 1 : sens horaire ; retour au canvas : à l'envers */ }).observe(document.body,{attributes:true,attributeFilter:['class']});
     const later=()=>setTimeout(()=>{ if(!document.hidden) play(Math.random()<.5?'spin':'wig'); later(); },7000+Math.random()*8000); later(); }
   inp.addEventListener('focus',open);
   document.addEventListener('pointerdown',e=>{ if(document.body.classList.contains('chat-on')&&!box.contains(e.target)) close(); });

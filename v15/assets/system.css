@@ -718,3 +718,4 @@ footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
 /* prompt box : léger grossissement au survol (souris uniquement) */
 @media (hover:hover){#chat .pform{transition:scale .45s cubic-bezier(.3,1.5,.5,1),box-shadow .35s}
 #chat .pform:hover,#chat .pform:focus-within{scale:1.025}}
+.mm.spinr .aint{animation:aintSpin .95s cubic-bezier(.45,0,.2,1) reverse}
