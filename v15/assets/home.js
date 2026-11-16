@@ -137,6 +137,12 @@ const CV=(function(){
     const show=()=>setTimeout(()=>w.classList.add('ready'),450); w.querySelector('iframe').addEventListener('load',show,{once:true}); setTimeout(()=>w.classList.add('ready'),6000);
     n.el.addEventListener('mouseleave',()=>n.el.classList.remove('using'));
   }
+  /* geste canvas en cours (molette, pinch, glisser) : les sites des code layers ne captent pas la souris, le geste continue au-dessus d'eux */
+  { const H=document.documentElement; let tb=0; const busy=ms=>{ H.classList.add('cvbusy'); clearTimeout(tb); tb=setTimeout(()=>H.classList.remove('cvbusy'),ms); };
+    addEventListener('wheel',e=>{ if(e.target.closest&&e.target.closest('#cv')) busy(650); },{passive:true,capture:true});
+    addEventListener('pointerdown',e=>{ if(e.target.closest&&e.target.closest('#cv')&&!e.target.closest('.lv')) { H.classList.add('cvbusy'); clearTimeout(tb); } },true);
+    addEventListener('pointerup',()=>busy(60),true); addEventListener('pointercancel',()=>busy(60),true);
+    addEventListener('gesturestart',()=>busy(900)); }
   function liveOff(n){ const w=n.el.querySelector('.lv'); if(w) w.remove(); n.el.classList.remove('islive','using'); } /* arrête le site en direct, on revient à l'image */
   function liveUse(n){ document.querySelectorAll('.node.using').forEach(x=>x.classList.remove('using')); if(n.el.querySelector('.lv')) n.el.classList.add('using'); }
   function fitLive(n){ const w=n.el.querySelector('.lv'); if(!w) return; const img=n.el.querySelector('.fb img'); const W=img.offsetWidth||n.w;

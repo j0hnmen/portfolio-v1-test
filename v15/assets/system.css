@@ -250,9 +250,9 @@ html.src .tl2 .tlm{background:var(--c-tx)}
 .abt .svcs{margin:0 0 clamp(26px,3.6vh,40px)!important}
 
 /* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
-/* zoom/déplacement du canvas toujours actifs au-dessus d’un code layer : le site ne capte la souris qu’après un clic dessus (.using), et la rend en sortant */
-.node.islive .lv iframe{pointer-events:none!important}
-.node.islive.using .lv iframe{pointer-events:auto!important}
+/* code layers : les sites sont interactifs directement ; pendant un zoom ou un déplacement du canvas (html.cvbusy), ils laissent passer la souris pour que le geste continue au-dessus d’eux */
+.node.islive .lv iframe{pointer-events:auto!important}
+html.cvbusy .node.islive .lv iframe{pointer-events:none!important}
 
 
 /* ===== The problem : plus de carte blanche, le contenu est posé sur la page (l'effet de recul flou reste) ===== */
