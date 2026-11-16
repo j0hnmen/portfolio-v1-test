@@ -212,4 +212,3 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 /*skok*/ document.querySelectorAll('#skill details.sk').forEach(d=>{ const on=()=>{ d.classList.remove('skon'); if(d.open){ void d.offsetWidth; d.classList.add('skon'); } };
   d.addEventListener('toggle',on);
   if(d.open){ const io=new IntersectionObserver(es=>{ if(es[0].isIntersecting){ on(); io.disconnect(); } },{threshold:.6}); io.observe(d); } });
-/*evframe-preview*/ { const e=document.getElementById('evolve'); if(e&&/[?&]fill\b/.test(location.search)){ e.classList.remove('fr-line'); e.classList.add('fr-fill'); } }

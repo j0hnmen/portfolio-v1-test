@@ -868,7 +868,7 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-black,.hvx-black span{color:#202020!important;background:none!important}
 
 /* fin de page : le grand logo AssetsOS apparaît en grossissant au fil du scroll, dès que la section arrive */
-.end.endfx.scrubfx:not(.es-out) .endbig{opacity:var(--lq,0)!important;scale:calc(.45 + .55 * var(--lq,0))!important;filter:blur(calc((1 - var(--lq,0)) * 12px))!important;transition:none!important}
+.end.endfx.scrubfx:not(.es-out) .endbig{opacity:var(--lq,0)!important;scale:calc(.86 + .14 * var(--lq,0))!important;filter:blur(calc((1 - var(--lq,0)) * 8px))!important;transition:none!important}
 
 /* VALUE : lueurs bleues sur les côtés, déséquilibrées et vivantes (même esprit que Pricing) */
 .hvx-glow{background:radial-gradient(42% 60% at 0% 78%,rgba(86,79,255,.42),rgba(86,79,255,0) 70%),radial-gradient(28% 40% at 100% 18%,rgba(28,20,242,.32),rgba(28,20,242,0) 70%),radial-gradient(22% 30% at 96% 92%,rgba(86,79,255,.18),rgba(86,79,255,0) 70%);animation:hvxglow 9s ease-in-out infinite alternate}
@@ -909,9 +909,7 @@ html.hvxdark #toast{opacity:0!important}
 .page .decay{margin-top:calc(clamp(32px,5vh,56px) + 18px)!important}
 
 /* Claude skill : pastille « On brand » qui apparaît à chaque ouverture */
-#skill .sk .dw{display:flex;flex-direction:column;align-items:flex-start}
-#skill .sk .dt{padding-bottom:12px!important}
-#skill .skok{display:inline-flex;align-items:center;gap:7px;margin:0 0 24px calc(clamp(26px,2.2vw,34px) + clamp(14px,2vw,24px));padding:9px 15px 9px 12px;border-radius:999px;font:600 15px/1 var(--ui);color:#564FFF;background:rgba(86,79,255,.1);box-shadow:inset 0 0 0 1px rgba(86,79,255,.22);opacity:0;transform:scale(.6) translateY(4px);transform-origin:left center}
+#skill .skok{flex:none;display:inline-flex;align-items:center;gap:7px;margin:0 6px 0 0;padding:9px 15px 9px 12px;border-radius:999px;font:600 15px/1 var(--ui);color:#564FFF;background:rgba(86,79,255,.1);box-shadow:inset 0 0 0 1px rgba(86,79,255,.22);opacity:0;transform:scale(.6) translateY(4px);transform-origin:left center}
 #skill .skok svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
 #skill .skok path{stroke-dasharray:24;stroke-dashoffset:24}
 #skill .sk.skon .skok{animation:skpop .55s cubic-bezier(.3,1.6,.5,1) .3s forwards}
@@ -949,12 +947,18 @@ header.top{view-transition-name:vt-top}
 @keyframes vtout{to{transform:translate(2vw,-3vh);filter:blur(4px)}}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 
-/* Active Templates : AssetsOS « cadre » l'asset + le prompt (contour dégradé ou fond dégradé), logo posé au-dessus comme un nom de frame */
-.page .ev-stage{--fx:30px;isolation:isolate}
-.page .ev-stage::before{content:"";position:absolute;inset:calc(var(--fx)*-1);border-radius:34px;z-index:-1;pointer-events:none}
-#evolve.fr-line .ev-stage::before{padding:2px;background:linear-gradient(160deg,#8f8aff,#5751FF 45%,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-#evolve.fr-fill .ev-stage::before{background:linear-gradient(170deg,rgba(233,232,251,.9) 0%,#c9c6ff 45%,#7e79ff 80%,#5650FF 100%);box-shadow:0 30px 60px -30px rgba(40,30,240,.45)}
-.page .ev .ev-flabel{position:absolute;left:calc(var(--fx)*-1 + 6px);bottom:calc(100% + var(--fx) + 14px);line-height:0}
-.page .ev .ev-flabel .ev-aos{margin:0!important;width:132px}
-.page .ev-stage{margin-top:calc(var(--fx) + 70px)!important;margin-bottom:var(--fx)!important}
-@media (max-width:900px){.page .ev-stage{--fx:16px}.page .ev .ev-flabel{left:calc(var(--fx)*-1 + 4px)}.page .ev .ev-flabel .ev-aos{width:112px}}
+/* Active Templates : AssetsOS « cadre » l'asset + le prompt (fond + contour dégradés), le cadre épouse le contenu ; logo centré au-dessus comme un nom de frame */
+.page .ev-fr{--fx:28px;position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;gap:22px;width:100%}
+.page .ev-fr::before,.page .ev-fr::after{content:"";position:absolute;inset:calc(var(--fx)*-1);border-radius:34px;z-index:-1;pointer-events:none}
+#evolve.fr-both .ev-fr::before{background:linear-gradient(170deg,rgba(243,242,252,.75) 0%,rgba(214,211,255,.85) 50%,rgba(150,145,255,.9) 100%);box-shadow:0 30px 60px -32px rgba(40,30,240,.45)}
+#evolve.fr-both .ev-fr::after{padding:2px;background:linear-gradient(160deg,#a9a5ff,#5751FF 45%,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.page .ev-stage{gap:calc(28px + 18px)!important}
+.page .ev .ev-flabel{line-height:0;display:flex;justify-content:center;width:100%}
+.page .ev .ev-flabel .ev-aos{margin:0!important;width:136px}
+@media (max-width:900px){.page .ev-fr{--fx:16px}.page .ev-stage{gap:34px!important}.page .ev .ev-flabel .ev-aos{width:116px}}
+
+#skill .sk:not([open]) .skok,#skill .sk.closing .skok{display:none}
+@media (max-width:600px){#skill .skok{font-size:13px;padding:7px 11px 7px 9px}}
+#skill .sk summary .tx{flex:0 1 auto!important}
+#skill .sk .skok{margin:0 0 0 4px}
+#skill .sk summary .pm{margin-left:auto}
