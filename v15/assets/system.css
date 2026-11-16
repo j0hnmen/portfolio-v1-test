@@ -733,3 +733,22 @@ html body section.end .row .pill::before{transition:opacity .7s cubic-bezier(.4,
 .pullgo .pg-pill{background:#202020;color:#fff;font:400 18px/1 var(--text);letter-spacing:0;padding:8px 20px 8px 9px;gap:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 14px 30px -14px rgba(20,16,120,.6)}
 .pullgo .pg-bg{stroke:rgba(255,255,255,.14)}
 .pullgo .pg-ring{stroke:url(#pgg)}
+
+/* Témoignages : carrousel qui défile tout seul, pause au survol, arrêté hors écran */
+.testi{overflow:visible;padding-top:clamp(64px,9vh,110px)!important;padding-bottom:clamp(40px,6vh,80px)}
+.testi .eb{text-align:center;color:var(--blue,#564FFF)}
+.testi .tmq{margin-top:clamp(28px,4vh,44px);width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);padding:16px 0 36px}
+.testi .tmtrack{display:flex;gap:24px;width:max-content;animation:tmmove 70s linear infinite}
+.testi:not(.tmon) .tmtrack{animation-play-state:paused}
+@media (hover:hover){.testi .tmq:hover .tmtrack{animation-play-state:paused}}
+@keyframes tmmove{to{transform:translateX(calc(-50% - 12px))}}
+.testi .tmc{flex:none;width:min(520px,82vw);margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:32px 34px;background:#fff;border-radius:24px;box-shadow:0 0 0 1px rgba(32,32,32,.06),0 24px 50px -32px rgba(32,32,32,.35)}
+.testi blockquote{margin:0;font:400 21px/1.42 var(--text);color:#202020;text-wrap:pretty}
+.testi figcaption{display:flex;align-items:center;gap:14px}
+.testi .tmav{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none}
+.testi .tmin{display:grid;place-items:center;background:var(--grad-blue,linear-gradient(135deg,#5751FF,#1C14F2));color:#fff;font:800 17px/1 var(--display);font-stretch:62%;letter-spacing:.02em}
+.testi .tmwho{display:flex;flex-direction:column;gap:4px}
+.testi .tmwho b{font:800 19px/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.01em;color:#202020}
+.testi .tmwho small{font:400 15px/1.3 var(--text);color:#6b6a66}
+@media (prefers-reduced-motion:reduce){.testi .tmtrack{animation:none}.testi .tmq{overflow-x:auto}}
+@media (max-width:760px){.testi blockquote{font-size:18px}.testi .tmc{padding:24px}}
