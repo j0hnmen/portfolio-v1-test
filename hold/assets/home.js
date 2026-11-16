@@ -215,7 +215,7 @@ const CV=(function(){
     if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:1500,blur:6});
     // 2. puis les projets et le reste du canvas, un par un
     const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))].filter(n=>n.name!=='Filly').concat(rest.filter(n=>n.name==='Filly'));
-    ord.forEach((n,i)=>{ const dl=2100+i*160; zoomIn(n,1.45,{dur:1700,delay:dl,blur:14});
+    ord.forEach((n,i)=>{ const dl=2100+i*160; if(!n.el.classList.contains('ink')) zoomIn(n,1.45,{dur:1700,delay:dl,blur:14});
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
