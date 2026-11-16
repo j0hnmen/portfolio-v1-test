@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831835'; }
-  if(g==='about'){ location.href='about.html?v=1794831835'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831835'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831835'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831897'; }
+  if(g==='about'){ location.href='about.html?v=1794831897'; }
+  if(g==='contact'){ location.href='contact.html?v=1794831897'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831897'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -113,7 +113,7 @@ He designs and codes his own websites and tools, with AI (this website, the Inkt
 To reach him: LinkedIn (linkedin.com/in/nabilamara) or Instagram (@nabiljamara).
 Projects:
 ${P.map((p,i)=>`${i+1}. ${p.t} (${p.y}) — ${p.nat}. Role: ${p.role}. ${p.sub}${p.txt?' '+p.txt.join(' '):''}`).join('\n')}`;
-  const RULES=`You are "Mini-Nabil", Nabil Amara's mini-me on his portfolio. You are an AI and you say so if asked.
+  const RULES=`You are "Nabil's AIntern", Nabil Amara's AI intern on his portfolio. You are an AI and you say so if asked.
 You speak in the first person, as Nabil, in a direct, warm and brief tone: 1 to 3 sentences, no lists, no markdown, no emoji.
 You answer in the visitor's language (English by default).
 You ONLY talk about Nabil: his work, his projects, his positioning, how he works, how to reach him.
@@ -147,7 +147,7 @@ ${FICHE}`;
       m.classList.remove('wait'); m.textContent=(t||'').trim()||'I don’t have an answer to that. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m);
       hist.push({role:'user',content:q},{role:'assistant',content:m.textContent}); }
     catch(e){ m.classList.remove('wait'); asked--;
-      m.textContent=e&&e.code==='rate_limited'?'Easy, I’m catching my breath. Try again in a minute.':'The mini-me is asleep for now. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m); }
+      m.textContent=e&&e.code==='rate_limited'?'Easy, I’m catching my breath. Try again in a minute.':'The AIntern is asleep for now. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m); }
     el.classList.remove('talk'); busy=false; send.disabled=false; log.scrollTop=log.scrollHeight; }
   el.onclick=()=>inp.focus();
   inp.addEventListener('focus',open);
@@ -172,7 +172,7 @@ ${FICHE}`;
   const tideEl=document.querySelector('.pg-tide');
   const fr=()=>document.documentElement.lang==='fr';
   const TXT=()=>fr()?['Continuez à scroller…','Encore un peu…','Lâchez rien…']:['Keep scrolling…','A bit more…','Almost there…'];
-  const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis le mini-moi de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s mini-me: ask me anything about his work.';
+  const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis l’AIntern de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s AIntern: ask me anything about his work.';
   const NEED=1300; let pull=0, last=0, raf=0, done=false;
   const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
   const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);

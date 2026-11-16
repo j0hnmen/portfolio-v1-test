@@ -703,3 +703,5 @@ footer.ftr.hastide>.pg-tide{position:absolute;left:0;right:0;bottom:0;top:auto;z
 footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
 .pg-tide.on,.pg-tide.go{opacity:1}
 .pg-tide.go{opacity:0;transition:opacity .7s}
+/* Nabil's AIntern : le « AI » en bleu pour que le jeu de mots se lise, même en capitales */
+.pbox header b .aint{color:#564FFF}
