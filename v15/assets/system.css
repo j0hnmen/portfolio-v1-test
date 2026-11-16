@@ -874,11 +874,17 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 @media (prefers-reduced-motion:reduce){.hvx-glow{animation:none}}
 .hvx-glow{inset:-12vh 0!important;background-repeat:no-repeat!important;animation:hvxglow2 9s ease-in-out infinite alternate!important}
 @keyframes hvxglow2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-4vh,0) scale(1.04)}}
-/* essai : IMPACT sur fond noir */
-.hvx-fb{background:#202020!important}
 
 html.hvxdark #home,html.hvxdark #invader{color:#fff!important}
 html.hvxdark #home svg path{fill:#fff}
 html.hvxdark .burger span,html.hvxdark #menuBtn span,html.hvxdark .burger i{background:#fff!important}
 html.hvxdark .top .vbook{background:#fff!important;color:#202020!important}
 html.hvxdark #toast{opacity:0!important}
+
+/* IMPACT : fond dégradé papier → bleu (comme la tuile AssetsOS), plus doux que le bleu plein ; texte en noir */
+.hvx-fb{background:linear-gradient(180deg,#f3f2ee 0%,#e9e8fb 30%,#b9b6ff 62%,#7b76ff 85%,#5650FF 100%)!important}
+.hvx-white,.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#202020!important}
+.hvx-white .hvx-nf{color:#8a8984!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w,.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w.hvx-white{color:#202020!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-nf{color:#8a8984!important}
+.hvx-fw{display:none!important} /* Clarity : fond papier normal */
