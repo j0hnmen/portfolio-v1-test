@@ -1021,3 +1021,6 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 @media (max-width:900px){.page .ev .hvals{justify-content:center}}
 .page .hvals i{width:6px;height:6px;border-radius:50%;background:var(--blue,#564FFF)}
 .page .mani{display:none!important}
+/* Grow Bigger : dégradé bleu de la charte, du blanc vers un lavande, halo bleu à droite (esprit carte Signature Ship) */
+.page .folr .fo2:nth-child(2){background:radial-gradient(55% 190% at 100% 0%,rgba(86,79,255,.34) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#fff 22%,#ecebff 62%,#dcd9ff 100%)}
+@media (hover:hover){.page .folr .fo2:nth-child(2):hover,.page .folr .fo2:nth-child(2):focus{background:radial-gradient(60% 200% at 100% 0%,rgba(86,79,255,.46) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#f6f5ff 20%,#e4e2ff 60%,#d2ceff 100%)}}
