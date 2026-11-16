@@ -802,3 +802,12 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-w,.hvx-w span{font-family:var(--display)!important;font-weight:800!important;font-stretch:62%!important;text-transform:uppercase!important}
 .hvx-w{font-size:clamp(120px,27vw,470px)!important;line-height:.82!important}
 @media (max-width:760px){.hvx-w{font-size:clamp(90px,24vw,170px)!important}.hvx-p{padding:0 24px}}
+
+/* Think with Clarity / Communicate with Impact / Create Value : un peu moins gros, rien de rogné */
+.hvx-w{font-size:clamp(96px,17vw,300px)!important;line-height:.92!important;padding:.04em .02em 0 0}
+.hvx-p:nth-child(2) .hvx-w{background:none;color:#202020}
+.hvx-p:nth-child(1) .hvx-w span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-pre{font:400 clamp(26px,3vw,48px)/1.1 var(--text);color:#202020;margin-bottom:clamp(4px,1vh,12px)}
+.hvx-nf{font:400 clamp(16px,1.4vw,22px)/1 var(--text)!important;text-transform:none!important;letter-spacing:0;color:#8a8984;vertical-align:top;margin-left:.6em;white-space:nowrap}
+.hvx-n{margin-bottom:clamp(14px,2vh,22px)}
+@media (max-width:760px){.hvx-w{font-size:clamp(70px,20vw,140px)!important}.hvx-nf{display:block;margin:10px 0 0}}
