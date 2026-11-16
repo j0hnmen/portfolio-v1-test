@@ -141,8 +141,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794834919'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794834919'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835097'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835097'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -196,12 +196,16 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     new IntersectionObserver(es=>{ on=es[0].isIntersecting; t.classList.toggle('tmon',on); if(on) go(); }).observe(t);
     document.addEventListener('visibilitychange',()=>{ last=0; }); }); }
 
-/*hvx*/ /* Impact / Clarity / Value : la piste avance horizontalement au rythme du scroll vertical */
-{ const sec=document.querySelector('.hvx'); if(sec&&!matchMedia('(prefers-reduced-motion:reduce)').matches){ const tr=sec.querySelector('.hvx-track'); let raf=0;
-  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), run=r.height-innerHeight; const k=Math.max(0,Math.min(1,-r.top/Math.max(1,run)));
-    /* le texte glisse d'un mot à l'autre avec un temps d'arrêt doux sur chacun ; le fond, lui, reste fixe et passe en fondu (blanc → bleu → papier) */
-    const steps=2, seg=k*steps, i=Math.floor(seg), f=seg-i, hold=.28, t=f<hold?0:f>1-hold?1:(f-hold)/(1-2*hold), ease=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-    const pos=Math.min(steps,i+ease); tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
-    const bw=sec.querySelector('.hvx-bw'), bb=sec.querySelector('.hvx-bb');
-    if(bw) bw.style.opacity=(1-Math.max(0,Math.min(1,pos-1))).toFixed(3); if(bb) bb.style.opacity=(pos<1?pos:Math.max(0,2-pos)).toFixed(3); sec.style.setProperty('--hp',k.toFixed(4)); };
+/*hvx*/ /* Clarity / Impact / Value : seul le grand mot glisse (en continu, au rythme du scroll) ; l'en-tête et le sous-titre restent en place et se fondent ;
+   le fond (blanc → bleu → papier) est fixe et se fond aussi, y compris à l'entrée et à la sortie de la section : aucune coupure nette */
+{ const sec=document.querySelector('.hvx'); if(sec){ const tr=sec.querySelector('.hvx-track'), RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const bw=document.createElement('i'), bb=document.createElement('i'); bw.className='hvx-fbg hvx-fw'; bb.className='hvx-fbg hvx-fb'; const pin=sec.querySelector('.hvx-pin'); [bb,bw].forEach(x=>{ x.setAttribute('aria-hidden','true'); pin.prepend(x); }); /* fixés à l'écran, mais dans la section : ils passent par-dessus le papier */
+  const pres=[...sec.querySelectorAll('.hvx-pres .hvx-pre')], subs=[...sec.querySelectorAll('.hvx-subs .hvx-s')]; let raf=0;
+  const cl=v=>Math.max(0,Math.min(1,v));
+  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=innerHeight, run=r.height-H; const k=cl(-r.top/Math.max(1,run)), pos=k*2;
+    if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
+    const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
+    const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));
+    bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3);
+    pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }

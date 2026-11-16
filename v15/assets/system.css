@@ -840,3 +840,27 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-bw{background:#fff;opacity:1}
 .hvx-bb{background:linear-gradient(135deg,#5751FF,#1C14F2);opacity:0}
 .hvx-track{position:relative;z-index:1}
+
+/* v3 : fond fixe en fondu derrière toute la page, seul le mot glisse, en-tête et sous-titre fixes en fondu */
+.hvx-bg{display:none}
+.hvx-fbg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0}
+.hvx-fw{background:#fff}
+.hvx-fb{background:linear-gradient(135deg,#5751FF,#1C14F2)}
+.hvx-pin{flex-direction:column;justify-content:center;align-items:stretch!important}
+.hvx-stack{display:grid;justify-items:center;text-align:center}
+.hvx-stack>*{grid-area:1/1;margin:0!important;opacity:0}
+.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}
+.hvx-row{width:100vw;overflow:hidden}
+.hvx-track{height:auto!important}
+.hvx-p{height:auto!important;padding:clamp(10px,2vh,24px) 24px!important}
+.hvx-pres{margin-bottom:0}
+.hvx-subs{margin-top:0}
+.hvx-grad span{background:linear-gradient(135deg,#5751FF,#1C14F2);-webkit-background-clip:text;background-clip:text;color:transparent;padding:.04em .03em 0 0;margin:-.04em -.03em 0 0}
+.hvx-white{color:#fff!important;position:relative}
+.hvx-white .hvx-nf{color:rgba(255,255,255,.75)!important}
+.hvx-p:nth-child(n) .hvx-w{background:none}
+@media (prefers-reduced-motion:reduce){.hvx-stack>*{opacity:1}}
+
+.hvx-fbg{z-index:0}
+.hvx-pin>.hvx-stack,.hvx-pin>.hvx-row{position:relative;z-index:1}
+.hvx-black,.hvx-black span{color:#202020!important;background:none!important}
