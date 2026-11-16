@@ -1138,3 +1138,6 @@ html.sda .endpin{view-timeline-name:--endp}
 html.sda .end.endfx.scrubfx .endbig{animation:endsL linear both;animation-timeline:--endp;animation-range:cover 0% cover 100%}
 html.sda .end.endfx.scrubfx:not(.es-out) .endbig{filter:none!important}
 html.sda section.end.endfx.scrubfx .scrib{animation:endsQ linear both!important;animation-timeline:--endp!important;animation-range:cover 0% cover 100%!important}
+/* iPhone : un élément position:fixed à l'intérieur d'une section sticky fait trembler la section (WebKit repasse le sticky sur le fil principal).
+   Les fonds de Clarity/Impact/Value sont donc posés en absolu dans l'écran épinglé (qui couvre déjà tout l'écran pendant le blocage). */
+.hvx-pin>.hvx-fbg{position:absolute!important}
