@@ -631,12 +631,14 @@ html.atend{background:#5650FF!important} /* seul html : le body garde son papier
 .whomore{display:flex;justify-content:center;margin-top:clamp(40px,6vh,64px)}
 .page .whomore{display:none!important} /* lien vers À propos : sur la home seulement */
 
-/* lueurs des headers (AssetsOS, À propos) : déséquilibrées et vivantes */
-html.prhero .sideglow.l{width:38vw;background:radial-gradient(58% 48% at 0% 34%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
-html.prhero .sideglow.r{width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(86,79,255,.18),rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
+/* lueurs des headers (AssetsOS, À propos) : déséquilibrées et vivantes — calques à part, en fondu */
+.sideglow.hl,.sideglow.hr{opacity:0!important;transition:opacity 1.2s cubic-bezier(.4,0,.2,1)!important}
+html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
+.sideglow.hl{left:0;width:38vw;background:radial-gradient(58% 48% at 0% 34%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
+.sideglow.hr{right:0;width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(86,79,255,.18),rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
 @keyframes hgl{0%{translate:0 -6vh;scale:1}50%{translate:2vw 4vh;scale:1.08}100%{translate:-1vw 10vh;scale:.96}}
 @keyframes hgr{0%{translate:0 6vh;scale:.95}100%{translate:-1.5vw -8vh;scale:1.1}}
-@media (prefers-reduced-motion:reduce){html.prhero .sideglow{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.sideglow.hl,.sideglow.hr{animation:none!important}}
 /* code layers : bouton stop seulement quand le site tourne */
 .node [data-cl=stop]{display:none}
 .node.islive [data-cl=stop]{display:grid}
