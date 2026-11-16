@@ -99,7 +99,7 @@ const G={on:false};
   G.stop=()=>{ G.on=false; el.classList.remove('on'); sClose(); setTimeout(()=>{ if(!G.on) fr.src='about:blank'; },500); };
 })();
 $('#invader').onclick=()=>G.start();
-$('#invader').addEventListener('mouseenter',()=>{ if(innerHeight+scrollY>=document.documentElement.scrollHeight-6) return; $('#toast').classList.add('on');sHover()}); $('#invader').addEventListener('mouseleave',()=>{ if(innerHeight+scrollY<document.documentElement.scrollHeight-6) $('#toast').classList.remove('on'); });
+/* « au bout de la page » = la classe atend (posée seulement quand on a vraiment scrollé jusqu'en bas du canvas) : sur une page sans scroll (Work), le survol marche normalement */ $('#invader').addEventListener('mouseenter',()=>{ if(document.documentElement.classList.contains('atend')) return; $('#toast').classList.add('on');sHover()}); $('#invader').addEventListener('mouseleave',()=>{ if(!document.documentElement.classList.contains('atend')) $('#toast').classList.remove('on'); });
 document.querySelectorAll('.burger,.round,.modes button,.x,.mono').forEach(b=>b.addEventListener('mouseenter',sHover));
 
 /* ---------- mini-moi : IA tenue en laisse ---------- */

@@ -991,3 +991,5 @@ html body main section#evolve.ev.wrap.rv{padding-bottom:clamp(60px,8vh,96px)!imp
 /* l'asset blanc se détache du haut blanc du cadre : ombre portée plus marquée + haut du cadre légèrement teinté */
 .page .ev-fr .ev-post{box-shadow:0 0 0 1px rgba(32,32,32,.07),0 22px 44px -18px rgba(40,30,240,.38),0 4px 12px -6px rgba(32,32,32,.12)!important}
 #evolve.fr-both .ev-fr::before{background:linear-gradient(rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(rgba(86,79,255,.07) 0%,rgba(86,79,255,.05) 30%,rgba(86,79,255,.08) 43%,rgba(86,79,255,.18) 54%,rgba(86,79,255,.36) 66%,rgba(86,79,255,.6) 78%,rgba(86,79,255,.84) 90%,#564FFF 100%),#f7f7fb!important}
+/* space invader : le survol (saut, bleu, grossi) marche partout, pas seulement en bas de la home */
+@media (hover:hover){html:not(.atend) .invader:hover{scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite;transition:scale .35s cubic-bezier(.3,1.6,.5,1),color .3s}}
