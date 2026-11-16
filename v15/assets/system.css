@@ -385,3 +385,6 @@ html body .menu{box-shadow:inset 0 0 0 1px rgba(32,32,32,.1),0 30px 70px -30px r
 /* dates de la frise verticale = style des dates de la frise de la home */
 .page .vtd{font-family:var(--display)!important;font-weight:700;font-size:20px!important;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
 .page .vti.on .vtd{color:var(--blue)}
+/* frise verticale : colonnes de texte plus étroites (« …and teams » / « for 4 years. ») */
+.page .vtx{max-width:24ch!important;text-wrap:pretty}
+.page .vts{max-width:30ch}
