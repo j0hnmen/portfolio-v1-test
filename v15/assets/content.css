@@ -850,6 +850,8 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .cstream .cs-stage{overflow:visible!important;clip-path:inset(-400px 0 -400px -400px)}
 
 /* tuile source du case study : cliquable */
-.page .cs-src{cursor:pointer;transition:box-shadow .5s cubic-bezier(.2,.8,.2,1)!important}
-.page .cs-src:hover{box-shadow:0 0 0 1px rgba(86,79,255,.18),0 40px 80px -32px rgba(40,30,240,.6)!important}
+.page .cs-src{cursor:pointer;transition:translate .5s cubic-bezier(.2,.8,.2,1),scale .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s cubic-bezier(.2,.8,.2,1)!important}
+.page .cs-src:hover{translate:0 calc(-50% - 5px);scale:1.012;box-shadow:0 0 0 1px rgba(86,79,255,.18),0 40px 80px -32px rgba(40,30,240,.6)!important}
 .page .cs-src:hover .cs-send::before{opacity:1}
+
+.page .cs-src:active{translate:0 calc(-50% - 2px);scale:.995;transition-duration:.15s!important} /* léger mouvement, en gardant le centrage vertical (translate -50 %) */
