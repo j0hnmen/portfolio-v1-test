@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832374'; }
-  if(g==='about'){ location.href='about.html?v=1794832374'; }
-  if(g==='contact'){ location.href='contact.html?v=1794832374'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832374'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832441'; }
+  if(g==='about'){ location.href='about.html?v=1794832441'; }
+  if(g==='contact'){ location.href='contact.html?v=1794832441'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832441'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -113,8 +113,8 @@ He designs and codes his own websites and tools, with AI (this website, the Inkt
 To reach him: LinkedIn (linkedin.com/in/nabilamara) or Instagram (@nabiljamara).
 Projects:
 ${P.map((p,i)=>`${i+1}. ${p.t} (${p.y}) — ${p.nat}. Role: ${p.role}. ${p.sub}${p.txt?' '+p.txt.join(' '):''}`).join('\n')}`;
-  const RULES=`You are "Nabil's AIntern", Nabil Amara's AI intern on his portfolio. You are an AI and you say so if asked.
-You speak in the first person, as Nabil, in a direct, warm and brief tone: 1 to 3 sentences, no lists, no markdown, no emoji.
+  const RULES=`You are "John", Nabil Amara's AI on his portfolio. You are an AI and you say so if asked; your name is John.
+You speak about Nabil in the third person ("Nabil designed…"), in a direct, warm and brief tone: 1 to 3 sentences, no lists, no markdown, no emoji.
 You answer in the visitor's language (English by default).
 You ONLY talk about Nabil: his work, his projects, his positioning, how he works, how to reach him.
 You ONLY use the information in the FACTS below. If the information is not there (rates, exact availability, clients not listed, private life, opinions about people), you never make it up: you say you don't know and suggest writing to Nabil on LinkedIn.
@@ -139,15 +139,15 @@ ${FICHE}`;
     const r=await fetch('/api/mini-moi',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages})});
     if(!r.ok) throw {code:'offline'}; const j=await r.json(); return j.text; }
   async function ask(q){ q=(q||'').trim().slice(0,300); if(!q||busy) return;
-    if(asked>=MAX){ add('a','That’s it for today. To go further, write to me on LinkedIn: linkedin.com/in/nabilamara'); linkify(log.lastChild); return; }
+    if(asked>=MAX){ add('a','That’s it for today. To go further, write to Nabil on LinkedIn: linkedin.com/in/nabilamara'); linkify(log.lastChild); return; }
     busy=true; send.disabled=true; asked++; chips.innerHTML=''; add('u',q); inp.value='';
     const m=add('a wait','…'); el.classList.add('talk');
     const msgs=[{role:'user',content:RULES+'\n\nThe visitor starts the conversation.'},{role:'assistant',content:'Compris.'},...hist.slice(-8),{role:'user',content:q}];
     try{ const t=await backend(msgs,txt=>{ m.classList.remove('wait'); m.textContent=txt; log.scrollTop=log.scrollHeight; });
-      m.classList.remove('wait'); m.textContent=(t||'').trim()||'I don’t have an answer to that. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m);
+      m.classList.remove('wait'); m.textContent=(t||'').trim()||'I don’t have an answer to that. Write to Nabil on LinkedIn: linkedin.com/in/nabilamara'; linkify(m);
       hist.push({role:'user',content:q},{role:'assistant',content:m.textContent}); }
     catch(e){ m.classList.remove('wait'); asked--;
-      m.textContent=e&&e.code==='rate_limited'?'Easy, I’m catching my breath. Try again in a minute.':'The AIntern is asleep for now. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m); }
+      m.textContent=e&&e.code==='rate_limited'?'Easy, I’m catching my breath. Try again in a minute.':'John is asleep for now. Write to Nabil on LinkedIn: linkedin.com/in/nabilamara'; linkify(m); }
     el.classList.remove('talk'); busy=false; send.disabled=false; log.scrollTop=log.scrollHeight; }
   el.onclick=()=>inp.focus();
   /* la spirale : un tour sur elle-même au survol, et de temps en temps un petit geste (tour ou balancement), jamais onglet caché */
@@ -186,7 +186,7 @@ ${FICHE}`;
   const tideEl=document.querySelector('.pg-tide');
   const fr=()=>document.documentElement.lang==='fr';
   const TXT=()=>fr()?['Continuez à scroller…','Encore un peu…','Lâchez rien…']:['Keep scrolling…','A bit more…','Almost there…'];
-  const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis l’AIntern de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s AIntern: ask me anything about his work.';
+  const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis John, l’IA de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m John, Nabil’s AI: ask me anything about his work.';
   const NEED=1300; let pull=0, last=0, raf=0, done=false;
   const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
   const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);
