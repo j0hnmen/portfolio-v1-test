@@ -963,9 +963,11 @@ header.top{view-transition-name:vt-top}
 #skill .sk .skok{margin:0 0 0 4px}
 #skill .sk summary .pm{margin-left:auto}
 
-/* tous les « Book a call » : au survol, le contour blanc du bouton devient noir (pas de contour en plus) */
-@media (hover:hover){html body :is(.vbook,.pill,.abtb1):has(:is([data-i="t2"],[data-i="t75"])):hover{outline:2px solid #202020!important;outline-offset:-2px!important}
-html body section.end .row .pill:has(:is([data-i="t2"],[data-i="t75"])):hover{outline:none!important;box-shadow:0 0 0 2px #202020,0 22px 46px -16px rgba(40,30,240,.75)!important}}
+/* tous les « Book a call » : au survol, le contour blanc du bouton devient noir (pas de contour en plus), en fondu depuis le transparent — jamais par le blanc */
+html body :is(.vbook,.pill,.abtb1):has(:is([data-i="t2"],[data-i="t75"])){outline:2px solid rgba(32,32,32,0)!important;outline-offset:-2px!important;transition:outline-color .35s cubic-bezier(.4,0,.2,1),box-shadow .5s cubic-bezier(.4,0,.2,1),scale .4s cubic-bezier(.3,1.6,.5,1)!important}
+html body section.end .row .pill:has([data-i="t75"]){box-shadow:0 18px 40px -18px rgba(20,16,120,.55)!important}
+@media (hover:hover){html body :is(.vbook,.pill,.abtb1):has(:is([data-i="t2"],[data-i="t75"])):hover{outline-color:#202020!important}
+html body section.end .row .pill:has([data-i="t75"]):hover{box-shadow:0 22px 46px -16px rgba(40,30,240,.75)!important}}
 /* lueurs latérales (Pricing) : plus hautes que l'écran pour ne jamais montrer de bord net quand elles bougent */
 .sideglow.l,.sideglow.r{top:-16vh!important;bottom:-16vh!important}
 .sideglow.l{background:radial-gradient(60% 42% at 0% 50%,rgba(86,79,255,.22),rgba(86,79,255,0) 70%)!important}
