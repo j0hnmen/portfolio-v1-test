@@ -985,3 +985,9 @@ html.src .prob h2 .blu{color:var(--c-acc)!important;-webkit-text-fill-color:var(
 .page .ev-prompt.ship .ev-ship{transition:box-shadow .35s cubic-bezier(.4,0,.2,1),scale .4s cubic-bezier(.3,1.6,.5,1)!important}
 @media (hover:hover){.page .ev-prompt.ship .ev-ship:hover{scale:1.045}}
 html body main section#evolve.ev.wrap.rv{padding-bottom:clamp(60px,8vh,96px)!important} /* le cadre déborde de 28px : on rend l’air avant Pricing */
+/* Active Templates : l'étiquette du template se détache du haut blanc du cadre (ombre + texte plus foncé), contour un cran plus soutenu en haut */
+.page .ev-fr .ev-ver{box-shadow:0 0 0 1px rgba(86,79,255,.2),0 8px 20px -10px rgba(40,30,240,.45)!important;color:#3a3a3a!important}
+#evolve.fr-both .ev-fr::after{background:linear-gradient(160deg,#8b86ff,#5751FF 45%,#1C14F2)!important}
+/* l'asset blanc se détache du haut blanc du cadre : ombre portée plus marquée + haut du cadre légèrement teinté */
+.page .ev-fr .ev-post{box-shadow:0 0 0 1px rgba(32,32,32,.07),0 22px 44px -18px rgba(40,30,240,.38),0 4px 12px -6px rgba(32,32,32,.12)!important}
+#evolve.fr-both .ev-fr::before{background:linear-gradient(rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(rgba(86,79,255,.07) 0%,rgba(86,79,255,.05) 30%,rgba(86,79,255,.08) 43%,rgba(86,79,255,.18) 54%,rgba(86,79,255,.36) 66%,rgba(86,79,255,.6) 78%,rgba(86,79,255,.84) 90%,#564FFF 100%),#f7f7fb!important}
