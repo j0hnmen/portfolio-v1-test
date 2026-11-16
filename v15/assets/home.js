@@ -53,7 +53,7 @@ P.forEach((p,i)=>{const b=document.createElement('button');b.innerHTML=`${p.t}<s
   b.onclick=()=>{peek.style.opacity=0;openProject(i,null)}; list.appendChild(b);});
 list.appendChild(peek); let pkSide=1; list.querySelectorAll('button').forEach((b,i)=>b.addEventListener('mouseenter',()=>{ pkSide=1; }));
 addEventListener('pointermove',e=>{ if(peek.style.opacity==='1'){ const w=peek.offsetWidth, x=pkSide>0?e.clientX+18:e.clientX-w-18; peek.style.transform=`translate(${x}px,${e.clientY-peek.offsetHeight/2}px) rotate(${pkSide>0?-3:3}deg)`; } });
-function setMode(m){ m=m===true?'list':(m||'ring');
+function setMode(m){ m=m===true?'list':(m||'ring'); if(m==='ring') m='list'; /* Work : la vue liste seulement (les tuiles sont retirées) */
   ['list','canvas'].forEach(k=>document.body.classList.toggle('is-'+k,m===k));
   $('#mList').setAttribute('aria-pressed',m==='list'); $('#mRing').setAttribute('aria-pressed',m==='ring'); $('#mCanvas').setAttribute('aria-pressed',m==='canvas');
   if(m==='canvas') CV.enter(); else CV.leave(); sTick(); }

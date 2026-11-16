@@ -1021,3 +1021,42 @@ html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
   .mus-l{position:absolute;right:44px;bottom:52px}.mus .mus-n{position:absolute;right:6px;bottom:54px}
   .mus.on .mus-n{opacity:1;scale:1;pointer-events:auto}
 }
+/* Work : vue liste seulement — le sélecteur Tiles / List disparaît */
+.top .modes{display:none!important}
+
+/* signature propre (CSIG) */
+.csig{display:block;line-height:0;color:#202020}
+.csig svg{display:block;width:100%;height:auto;overflow:visible}
+.csig use{fill:currentColor}
+.csig .csw{stroke-dasharray:1 1;stroke-dashoffset:1;animation:csd linear forwards paused;animation-delay:calc(var(--dl)*var(--csp,1));animation-duration:calc(var(--du)*var(--csp,1))}
+.csig.play .csw{animation-play-state:running}
+.csig.reset .csw{animation:none}
+.csig .csdn{opacity:0}
+.csig.done .csdn{opacity:1}.csig.done .csan{opacity:0}
+@keyframes csd{to{stroke-dashoffset:0}}
+.absig .csig{color:#202020}
+
+/* Clarity / Impact / Value : marques tracées à la main, en noir */
+.hvx .hvx-w{position:relative}
+.hvx .hvxm{position:absolute;overflow:visible;pointer-events:none;fill:none;stroke:#202020;stroke-linecap:round;stroke-linejoin:round}
+.hvx .hvxm path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .2s}
+.hvx .hvon .hvxm path{transition:stroke-dashoffset .9s cubic-bezier(.65,0,.35,1) .15s;stroke-dashoffset:0}
+.hvx .hvxm-c{left:-9%;top:-14%;width:118%;height:120%}
+.hvx .hvxm-c path{stroke-width:2.1}
+.hvx .hvxm-u path{stroke-width:9}
+.hvx .hvx-u{position:relative;display:inline-block}
+.hvx .hvxm-u{left:-2%;width:104%;bottom:-.02em;height:.2em}
+.hvx .hvx-sig{position:absolute;right:-.24em;bottom:-.1em;width:1.08em;color:#202020;-webkit-text-fill-color:initial;pointer-events:none}
+.hvx .hvx-grad .hvx-sig use{fill:#202020}
+html.src .hvx .hvxm,html.src .hvx .hvx-sig{display:none}
+
+.hvx .hvx-row,.hvx .hvx-track,.hvx .hvx-p{overflow-y:visible!important}
+.hvx .hvx-row{overflow-x:clip!important}
+
+/* « Your one-man design studio » : home = one-man noir, design souligné noir ; About = one-man bleu, design souligné bleu */
+html body .pres .abt .abth .om{color:#202020}
+html body .pres .abt .abth .mark .scrib{stroke:#202020!important}
+html body .page .abt .abth .om{color:#564FFF!important;-webkit-text-fill-color:#564FFF}
+html body .page .abt .abth .mark .scrib{stroke:#564FFF!important}
+html.blueon .pres .abt .abth .om{color:#202020!important}
+html.blueon .pres .abt .abth .mark .scrib{stroke:#202020!important}
