@@ -981,3 +981,6 @@ html body section.end .row .pill:has([data-i="t75"]):hover{box-shadow:0 22px 46p
 .mm .aint{transition:transform .25s cubic-bezier(.3,.8,.3,1)}
 .prob h2 .blu{color:#564FFF;-webkit-text-fill-color:#564FFF;background:none}
 html.src .prob h2 .blu{color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)!important}
+/* Ship it : léger grossissement au survol */
+.page .ev-prompt.ship .ev-ship{transition:box-shadow .35s cubic-bezier(.4,0,.2,1),scale .4s cubic-bezier(.3,1.6,.5,1)!important}
+@media (hover:hover){.page .ev-prompt.ship .ev-ship:hover{scale:1.045}}

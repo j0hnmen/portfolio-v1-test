@@ -212,3 +212,4 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 /*skok*/ document.querySelectorAll('#skill details.sk').forEach(d=>{ const on=()=>{ d.classList.remove('skon'); if(d.open){ void d.offsetWidth; d.classList.add('skon'); } };
   d.addEventListener('toggle',on);
   if(d.open){ const io=new IntersectionObserver(es=>{ if(es[0].isIntersecting){ on(); io.disconnect(); } },{threshold:.6}); io.observe(d); } });
+/*decaylabel*/ document.querySelectorAll('.decay').forEach(d=>{ const sp=d.querySelector('.ax span'), dot=d.querySelector('.dot'); if(!sp||!dot) return; const ax=sp.parentNode; const pos=()=>{ const a=ax.getBoundingClientRect(), b=dot.getBoundingClientRect(); sp.style.left=Math.round(b.left+b.width/2-a.left+18)+'px'; }; pos(); addEventListener('resize',pos); addEventListener('load',pos); new ResizeObserver(pos).observe(d); });
