@@ -339,3 +339,5 @@ html.src .gradtx{background:none;color:var(--c-acc)!important;-webkit-text-fill-
 html body .flag,html body #flag{box-shadow:none!important;border:0!important;outline:0!important}
 html body .flag:focus-visible{outline:2px solid #564FFF!important;outline-offset:2px}
 html body #flag svg{box-shadow:none!important}
+/* bulle du curseur : jamais de soulignement */
+.tip span i,.tip.on span i{background-image:none!important;padding-bottom:0!important}
