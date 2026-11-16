@@ -1009,7 +1009,7 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev .ev-aos{display:block;width:150px;height:auto;margin:26px 0 0;color:#202020}
 @media (max-width:900px){.page .ev .ev-aos{margin:22px auto 0}}
 /* section « la box AssetsOS qui sort des assets » mise de côté */
-#case{display:none!important}
+section#case{display:none!important}
 /* hero AssetsOS : texte + boutons ferrés à gauche, calés sur le bord du A d'ASSETS (1,23 % de la largeur du logo), plus d'air sous le logo */
 .page .hero .hbot{align-self:stretch;align-items:flex-start!important;text-align:left;padding-left:1.23%!important;margin-top:clamp(4px,.8vw,14px)!important;gap:clamp(28px,3.4vh,40px)!important}
 .page .hero .hsub .hl{margin:0!important;max-width:34ch}

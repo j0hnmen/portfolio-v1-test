@@ -1100,7 +1100,7 @@ html:not(.cornin) .mus{opacity:0}
 html.wk2-open .pbox,html.wk2-open .mus,html.wk2-open #invader{opacity:0!important;pointer-events:none!important}
 @media (max-width:900px){.wk2-lb{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto}.wk2-media{padding:72px 16px 16px}.wk2-media img{max-height:55vh}.wk2-info{border-left:0;padding:24px 20px 60px}.wk2-it{font-size:clamp(36px,11vw,64px)}}
 .wk2-lb{z-index:2147482000}
-html.wk2-open .top,html.wk2-open header.top{opacity:0!important;pointer-events:none!important}
+/* (header visible comme sur la home quand une fiche est ouverte) */
 .wk2-in{position:relative;z-index:2}.wk2-peek{z-index:1}
 .wk2-peek{z-index:-1!important}
 
@@ -1114,3 +1114,7 @@ html.wk2-open .top,html.wk2-open header.top{opacity:0!important;pointer-events:n
 html body main.wk2>section.wk2-in{padding:0!important;margin:0!important}
 html body #main.wk2.wk2>section.wk2-in.wk2-in{padding:0!important;margin:0!important}
 .hvx .hvx-grad span.bsig{color:#202020!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;padding:0!important;margin:0!important}
+/* fiche projet : le fond papier couvre tout l'écran même quand on fait défiler la fiche
+   (la perspective de .case faisait défiler le fond avec le contenu, et laissait voir le canvas derrière) */
+html body .case{perspective:none!important}
+html.wk2-open .top{z-index:66}
