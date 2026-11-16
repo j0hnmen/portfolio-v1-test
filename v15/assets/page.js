@@ -1,6 +1,6 @@
 /* V1.5 — page.js : comportements propres aux pages de contenu (AssetsOS, About, Contact). Chaque bloc ne s'active que si sa section existe. */
 { const els=document.querySelectorAll('.page .rv:not(.aosx *),.page .hero');
-  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }),{threshold:.18});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('seen'); io.unobserve(e.target); } }),{threshold:0,rootMargin:'0px 0px -12% 0px'} /* seuil absolu : les sections très hautes (mobile) se révèlent aussi */);
   els.forEach(el=>io.observe(el)); }
 /* accordéons (skill, FAQ) */
 { ["sk","fq"].forEach(g=>{const all=[...document.querySelectorAll("."+g)];const E="cubic-bezier(.22,.8,.24,1)";const rm=matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -38,18 +38,19 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const bar=document.createElement('div'); bar.className='cs-prompt'; bar.innerHTML='<span class="cs-pt"></span><i class="cs-caret"></i><b class="cs-send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></b>'; if(src) src.appendChild(bar);
   const pt=bar.querySelector('.cs-pt');
   let seed=11; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
-  const live=[]; let lane=0; const START=250, INTRO=2300, V=.036;
+  const MOBI=matchMedia('(max-width:760px)').matches; /* mobile : tuile en haut, les assets sortent par le bas et défilent sur toute la largeur */
+  const live=[]; let lane=0; const START=MOBI?16:250, INTRO=MOBI?1900:2300, V=MOBI?.03:.036;
   const spawn=(i,x0)=>{ const [,k,n]=P[i%P.length]; const c=document.createElement('div'); c.className='cs-card cs-'+k+(x0?' ok':''); c.innerHTML=`<div class="cs-m">${mock(k)}</div><div class="cs-f"><span>${n}</span><b>✓ On brand</b></div>`; belt.appendChild(c);
-    lane=(lane+2)%5; const y=(lane-2)*82+(rnd()*2-1)*22; live.push({el:c,x:x0||START,y,s:.88+rnd()*.2,r:(rnd()*2-1)*5,ph:rnd()*6.28,born:x0?-1e5:performance.now(),sw:(y>0?-1:1)*(90+rnd()*70)});
+    lane=(lane+2)%5; const y=MOBI?((lane%3)-1)*58+(rnd()*2-1)*12:(lane-2)*82+(rnd()*2-1)*22; live.push({el:c,x:x0||START,y,s:.88+rnd()*.2,r:(rnd()*2-1)*5,ph:rnd()*6.28,born:x0?-1e5:performance.now(),sw:(y>0?-1:1)*(90+rnd()*70)});
     if(!x0) setTimeout(()=>c.classList.add('ok'),INTRO-150); };
   /* à l'arrivée, le flux est déjà rempli, au même rythme que les envois */
-  { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>START+V*INTRO+130;x-=138) spawn(i++ +3,x); }
+  { const W=(belt.offsetWidth||1100)+160; let i=0; for(let x=W-40;x>START+V*INTRO+(MOBI?110:130);x-=(MOBI?112:138)) spawn(i++ +3,x); }
   let last=performance.now(), vis=false, raf=0;
   const ease=t=>1-Math.pow(1-t,2); /* glissé doux : la vitesse de sortie rejoint la vitesse de croisière, sans arrêt */
   const step=now=>{ raf=0; const dt=Math.min(64,now-last); last=now; const W=belt.offsetWidth+160;
     for(let j=live.length-1;j>=0;j--){ const c=live[j], age=now-c.born, fl=Math.sin(now/1100+c.ph); let x,y,rot,sc,bl=0,op;
       if(age<INTRO&&!RM){ /* swoop : la carte sort du bouton d'envoi et décrit une courbe jusqu'à sa place */
-        const t=ease(age/INTRO), u=1-t, P0=[-24,118], P1=[START*.5,c.y+c.sw*.4], P2=[START,c.y];
+        const t=ease(age/INTRO), u=1-t, P0=MOBI?[belt.offsetWidth/2-50,-150]:[-24,118], P1=MOBI?[START+40,c.y-70]:[START*.5,c.y+c.sw*.4], P2=[START,c.y];
         x=u*u*P0[0]+2*u*t*P1[0]+t*t*P2[0]+V*age; y=u*u*P0[1]+2*u*t*P1[1]+t*t*P2[1]; c.x=x;
         const dx=2*u*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]), dy=2*u*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]);
         rot=Math.atan2(dy,dx)*57.3*.35*u+c.r*t; sc=c.s*(.7+.3*t); bl=4*u; op=Math.min(1,age/220); }

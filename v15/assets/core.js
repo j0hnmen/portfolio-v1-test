@@ -1,4 +1,16 @@
 /* V1.5 — core.js : socle commun (son, menu, mini-jeu, mini-moi, radio). Chargé sur toutes les pages. */
+/* TACTILE : aucun état de survol. Sur un écran sans souris, un tap déclenche de faux « mouseover » qui laissent
+   un hover affiché (bouton, tuile, bulle…) jusqu'au chargement de la page suivante. On coupe ces événements
+   et on retire toutes les règles CSS :hover. */
+const TOUCH=matchMedia('(hover:none)').matches||matchMedia('(pointer:coarse)').matches&&!matchMedia('(hover:hover)').matches;
+if(TOUCH){ document.documentElement.classList.add('touch');
+  ['mouseover','mouseenter','mousemove','mouseout','mouseleave','pointerover','pointerenter','pointerout','pointerleave'].forEach(t=>addEventListener(t,e=>{ if(t.startsWith('pointer')&&e.pointerType==='mouse') return; e.stopImmediatePropagation(); },true));
+  const strip=list=>{ for(let i=list.length-1;i>=0;i--){ const r=list[i];
+      if(r.cssRules&&!r.selectorText){ strip(r.cssRules); continue; }
+      if(r.selectorText&&r.selectorText.includes(':hover')){ const keep=r.selectorText.split(/,(?![^(]*\))/).filter(x=>!x.includes(':hover'));
+        if(keep.length) r.selectorText=keep.join(','); else list===r.parentRule?.cssRules?r.parentRule.deleteRule(i):r.parentStyleSheet.deleteRule(i); } } };
+  const run=()=>{ for(const sh of document.styleSheets){ try{ if(sh.cssRules) strip(sh.cssRules); }catch(_){} } };
+  run(); addEventListener('load',run); }
 
 const MOB=matchMedia('(max-width:760px)').matches; // mobile : le canvas n'est qu'un en-tête, pas un espace de jeu
 const LIVE=/(^|\.)github\.io$|(^|\.)nabilamara\.com$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
@@ -55,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794790354'; }
-  if(g==='about'){ location.href='about.html?v=1794790354'; }
-  if(g==='contact'){ location.href='contact.html?v=1794790354'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794790354'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794791670'; }
+  if(g==='about'){ location.href='about.html?v=1794791670'; }
+  if(g==='contact'){ location.href='contact.html?v=1794791670'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794791670'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -187,3 +199,6 @@ const RADIO=(function(){
 
 
 /*toastplay*/ { const t=document.getElementById('toast'); if(t) t.addEventListener('click',()=>{ if(document.documentElement.classList.contains('atend')) G.start(); }); }
+
+/* mobile : bandeau papier sous l'en-tête dès qu'on a quitté le haut de page */
+{ const H=document.documentElement; const band=document.createElement('div'); band.className='mtop'; band.setAttribute('aria-hidden','true'); document.body.appendChild(band); let tk=0; const f=()=>{ tk=0; H.classList.toggle('mscr',scrollY>40); }; addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f(); }

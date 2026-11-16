@@ -479,3 +479,112 @@ html body .menu{box-shadow:inset 0 0 0 1px rgba(32,32,32,.1),0 30px 70px -30px r
 .page img.vlogo.vfil{max-height:clamp(34px,3vw,42px)}
 .page img.vlogo.vabc{max-height:clamp(44px,4vw,56px);filter:none!important}
 .page .vti.vsmall .vtx{font-size:clamp(17px,1.4vw,21px)}
+
+/* =====================================================================
+   MOBILE (≤ 760 px) — passe complète. Système : gouttière 20 px,
+   texte 16/17 px, titres de section 40–44 px, boutons 48 px (petits 40 px).
+   ===================================================================== */
+html.touch,html.touch *{-webkit-tap-highlight-color:transparent}
+html.touch #tip,html.touch #cursor{display:none!important}
+@media (max-width:760px){
+  /* bandeau papier derrière l'en-tête fixe : le contenu ne passe plus « sous » le logo et les boutons */
+  .mtop{display:block!important;position:fixed;left:0;right:0;top:0;height:92px;z-index:29;pointer-events:none;
+    background:linear-gradient(#F3F2EE 0,rgba(243,242,238,.92) 55%,rgba(243,242,238,0) 100%);opacity:0;transition:opacity .35s}
+  html.mscr .mtop{opacity:1}
+  html.src .mtop,html.wkpg .mtop{opacity:0!important}
+  html.endblue .mtop{opacity:0!important}
+  html.mscr.blueon .mtop{background:linear-gradient(#5B55FF 0,rgba(91,85,255,.9) 55%,rgba(91,85,255,0) 100%)}
+  html.mscr.darkon .mtop{background:linear-gradient(#1b1b1d 0,rgba(27,27,29,.9) 55%,rgba(27,27,29,0) 100%)}
+  /* projet ouvert : l'en-tête s'efface, le bouton « close » est seul */
+  html:has(.viewer.on) header.top,html:has(.viewer.on) .mono,html:has(.viewer.on) .mtop{opacity:0!important;pointer-events:none!important}
+  /* tuile AssetsOS : on garde l'essentiel (logo, phrase, 3 étapes, bouton) — les fenêtres de démo sont retirées */
+  .aosx .aoswins{display:none!important}
+  /* The problem : marges latérales */
+  .page .stack>.band.prob{padding-left:20px!important;padding-right:20px!important}
+}
+.mtop{display:none}
+@media (max-width:760px){
+  /* frise À propos : une seule colonne (l'année géante est masquée) */
+  .page .vtl{grid-template-columns:1fr!important}
+  .page .vti{display:block!important}
+  .page .vlist{padding-left:40px!important}
+  .page .vline{left:7px!important}
+  .page .vdot{left:-41px!important}
+  .page .vti.vmin .vdot{left:-38px!important}
+  .page .vth{margin:0 0 14px!important;width:auto}
+  .page .vtx{max-width:none!important;font-size:18px!important}
+  .page .vti.vsmall .vtx,.page .vti.vmin .vtx{font-size:16px!important}
+  .page .vti{padding-bottom:64px!important}
+  .page .vti.vmin,.page .vti.vsmall{padding-bottom:48px!important}
+  .page .vtd{font-size:17px!important;margin-bottom:10px!important}
+  .page .vti.vmin .vtd{font-size:14px!important}
+}
+@media (max-width:760px){
+  /* home : pas d'empilement sticky about/tuile sur mobile (la tuile passait sous l'en-tête) — défilement simple */
+  .hstack.on #about,.hstack.on #aos{position:relative!important;top:auto!important}
+  .hstack.on #about>section{transform:none!important;opacity:1!important;filter:none!important}
+  .hstack.on::after{height:0!important;display:none!important}
+}
+@media (max-width:760px){
+  /* Impact · Clarity · Value : lisible d'emblée, pleine largeur, pas de flou */
+  .page .mani .mrow{width:100%;box-sizing:border-box}
+  .page .mani.manifx .mrow b{filter:none!important;opacity:1!important;translate:none!important}
+  .page .mani.manifx .mrow>span{translate:none!important;opacity:.55}
+  .page .mani.manifx .mrow.on>span{opacity:1}
+  .page .mrow b.d,.page .mrow b.d span{font-size:64px!important}
+  .page .mrow>span{font-size:17px!important;max-width:none!important}
+}
+@media (max-width:760px){
+  /* case study mobile : la tuile en haut, au centre ; le flux d'assets dessous, sur toute la largeur */
+  .page .cstream .cs-stage{height:520px!important;margin-right:0!important;clip-path:inset(-200px -20px -200px -20px)!important}
+  .page .cs-src{left:50%!important;top:0!important;translate:-50% 0!important;width:230px!important;height:230px!important}
+  .page .cs-src:hover,.page .cs-src:active{translate:-50% 0!important}
+  .page .cs-belt{left:0!important;right:0!important;top:370px!important}
+  .page .cs-card{width:104px!important}
+  .page .cs-m{height:66px!important}
+}
+@media (max-width:760px){
+  .page .cstream .cs-stage{height:440px!important}
+  .page .cs-belt{top:330px!important}
+  .page .cs-src::after{display:none!important}
+}
+@media (max-width:760px){ body:not(.pg-home) .aoswho .wrap.who{padding-left:20px!important;padding-right:20px!important} }
+@media (max-width:760px){ .aosx .ftr .wrap.fin{padding-left:20px!important;padding-right:20px!important;box-sizing:border-box} }
+@media (max-width:760px){ /* une seule gouttière mobile : 20 px, home comprise */
+  .pres{padding-left:20px!important;padding-right:20px!important} }
+@media (max-width:760px){ .pres .aosend .ftr{margin-left:-20px!important;margin-right:-20px!important} }
+@media (max-width:760px){
+  /* --- système mobile : boutons --- */
+  html body :is(.btn:not(:empty),.abtb,.pill,.aoscta){height:52px!important;padding:0 24px!important;font-size:17px!important;gap:8px!important}
+  html body :is(.ctcopy,.ctopts a,.btn-s){height:44px!important;padding:0 18px!important;font-size:16px!important}
+  html body header.top a.vbook{height:40px!important;padding:0 16px!important;font-size:15px!important}
+  /* --- système mobile : typo --- */
+  html body .abt .abth,html body .page h1.d,html body .page .abh{font-size:56px!important;line-height:.9!important}
+  html body .eb{font-size:18px!important}
+  html body .abt .abtlead,html body .page .abld,html body .page .ctl{font-size:18px!important;line-height:1.45!important}
+  html body .page .h2,html body .aosx .h2{font-size:40px!important;line-height:.95!important}
+}
+@media (max-width:760px){
+  /* contact : les 4 actions mail en grille 2 × 2, largeurs égales */
+  .page .ctopts{display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important}
+  .page .ctopts>*{width:100%!important;justify-content:center!important;margin:0!important}
+}
+@media (max-width:760px){
+  /* services : sans les points séparateurs (ils tombaient en début de ligne) */
+  .svc+.svc::before{display:none!important}
+  .svcs{column-gap:20px!important;row-gap:10px!important}
+}
+@media (max-width:760px){
+  /* projet ouvert : flèches au-dessus de l'image, barre de prompt et invader masqués */
+  .viewer .nav{z-index:6!important}
+  html:has(.viewer.on) .pbox,html:has(.viewer.on) #invader{opacity:0!important;pointer-events:none!important}
+}
+@media (max-width:760px){
+  /* Let's build : le titre tient sur toutes les largeurs (FR « votre système ») */
+  html body .aosx .end .d.h{font-size:min(64px,15vw)!important}
+  /* offres : les lignes longues (FR) passent à la ligne au lieu d'élargir la carte */
+  #pricing .plans,#pricing .plan{min-width:0!important;max-width:100%!important}
+  #pricing .plan li,#pricing .plan li *{white-space:normal!important;min-width:0}
+}
+html.touch input,html.touch textarea,html.touch select{font-size:16px!important} /* iOS : pas de zoom automatique au focus */
+@media (max-width:1100px){ .svc+.svc::before{display:none!important} .svcs{column-gap:20px!important;row-gap:10px!important} }
