@@ -65,7 +65,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     const r=src.getBoundingClientRect(); /* l'onde part du centre de la tuile */ [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+scrollX+r.width/2)+'px'; w.style.top=(r.top+scrollY+r.height/2)+'px'; w.style.setProperty('--w0',Math.round(Math.max(r.width,r.height)*1.02)+'px'); /* l'onde naît au bord de la tuile : visible tout de suite */ w.style.animationDelay=d+'ms'; wl.appendChild(w); setTimeout(()=>w.remove(),1200+d); }); };
   /* survol + clic sur la tuile : chaque clic fait sortir un nouvel asset (avec son onde) */
   if(src){ src.setAttribute('data-tip','Click to ship'); src.setAttribute('data-keeptip',''); let lastC=0;
-    src.addEventListener('click',()=>{ const n=performance.now(); if(n-lastC<180) return; lastC=n; spawn(Math.floor(rnd()*P.length)); wave(); bar.classList.add('sent'); setTimeout(()=>bar.classList.remove('sent'),260); }); }
+    src.addEventListener('click',()=>{ const n=performance.now(); if(n-lastC<180) return; lastC=n; wave(); bar.classList.add('sent'); const k=Math.floor(rnd()*P.length); setTimeout(()=>spawn(k),500); setTimeout(()=>bar.classList.remove('sent'),700); }); /* au clic aussi, l'onde part d'abord, l'asset suit 0,5 s après */ }
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
