@@ -839,7 +839,9 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 #moment .pr s.was{color:rgba(243,242,238,.5)}
 
 /* onde bleue : un cercle qui part de la tuile, grandit jusqu'à couvrir l'écran et s'estompe */
-.cs-wave{position:fixed;z-index:0;width:0;height:0;translate:-50% -50%;border-radius:50%;pointer-events:none;border:2px solid rgba(86,79,255,.55);box-shadow:0 0 50px 6px rgba(86,79,255,.18),inset 0 0 60px 4px rgba(86,79,255,.12);opacity:0;animation:cswave 2.2s cubic-bezier(.25,.6,.3,1) forwards,cswavefade 2.2s ease-out forwards}
+.cs-wavelayer{position:absolute;left:0;top:0;width:100%;overflow:hidden;pointer-events:none;z-index:0}
+.cs-wave{position:absolute;z-index:0;width:0;height:0;translate:-50% -50%;border-radius:50%;pointer-events:none;border:2px solid rgba(86,79,255,.55);box-shadow:0 0 50px 6px rgba(86,79,255,.18),inset 0 0 60px 4px rgba(86,79,255,.12);opacity:0;animation:cswave 9s cubic-bezier(.25,.6,.3,1) forwards,cswavefade 2.5s ease-out forwards,cswavestroke 2.2s ease-out forwards}
 .cs-wave.w2{border-color:rgba(86,79,255,.22)}
-@keyframes cswave{0%{width:0;height:0}100%{width:240vmax;height:240vmax}}
+@keyframes cswave{0%{width:0;height:0}100%{width:220vmax;height:220vmax}}
+@keyframes cswavestroke{0%{border-width:2px}100%{border-width:4px}}
 @keyframes cswavefade{0%{opacity:0}10%{opacity:1}100%{opacity:0}}

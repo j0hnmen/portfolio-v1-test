@@ -58,7 +58,11 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       if(x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
   /* à chaque envoi : une grande onde bleue part de la tuile et traverse l'écran, derrière le contenu */
-  const wave=()=>{ if(RM||!src) return; const r=src.getBoundingClientRect(); [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+r.width/2)+'px'; w.style.top=(r.top+r.height/2)+'px'; w.style.animationDelay=d+'ms'; document.body.appendChild(w); setTimeout(()=>w.remove(),2400+d); }); };
+  let wl=null; const wave=()=>{ if(RM||!src) return;
+    /* l'onde est accrochée à la page (pas à l'écran) : elle suit la tuile quand on scrolle */
+    if(!wl){ wl=document.createElement('div'); wl.className='cs-wavelayer'; wl.setAttribute('aria-hidden','true'); document.body.appendChild(wl); }
+    wl.style.height=document.documentElement.scrollHeight+'px';
+    const r=src.getBoundingClientRect(); [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+scrollX+r.width/2)+'px'; w.style.top=(r.top+scrollY+r.height/2)+'px'; w.style.animationDelay=d+'ms'; wl.appendChild(w); setTimeout(()=>w.remove(),2700+d); }); };
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
