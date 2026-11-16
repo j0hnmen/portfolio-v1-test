@@ -904,3 +904,45 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 @media (prefers-reduced-motion:reduce){.page .ev-b,.page .ev-post{transition:none}}
 .page .ev-stage{min-height:calc(min(400px,86vw)*16/9 + 124px);justify-content:flex-start} /* place réservée pour le format story : la page ne bouge pas */
 .page .ev-eye{width:auto!important}.page .ev-eye span{white-space:nowrap}
+
+/* use cases supplémentaires + bouton Ship it */
+.page .ev{overflow-x:clip}
+.page .ev-post{transition:aspect-ratio .8s cubic-bezier(.2,.8,.2,1),background .6s,color .6s,translate .7s cubic-bezier(.6,0,.4,1),rotate .7s cubic-bezier(.6,0,.4,1),opacity .5s}
+.page .ev-post.fly{translate:130vw -40px;rotate:12deg}
+.page .ev-post.enter{transition:none;translate:0 70px;opacity:0;scale:.94}
+.page .ev-post.yellow{background:#FFF186}
+.page .ev-photo{border-radius:4cqw;overflow:hidden;background:linear-gradient(160deg,#5751FF,#1C14F2)}
+.page .ev-photo::before{content:"";position:absolute;left:50%;top:22%;width:38%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:#FFF186}
+.page .ev-photo::after{content:"";position:absolute;left:50%;bottom:-12%;width:78%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:#3BE9CE}
+.page .ev-talk{display:flex;flex-direction:column;justify-content:center;gap:1.6cqw;padding:3.4cqw;border-radius:3.4cqw;background:#F3F2EE;font:600 4cqw/1.2 var(--ui,Inter,system-ui,sans-serif)}
+.page .ev-talk small{font:500 2.8cqw/1 var(--ui,Inter,system-ui,sans-serif);color:#8a8984;text-transform:uppercase;letter-spacing:.06em}
+.page .ev-post.yellow .ev-talk{background:#fff}
+.page .ev-date{display:flex;align-items:center;padding:0 3cqw;border-radius:999px;background:#202020;color:#fff;font:600 3.2cqw/1 var(--ui,Inter,system-ui,sans-serif);white-space:nowrap}
+.page .ev-partners{display:flex;align-items:center;gap:2cqw}
+.page .ev-partners i{flex:1;height:70%;border-radius:2cqw;background:rgba(32,32,32,.12)}
+.page .ev-salary{display:flex;align-items:center;padding:0 3cqw;border-radius:999px;background:#FFF186;color:#202020;font:600 3.4cqw/1 var(--ui,Inter,system-ui,sans-serif);white-space:nowrap}
+.page .ev-team{border-radius:4cqw;overflow:hidden;background:linear-gradient(135deg,#3BE9CE,#5751FF)}
+.page .ev-team i{position:absolute;bottom:-18%;width:30%;aspect-ratio:1;border-radius:50%;background:#fff;opacity:.85}
+.page .ev-team i:nth-child(1){left:6%}.page .ev-team i:nth-child(2){left:35%;bottom:-8%;background:#FFF186;opacity:1}.page .ev-team i:nth-child(3){left:64%}
+.page .ev-perks{display:flex;flex-direction:column;justify-content:center;gap:2.2cqw;padding:3.4cqw;border-radius:4cqw;background:#F3F2EE;font:500 3.4cqw/1.2 var(--ui,Inter,system-ui,sans-serif)}
+.page .ev-perks span::before{content:"✓ ";color:#564FFF;font-weight:700}
+.page .ev-b .evt{transition:opacity .25s}
+.page .ev-b.swap .evt{opacity:0}
+.page .ev-ship{display:none;margin-left:auto;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 18px;border:0;border-radius:11px;background:#202020;color:#fff;font:500 15px/1 var(--ui,Inter,system-ui,sans-serif);cursor:pointer;position:relative;overflow:hidden}
+.page .ev-ship::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#5751FF,#1C14F2);opacity:0;transition:opacity .3s}
+.page .ev-ship>*{position:relative}
+.page .ev-ship:hover::before{opacity:1}
+.page .ev-prompt.ship{justify-content:center;padding:0 6px;animation:evship .5s cubic-bezier(.3,1.5,.5,1)}
+.page .ev-prompt.ship :is(.ev-ptx,.ev-pc,.ev-send){display:none}
+.page .ev-prompt.ship .ev-ship{display:inline-flex;width:100%;height:38px;animation:evpulse 1.8s ease-in-out .6s infinite}
+@keyframes evship{0%{scale:.9}100%{scale:1}}
+@keyframes evpulse{0%,100%{box-shadow:0 0 0 0 rgba(86,79,255,.0)}50%{box-shadow:0 0 0 6px rgba(86,79,255,.22)}}
+.page .ev-perks>span::before{content:"✓ ";color:#564FFF;font-weight:700}
+.page .ev-perks span::before{content:none}
+.page .ev-perks>span::before{content:"✓ "}
+.page .ev-post.wide .ev-title{font-size:7.4cqw}
+.page .ev-post.wide .ev-talk{padding:1.8cqw 2.4cqw;gap:.8cqw;font-size:2.7cqw;border-radius:2.4cqw}
+.page .ev-post.wide .ev-talk small{font-size:2cqw}
+.page .ev-post.wide .ev-logo{font-size:3.2cqw}.page .ev-post.wide .ev-logo i{width:3.2cqw;height:3.2cqw}
+.page .ev-post.wide .ev-eye span{font-size:2.6cqw;padding:0 2cqw}
+.page .ev-post.wide .ev-date{font-size:2.6cqw;padding:0 2.2cqw}

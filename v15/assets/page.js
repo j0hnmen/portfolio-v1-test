@@ -103,44 +103,86 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); })();
 
-/*evolve*/ /* Templates dynamiques : chaque demande à Claude ajoute un élément au template, qui se réorganise */
+/*evolve*/ /* Templates dynamiques : 3 use cases ; chaque demande à Claude fait évoluer le template ; à la fin, « Ship it » envoie l'asset */
 (()=>{ const post=document.getElementById('evpost'); if(!post) return;
-  const B={}; post.querySelectorAll('.ev-b').forEach(e=>B[e.dataset.b]=e);
-  const tEl=document.getElementById('evtitle'), pEl=document.getElementById('evp'), bar=post.parentNode.querySelector('.ev-prompt'), ver=document.getElementById('evv'), verBox=ver.parentNode;
-  const fr=()=>document.documentElement.lang==='fr';
-  const TITLE={en:'Launch week is here',fr:'La semaine du lancement'};
-  /* positions en % du post : [left, top, width, height] ; absent = caché */
-  const S=[
-    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[7,51,86,43]},
-    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43]},
-    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43],badge:[70,3,24,0]},
-    {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,30],quote:[7,64.5,86,19],badge:[70,2,24,0]},
-    {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,26],quote:[7,60.5,86,18],badge:[70,2,24,0],cta:[7,85,86,7]},
-  ];
-  const REQ={en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
-             fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']};
-  const apply=(k,born)=>{ const st=S[Math.min(k,S.length-1)];
-    post.classList.toggle('story',k>=3); post.classList.toggle('dark',k>=5);
+  const stage=post.parentNode, bar=stage.querySelector('.ev-prompt'), ship=stage.querySelector('.ev-ship'), tEl0=null, pEl=document.getElementById('evp'), ver=document.getElementById('evv'), verBox=ver.parentNode;
+  const fr=()=>document.documentElement.lang==='fr', L=()=>fr()?'fr':'en';
+  const t=(en,frr)=>`<span class="evt" data-en="${en}" data-fr="${frr}">${en}</span>`;
+  const CASES=[
+   { blocks:{logo:'<i></i>Nova', eye:'<span>'+t('Product launch','Lancement produit')+'</span>', title:'', img:'<i class="o1"></i><i class="o2"></i><i class="o3"></i>',
+       quote:t('“Our brand, finally consistent everywhere.”','« Notre marque, enfin cohérente partout. »')+'<small>'+t('Founder, Nova','Fondatrice, Nova')+'</small>',
+       badge:t('May 12','12 mai'), cta:t('Join the beta','Rejoindre la bêta')+' →'},
+     cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',img:'ev-img',quote:'ev-quote',badge:'ev-badge',cta:'ev-cta'},
+     title:{en:'Launch week is here',fr:'La semaine du lancement'},
+     req:{en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
+          fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']},
+     fmt:['4/5','4/5','4/5','9/16','9/16','9/16'], theme:[0,0,0,0,0,'dark'],
+     S:[{logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[7,51,86,43]},
+        {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43]},
+        {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43],badge:[70,3,24,0]},
+        {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,30],quote:[7,64.5,86,19],badge:[70,2,24,0]},
+        {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,26],quote:[7,60.5,86,18],badge:[70,2,24,0],cta:[7,85,86,7]}]},
+   { blocks:{logo:'<i></i>Forma Summit', eye:'<span>'+t('Speaker','Speaker')+'</span>', title:'', photo:'',
+       talk:'<small>'+t('Talk','Talk')+'</small>'+t('Design systems that scale','Des design systems qui passent à l’échelle'),
+       date:t('June 3 · Main stage','3 juin · Grande scène'), partners:'<i></i><i></i><i></i>'},
+     cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',photo:'ev-photo',talk:'ev-talk',date:'ev-date',partners:'ev-partners'},
+     title:{en:'Nina Moreau',fr:'Nina Moreau'},
+     req:{en:['Add her talk title','Add the date and the stage','Make the LinkedIn banner version','Add our partners’ logos','Use the yellow edition colors'],
+          fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Fais la version bannière LinkedIn','Ajoute les logos de nos partenaires','Passe aux couleurs de l’édition jaune']},
+     fmt:['1/1','1/1','1/1','16/9','16/9','16/9'], theme:[0,0,0,0,0,'yellow'],
+     S:[{logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70]},
+        {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,56,48,29]},
+        {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,52,48,27],date:[7,85,48,7]},
+        {logo:[5,8,40,7],eye:[5,19,15,9],title:[5,31,50,24],photo:[60,9,35,82],talk:[5,58,50,22],date:[5,84,40,9]},
+        {logo:[5,8,40,7],eye:[5,19,15,9],title:[5,31,50,24],photo:[60,9,35,66],talk:[5,58,50,22],date:[5,84,40,9],partners:[60,79,35,12]}]},
+   { blocks:{logo:'<i></i>Pulse', eye:'<span>'+t('We’re hiring','On recrute')+'</span>', title:'',
+       salary:t('€60–70k · Paris, hybrid','60–70 k€ · Paris, hybride'), team:'<i></i><i></i><i></i>',
+       perks:'<span>'+t('4-day week','Semaine de 4 jours')+'</span><span>'+t('Remote Fridays','Télétravail le vendredi')+'</span><span>'+t('Learning budget','Budget formation')+'</span>',
+       cta:t('Apply now','Postuler')+' →'},
+     cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',salary:'ev-salary',team:'ev-team',perks:'ev-perks',cta:'ev-cta'},
+     title:{en:'Senior product designer',fr:'Product designer senior'},
+     req:{en:['Add the salary range','Add a photo of the team','List three perks','Add an “Apply now” button','Translate it into French'],
+          fr:['Ajoute la fourchette de salaire','Ajoute une photo de l’équipe','Liste trois avantages','Ajoute un bouton « Postuler »','Traduis-le en anglais']},
+     fmt:['4/5','4/5','4/5','4/5','4/5','4/5'], theme:[0,0,0,0,0,0], flip:5,
+     S:[{logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30]},
+        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7]},
+        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7],team:[7,66,86,28]},
+        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7],team:[52,66,41,28],perks:[7,66,42,28]},
+        {logo:[7,5,30,6],eye:[7,13,30,6],title:[7,21,86,26],salary:[7,49,64,7],team:[52,59,41,24],perks:[7,59,42,24],cta:[7,87,50,7]}]}];
+  let C=0, B={}, tEl=null, txtLang=null;
+  const build=()=>{ const c=CASES[C]; post.innerHTML=''; B={};
+    for(const n in c.blocks){ const e=document.createElement('div'); e.className='ev-b '+c.cls[n]+' off'; e.dataset.b=n;
+      e.innerHTML=n==='title'?'<span class="evtt"></span><i class="ev-caret"></i>':c.blocks[n]; post.appendChild(e); B[n]=e; }
+    tEl=post.querySelector('.evtt'); };
+  const lang=(lg)=>{ txtLang=lg; post.querySelectorAll('.evt').forEach(e=>e.textContent=e.dataset[lg]); };
+  const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,c.S.length-1)];
+    post.style.aspectRatio=c.fmt[k]; post.classList.toggle('wide',c.fmt[k]==='16/9'); post.classList.remove('dark','yellow'); if(c.theme[k]) post.classList.add(c.theme[k]);
     for(const n in B){ const p=st[n], e=B[n];
       if(!p){ e.classList.add('off'); continue; }
       const wasOff=e.classList.contains('off'); e.classList.remove('off');
       e.style.left=p[0]+'%'; e.style.top=p[1]+'%'; e.style.width=p[2]+'%';
       if(n==='badge'){ e.style.height='auto'; e.style.aspectRatio='1'; } else e.style.height=p[3]+'%';
-      if(wasOff&&born){ e.classList.remove('pop'); void e.offsetWidth; e.classList.add('pop'); } } };
-  const lang=()=>{ post.querySelectorAll('.evt').forEach(e=>e.textContent=fr()?e.dataset.fr:e.dataset.en); };
+      if(wasOff&&born){ e.classList.remove('pop'); void e.offsetWidth; e.classList.add('pop'); } }
+    if(c.flip===k){ const to=txtLang==='en'?'fr':'en'; post.querySelectorAll('.ev-b').forEach(e=>e.classList.add('swap'));
+      setTimeout(()=>{ lang(to); typeTitle(c.title[to]); post.querySelectorAll('.ev-b').forEach(e=>e.classList.remove('swap')); },260); } };
   const wait=ms=>new Promise(r=>setTimeout(r,ms)); let run=0, vis=false;
   const type=async(el,txt,sp,id)=>{ el.textContent=''; for(const ch of txt){ if(id!==run) return false; el.textContent+=ch; await wait(sp); } return true; };
-  const loop=async()=>{ const id=++run; lang();
-    ver.textContent='v1'; apply(0,false); tEl.textContent=''; pEl.textContent='';
-    await wait(400); if(!await type(tEl,TITLE[fr()?'fr':'en'],70,id)) return;
+  const typeTitle=txt=>{ if(tEl) tEl.textContent=txt; };
+  const bump=v=>{ ver.textContent='v'+v; verBox.classList.add('bump'); setTimeout(()=>verBox.classList.remove('bump'),450); };
+  const loop=async()=>{ const id=++run, c=CASES[C]; bar.classList.remove('ship','sent'); ship.tabIndex=-1;
+    build(); lang(L()); ver.textContent='v1'; apply(0,false); pEl.textContent='';
+    await wait(350); if(!await type(tEl,c.title[L()],70,id)) return;
     for(let k=0;k<5;k++){ if(id!==run) return; await wait(1100);
-      if(!await type(pEl,REQ[fr()?'fr':'en'][k],34,id)) return; await wait(320);
-      bar.classList.add('sent'); apply(k+1,true); ver.textContent='v'+(k+2); verBox.classList.add('bump'); setTimeout(()=>verBox.classList.remove('bump'),450);
+      if(!await type(pEl,c.req[L()][k],34,id)) return; await wait(320);
+      bar.classList.add('sent'); apply(k+1,true); bump(k+2);
       await wait(500); bar.classList.remove('sent'); pEl.textContent=''; }
-    await wait(3200); if(id===run&&vis){ post.style.opacity=0; await wait(450); post.style.transition='aspect-ratio 0s'; apply(0,false); await wait(30); post.style.transition=''; post.style.opacity=1; loop(); } };
-  post.style.transition+=',opacity .45s';
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ lang(); apply(4,false); tEl.textContent=TITLE[fr()?'fr':'en']; ver.textContent='v5'; return; }
-  apply(0,false);
-  new IntersectionObserver(es=>es.forEach(en=>{ vis=en.isIntersecting; if(vis) loop(); else run++; }),{threshold:.25}).observe(post);
+    if(id!==run) return; await wait(700); bar.classList.add('ship'); ship.tabIndex=0; };
+  ship.addEventListener('click',async()=>{ if(!bar.classList.contains('ship')) return; bar.classList.remove('ship'); ship.tabIndex=-1; run++;
+    post.classList.add('fly'); await wait(720);
+    C=(C+1)%CASES.length; post.classList.add('enter'); post.classList.remove('fly'); build(); lang(L()); apply(0,false); void post.offsetWidth;
+    post.classList.remove('enter'); await wait(500); if(vis) loop(); });
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ build(); lang(L()); apply(5,false); typeTitle(CASES[0].title[L()]); ver.textContent='v6'; return; }
+  build(); apply(0,false);
+  new IntersectionObserver(es=>es.forEach(en=>{ const was=vis; vis=en.isIntersecting; if(vis&&!was&&!bar.classList.contains('ship')) loop(); else if(!vis) run++; }),{threshold:.25}).observe(post);
   new MutationObserver(()=>{ if(vis) loop(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
