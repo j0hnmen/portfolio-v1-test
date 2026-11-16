@@ -658,3 +658,6 @@ footer.ftzoom .flogo{overflow:visible!important}
 .absig .absf{fill:#202020}
 @media (max-width:760px){.absig{width:120vw;right:-30vw;opacity:.07}}
 .abt:not(.abtleft) section>.absig{left:auto!important;right:-6%!important;translate:0 -46%!important} /* home : signature décalée à droite */
+/* pas de mot seul en bout de paragraphe : lignes équilibrées sur les textes courts, « pretty » sur les paragraphes */
+.page :is(.fodi,.ev-sub,.hl,.oneh,.ones,.note,.fq p,.mrow span,.plan .for,.incl){text-wrap:balance}
+.page p,.page li{text-wrap:pretty}
