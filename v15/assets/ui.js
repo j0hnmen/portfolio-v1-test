@@ -13,7 +13,7 @@ document.addEventListener('pointerover',e=>{ if(e.target.tagName==='IFRAME') t.c
 const pvi=t.querySelector('.pv img'); document.querySelectorAll('[data-img]').forEach(el=>{ const im=new Image(); im.src=el.dataset.img; });
 document.addEventListener('pointerover',e=>{ const el=e.target.closest&&e.target.closest('[data-tip]'); if(!el||el.contains(e.relatedTarget)) return; lab.textContent=el.dataset.tip; t.classList.toggle('plain',el.hasAttribute('data-plain')); if(el.dataset.img&&pvi){ pvi.src=el.dataset.img; t.classList.add('img'); } else t.classList.remove('img'); t.classList.add('on'); });
 document.addEventListener('pointerout',e=>{ const el=e.target.closest&&e.target.closest('[data-tip]'); if(el&&!el.contains(e.relatedTarget)) t.classList.remove('on'); });
-addEventListener('click',()=>t.classList.remove('on'),true);
+addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('[data-keeptip]')) return; t.classList.remove('on'); },true);
 })();
 
 
@@ -106,8 +106,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794787925'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794787925'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794787997'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794787997'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
