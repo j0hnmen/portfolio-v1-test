@@ -184,9 +184,9 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const bump=v=>{ ver.textContent='v'+v; verBox.classList.add('bump'); setTimeout(()=>verBox.classList.remove('bump'),450); };
   const loop=async()=>{ const id=++run, c=CASES[C]; bar.classList.remove('ship','sent'); ship.tabIndex=-1;
     build(); lang(L()); vlab.textContent=(fr()?'Template dynamique — ':'Active Template — ')+c.kind[L()]; ver.textContent='v1'; apply(0,false); pEl.textContent='';
-    await wait(350); if(!await type(tEl,c.title[L()],70,id)) return;
-    for(let k=0;k<c.req.en.length;k++){ /* 3 demandes : v1 → v4 */ if(id!==run) return; await wait(1100);
-      if(!await type(pEl,c.req[L()][k],34,id)) return; await wait(320);
+    await wait(250); if(!await type(tEl,c.title[L()],42,id)) return;
+    for(let k=0;k<c.req.en.length;k++){ /* 3 demandes : v1 → v4 */ if(id!==run) return; await wait(k?650:200); /* le prompt démarre presque tout de suite */
+      if(!await type(pEl,c.req[L()][k],26,id)) return; await wait(320);
       bar.classList.add('sent'); apply(k+1,true); bump(k+2);
       await wait(500); bar.classList.remove('sent'); pEl.textContent=''; }
     if(id!==run) return; await wait(700); bar.classList.add('ship'); ship.tabIndex=0; };

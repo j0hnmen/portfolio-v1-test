@@ -636,8 +636,8 @@ html.atend{background:#5650FF!important} /* seul html : le body garde son papier
 /* lueurs des headers (AssetsOS, À propos) : déséquilibrées et vivantes — calques à part, en fondu */
 .sideglow.hl,.sideglow.hr{opacity:0!important;transition:opacity 1.2s cubic-bezier(.4,0,.2,1)!important}
 html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
-.sideglow.hl{left:0;width:38vw;background:radial-gradient(58% 48% at 0% 34%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
-.sideglow.hr{right:0;width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(86,79,255,.18),rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
+.sideglow.hl{left:-12vw;width:50vw;top:-16vh!important;bottom:-16vh!important;background:radial-gradient(44% 36% at 24% 38%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
+.sideglow.hr{right:-12vw;width:36vw;top:-16vh!important;bottom:-16vh!important;background:radial-gradient(43% 30% at 67% 67%,rgba(86,79,255,.18),rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
 @keyframes hgl{0%{translate:0 -6vh;scale:1}50%{translate:2vw 4vh;scale:1.08}100%{translate:-1vw 10vh;scale:.96}}
 @keyframes hgr{0%{translate:0 6vh;scale:.95}100%{translate:-1.5vw -8vh;scale:1.1}}
 @media (prefers-reduced-motion:reduce){.sideglow.hl,.sideglow.hr{animation:none!important}}
@@ -967,5 +967,10 @@ header.top{view-transition-name:vt-top}
 @media (hover:hover){html body :is(.vbook,.pill,.abtb1):has([data-i="t2"]){outline:2px solid transparent;outline-offset:3px;transition:outline-color .25s,box-shadow .3s,transform .3s}
 html body :is(.vbook,.pill,.abtb1):has([data-i="t2"]):hover{outline-color:#202020!important}
 html body section.end .row .pill:has([data-i="t2"]):hover{box-shadow:0 22px 46px -16px rgba(40,30,240,.75)!important}}
-/* fin de page : le fond bleu suit le scroll (progressif) au lieu d'apparaître d'un coup */
-html.bluepg:not(.blueon) .bluebg{opacity:var(--endbo,0)!important;transition:opacity .15s linear!important}
+/* lueurs latérales (Pricing) : plus hautes que l'écran pour ne jamais montrer de bord net quand elles bougent */
+.sideglow.l,.sideglow.r{top:-16vh!important;bottom:-16vh!important}
+.sideglow.l{background:radial-gradient(60% 42% at 0% 50%,rgba(86,79,255,.22),rgba(86,79,255,0) 70%)!important}
+.sideglow.r{background:radial-gradient(60% 42% at 100% 50%,rgba(86,79,255,.22),rgba(86,79,255,0) 70%)!important}
+/* Active Templates : le titre devient « ACTIVE TEMPLATES » (Active en dégradé), icône à côté ; « Templates that keep evolving » passe en en-tête */
+.page .ev .ev-h .ev-ic{display:inline-block;width:.66em;height:.66em;color:#564FFF;vertical-align:-.02em;margin-right:.16em}
+.page .testi,.aosx .testi{margin-left:auto!important;margin-right:auto!important}
