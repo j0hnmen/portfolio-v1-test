@@ -1,0 +1,590 @@
+/* V1.5 — system.css : le design system commun à toutes les pages (échelle typo, boutons, eyebrows, labels). Chargé en dernier, s'applique partout. */
+/* ===== 4 styles + légende, partout =====
+   H1 Mozer 64→144 · H2 Mozer 40→72 · H3 Mozer 24→32 · P Akke 20 · P2 Akke 16 · En-tête (eyebrow) 20→28 en minuscules, 0 interlettrage · Légende 13 */
+.abt .abth,.aosx .end .h,.end .h,.abh,.cth{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.aosx .h2,.h2,.abpath .h2{font-size:clamp(40px,5vw,72px)!important;line-height:.95!important}
+.abrows b,.abcols b,.aosx .fct,.fct,.ctaddr,.ctc b,.hsub .sub,.hero .sub,section p.sub{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.02!important}
+.abt .abtlead,.aossub,.abld,.ctl,.intro,.aosx .fcd,.fcd,.aoscard .sysl li,.aosx .sysl li,.sysl li,.abrows span,.abcols p{font-size:20px!important;line-height:1.45!important}
+.aosx .tlx,.tlx{font-size:16px!important;line-height:1.45!important}
+.aosx .tfof,.tfof,.ctwhere,.ctc small{font-size:13px!important;line-height:1.35!important}
+/* en-têtes (eyebrows) : 16 px, comme avant */
+.eb,.aosx .eb,.whead .eb{font-size:clamp(20px,1.9vw,28px)!important;line-height:1.15!important;text-transform:none!important;letter-spacing:0!important}
+/* composants (pas des styles de texte) */
+.svc,.ctp{font-size:20px!important}
+/* pas de « retour » de page par un glissement horizontal du trackpad */
+html,body{overscroll-behavior-x:none}
+/* page Assets OS + reste : ramenés sur les mêmes styles */
+.mrow b.d,.mrow b.d span{font-size:clamp(64px,10vw,144px)!important;line-height:.86!important}
+.plan h3,.oh h3.d,.oh h3,.fq summary span,.foh2 b.d,.ctc b{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.05!important}
+.ctc b{font-family:var(--display,"Mozer DA","Mozer"),sans-serif!important;font-weight:800!important;text-transform:uppercase}
+.hl,.hsub .hl,p.hl,.oneh,p.oneh,.mrow > span,.more,p.more{font-size:20px!important;line-height:1.45!important}
+.oneh small.pz{font-size:13px!important}
+li.y,li.n,li.y span,li.n span,li.y b,.fodi,.fodi span,.ii,.ii span,.for,p.for,.dt,p.dt,.dw p,.dw p span{font-size:16px!important;line-height:1.45!important}
+.note,p.note,.osub,p.osub,.av,.meta .dl,.dl,.tipbox,.badge,.ax,.il,.bar .lb em,.lb em{font-size:13px!important;line-height:1.4!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
+.tld,.bar .lb,span.lb{font-size:20px!important}
+
+/* liste « What does your Claude skill do » : en H3 (taille), comme avant */
+.sk summary .tx,summary .tx{font-size:clamp(24px,2.2vw,32px)!important;line-height:1.2!important}
+/* ===== rythme vertical commun (toutes les pages) ===== */
+.eb{margin-bottom:18px!important}
+.abtlead,.abld,.ctl{max-width:46ch!important;margin-top:clamp(32px,4.4vh,48px)!important}
+.abtcta,.abhero .abtcta,.ctin .ctopts{margin-top:clamp(36px,4.8vh,52px)!important}
+.svcs{margin-top:clamp(36px,4.8vh,52px)!important;gap:10px!important}
+.abt .svcs,.abhero .svcs{max-width:1240px!important}
+/* frise : plus d'air partout (home, About, Assets OS) */
+.tl2{margin-top:clamp(64px,9vh,104px)!important;column-gap:40px!important}
+.tl2 .thd{margin-top:26px!important}
+.tl2 .tlx{margin-top:16px!important;max-width:24ch}
+.tl2 .tfof{margin-top:14px!important}
+.intro,.intro.big,p.intro{max-width:34ch}
+/* prix : on garde leurs tailles d'origine (chiffres, pas des titres) */
+
+/* barre de défilement aux couleurs du site */
+html{scrollbar-color:#564FFF transparent;scrollbar-width:thin}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#564FFF;border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:#4a43ef;background-clip:padding-box}
+/* liens du footer en Akke */
+.flinks a,.flinks a span{font-family:var(--text)!important;font-weight:400!important;letter-spacing:0!important}
+
+/* ===== COMPOSANT BOUTON (Figma 801-3405) — une seule définition pour tout le site =====
+   Nom canonique : .btn (primaire noir) · .btn.btn-2 (secondaire blanc) · .btn-s (petit). Les autres classes listées sont des alias historiques.
+   .btn-l (grand) : 56 px, Akke 18 · .btn-s (petit, barre du haut / fermer) : 44 px, Akke 16
+   primaire = noir ; secondaire = blanc ; (bleu dégradé gardé en réserve : .btn-blue) ; liseré clair ; survol = léger zoom, jamais d'inclinaison */
+html body :is(.btn,.abtb,.pill,.aoscta,.vbook,.x,.vx,.ctcopy,.ctopts a){display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;height:56px!important;min-height:0!important;padding:0 28px!important;font-family:var(--text)!important;font-weight:400!important;font-size:18px!important;line-height:1!important;letter-spacing:0!important;text-transform:none!important;white-space:nowrap!important;text-decoration:none!important;border:0!important;border-radius:999px!important;filter:none;transition:scale .35s cubic-bezier(.2,.8,.2,1),filter .25s,background .6s,color .6s!important}
+html body :is(.btn-s,.vbook,.x,.vx,.ctcopy,.ctopts a){height:44px!important;padding:0 20px!important;font-size:16px!important}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o),.aoscta,.vbook,.x,.vx,.ctcopy){background:#202020!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 12px 26px -16px rgba(20,20,20,.6)!important}
+html body .btn.btn-blue,html body .btn-blue{background:linear-gradient(180deg,#5751FF 0%,#1C14F2 100%)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 14px 30px -16px rgba(40,30,240,.7)!important}
+html body :is(.btn-2,.abtb2,.pill.o,.ctopts a){background:#fff!important;color:#202020!important;box-shadow:inset 0 0 0 1px rgba(32,32,32,.16),0 10px 24px -18px rgba(20,20,20,.45)!important}
+html body :is(.btn,.abtb,.pill,.aoscta) svg{width:18px!important;height:18px!important;flex:none;stroke:currentColor;fill:none;margin:0!important;transform:none!important}
+html body :is(.btn,.abtb,.pill,.aoscta,.vbook,.x,.vx,.ctcopy,.ctopts a):hover{scale:1.03;filter:brightness(1.08);transform:none}
+html body .case .x:hover,html body .viewer .x:hover{transform:translateX(-50%)!important}
+.mono:hover,.vmono:hover{transform:scale(1.04)!important}
+.svc:hover .svi,a.ctc:hover .cti{transform:scale(1.06)!important}
+/* logo AssetsOS dans la frise et dans le burger : ASSETS + signature en noir */
+.tlogo.aos,.aosx .tlogo.aos,.aosx .tli.on .tlogo.aos,.tli.on .tlogo.aos,.mk-aos .mlogo,.mk-aos:hover .mlogo{color:var(--ink)!important}
+/* burger : au survol, ASSETS passe en bleu (la signature reste noire) */
+.mk-aos .mlogo>path:first-child{transition:fill .25s}
+.mk-aos:hover .mlogo>path:first-child,.mk-aos:focus-visible .mlogo>path:first-child{fill:#564FFF}
+/* « Back to the canvas » : discret (pilule translucide, petit) */
+.backcv{height:34px;padding:0 14px 0 11px!important;gap:6px!important;border-radius:999px!important;font:400 14px/1 var(--text)!important;letter-spacing:0!important;color:rgba(32,32,32,.75)!important;background:rgba(255,255,255,.55)!important;box-shadow:0 0 0 1px rgba(32,32,32,.08)!important}
+.backcv:hover{color:var(--ink)!important;background:rgba(255,255,255,.8)!important}
+.backcv svg{width:13px!important;height:13px!important}
+/* petits libellés : même logique que les en-têtes (minuscules, sans interlettrage), en taille légende */
+.data dt,.il,.il span,.ctc small,.ctq,.fe .fc,.fe .fy,.rinfo small{text-transform:none!important;letter-spacing:0!important;font-family:var(--text)!important;font-weight:400!important}
+.data dt,.il,.il span,.ctc small,.ctq{font-size:15px!important}
+.fe .fc,.fe .fy,.rinfo small{font-size:13px!important}
+/* ===== fin échelle ===== */
+
+/* ===== rythme vertical : espace entre sections, le même partout ===== */
+:root{--sec:clamp(120px,17vh,190px)}
+
+/* ===== accordéon (FAQ) : un seul composant ===== */
+.faq{margin-top:clamp(40px,6vh,64px);border-top:1px solid rgba(32,32,32,.14)}
+.faq details{border-bottom:1px solid rgba(32,32,32,.14)}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 40px;align-items:center;gap:24px;padding:clamp(22px,3vh,30px) 0;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.1vw,30px);line-height:1.05;color:#202020;transition:color .25s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";justify-self:end;width:40px;height:40px;border-radius:50%;color:#564FFF;box-shadow:inset 0 0 0 1px rgba(86,79,255,.35);
+  background:linear-gradient(currentColor,currentColor) center/14px 1.5px no-repeat,linear-gradient(currentColor,currentColor) center/1.5px 14px no-repeat;
+  transition:rotate .4s cubic-bezier(.2,.8,.2,1),background-color .25s,color .25s,box-shadow .25s}
+.faq summary:hover,.faq details[open]:not(.closing) summary{color:#564FFF}
+.faq summary:hover::after,.faq details[open]:not(.closing) summary::after{background-color:#564FFF;color:#fff;box-shadow:none}
+.faq details[open]:not(.closing) summary::after{rotate:45deg}
+.faq .dw{overflow:hidden}
+.faq .dw p,.faq .dw p span{font-family:var(--text);font-size:clamp(18px,1.35vw,20px);line-height:1.5;color:#3a3a3a}
+.faq .dw p{max-width:46em;padding:0 64px clamp(22px,3vh,30px) 0}
+
+/* ===== footer : liens réseaux = petits boutons secondaires ===== */
+.aosx .fsoc{display:flex;gap:10px!important;margin-top:24px!important;justify-content:center}
+.aosx .fsoc a.btn{width:auto!important;height:44px!important;border-radius:999px!important;background:#fff!important;color:#202020!important}
+.aosx .fsoc a.btn svg{width:16px!important;height:16px!important;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Let's build : grand logo AssetsOS plus présent ===== */
+.end.endfx .endbig{width:min(70vw,1160px)!important}
+
+/* ===== footer : plus d'air entre le nom et « AI Creative Designer » ===== */
+.fsub{margin-top:clamp(28px,3.6vh,42px)!important}
+
+/* ===== fonds bleus plein écran : léger retour vers le fond du site en bas ===== */
+.bluebg::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(240,240,240,0) 58%,rgba(240,240,240,.92) 100%);pointer-events:none}
+
+/* ===== mobile : « Back to the canvas » masqué (il passait sous la barre du haut) ===== */
+@media (max-width:760px){.backcv{display:none!important}}
+
+/* ===== prompt box : une seule taille (celle de la home après scroll), sauf la home en haut avec ses outils ===== */
+@media (min-width:761px){
+  html.pg .pbox,html.pg body.attop .pbox,html.wkpg .pbox,html:not(.cvs) body:not(.is-canvas) .pbox{left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:480px!important}
+}
+
+/* ===== dégradé bleu du bouton (Figma 801-3405) : #5751FF → #1C14F2, de haut en bas ===== */
+:root{--grad-blue:linear-gradient(180deg,#5751FF 0%,#1C14F2 100%)}
+/* « OS » de chaque logo AssetsOS */
+:is(.endlogo,.aoslogo,.mlogo,.tlogo,.page .logo) path:is([fill="#564FFF"],[fill="#564fff"]):not(.lgtag *){fill:url(#osgrad)}
+/* bille de la frise */
+.tl2 .tball{background:var(--grad-blue)!important}
+
+/* ===== boutons : survol =====
+   noir -> le dégradé bleu (Figma 801-3405) apparaît en fondu par-dessus le noir (calque ::before, aucun état intermédiaire)
+   blanc -> texte bleu sur fond lavande très léger, liseré bleu fin */
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy):not(.x){position:relative;isolation:isolate;overflow:hidden}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx){transition:scale .35s cubic-bezier(.2,.8,.2,1),box-shadow .45s cubic-bezier(.2,.8,.2,1),color .3s!important}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx)::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--grad-blue);opacity:0;transition:opacity .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx):hover::before{opacity:1}
+html body :is(.btn:not(.btn-2),.abtb1,.pill:not(.o):not(.w),.aoscta,.vbook,.ctcopy,.x,.vx):hover{color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 30px -16px rgba(40,30,240,.7)!important;filter:none!important}
+html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a){transition:scale .35s cubic-bezier(.2,.8,.2,1),background-color .35s,color .3s,box-shadow .35s!important}
+html body :is(.btn-2,.abtb2,.pill.o,.pill.w,.ctopts a):hover{background-color:#F4F3FF!important;color:#564FFF!important;box-shadow:inset 0 0 0 1px rgba(86,79,255,.4),0 10px 24px -18px rgba(40,30,240,.45)!important;filter:none!important}
+
+/* ===== page AssetsOS : la tuile arrive entière depuis le bas, sans fondu ===== */
+#system .aosx .rv.aost{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+/* ===== offres ponctuelles : une seule carte ===== */
+#moment .ones{grid-template-columns:1fr!important}
+
+/* ===== frise : ASSETS passe en bleu sur l'étape active / au survol (la signature reste noire) ===== */
+.tl2 .tlogo.aos>path:first-child{transition:fill .3s}
+.tl2 .tli.on .tlogo.aos>path:first-child,.tl2 .tli:hover .tlogo.aos>path:first-child{fill:#564FFF}
+
+/* ===== MODE CONSOLE (Konami, sur toutes les pages) : le site affiché comme son code =====
+   fond sombre, tout en monospace, structure en pointillés, balises visibles sur les titres et paragraphes */
+html.src{--c-bg:#0f0e16;--c-tx:#e9e7f2;--c-dim:rgba(233,231,242,.55);--c-acc:#8f89ff;--c-line:rgba(143,137,255,.5)}
+html.src,html.src body{background:#0f0e16!important}
+html.src .bluebg,html.src .sideglow{opacity:0!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(*):not(svg,svg *,img,video,iframe){background:transparent!important;background-image:none!important;color:var(--c-tx)!important;box-shadow:none!important;text-shadow:none!important;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace!important;letter-spacing:0!important;border-color:rgba(233,231,242,.16)!important;-webkit-text-fill-color:currentColor!important;filter:none!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(article,section.band,.plan,.one,.ctc,.svc,.aoscard,.chat,.figwin,.fcap,details,.bar,.radio,.btn,.pill,.abtb,.aoscta,.vbook,.ctp,.ctopts a,.ctcopy,.x,.vx,.stack>section,.abp,.mrow){outline:1px dashed var(--c-line)!important;outline-offset:-1px}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(.eb,.eb *,.mark,.mark *,a:hover,a:hover *,summary:hover,summary:hover *,.tli.on *,.price *,.pr .d){color:var(--c-acc)!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(small,.note,.osub,.dl,.tfof,.tfof *,.il,.lb,.meta *){color:var(--c-dim)!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) :is(h1,h2,h3,p)::before,html.src body:not(#x) :is(.page,.aosx,.menu) :is(h1,h2,h3,p)::after{font:400 max(12px,.32em)/1 ui-monospace,"SF Mono",Menlo,monospace!important;color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)!important;vertical-align:middle;letter-spacing:0;text-transform:none;opacity:.9;position:static!important;display:inline!important;background:none!important;width:auto!important;height:auto!important;border:0!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) p::before,html.src body:not(#x) :is(.page,.aosx,.menu) p::after{font-size:.8em!important}
+html.src body:not(#x) :is(.page,.aosx,.menu) h1::before{content:"<h1> "}html.src body:not(#x) :is(.page,.aosx,.menu) h1::after{content:" </h1>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) h2::before{content:"<h2> "}html.src body:not(#x) :is(.page,.aosx,.menu) h2::after{content:" </h2>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) h3::before{content:"<h3> "}html.src body:not(#x) :is(.page,.aosx,.menu) h3::after{content:" </h3>"}
+html.src body:not(#x) :is(.page,.aosx,.menu) p::before{content:"<p> "}html.src body:not(#x) :is(.page,.aosx,.menu) p::after{content:" </p>"}
+/* logos et grand AssetsOS : ASSETS clair, OS garde son dégradé */
+html.src :is(.endbig,.aoslogo,.tlogo.aos,.mlogo,.flogo,.page .logo){color:var(--c-tx)!important}
+html.src .aoswho img.tlogo,html.src .page .abl img{filter:brightness(0) invert(.9)!important}
+html.src .tl2 .tdot{background:var(--c-bg)!important;box-shadow:inset 0 0 0 2px var(--c-tx)!important}
+html.src .tl2.tlfx .tli.past .tdot,html.src .tl2 .tlfill{background:#564FFF!important;box-shadow:none!important}
+/* le panneau du burger */
+html.src .menu{background:#14131c!important;box-shadow:inset 0 0 0 1px var(--c-line)!important}
+html.src .menu nav .mk span{font-family:ui-monospace,"SF Mono",Menlo,monospace!important}
+html.src .toast{background:#14131c!important;color:var(--c-tx)!important;outline:1px dashed var(--c-line)}
+/* pseudo-éléments décoratifs (dégradé du footer, dégradé + grille du burger) : coupés en mode console */
+html.src body:not(#x) :is(.ftr,.menu)::before,html.src body:not(#x) :is(.ftr,.menu)::after{background:none!important;opacity:0!important}
+html.src body:not(#x) :is(.page,.aosx) :is(*)::before,html.src body:not(#x) :is(.page,.aosx) :is(*)::after{background-color:transparent!important;background-image:none!important;box-shadow:none!important}
+html.src body:not(#x) .faq summary::after{content:"[+]";width:auto!important;height:auto!important;rotate:none!important;font:400 16px/1 ui-monospace,"SF Mono",Menlo,monospace!important;color:var(--c-acc)!important}
+html.src body:not(#x) .faq details[open]:not(.closing) summary::after{content:"[−]"}
+
+/* ===== frise : ronds pleins, posés sur la ligne ; bleus une fois la bille passée ===== */
+.tl2 .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #202020!important;translate:0 -1.5px}
+/* plus d'opacité sur l'étape entière (le trait se voyait à travers le rond) : on atténue le texte, le rond reste plein */
+.tl2.tlfx .tli{opacity:1!important}
+.tl2.tlfx .tli:not(.past):not(.on)>*:not(.tdot){opacity:.32;transition:opacity .6s}
+.tl2.tlfx.tldone .tli>*{opacity:1}
+.tl2.tlfx .tli:not(.past):not(.on) .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #BEBDB9!important}
+.tl2.tlfx .tli.past .tdot,.tl2 .tli.on .tdot,.tl2.tldone .tdot{background:var(--grad-blue)!important;box-shadow:none!important}
+html.src .tl2 .tdot{background:var(--c-tx)!important}
+
+/* ===== Work : pas de compteur 01 / 06 ===== */
+.wcount{display:none!important}
+
+/* ===== passage au bleu (home) : suit le scroll ===== */
+html.cvs:not(.endblue) .bluebg{transition:opacity .25s linear}
+
+/* ===== One Moment : bandeau horizontal (texte à gauche, prix + bouton à droite), plus d'air au-dessus ===== */
+#moment{padding-top:clamp(56px,8vh,96px)!important}
+#moment .one{display:grid!important;grid-template-columns:1fr auto;grid-template-rows:auto auto auto;column-gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(26px,3vw,36px) clamp(28px,3.4vw,44px)!important}
+#moment .one>.oh,#moment .one>p{grid-column:1}
+#moment .one>.of{grid-column:2;grid-row:1/4;display:flex!important;flex-direction:column;align-items:flex-end!important;justify-content:space-between!important;gap:16px;margin:0!important;padding:0!important;align-self:stretch!important}
+#moment .one .of .pill{opacity:1!important;transform:none!important}
+#moment .one .of .pr{text-align:right}
+@media (max-width:760px){#moment .one{grid-template-columns:1fr}#moment .one>.of{grid-column:1;grid-row:auto;align-items:flex-start;margin-top:18px!important}}
+
+/* ===== rythme vertical : un seul écart entre sections, partout (audit du 15/11) ===== */
+:root{--sec:clamp(104px,13vh,150px)}
+.page main>section:not(.band):not(.hero):not(#system),.page main>.stack>section:not(.band):not(#system){padding-top:var(--sec)!important;padding-bottom:0!important;margin-top:0!important}
+.page main .band{margin-top:var(--sec)!important}
+.page main>#moment{padding-top:clamp(48px,6vh,72px)!important}
+.aosx.aoswho,.aosx#aos{margin-top:var(--sec)!important}
+.aosend{margin-top:var(--sec)!important}
+.aosx section.end,section.end{min-height:0!important;padding-top:0!important;padding-bottom:var(--sec)!important}
+.aosend .ftr{margin-top:0!important}
+.pres-page{padding-top:0!important}
+
+/* ===== services (Branding, Websites…) : une liste, plus des boutons ===== */
+.svcs{gap:14px 30px!important;align-items:center}
+.svc,.abt .seen .svc,.abt .seen .svc:hover,.svc:hover{background:none!important;box-shadow:none!important;padding:0!important;border-radius:0!important;transform:none!important;cursor:default;gap:10px!important;color:inherit}
+.svi,.svc:hover .svi,.svc-all .svi{width:auto!important;height:auto!important;background:none!important;transform:none!important;border-radius:0!important}
+.svi svg,.svc:hover .svi svg,.svc-all .svi svg{width:22px!important;height:22px!important;stroke:#564FFF!important}
+html.blueon .abt .svc{color:#fff!important}
+html.blueon .abt .svi svg{stroke:#fff!important}
+.svc+.svc{position:relative}
+.svc+.svc::before{content:"";position:absolute;left:-16px;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:currentColor;opacity:.35}
+
+/* ===== tuile AssetsOS : survol de la tuile = elle monte + le dégradé se resserre ; le bouton ne réagit que quand on le survole lui ===== */
+html body .aoscard:hover .aoscta:not(:hover){background:#202020!important;color:#fff!important;scale:1!important;filter:none!important}
+html body .aoscard:hover .aoscta:not(:hover) svg{transform:none!important}
+.aoscard::before{transition:height .7s cubic-bezier(.2,.8,.2,1)!important}
+.aoscard:hover::before{height:26%!important}
+
+/* ===== footer : dégradé plus haut ===== */
+.aosx .ftr::before{height:100%!important;max-height:100%!important} /* le dégradé du footer s'arrête au niveau du nom */
+
+/* ===== mobile : la barre de chat laisse la place au space invader, à la même hauteur ===== */
+@media (max-width:760px){
+  .pbox,body:not(.is-canvas) .pbox,html.cvs .pbox{left:66px!important;right:12px!important;width:auto!important;transform:none!important;bottom:12px!important}
+  .invader{left:16px!important;bottom:calc(12px + (var(--pbh,52px) - 31px)/2)!important}
+}
+
+/* ===== Let's build : la section reste épinglée le temps de profiter du fond bleu (elle occupe tout l'écran) ===== */
+.endpin{height:260vh;position:relative}
+.endpin>section.end{position:sticky!important;top:0;height:100vh;min-height:100vh!important;display:flex!important;flex-direction:column;justify-content:center;padding:0!important}
+.aosend{margin-top:0!important}
+
+/* ===== frise : logos en masque, la couleur passe du noir au bleu sans filtre ===== */
+.tl2 .tlm{background:#202020;transition:background-color .35s}
+.tl2 .tli.on .tlm,.tl2 .tli:hover .tlm{background:#564FFF;filter:none!important}
+html.src .tl2 .tlm{background:var(--c-tx)}
+
+/* ===== home About : les services passent au-dessus du titre ===== */
+.abt .svcs{margin:0 0 clamp(26px,3.6vh,40px)!important}
+
+/* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
+.node.islive .lv iframe{pointer-events:auto!important}
+
+
+/* ===== The problem : plus de carte blanche, le contenu est posé sur la page (l'effet de recul flou reste) ===== */
+.page .stack>.band.prob{padding-left:0!important;padding-right:0!important;padding-top:0!important;padding-bottom:clamp(40px,6vh,72px)!important}
+.page .stack>.band.prob::before{display:none!important}
+
+/* ===== space invader en bas de page : survol spécial du « play? » ===== */
+html.atend .invader{transition:scale .35s cubic-bezier(.3,1.6,.5,1),color .3s}
+html.atend .invader:hover{scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
+@keyframes invjump{50%{translate:0 -6px}}
+html.atend .invader:hover+.toast{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .invader:hover+.toast::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
+@keyframes invblink{50%{opacity:0}}
+
+/* ===== Safari : signature dévoilée d'un seul trait (pas d'animation segment par segment) ===== */
+html.lite .sigan{display:none!important}
+html.lite .sigdone{opacity:1!important}
+/* offres ponctuelles : suite directe des tarifs, pas un écart de section */
+html body .page main.aos>section#moment.wrap.rv{padding-top:clamp(56px,7vh,72px)!important}
+
+/* ===== « Book a call » un cran plus grand : barre du haut + boutons de Let's build ===== */
+html body header.top a.vbook{height:50px!important;padding:0 24px!important;font-size:17px!important}
+html body section.end .row .pill{height:64px!important;padding:0 34px!important;font-size:20px!important}
+@media (max-width:760px){html body header.top a.vbook{height:44px!important;padding:0 18px!important;font-size:16px!important}html body section.end .row .pill{height:56px!important;padding:0 26px!important;font-size:18px!important}}
+
+/* ===== Let's build piloté par le scroll : signature et trait suivent le scroll ===== */
+.sigm.sigscrub .sgw,.sigm.sigscrub .sgc{animation:none!important}
+.sigm.sigscrub:not(.sigok) .sigan{display:block!important}
+section.end.endfx.scrubfx .scrib{stroke-dashoffset:var(--sq,1)!important;transition:stroke .8s!important}
+html.lite .sigm.sigscrub .sigan{display:none!important}
+
+/* ===== space invader en bas de page : la bulle fait partie de la zone de survol (et lance le jeu) ===== */
+html.atend .toast{pointer-events:auto!important;cursor:pointer}
+html.atend .invader:has(+.toast:hover){scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite}
+html.atend .toast:hover{background:var(--grad-blue)!important;color:#fff!important;scale:1.12;rotate:-4deg;box-shadow:0 14px 30px -12px rgba(40,30,240,.7)!important;transition:scale .35s cubic-bezier(.3,1.6,.5,1),rotate .35s,background .2s}
+html.atend .toast:hover::after{content:"  ▶▶";letter-spacing:-2px;animation:invblink .5s steps(2) infinite}
+
+/* ===== home : pile « one-man studio » + tuile AssetsOS (même effet que The problem sur la page AssetsOS) ===== */
+.hstack.on #about{position:sticky;top:0;z-index:1}
+.hstack.on #about>section{will-change:transform,opacity,filter;transform-origin:50% 40%}
+.hstack.on #aos{position:sticky;top:var(--st,16px);z-index:2;margin-top:clamp(40px,8vh,90px)!important}
+
+/* ===== footer : icônes réseaux intégrées à la ligne de liens ===== */
+.flinks{align-items:center!important}
+.flinks .fsep{width:1px;height:18px;background:currentColor;opacity:.25;margin:0 6px}
+.flinks a.fic{display:inline-grid!important;place-items:center;width:34px;height:34px;padding:0!important;border-radius:50%;color:#202020;transition:color .25s,background-color .25s,scale .35s cubic-bezier(.3,1.6,.5,1)}
+.flinks a.fic::before,.flinks a.fic::after{display:none!important}
+.flinks a.fic svg{width:21px!important;height:21px!important;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;position:static!important;opacity:1!important;transform:none!important}
+.flinks a.fic:hover{color:#564FFF;background-color:rgba(255,255,255,.75);scale:1.08}
+html.src .flinks a.fic{color:var(--c-tx)}
+.flinks a.fic+a.fic{margin-left:-14px}
+/* ===== la tuile AssetsOS fait du « sur place » au scroll avant de partir (home + page AssetsOS) ===== */
+.hstack.on::after{content:"";display:block;height:70vh} /* espace de scroll pendant lequel la tuile reste en place (un padding ne compte pas pour sticky) */
+@media (min-width:901px){.page .stack::after{content:"";display:block;height:70vh}}
+/* ===== tuile AssetsOS : toujours à 100 % (pas de fondu ni de glissement d'entrée), home comme page AssetsOS ===== */
+.aosx .rv.aost,.aosx .rv.aost.seen{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+
+/* texte en dégradé bleu (Figma 801-3405) */
+.gradtx{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent}
+html.src .gradtx{background:none;color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)}
+/* frise : pendant le trajet de la bille, l'étape visée ne passe en bleu qu'à l'arrivée de la bille */
+.tl2.tlfx:not(.tldone) .tli.on:not(.past) .tdot{background:#fff!important;box-shadow:inset 0 0 0 2px #BEBDB9!important}
+
+/* accroche de la tuile AssetsOS : deux lignes calées */
+.aoscard .aossub{max-width:none!important;white-space:nowrap}
+@media (max-width:760px){.aoscard .aossub{white-space:normal}.aoscard .aossub br{display:none}}
+.page .hsub .hl{max-width:none!important}
+
+/* ===== tuile AssetsOS : les étapes 1 → 2 → 3 se lisent comme une suite, la 3 est le bénéfice ===== */
+.aoscard .sysl{gap:20px!important}
+.aoscard .sysl li{align-items:center!important}
+.aoscard .sysl b{position:relative;width:30px!important;height:30px!important;flex:none;box-shadow:inset 0 0 0 1.5px #564FFF!important;background:#fff!important}
+/* liaison entre deux ronds : un petit trait centré, qui s'arrête avant chaque rond */
+.aoscard .sysl li:not(:last-child) b::after{content:"";position:absolute;left:50%;top:calc(100% + 5px);width:1.5px;height:10px;margin-left:-.75px;border-radius:2px;background:#564FFF;opacity:.45;transform-origin:top;transform:scaleY(0);transition:transform .5s cubic-bezier(.65,0,.35,1)}
+.aost.seen .aoscard .sysl li:nth-child(1) b::after{transform:none;transition-delay:1s}
+.aost.seen .aoscard .sysl li:nth-child(2) b::after{transform:none;transition-delay:1.15s}
+/* étape 3 : même rond, plein en dégradé, coche blanche */
+.aoscard .sysl li:last-child b{background:var(--grad-blue)!important;box-shadow:none!important;font-size:0!important;color:transparent!important}
+.aoscard .sysl li:last-child b::before{content:"";width:13px;height:13px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.aoscard .sysl li:last-child span{color:#202020}
+/* home : dans la tuile AssetsOS, le logo est calé en haut à gauche (pas centré verticalement) */
+#aos .aoscard{align-items:start!important}
+#aos .aoscard .aosl{align-self:start;padding-top:clamp(4px,1vw,16px)}
+.aoscard .sysl li:last-child b::before{position:absolute;left:50%;top:50%;translate:-50% -50%;margin:0} /* coche parfaitement centrée */
+/* drapeau de langue : sans contour */
+html body .flag,html body #flag{box-shadow:none!important;border:0!important;outline:0!important}
+html body .flag:focus-visible{outline:2px solid #564FFF!important;outline-offset:2px}
+html body #flag svg{box-shadow:none!important}
+/* bulle du curseur : jamais de soulignement */
+.tip span i,.tip.on span i{background-image:none!important;padding-bottom:0!important}
+/* panneau du burger : fin contour + ombre douce */
+html body .menu{box-shadow:inset 0 0 0 1px rgba(32,32,32,.1),0 30px 70px -30px rgba(32,32,32,.35)!important}
+
+/* ===== À propos : frise verticale dynamique ===== */
+.page .abtl{padding-top:var(--sec)}
+.page .vtl{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,80px);margin-top:clamp(48px,8vh,96px)}
+.page .vyear{position:relative}
+.page .vyr{position:sticky;top:calc(50vh - .5em);display:block;font-family:var(--display);font-weight:800;font-size:clamp(96px,15vw,240px);line-height:1;letter-spacing:-.02em;color:var(--ink);transition:opacity .25s,translate .35s cubic-bezier(.2,.8,.2,1),filter .25s}
+.page .vyr.flip{opacity:0;translate:0 18px;filter:blur(6px)}
+.page .vyr.now{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
+.page .vlist{position:relative;list-style:none;margin:0;padding:6vh 0 30vh 56px}
+.page .vline{position:absolute;left:11px;top:0;bottom:30vh;width:2px;background:#DEDCD6;border-radius:2px}
+.page .vfill{position:absolute;left:0;top:0;width:100%;height:calc(var(--vp,0)*100%);background:linear-gradient(#5751FF,#1C14F2);border-radius:2px}
+.page .vball{position:absolute;left:50%;top:calc(var(--vp,0)*100%);width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--grad-blue);box-shadow:0 0 0 6px rgba(86,79,255,.15),0 8px 20px -4px rgba(40,30,240,.6)}
+.page .vti{position:relative;padding:0 0 clamp(90px,16vh,170px);opacity:.28;filter:blur(2px);translate:0 14px;transition:opacity .6s,filter .6s,translate .6s cubic-bezier(.2,.8,.2,1)}
+.page .vti:last-child{padding-bottom:0}
+.page .vti.past,.page .vti.on{opacity:1;filter:none;translate:0 0}
+.page .vti.past:not(.on){opacity:.55}
+.page .vdot{position:absolute;left:-52px;top:4px;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid #BEBDB9;transition:background .4s,border-color .4s}
+.page .vti.past .vdot,.page .vti.on .vdot{background:var(--grad-blue);border-color:transparent}
+.page .vnow.on .vdot::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(86,79,255,.5);animation:vpulse 1.8s ease-out infinite}
+@keyframes vpulse{0%{scale:.5;opacity:1}100%{scale:1.6;opacity:0}}
+.page .vtd{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#8a8984;margin-bottom:14px;transition:color .4s}
+.page .vti.on .vtd{color:var(--blue)}
+.page .vth{min-height:30px;display:flex;align-items:center;margin-bottom:14px}
+.page .vlogo{display:block;height:28px;width:auto}
+.page .vlogo.vsg{height:22px}
+.page .vlogo.vaos{height:54px;color:var(--ink)}
+.page .vtword{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(28px,2.6vw,40px);line-height:1}
+.page .vtx{margin:0;font-size:clamp(20px,1.7vw,26px);line-height:1.3;max-width:30ch;color:var(--ink)}
+.page .vts{margin:10px 0 0;font-size:16px;line-height:1.45;color:#6f6e69}
+.page .vtlink{display:inline-flex;gap:6px;align-items:center;margin-top:16px;font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;transition:color .25s}
+.page .vtlink:hover{color:var(--blue)}
+@media (max-width:900px){.page .vtl{grid-template-columns:1fr}.page .vyear{display:none}.page .vlist{padding-left:44px;padding-bottom:10vh}.page .vline{left:7px;bottom:10vh}.page .vdot{left:-44px}}
+@media (prefers-reduced-motion:reduce){.page .vti{opacity:1;filter:none;translate:none}}
+.page .vlogo:not(.vaos){filter:brightness(0);transition:filter .4s}
+.page .vti.on .vlogo:not(.vaos){filter:brightness(0) saturate(100%) invert(31%) sepia(91%) saturate(4000%) hue-rotate(240deg) brightness(101%)}
+.page .vti.on .vlogo.vaos{color:var(--ink)}
+.page .vlogo.vna{height:64px;color:var(--ink)}
+.page .vti.on .vlogo.vna{color:var(--blue)}
+.page .vlogo.vfg{height:30px}
+/* dates de la frise verticale = style des dates de la frise de la home */
+.page .vtd{font-family:var(--display)!important;font-weight:700;font-size:20px!important;line-height:1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+.page .vti.on .vtd{color:var(--blue)}
+/* frise verticale : colonnes de texte plus étroites (« …and teams » / « for 4 years. ») */
+.page .vtx{max-width:24ch!important;text-wrap:pretty}
+.page .vts{max-width:30ch}
+/* frise verticale : étapes secondaires (Config) */
+.page .vti.vmin{padding-bottom:clamp(60px,10vh,110px)}
+.page .vti.vmin .vdot{width:10px;height:10px;left:-49px;top:5px;border-width:2px}
+.page .vti.vmin .vtd{font-size:15px!important;margin-bottom:6px;color:#8a8984}
+.page .vti.vmin .vtx{font-size:17px;color:#6f6e69}
+.page .vti.vmin.on .vtd{color:var(--blue)}
+.page .vti.vmin.past:not(.on){opacity:.45}
+@media (max-width:900px){.page .vti.vmin .vdot{left:-41px}}
+/* frise verticale v2 : les logos dominent, la date devient une petite étiquette */
+.page .vtl{grid-template-columns:1fr!important}
+.page .vyear{display:none!important}
+.page .vlist{padding-left:72px}
+.page .vtd{font-size:15px!important;letter-spacing:.06em;color:#8a8984;margin-bottom:16px}
+.page .vth{min-height:0;margin-bottom:22px}
+.page .vlogo{height:clamp(44px,4.6vw,68px)}
+.page .vlogo.vsg{height:clamp(34px,3.4vw,50px)}
+.page .vlogo.vfg{height:clamp(52px,5.2vw,78px)}
+.page .vlogo.vna{height:clamp(96px,9vw,136px)}
+.page .vlogo.vaos{height:clamp(96px,9vw,140px)}
+.page img.vlogo[src*="sephora"]{height:clamp(34px,3.4vw,50px)}
+.page .vdot{top:2px}
+.page .vti.vmin .vtd{font-size:13px!important}
+@media (max-width:900px){.page .vlist{padding-left:44px}}
+/* frise v2 : chaque étape sur 2 colonnes — date + logo à gauche, texte à droite ; points recalés sur la ligne */
+.page .vti{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1fr);column-gap:clamp(32px,5vw,96px);align-items:start}
+.page .vti>.vtd{grid-column:1;grid-row:1}
+.page .vti>.vth{grid-column:1;grid-row:2;margin-bottom:0}
+.page .vti>.vtx{grid-column:2;grid-row:2}
+.page .vti>.vts{grid-column:2;grid-row:3}
+.page .vti>.vtlink{grid-column:2;grid-row:4;justify-self:start}
+.page .vti.vmin>.vtx{grid-row:1}
+.page .vdot{left:-68px}
+.page .vti.vmin .vdot{left:-65px}
+@media (max-width:900px){.page .vti{display:block}.page .vth{margin-bottom:18px}.page .vdot{left:-44px}.page .vti.vmin .vdot{left:-41px}}
+.page .vti.vmin>.vtx{grid-column:1;grid-row:2}
+/* À propos : header = section « Your one-man design studio » de la home, ferrée à gauche */
+.page .abt.abtleft{max-width:none;padding-top:clamp(150px,22vh,240px)}
+.abt.abtleft section{text-align:left!important;align-items:flex-start!important}
+.abt.abtleft .svcs{justify-content:flex-start!important}
+.abt.abtleft .abtlead{margin-left:0!important;margin-right:0!important}
+.abt.abtleft .abtcta{justify-content:flex-start!important}
+.page .abt.abtleft{padding-top:clamp(120px,16vh,170px)}
+/* frise v3 : année sticky à gauche (plus petite, mais présente) + étapes à droite ; logos qui grossissent à l'approche */
+.page .vtl{grid-template-columns:minmax(150px,.42fr) minmax(0,1fr)!important;gap:clamp(16px,3vw,48px)}
+.page .vyear{display:block!important}
+.page .vyr{font-size:clamp(64px,8.4vw,132px)!important;top:calc(50vh - .55em)}
+.page .vti{grid-template-columns:minmax(200px,.8fr) minmax(0,1fr)}
+.page .vtd{font-size:20px!important;letter-spacing:.01em;color:var(--ink);margin-bottom:14px}
+.page .vti.vmin .vtd{font-size:16px!important;color:#8a8984}
+.page .vth{transform-origin:0 50%;scale:var(--ls,.62);transition:scale .25s linear}
+@media (max-width:900px){.page .vtl{grid-template-columns:1fr!important}.page .vyear{display:none!important}}
+.page .vth{width:100%}
+.page img.vlogo{width:auto!important;height:auto!important;max-width:100%;max-height:clamp(44px,4.6vw,68px)}
+.page img.vlogo.vsg,.page img.vlogo[src*="sephora"]{max-height:clamp(34px,3.4vw,50px)}
+.page img.vlogo.vfg{max-height:clamp(52px,5.2vw,78px)}
+.page svg.vlogo{max-width:100%}
+/* frise : barre vers le milieu gauche, année collée à la barre */
+.page .vtl{grid-template-columns:minmax(0,.5fr) minmax(0,1fr)!important;gap:clamp(20px,2.4vw,40px)!important}
+.page .vyr{text-align:right}
+/* header À propos : centré verticalement dans l'écran (aligné à gauche) */
+.page .abt.abtleft{padding-top:0!important}
+.abt.abtleft section{min-height:100svh;justify-content:center!important;padding-top:clamp(90px,11vh,120px)!important;padding-bottom:clamp(110px,13vh,140px)!important;box-sizing:border-box;margin-top:0!important}
+.abt.abtleft section{max-width:calc(var(--max) + 2 * var(--pad))!important;margin:0 auto!important;padding-left:var(--pad)!important;padding-right:var(--pad)!important;width:100%}
+.abt.abtleft section{max-width:calc(1200px + 2 * clamp(20px,4vw,56px))!important;padding-left:clamp(20px,4vw,56px)!important;padding-right:clamp(20px,4vw,56px)!important}
+/* frise : logos tous à une taille fixe, assez grande mais mesurée (plus d'effet de grossissement) */
+.page .vth{scale:1!important;transition:none}
+.page img.vlogo{max-height:clamp(34px,3.2vw,46px)}
+.page img.vlogo.vsg,.page img.vlogo[src*="sephora"]{max-height:clamp(26px,2.4vw,34px)}
+.page img.vlogo.vfg{max-height:clamp(40px,3.8vw,54px)}
+.page .vlogo.vna{height:clamp(70px,6.4vw,92px)!important}
+.page .vlogo.vaos{height:clamp(70px,6.4vw,96px)!important}
+/* frise : barre plus à gauche, logos un poil plus gros, année un poil plus petite, fin de frise plus courte */
+.page .vtl{grid-template-columns:minmax(0,.3fr) minmax(0,1fr)!important}
+.page .vyr{font-size:clamp(56px,7vw,110px)!important}
+.page img.vlogo{max-height:clamp(40px,3.7vw,54px)}
+.page img.vlogo.vsg,.page img.vlogo[src*="sephora"]{max-height:clamp(30px,2.8vw,40px)}
+.page img.vlogo.vfg{max-height:clamp(46px,4.4vw,62px)}
+.page .vlogo.vna{height:clamp(80px,7.4vw,106px)!important}
+.page .vlogo.vaos{height:clamp(80px,7.4vw,110px)!important}
+.page .vlist{padding-bottom:6vh!important}
+.page .vline{bottom:6vh!important}
+.page .abtl{padding-bottom:0!important;margin-bottom:0!important}
+/* header À propos → Off screen : pas de grand vide */
+.abt.abtleft section{min-height:88svh;padding-bottom:clamp(40px,6vh,64px)!important}
+.page .abtleft+.abside{padding-top:clamp(48px,7vh,80px)!important}
+/* frise : projets perso (logos plus petits) */
+.page .vti.vsmall{padding-bottom:clamp(70px,12vh,130px)}
+.page img.vlogo.vink{max-height:clamp(22px,2vw,28px)}
+.page img.vlogo.vfil{max-height:clamp(34px,3vw,42px)}
+.page img.vlogo.vabc{max-height:clamp(44px,4vw,56px);filter:none!important}
+.page .vti.vsmall .vtx{font-size:clamp(17px,1.4vw,21px)}
+
+/* =====================================================================
+   MOBILE (≤ 760 px) — passe complète. Système : gouttière 20 px,
+   texte 16/17 px, titres de section 40–44 px, boutons 48 px (petits 40 px).
+   ===================================================================== */
+html.touch,html.touch *{-webkit-tap-highlight-color:transparent}
+html.touch #tip,html.touch #cursor{display:none!important}
+@media (max-width:760px){
+  /* bandeau papier derrière l'en-tête fixe : le contenu ne passe plus « sous » le logo et les boutons */
+  .mtop{display:block!important;position:fixed;left:0;right:0;top:0;height:92px;z-index:29;pointer-events:none;
+    background:linear-gradient(#F3F2EE 0,rgba(243,242,238,.92) 55%,rgba(243,242,238,0) 100%);opacity:0;transition:opacity .35s}
+  html.mscr .mtop{opacity:1}
+  html.src .mtop,html.wkpg .mtop{opacity:0!important}
+  html.endblue .mtop{opacity:0!important}
+  html.mscr.blueon .mtop{background:linear-gradient(#5B55FF 0,rgba(91,85,255,.9) 55%,rgba(91,85,255,0) 100%)}
+  html.mscr.darkon .mtop{background:linear-gradient(#1b1b1d 0,rgba(27,27,29,.9) 55%,rgba(27,27,29,0) 100%)}
+  /* projet ouvert : l'en-tête s'efface, le bouton « close » est seul */
+  html:has(.viewer.on) header.top,html:has(.viewer.on) .mono,html:has(.viewer.on) .mtop{opacity:0!important;pointer-events:none!important}
+  /* tuile AssetsOS : on garde l'essentiel (logo, phrase, 3 étapes, bouton) — les fenêtres de démo sont retirées */
+  .aosx .aoswins{display:none!important}
+  /* The problem : marges latérales */
+  .page .stack>.band.prob{padding-left:20px!important;padding-right:20px!important}
+}
+.mtop{display:none}
+@media (max-width:760px){
+  /* frise À propos : une seule colonne (l'année géante est masquée) */
+  .page .vtl{grid-template-columns:1fr!important}
+  .page .vti{display:block!important}
+  .page .vlist{padding-left:40px!important}
+  .page .vline{left:7px!important}
+  .page .vdot{left:-41px!important}
+  .page .vti.vmin .vdot{left:-38px!important}
+  .page .vth{margin:0 0 14px!important;width:auto}
+  .page .vtx{max-width:none!important;font-size:18px!important}
+  .page .vti.vsmall .vtx,.page .vti.vmin .vtx{font-size:16px!important}
+  .page .vti{padding-bottom:64px!important}
+  .page .vti.vmin,.page .vti.vsmall{padding-bottom:48px!important}
+  .page .vtd{font-size:17px!important;margin-bottom:10px!important}
+  .page .vti.vmin .vtd{font-size:14px!important}
+}
+@media (max-width:760px){
+  /* home : pas d'empilement sticky about/tuile sur mobile (la tuile passait sous l'en-tête) — défilement simple */
+  .hstack.on #about,.hstack.on #aos{position:relative!important;top:auto!important}
+  .hstack.on #about>section{transform:none!important;opacity:1!important;filter:none!important}
+  .hstack.on::after{height:0!important;display:none!important}
+}
+@media (max-width:760px){
+  /* Impact · Clarity · Value : lisible d'emblée, pleine largeur, pas de flou */
+  .page .mani .mrow{width:100%;box-sizing:border-box}
+  .page .mani.manifx .mrow b{filter:none!important;opacity:1!important;translate:none!important}
+  .page .mani.manifx .mrow>span{translate:none!important;opacity:.55}
+  .page .mani.manifx .mrow.on>span{opacity:1}
+  .page .mrow b.d,.page .mrow b.d span{font-size:64px!important}
+  .page .mrow>span{font-size:17px!important;max-width:none!important}
+}
+@media (max-width:760px){
+  /* case study mobile : la tuile en haut, au centre ; le flux d'assets dessous, sur toute la largeur */
+  .page .cstream .cs-stage{height:520px!important;margin-right:0!important;clip-path:inset(-200px -20px -200px -20px)!important}
+  .page .cs-src{left:50%!important;top:0!important;translate:-50% 0!important;width:230px!important;height:230px!important}
+  .page .cs-src:hover,.page .cs-src:active{translate:-50% 0!important}
+  .page .cs-belt{left:0!important;right:0!important;top:370px!important}
+  .page .cs-card{width:104px!important}
+  .page .cs-m{height:66px!important}
+}
+@media (max-width:760px){
+  .page .cstream .cs-stage{height:440px!important}
+  .page .cs-belt{top:330px!important}
+  .page .cs-src::after{display:none!important}
+}
+@media (max-width:760px){ body:not(.pg-home) .aoswho .wrap.who{padding-left:20px!important;padding-right:20px!important} }
+@media (max-width:760px){ .aosx .ftr .wrap.fin{padding-left:20px!important;padding-right:20px!important;box-sizing:border-box} }
+@media (max-width:760px){ /* une seule gouttière mobile : 20 px, home comprise */
+  .pres{padding-left:20px!important;padding-right:20px!important} }
+@media (max-width:760px){ .pres .aosend .ftr{margin-left:-20px!important;margin-right:-20px!important} }
+@media (max-width:760px){
+  /* --- système mobile : boutons --- */
+  html body :is(.btn:not(:empty),.abtb,.pill,.aoscta){height:52px!important;padding:0 24px!important;font-size:17px!important;gap:8px!important}
+  html body :is(.ctcopy,.ctopts a,.btn-s){height:44px!important;padding:0 18px!important;font-size:16px!important}
+  html body header.top a.vbook{height:40px!important;padding:0 16px!important;font-size:15px!important}
+  /* --- système mobile : typo --- */
+  html body .abt .abth,html body .page h1.d,html body .page .abh{font-size:56px!important;line-height:.9!important}
+  html body .eb{font-size:18px!important}
+  html body .abt .abtlead,html body .page .abld,html body .page .ctl{font-size:18px!important;line-height:1.45!important}
+  html body .page .h2,html body .aosx .h2{font-size:40px!important;line-height:.95!important}
+}
+@media (max-width:760px){
+  /* contact : les 4 actions mail en grille 2 × 2, largeurs égales */
+  .page .ctopts{display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important}
+  .page .ctopts>*{width:100%!important;justify-content:center!important;margin:0!important}
+}
+@media (max-width:760px){
+  /* services : sans les points séparateurs (ils tombaient en début de ligne) */
+  .svc+.svc::before{display:none!important}
+  .svcs{column-gap:20px!important;row-gap:10px!important}
+}
+@media (max-width:760px){
+  /* projet ouvert : flèches au-dessus de l'image, barre de prompt et invader masqués */
+  .viewer .nav{z-index:6!important}
+  html:has(.viewer.on) .pbox,html:has(.viewer.on) #invader{opacity:0!important;pointer-events:none!important}
+}
+@media (max-width:760px){
+  /* Let's build : le titre tient sur toutes les largeurs (FR « votre système ») */
+  html body .aosx .end .d.h{font-size:min(64px,15vw)!important}
+  /* offres : les lignes longues (FR) passent à la ligne au lieu d'élargir la carte */
+  #pricing .plans,#pricing .plan{min-width:0!important;max-width:100%!important}
+  #pricing .plan li,#pricing .plan li *{white-space:normal!important;min-width:0}
+}
+html.touch input,html.touch textarea,html.touch select{font-size:16px!important} /* iOS : pas de zoom automatique au focus */
+@media (max-width:1100px){ .svc+.svc::before{display:none!important} .svcs{column-gap:20px!important;row-gap:10px!important} }
