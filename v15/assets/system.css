@@ -867,3 +867,12 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 
 /* fin de page : le grand logo AssetsOS apparaît en grossissant au fil du scroll, dès que la section arrive */
 .end.endfx.scrubfx:not(.es-out) .endbig{opacity:var(--lq,0)!important;scale:calc(.45 + .55 * var(--lq,0))!important;filter:blur(calc((1 - var(--lq,0)) * 12px))!important;transition:none!important}
+
+/* VALUE : lueurs bleues sur les côtés, déséquilibrées et vivantes (même esprit que Pricing) */
+.hvx-glow{background:radial-gradient(42% 60% at 0% 78%,rgba(86,79,255,.42),rgba(86,79,255,0) 70%),radial-gradient(28% 40% at 100% 18%,rgba(28,20,242,.32),rgba(28,20,242,0) 70%),radial-gradient(22% 30% at 96% 92%,rgba(86,79,255,.18),rgba(86,79,255,0) 70%);animation:hvxglow 9s ease-in-out infinite alternate}
+@keyframes hvxglow{0%{background-position:0 0,0 0,0 0;filter:saturate(1)}100%{background-position:0 -6vh,0 5vh,0 0;filter:saturate(1.15)}}
+@media (prefers-reduced-motion:reduce){.hvx-glow{animation:none}}
+.hvx-glow{inset:-12vh 0!important;background-repeat:no-repeat!important;animation:hvxglow2 9s ease-in-out infinite alternate!important}
+@keyframes hvxglow2{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-4vh,0) scale(1.04)}}
+/* essai : IMPACT sur fond noir */
+.hvx-fb{background:#202020!important}

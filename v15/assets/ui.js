@@ -142,8 +142,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835322'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835322'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835485'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835485'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -200,13 +200,13 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 /*hvx*/ /* Clarity / Impact / Value : seul le grand mot glisse (en continu, au rythme du scroll) ; l'en-tête et le sous-titre restent en place et se fondent ;
    le fond (blanc → bleu → papier) est fixe et se fond aussi, y compris à l'entrée et à la sortie de la section : aucune coupure nette */
 { const sec=document.querySelector('.hvx'); if(sec){ const tr=sec.querySelector('.hvx-track'), RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const bw=document.createElement('i'), bb=document.createElement('i'); bw.className='hvx-fbg hvx-fw'; bb.className='hvx-fbg hvx-fb'; const pin=sec.querySelector('.hvx-pin'); [bb,bw].forEach(x=>{ x.setAttribute('aria-hidden','true'); pin.prepend(x); }); /* fixés à l'écran, mais dans la section : ils passent par-dessus le papier */
+  const bw=document.createElement('i'), bb=document.createElement('i'); bw.className='hvx-fbg hvx-fw'; bb.className='hvx-fbg hvx-fb'; const gl=document.createElement('i'); gl.className='hvx-fbg hvx-glow'; const pin=sec.querySelector('.hvx-pin'); [gl,bb,bw].forEach(x=>{ x.setAttribute('aria-hidden','true'); pin.prepend(x); }); /* lueurs bleues déséquilibrées derrière VALUE */ /* fixés à l'écran, mais dans la section : ils passent par-dessus le papier */
   const pres=[...sec.querySelectorAll('.hvx-pres .hvx-pre')], subs=[...sec.querySelectorAll('.hvx-subs .hvx-s')]; let raf=0;
   const cl=v=>Math.max(0,Math.min(1,v));
   const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=innerHeight, run=r.height-H; const k=cl(-r.top/Math.max(1,run)); /* temps d'arrêt doux sur chaque mot, puis glissé accéléré-freiné */ const seg=k*2, si=Math.floor(seg), sf=seg-si, hold=.28, st=sf<hold?0:sf>1-hold?1:(sf-hold)/(1-2*hold), se=st<.5?4*st*st*st:1-Math.pow(-2*st+2,3)/2, pos=Math.min(2,si+se);
     if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
     const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));
-    bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3);
+    bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3); gl.style.opacity=(Math.max(0,Math.min(1,pos-1))*cl(r.bottom/H*1.6)).toFixed(3);
     pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }
