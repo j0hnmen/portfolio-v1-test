@@ -753,3 +753,26 @@ html body section.end .row .pill::before{transition:opacity .7s cubic-bezier(.4,
 .testi .tmwho small{font:400 15px/1.3 var(--text);color:#6b6a66}
 @media (prefers-reduced-motion:reduce){.testi .tmtrack{animation:none}.testi .tmq{overflow-x:auto}}
 @media (max-width:760px){.testi blockquote{font-size:18px}.testi .tmc{padding:24px}}
+
+/* cartes témoignages : grand guillemet bleu, auteur séparé par un filet, logo de l'entreprise, survol qui soulève */
+.testi .tmc{position:relative;width:min(540px,84vw);padding:30px 36px 28px;border-radius:28px;gap:26px;transition:translate .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.testi .tmq-mark{display:block;height:44px;margin:0 0 -4px -3px;font:400 96px/1 var(--text);color:#564FFF}
+.testi blockquote{font-size:22px;line-height:1.42}
+.testi figcaption{padding-top:20px;border-top:1px solid rgba(32,32,32,.09)}
+.testi .tmlogo{margin-left:auto;width:86px;height:24px;background:#202020;opacity:.32;-webkit-mask-position:right center;mask-position:right center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+@media (hover:hover){.testi .tmc:hover{translate:0 -6px;box-shadow:0 0 0 1px rgba(86,79,255,.25),0 34px 60px -34px rgba(40,30,240,.45)}}
+@media (max-width:760px){.testi .tmc{padding:24px 24px 22px}.testi .tmq-mark{font-size:76px;height:34px}.testi blockquote{font-size:18px}.testi .tmlogo{width:64px}}
+/* témoignages : espacements alignés sur le rythme des sections (--sec), titre → cartes comme les autres sections */
+html body section.testi{padding-top:var(--sec)!important;padding-bottom:var(--sec)!important;margin:0!important}
+.testi .tmsub{margin-top:18px!important}
+.testi .tmq{margin-top:clamp(40px,5vh,56px)!important;padding:12px 0 28px!important}
+.testi .tmc{justify-content:flex-start!important}
+.testi blockquote{flex:1}
+.testi .tmq-mark{height:40px;margin:0 0 6px -3px}
+/* barre d'outils du canvas : outil actif sur le dégradé bleu de la charte (comme la page provisoire), pas le bleu Figma */
+html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[aria-pressed=true]{background:linear-gradient(135deg,#5751FF,#1C14F2)!important;color:#fff!important}
+/* prompt bar : contour aux trois couleurs plus épais (2 px) */
+#chat .pform::before{inset:-2px!important;padding:2px!important;border-radius:20px!important}
+.testi .tmc{gap:18px!important}
+.testi .tmq-mark{height:30px!important;line-height:.95!important;margin:0 0 -2px -3px!important;font-size:84px!important}
+.testi figcaption{margin-top:12px}
