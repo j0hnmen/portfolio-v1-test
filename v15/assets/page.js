@@ -63,6 +63,9 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     if(!wl){ wl=document.createElement('div'); wl.className='cs-wavelayer'; wl.setAttribute('aria-hidden','true'); document.body.appendChild(wl); }
     wl.style.height=document.documentElement.scrollHeight+'px';
     const r=belt.getBoundingClientRect(); /* l'onde part du point de sortie de l'asset */ [0].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+scrollX-24)+'px'; w.style.top=(r.top+scrollY+118)+'px'; w.style.animationDelay=d+'ms'; wl.appendChild(w); setTimeout(()=>w.remove(),1200+d); }); };
+  /* survol + clic sur la tuile : chaque clic fait sortir un nouvel asset (avec son onde) */
+  if(src){ src.setAttribute('data-tip','Click to ship an asset'); let lastC=0;
+    src.addEventListener('click',()=>{ const n=performance.now(); if(n-lastC<180) return; lastC=n; spawn(Math.floor(rnd()*P.length)); wave(); bar.classList.add('sent'); setTimeout(()=>bar.classList.remove('sent'),260); }); }
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
