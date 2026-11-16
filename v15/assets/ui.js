@@ -40,15 +40,16 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   /* toutes les 25 s, la signature refait d'elle-même le geste du survol (jamais quand l'onglet est caché) */
   setInterval(()=>{ if(!document.hidden) replay(); },25000); };
 SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
-/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS).
-   Sans masque (les masques SVG agrandis donnaient des morceaux) : un trait de plume suit le tracé, puis la vraie signature apparaît en fondu à sa place */
-let bsN=0; function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
-  w.innerHTML=`<svg viewBox="${pick[0]}"><path class="bsl" pathLength="1" d="${pick[1]}"/><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></svg>`;
-  const l=w.querySelector('.bsl'), rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let an=null;
-  w.play=(dur)=>{ w.classList.remove('done'); w.classList.add('on'); if(rm||!l.animate){ w.classList.add('done'); return; } if(an) an.cancel();
-    an=l.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:dur||1700,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); an.onfinish=()=>w.classList.add('done'); };
-  w.hide=()=>{ if(an){ an.cancel(); an=null; } w.classList.remove('on','done'); };
-  if(rm) w.classList.add('on','done');
+/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS), révélée par un masque comme dans la barre :
+   le vrai tracé (avec son grain) est visible du début à la fin. Le masque est en unités de la signature, il suit donc la taille affichée ; trait de masque large pour couvrir les pleins, retiré à la fin */
+let bsN=0; function BSIG(cls){ const id='bsm'+(bsN++), w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
+  w.innerHTML=`<svg viewBox="${pick[0]}" shape-rendering="geometricPrecision"><defs><mask id="${id}" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-400" y="-400" width="1800" height="1600"><path class="bsc" pathLength="1" d="${pick[1]}"/></mask></defs><g class="bsg"><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></g></svg>`;
+  const g=w.querySelector('.bsg'), c=w.querySelector('.bsc'), rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let an=null;
+  const masked=on=>{ if(on) g.setAttribute('mask',`url(#${id})`); else g.removeAttribute('mask'); };
+  w.play=(dur)=>{ w.classList.add('on'); if(rm||!c.animate){ masked(false); return; } if(an) an.cancel(); c.style.strokeDashoffset=1; masked(true);
+    an=c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:dur||1700,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); an.onfinish=()=>masked(false); };
+  w.hide=()=>{ if(an){ an.cancel(); an=null; } w.classList.remove('on'); if(!rm){ c.style.strokeDashoffset=1; masked(true); } };
+  if(rm) masked(false); else { c.style.strokeDashoffset=1; masked(true); }
   return w; }
 
 /*abtsig*/ /* « Your one-man design studio » : grande signature en fond, qui se dessine à l'arrivée — la signature propre (celle du logo AssetsOS) */
