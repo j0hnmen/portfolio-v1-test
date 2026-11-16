@@ -801,3 +801,4 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 @media (prefers-reduced-motion:reduce){.hvx{height:auto}.hvx-pin{position:static;height:auto;overflow:visible}.hvx-track{flex-direction:column;width:auto}.hvx-p{width:auto;padding:12vh clamp(24px,7vw,120px)}}
 .hvx-w,.hvx-w span{font-family:var(--display)!important;font-weight:800!important;font-stretch:62%!important;text-transform:uppercase!important}
 .hvx-w{font-size:clamp(120px,27vw,470px)!important;line-height:.82!important}
+@media (max-width:760px){.hvx-w{font-size:clamp(90px,24vw,170px)!important}.hvx-p{padding:0 24px}}
