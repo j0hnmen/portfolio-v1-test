@@ -676,3 +676,5 @@ footer.ftzoom .flogo{overflow:visible!important}
 
 /* FAQ : les réponses prennent le style paragraphe du site (20 px), plus la taille des petites listes */
 .dw p,.dw p span{font-size:20px!important;line-height:1.45!important}
+/* logos des frises (home + About) : la couleur vient uniquement du fond du masque — aucun filtre par-dessus, sinon le bleu passe par du gris pendant la transition */
+.page .vlm,.tl2 .tlm{filter:none!important;transition:background-color .45s ease!important}
