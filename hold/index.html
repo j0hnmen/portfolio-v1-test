@@ -35,7 +35,7 @@
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=a50e42fa"><link rel="stylesheet" href="assets/system.css?v=f6e28f25">
+<link rel="stylesheet" href="assets/site.css?v=a50e42fa"><link rel="stylesheet" href="assets/system.css?v=6ef2af3d">
 <script>window.HOLDGO={"atelier": "https://www.linkedin.com/feed/update/urn:li:activity:7510960044809568257/", "sorare": "https://www.linkedin.com/feed/update/urn:li:activity:7300220200203739137/", "sportgen": "https://www.linkedin.com/feed/update/urn:li:activity:7466105289935736832/", "inktober": "https://inktober.nabilamara.com/", "abc": "https://figmabc.figma.site/"};</script>
 <style id="holdcss">
 html[data-hold],html[data-hold] body{overflow:hidden!important;height:100%;overscroll-behavior:none}
@@ -62,6 +62,18 @@ html[data-hold] button.vbook{border:0;cursor:pointer;font:inherit}
 /* bloc mail (repris de la page actuelle) */
 .mwrap{--dim:#5f5f5f;--text:"Akke DA","Newsreader DA",Georgia,serif;--blue:#564FFF;font-family:var(--text);z-index:70!important}
 @keyframes fadein{to{opacity:1}}
+@media (max-width:760px){
+  html[data-hold] .mwrap .mveil{bottom:calc(76px + env(safe-area-inset-bottom))!important}
+  /* boîte mail plus basse et plus compacte : les 3 choix côte à côte */
+  html[data-hold] .mbox{padding:22px 16px 16px!important}
+  html[data-hold] .mbox h2{font-size:34px!important}
+  html[data-hold] .mbox .lead{margin:4px 0 14px!important;font-size:17px!important}
+  html[data-hold] .mbox .opts{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+  html[data-hold] .mbox .opt{flex-direction:column!important;align-items:flex-start!important;gap:10px!important;padding:12px 10px!important}
+  html[data-hold] .mbox .opt b{font-size:19px!important}
+  html[data-hold] .mbox .opt small{font-size:12px!important}
+  html[data-hold] .mbox .x{top:12px!important;right:12px!important;width:34px!important;height:34px!important}
+}
 .mwrap a,.mwrap a *{text-decoration:none!important;background-image:none!important}
 html[data-hold] .ntr{display:flex!important;align-items:center}
 .mbuild{display:none}
@@ -77,12 +89,12 @@ html[data-hold] .ntr{display:flex!important;align-items:center}
 .mwrap{opacity:0;animation:fadein .6s 2s forwards}
 .mveil{position:absolute;z-index:20;bottom:78px;left:50%;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));pointer-events:none}
 .mbox{position:relative;background:#f0f0f0 url(img/paper-warm.webp) center/cover;border-radius:20px;padding:30px 28px 26px;box-shadow:0 30px 80px rgba(20,20,30,.28),0 0 0 1px rgba(255,255,255,.6) inset;transform:translate(calc(50% - 190px),calc(100% + 200px)) rotate(14deg);transform-origin:0 0;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
-.mveil.peek .mbox{transform:translate(calc(50% - 130px),calc(100% + 22px)) rotate(32deg);transition-duration:.45s}
+.mveil.mpeek .mbox{transform:translate(calc(50% - 130px),calc(100% + 22px)) rotate(32deg);transition-duration:.45s}
 .mveil.on{pointer-events:auto}
 .mveil.on .mbox{transform:none;transition-duration:.65s}
 .mwrap{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:20}
 .mbox{visibility:hidden;transition:transform .6s cubic-bezier(.2,.9,.2,1),visibility 0s .6s!important}
-.mveil.peek .mbox,.mveil.on .mbox{visibility:visible;transition:transform .55s cubic-bezier(.2,.9,.2,1),visibility 0s!important}
+.mveil.mpeek .mbox,.mveil.on .mbox{visibility:visible;transition:transform .55s cubic-bezier(.2,.9,.2,1),visibility 0s!important}
 .mbox .x{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:0;background:#fff;color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .2s,color .2s}
 .mbox .x:hover{transform:rotate(90deg);background:var(--ink);color:#fff}
 .mbox h2{font-family:var(--display);font-weight:800;font-stretch:62%;text-transform:uppercase;font-size:46px;line-height:.9;letter-spacing:-.005em}
@@ -100,7 +112,7 @@ html[data-hold] .ntr{display:flex!important;align-items:center}
 .mbox .copy button:hover{background:var(--blue)}
 .mbox .copy button.ok{background:var(--blue)}
 @media (max-width:480px){.mbox{padding:26px 18px 18px}.mbox h2{font-size:40px}.mbox .opts{grid-template-columns:1fr}.mbox .opt{flex-direction:row;align-items:center;gap:14px;padding:14px}}
-@media (max-width:1000px),(max-height:619px){.mveil{bottom:calc(72px + env(safe-area-inset-bottom))}html .mveil.peek .mbox{transform:translate(calc(50% - 115px),calc(100% + 18px)) rotate(32deg)}}
+@media (max-width:1000px),(max-height:619px){.mveil{bottom:calc(72px + env(safe-area-inset-bottom))}html .mveil.mpeek .mbox{transform:translate(calc(50% - 115px),calc(100% + 18px)) rotate(32deg)}}
 @media (prefers-reduced-motion:reduce){.tile,h1,.sub,.soc,.mailbtn,.mwrap{animation:none;opacity:1;transform:none;translate:none}}
 </style>
 </head>
@@ -319,12 +331,12 @@ html[data-hold] .ntr{display:flex!important;align-items:center}
 <script>
 (()=>{const v=document.getElementById('mveil'),bs=[...document.querySelectorAll('.mailtrig')],b={setAttribute:(k,v)=>bs.forEach(x=>x.setAttribute(k,v)),focus:o=>(bs.find(x=>x.offsetParent)||bs[0]).focus(o)},cp=document.getElementById('mcopy'),fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const isOn=()=>v.classList.contains('on');
-const open=()=>{v.classList.remove('peek');v.classList.add('on');b.setAttribute('aria-expanded','true');if(!fine)return;setTimeout(()=>v.querySelector('.opt').focus({preventScroll:true}),120)};
-const close=()=>{v.classList.remove('on','peek');if(!fine)v.classList.add('peek');b.setAttribute('aria-expanded','false')};
-if(!fine){v.classList.add('peek'); // tactile : le coin de la box reste visible sous l'adresse, et l'ouvre au toucher
+const open=()=>{v.classList.remove('mpeek');v.classList.add('on');b.setAttribute('aria-expanded','true');if(!fine)return;setTimeout(()=>v.querySelector('.opt').focus({preventScroll:true}),120)};
+const close=()=>{v.classList.remove('on','mpeek');if(!fine)v.classList.add('mpeek');b.setAttribute('aria-expanded','false')};
+if(!fine){v.classList.add('mpeek'); // tactile : le coin de la box reste visible sous l'adresse, et l'ouvre au toucher
   v.addEventListener('click',e=>{if(!isOn()){e.preventDefault();e.stopPropagation();open()}},true)}
 bs.forEach(x=>x.onclick=e=>{e.stopPropagation();isOn()?close():open()});
-if(fine){bs.forEach(x=>{x.addEventListener('pointerenter',()=>{if(!isOn())v.classList.add('peek')});x.addEventListener('pointerleave',()=>v.classList.remove('peek'))})}
+if(fine){bs.forEach(x=>{x.addEventListener('pointerenter',()=>{if(!isOn())v.classList.add('mpeek')});x.addEventListener('pointerleave',()=>v.classList.remove('mpeek'))})}
 document.getElementById('mclose').onclick=close;
 document.addEventListener('click',e=>{if(isOn()&&!v.contains(e.target))close()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&isOn()){close();b.focus({preventScroll:true})}});

@@ -593,3 +593,4 @@ html.touch input,html.touch textarea,html.touch select{font-size:16px!important}
 html.touch,html.touch body{background:#F3F2EE!important}
 .pbg{display:none}
 html.touch .pbg{display:block;position:fixed;inset:0;z-index:-1;pointer-events:none;background:#F3F2EE url(../img/paper-warm.webp) center/cover no-repeat}
+html.touch body{background:transparent!important} /* le calque papier fixe doit rester visible derrière le contenu */
