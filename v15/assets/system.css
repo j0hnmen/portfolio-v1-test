@@ -656,7 +656,7 @@ footer.ftzoom .flogo{overflow:visible!important}
 .absig,html body .abt section>.absig{position:absolute!important;z-index:-1;pointer-events:none;right:-2%;top:50%;translate:0 -50%;width:min(62vw,820px);opacity:.09}
 .abt.abtleft .absig{right:-4%}
 .absig svg{display:block;width:100%;height:auto;overflow:visible}
-.absig .absc{fill:none;stroke:#fff;stroke-width:36;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
+.absig .absc{fill:none;stroke:#fff;stroke-width:58;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
 .absig .absf{fill:#202020}
 @media (max-width:760px){.absig{width:120vw;right:-30vw;opacity:.07}}
 .abt:not(.abtleft) section>.absig{left:auto!important;right:-6%!important;translate:0 -46%!important} /* home : signature décalée à droite */
@@ -962,3 +962,10 @@ header.top{view-transition-name:vt-top}
 #skill .sk summary .tx{flex:0 1 auto!important}
 #skill .sk .skok{margin:0 0 0 4px}
 #skill .sk summary .pm{margin-left:auto}
+
+/* tous les « Book a call » : contour noir au survol (détaché du bouton, lisible sur tous les fonds) */
+@media (hover:hover){html body :is(.vbook,.pill,.abtb1):has([data-i="t2"]){outline:2px solid transparent;outline-offset:3px;transition:outline-color .25s,box-shadow .3s,transform .3s}
+html body :is(.vbook,.pill,.abtb1):has([data-i="t2"]):hover{outline-color:#202020!important}
+html body section.end .row .pill:has([data-i="t2"]):hover{box-shadow:0 22px 46px -16px rgba(40,30,240,.75)!important}}
+/* fin de page : le fond bleu suit le scroll (progressif) au lieu d'apparaître d'un coup */
+html.bluepg:not(.blueon) .bluebg{opacity:var(--endbo,0)!important;transition:opacity .15s linear!important}

@@ -44,8 +44,8 @@ SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORK
 { const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   document.querySelectorAll('.abt section').forEach((sec,i)=>{ const id='absm'+i, w=document.createElement('div'); w.className='absig'; w.setAttribute('aria-hidden','true');
     w.innerHTML=`<svg viewBox="${pick[0]}"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1200"><path class="absc" pathLength="1" d="${pick[1]}"/></mask></defs><g mask="url(#${id})"><path class="absf" d="${pick[2]}" transform="${pick[3]}"/></g></svg>`;
-    sec.prepend(w); const c=w.querySelector('.absc'); if(rm||!c.animate) return; c.style.strokeDashoffset=1;
-    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:2600,delay:350,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); } },{threshold:.3}).observe(sec); }); } }
+    sec.prepend(w); const c=w.querySelector('.absc'); if(rm||!c.animate){ w.querySelector('g').removeAttribute('mask'); return; } c.style.strokeDashoffset=1;
+    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); const a=c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:2600,delay:350,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); a.onfinish=()=>w.querySelector('g').removeAttribute('mask'); /* tracé fini : la signature s'affiche entière, sans les bords grignotés du masque */ } },{threshold:.3}).observe(sec); }); } }
 
 { const lg=document.querySelector('.aoslogo.sigm'), sec=lg&&lg.closest('.aost'); if(lg){ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const play=()=>{ lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); setTimeout(()=>lg.classList.add('sigok'),1780); };
@@ -85,7 +85,8 @@ else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to|
     if(!document.querySelector('.bluebg')){ const b=document.createElement('div'); b.className='bluebg'; b.setAttribute('aria-hidden','true'); document.body.prepend(b); }
     if(!window.WORKPAGE) H.classList.add('bluepg');
     /* bleu seulement quand la section occupe vraiment l'écran (sinon la FAQ ou la frise passaient en bleu) */
-    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; const lim=innerWidth<=760?.06:.3; /* mobile : le bleu attend que la section couvre l'écran (sinon la FAQ passait sur fond bleu) */ H.classList.toggle('endblue',r.top<=v*lim&&r.bottom>=v*.7&&!H.classList.contains('src')); };
+    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; const lim=innerWidth<=760?.06:.3; /* mobile : le bleu attend que la section couvre l'écran (sinon la FAQ passait sur fond bleu) */ H.classList.toggle('endblue',r.top<=v*lim&&r.bottom>=v*.7&&!H.classList.contains('src'));
+      /* le dégradé bleu monte progressivement dès que la section entre dans l'écran (plus de grand vide avant) */ const bo=H.classList.contains('src')?0:r.bottom<v*.7?Math.min(1,Math.max(0,(r.bottom-v*.35)/(v*.35))):Math.min(1,Math.max(0,(v-r.top)/(v*(1-lim)))); H.style.setProperty('--endbo',bo.toFixed(3)); };
     addEventListener('scroll',()=>{ if(!tkb) tkb=requestAnimationFrame(blue); },{passive:true}); addEventListener('resize',blue); blue();
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
     /* tout est piloté par le scroll pendant que la section est épinglée : la signature se trace au fil du scroll, puis le trait sous « your system » (et tout revient en arrière si on remonte) */
@@ -95,7 +96,7 @@ else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to|
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
       scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
-      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-innerHeight); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(innerHeight*.82-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
+      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-innerHeight); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(innerHeight*1.02-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
 /* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
 function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }
