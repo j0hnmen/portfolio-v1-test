@@ -3,7 +3,7 @@
    un hover affiché (bouton, tuile, bulle…) jusqu'au chargement de la page suivante. On coupe ces événements
    et on retire toutes les règles CSS :hover. */
 const TOUCH=matchMedia('(hover:none)').matches||matchMedia('(pointer:coarse)').matches&&!matchMedia('(hover:hover)').matches;
-if(TOUCH){ document.documentElement.classList.add('touch');
+if(TOUCH){ document.documentElement.classList.add('touch'); { const g=document.createElement('div'); g.className='pbg'; g.setAttribute('aria-hidden','true'); document.body.prepend(g); }
   ['mouseover','mouseenter','mousemove','mouseout','mouseleave','pointerover','pointerenter','pointerout','pointerleave'].forEach(t=>addEventListener(t,e=>{ if(t.startsWith('pointer')&&e.pointerType==='mouse') return; e.stopImmediatePropagation(); },true));
   const strip=list=>{ for(let i=list.length-1;i>=0;i--){ const r=list[i];
       if(r.cssRules&&!r.selectorText){ strip(r.cssRules); continue; }
@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794791670'; }
-  if(g==='about'){ location.href='about.html?v=1794791670'; }
-  if(g==='contact'){ location.href='contact.html?v=1794791670'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794791670'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794818992'; }
+  if(g==='about'){ location.href='about.html?v=1794818992'; }
+  if(g==='contact'){ location.href='contact.html?v=1794818992'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794818992'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }

@@ -149,7 +149,7 @@ const CV=(function(){
         html:`<svg viewBox="${bx} ${-by} ${w} ${h}" preserveAspectRatio="none"><path transform="scale(1 -1)" d="${d}" fill="#202020"/></svg>`})); }); });
     { const [d,bx,by,w,h]=GLY.S, k=28/h, W=w*k; NAME.push(SUBN=add({type:'path',cls:'vec glyph sub',name:'AI Creative Designer',x:-W/2,y:top+CAP*2+LG+60,w:W,h:46,r:0,
         html:`<span class="subtxt">AI Creative Designer</span>`})); } /* sous-titre en style en-tête (Akke, casse normale) */
-    P.forEach((p,i)=>{ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
+    P.forEach((p,i)=>{ if(window.HOLDGO&&!HOLDGO[p.id]) return; /* page provisoire : seulement les projets qui ont un lien */ const n=add({type:'frame',name:p.t,pi:i,x:pos[i][0],y:pos[i][1],w:440,h:0,r:pos[i][2],
       html:p.link?`<div class="fb cl"><div class="livetag" aria-hidden="true"><i></i>Live</div><div class="clh"><svg viewBox="0 0 24 24" class="ib"><path d="M8 4c-2 0-2.5 1-2.5 3v2.2c0 1.3-.6 2.3-2 2.8 1.4.5 2 1.5 2 2.8V17c0 2 .5 3 2.5 3M16 4c2 0 2.5 1 2.5 3v2.2c0 1.3.6 2.3 2 2.8-1.4.5-2 1.5-2 2.8V17c0 2-.5 3-2.5 3"/></svg><span>${p.t}</span><span class="clic"><button data-cl="case" title="Case study"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.4 12.7L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5z"/></svg></button><a data-cl="open" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></svg></a>${LIVE?'<button data-cl="play" title="Use the site">':`<a data-cl="play" href="${p.link[1]}" target="_blank" rel="noopener" title="Open ${p.link[0]}">`}<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>${LIVE?'</button>':'</a>'}</span></div><div class="clb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"></div></div>`
         :`<div class="fb"><img src="${src(p.imgs[0])}" alt="${p.t}" style="object-position:${p.pos}" draggable="false"><div class="ft"><div class="fe"><span class="fc">${p.nat}</span><span class="fy">${p.y}</span></div>${({atelier:"figma",sorare:"sorare",sportgen:"sportgen"})[p.id]?`<h3 class="hlg hlg-${p.id}"><img src="img/clients/${({atelier:"figma",sorare:"sorare",sportgen:"sportgen"})[p.id]}.png" alt="${p.t}"></h3>`:`<h3>${p.t}</h3>`}<p>${p.sub}</p></div></div>`}); });
     // sites intégrés : interface façon calque de code Figma ({ } nom, puis commentaire / agrandir / lancer)
@@ -246,7 +246,7 @@ const CV=(function(){
   // molette : pincer / Ctrl = zoom, glisser horizontal = déplacer, vertical = la page défile (le canvas dézoome)
   // pincer au pad n'importe où sur la vue canvas (barre d'outils, prompt, frames…) zoome le canvas, jamais la page entière
   const wPinch=e=>{ if(!(e.ctrlKey||e.metaKey)||!isOn()||overlayOpen()||cv.contains(e.target)) return; e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); };
-  const wCv=e=>{ if(e.ctrlKey||e.metaKey){ e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); } };
+  const wCv=e=>{ if(window.HOLDGO&&!(e.ctrlKey||e.metaKey)){ e.preventDefault(); px-=e.deltaX; py-=e.deltaY; apply(); return; } /* page provisoire : pas de page en dessous, la molette déplace le canvas */ if(e.ctrlKey||e.metaKey){ e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.exp(-e.deltaY*.01)); } };
   // les écouteurs « non passifs » (nécessaires au pincement) ne sont branchés qu'en haut, sur le canvas : partout ailleurs le scroll reste 100 % fluide
   let wOn=false; const syncW=()=>{ const want=isOn()&&scrollY<innerHeight*.5&&!overlayOpen(); if(want===wOn) return; wOn=want;
     if(want){ addEventListener('wheel',wPinch,{passive:false,capture:true}); cv.addEventListener('wheel',wCv,{passive:false}); }
@@ -381,7 +381,7 @@ function closeCase(){ const hero=$('#caseCol .hero'), c=kCard; kase.classList.ad
   else { if(hero){hero.style.transition='opacity .25s';hero.style.opacity=0;} if(c) c.style.visibility=''; setTimeout(()=>{$('#caseCol').innerHTML='';},660); }
   kCard=null; }
 kase.onclick=e=>{ if(e.target===kase||e.target.id==='caseCol') closeTop(); };
-function openProject(i,el){ target=Math.round(target)+(mod(i-Math.round(target)+N/2,N)-N/2); const p=P[i]; p.kase?openCase(i,el):openViewer(p.imgs,0,p.t,el); }
+function openProject(i,el){ if(window.HOLDGO){ const u=HOLDGO[P[i].id]; if(u) window.open(u,'_blank','noopener'); return; } /* page provisoire : le projet ouvre son post LinkedIn ou son site */ target=Math.round(target)+(mod(i-Math.round(target)+N/2,N)-N/2); const p=P[i]; p.kase?openCase(i,el):openViewer(p.imgs,0,p.t,el); }
 
 // pas d'écran d'intro : on arrive directement sur le site (son coupé, activable avec le bouton son)
 setSound(false); rot=window.WORKPAGE?target:target-1.6; setMode(defMode());
