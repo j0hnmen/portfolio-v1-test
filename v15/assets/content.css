@@ -1016,7 +1016,8 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 @media (max-width:600px){.page .hero .hl br{display:none}} /* mobile : pas de mot seul en bout de ligne */
 @media (max-width:600px){.page .hero .hbot{margin-top:40px!important}} /* mobile : la signature ne touche pas le texte */
 
-/* hero : Impact · Clarity · Value, une ligne sobre entre le logo et le texte */
-.page .hero .hvals{display:flex;align-items:center;gap:14px;margin:0;font-size:clamp(20px,1.7vw,26px);line-height:1;letter-spacing:.01em;color:var(--ink)}
-.page .hero .hvals i{width:6px;height:6px;border-radius:50%;background:var(--blue,#564FFF)}
+/* Active Templates : Impact · Clarity · Value, une ligne sobre entre le texte et le logo AssetsOS */
+.page .hvals{display:flex;align-items:center;gap:14px;margin:26px 0 0;font-size:clamp(20px,1.7vw,26px);line-height:1;letter-spacing:.01em;color:var(--ink)}
+@media (max-width:900px){.page .ev .hvals{justify-content:center}}
+.page .hvals i{width:6px;height:6px;border-radius:50%;background:var(--blue,#564FFF)}
 .page .mani{display:none!important}
