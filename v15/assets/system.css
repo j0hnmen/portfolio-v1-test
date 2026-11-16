@@ -1027,10 +1027,8 @@ html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
 /* grande signature (BSIG) : la même que celle du logo du haut */
 .bsig{display:block;line-height:0;color:#202020}
 .bsig svg{display:block;width:100%;height:auto;overflow:visible}
-.bsig svg{display:block;width:100%;height:auto;overflow:visible}
-.bsig .bsf{fill:currentColor}
-.bsig{opacity:0;scale:.97;transition:opacity .9s cubic-bezier(.4,0,.2,1),scale 1.1s cubic-bezier(.16,1,.3,1)}
-.bsig.on{opacity:1;scale:1}
+.bsig svg{display:block;width:100%;height:auto;overflow:visible;color:inherit}
+.bsig svg use{fill:currentColor}
 
 /* Clarity / Impact / Value : marques tracées à la main, en noir */
 .hvx .hvx-w{position:relative}

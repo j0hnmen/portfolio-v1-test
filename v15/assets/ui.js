@@ -40,11 +40,20 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   /* toutes les 25 s, la signature refait d'elle-même le geste du survol (jamais quand l'onglet est caché) */
   setInterval(()=>{ if(!document.hidden) replay(); },25000); };
 SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
-/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS), en SVG plein, SANS tracé ni masque :
-   elle apparaît entière, en fondu léger. Rien ne peut la couper, à aucune taille. */
-function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
-  w.innerHTML=`<svg viewBox="${pick[0]}"><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></svg>`;
-  w.play=()=>w.classList.add('on'); w.hide=()=>w.classList.remove('on');
+/* grande signature = celle du logo AssetsOS, avec exactement son tracé (même SVG, mêmes masques par segment, même animation) :
+   on clone la signature du logo du menu, on renomme ses ids, et on joue les mêmes classes (sigreset → sigplay → sigok) */
+let bsN=0; function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
+  const src=document.getElementById('msigF'), lg=src&&src.closest('svg'); if(!lg) return Object.assign(w,{play(){},hide(){}});
+  const n=++bsN, NS='http://www.w3.org/2000/svg', sv=document.createElementNS(NS,'svg'); sv.setAttribute('viewBox','566 186 330 252'); sv.setAttribute('class','sigm');
+  const defs=lg.querySelector('defs').cloneNode(true), grp=lg.querySelector('.sigan').parentNode.cloneNode(true);
+  sv.appendChild(defs); sv.appendChild(grp);
+  sv.querySelectorAll('[id]').forEach(e=>e.id=e.id+'_b'+n);
+  sv.querySelectorAll('use').forEach(u=>{ const h=u.getAttribute('href'); if(h) u.setAttribute('href',h+'_b'+n); const m=u.getAttribute('mask'); if(m) u.setAttribute('mask',m.replace(/url\(#([^)]+)\)/,'url(#$1_b'+n+')')); });
+  [...defs.children].forEach(c=>{ if(!/^(msigF|msg\d+|msm\d+)_b/.test(c.id||'')) c.remove(); });
+  w.appendChild(sv); let tm=0; const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  w.play=()=>{ clearTimeout(tm); w.classList.add('on'); if(rm){ sv.classList.add('sigok'); return; } sv.classList.remove('sigok','sigplay'); sv.classList.add('sigreset'); void sv.getBoundingClientRect(); sv.classList.remove('sigreset'); sv.classList.add('sigplay'); tm=setTimeout(()=>sv.classList.add('sigok'),1780); };
+  w.hide=()=>{ clearTimeout(tm); w.classList.remove('on'); if(!rm){ sv.classList.remove('sigok','sigplay'); sv.classList.add('sigreset'); } };
+  if(!rm) sv.classList.add('sigreset'); else sv.classList.add('sigok');
   return w; }
 
 /*abtsig*/ /* « Your one-man design studio » : grande signature en fond, qui se dessine à l'arrivée — la signature propre (celle du logo AssetsOS) */
