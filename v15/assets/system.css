@@ -694,3 +694,6 @@ body.chat-on .pullgo{display:none}
 /* « Let's build your system » : bouton Book a call un peu plus gros, toujours noir */
 html body section.end .row .pill{height:74px!important;padding:0 42px!important;font-size:23px!important}
 @media (max-width:760px){html body section.end .row .pill{height:62px!important;padding:0 30px!important;font-size:20px!important}}
+/* frise de la home : textes plus légers au repos (le bleu de l'étape active reste plein) */
+.tl2 .tlx{color:rgba(32,32,32,.6)}
+.tl2 .tfof,.tl2 .tfof a{color:rgba(32,32,32,.48)}
