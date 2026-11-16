@@ -82,7 +82,8 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
       const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
-      scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3)); };
+      scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
+      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const lq=cl(p,-.62,-.04); sec.style.setProperty('--lq',lq.toFixed(4)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
 /* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
 function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }
@@ -141,8 +142,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835162'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835162'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794835322'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794835322'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],

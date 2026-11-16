@@ -864,3 +864,6 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-fbg{z-index:0}
 .hvx-pin>.hvx-stack,.hvx-pin>.hvx-row{position:relative;z-index:1}
 .hvx-black,.hvx-black span{color:#202020!important;background:none!important}
+
+/* fin de page : le grand logo AssetsOS apparaît en grossissant au fil du scroll, dès que la section arrive */
+.end.endfx.scrubfx:not(.es-out) .endbig{opacity:var(--lq,0)!important;scale:calc(.45 + .55 * var(--lq,0))!important;filter:blur(calc((1 - var(--lq,0)) * 12px))!important;transition:none!important}
