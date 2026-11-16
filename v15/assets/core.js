@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831723'; }
-  if(g==='about'){ location.href='about.html?v=1794831723'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831723'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831723'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831835'; }
+  if(g==='about'){ location.href='about.html?v=1794831835'; }
+  if(g==='contact'){ location.href='contact.html?v=1794831835'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831835'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -167,6 +167,9 @@ ${FICHE}`;
   const ui=document.createElement('div'); ui.className='pullgo'; ui.setAttribute('aria-hidden','true');
   ui.innerHTML='<div class="pg-tide"></div><div class="pg-pill"><svg viewBox="0 0 36 36"><circle class="pg-bg" cx="18" cy="18" r="15"/><circle class="pg-ring" cx="18" cy="18" r="15" pathLength="1"/></svg><span class="pg-t"></span></div>';
   document.body.appendChild(ui); const ring=ui.querySelector('.pg-ring'), lab=ui.querySelector('.pg-t');
+  /* la marée passe sous tout le contenu du footer : elle vit dans le footer, derrière ses éléments */
+  const ftr=document.querySelector('footer.ftr'); if(ftr){ const tide=ui.querySelector('.pg-tide'); ftr.prepend(tide); ftr.classList.add('hastide'); }
+  const tideEl=document.querySelector('.pg-tide');
   const fr=()=>document.documentElement.lang==='fr';
   const TXT=()=>fr()?['Continuez à scroller…','Encore un peu…','Lâchez rien…']:['Keep scrolling…','A bit more…','Almost there…'];
   const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis le mini-moi de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s mini-me: ask me anything about his work.';
@@ -174,7 +177,7 @@ ${FICHE}`;
   const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
   const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);
   const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3);
-    lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); };
+    lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); if(tideEl) tideEl.classList.toggle('on',k>.02&&!done); };
   const loop=()=>{ raf=0; const idle=performance.now()-last>650; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.012); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); }; /* on peut reprendre : la jauge attend 0,65 s avant de redescendre, doucement */
   /* résistance : pendant les 0,7 s qui suivent l'arrivée en bas, l'élan d'un scroll lancé de loin ne compte presque pas ;
      ensuite chaque geste compte, plusieurs gestes s'additionnent (la jauge ne redescend que si on s'arrête vraiment) ; plus elle est pleine, plus elle résiste */
@@ -185,7 +188,7 @@ ${FICHE}`;
   const stream=d=>{ const now=performance.now(); if(now-sLast>120||(d>sPrev*1.6&&d>24)){ sElan=!(atEnd()&&endSince&&now-endSince>250); sGain=0; } sLast=now; sPrev=d; };
   const push=d=>{ if(d>0) stream(d); if(done||busy()||!atEnd()||d<=0) return; const now=performance.now(); if(!endSince) endSince=now;
     const k=Math.min(1,pull/NEED); let add=d*(1-.5*k); if(sElan){ add=Math.max(0,Math.min(add*.35,NEED*.22-sGain)); } sGain+=add; if(add<=0) return; pull+=add; last=now;
-    if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); MM.greet(HELLO()); makeRoom(); setTimeout(()=>{ ui.classList.remove('on','go'); pull=0; paint(); },700); }
+    if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); if(tideEl) tideEl.classList.add('go'); MM.greet(HELLO()); makeRoom(); setTimeout(()=>{ ui.classList.remove('on','go'); if(tideEl) tideEl.classList.remove('on','go'); pull=0; paint(); },700); }
     if(!raf) raf=requestAnimationFrame(loop); };
   addEventListener('wheel',e=>push(e.deltaMode===1?e.deltaY*32:e.deltaY),{passive:true});
   let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; sLast=0; },{passive:true}); /* chaque contact = nouveau geste */

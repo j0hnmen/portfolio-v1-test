@@ -697,3 +697,9 @@ html body section.end .row .pill{height:74px!important;padding:0 42px!important;
 /* frise de la home : textes plus légers au repos (le bleu de l'étape active reste plein) */
 .tl2 .tlx{color:rgba(32,32,32,.6)}
 .tl2 .tfof,.tl2 .tfof a{color:rgba(32,32,32,.48)}
+/* marée dans le footer, sous ses éléments */
+footer.ftr.hastide{position:relative}
+footer.ftr.hastide>.pg-tide{position:absolute;left:0;right:0;bottom:0;top:auto;z-index:0;height:min(calc(var(--pull,0) * 55vh),100%);pointer-events:none}
+footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
+.pg-tide.on,.pg-tide.go{opacity:1}
+.pg-tide.go{opacity:0;transition:opacity .7s}
