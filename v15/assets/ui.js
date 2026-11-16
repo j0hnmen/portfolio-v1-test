@@ -94,21 +94,22 @@ else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to|
     const big=document.createElement('span'); big.className='endbig'; big.setAttribute('aria-hidden','true'); big.innerHTML=BIG; h.appendChild(big);
     const sm=document.createElement('div'); sm.className='endsm'; sm.setAttribute('aria-hidden','true'); sm.innerHTML=SM; h.parentNode.insertBefore(sm,h);
     sec.classList.add('endfx');
+    /* hauteur d'écran stable : celle de la section épinglée (100vh), pas innerHeight qui varie avec la barre d'adresse mobile */ const VH=()=>(sec.closest('.endpin')?sec.offsetHeight:0)||innerHeight;
     // fond du site bleu pendant la section
     if(!document.querySelector('.bluebg')){ const b=document.createElement('div'); b.className='bluebg'; b.setAttribute('aria-hidden','true'); document.body.prepend(b); }
     if(!window.WORKPAGE) H.classList.add('bluepg');
     /* bleu seulement quand la section occupe vraiment l'écran (sinon la FAQ ou la frise passaient en bleu) */
-    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; const lim=innerWidth<=760?.06:.3; /* mobile : le bleu attend que la section couvre l'écran (sinon la FAQ passait sur fond bleu) */ H.classList.toggle('endblue',r.top<=v*lim&&r.bottom>=v*.7&&!H.classList.contains('src')); };
+    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=VH(); const lim=innerWidth<=760?.06:.3; /* mobile : le bleu attend que la section couvre l'écran (sinon la FAQ passait sur fond bleu) */ H.classList.toggle('endblue',r.top<=v*lim&&r.bottom>=v*.7&&!H.classList.contains('src')); };
     addEventListener('scroll',()=>{ if(!tkb) tkb=requestAnimationFrame(blue); },{passive:true}); addEventListener('resize',blue); blue();
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
     /* tout est piloté par le scroll pendant que la section est épinglée : la signature se trace au fil du scroll, puis le trait sous « your system » (et tout revient en arrière si on remonte) */
     const pin=sec.closest('.endpin'); let st=-1, tks=0; sec.classList.add('scrubfx');
-    const prog=()=>{ tks=0; let p; if(pin){ const r=pin.getBoundingClientRect(); p=(-r.top)/Math.max(1,r.height-innerHeight); } else { const r=sec.getBoundingClientRect(); p=(innerHeight-r.top)/innerHeight-.5; }
+    const prog=()=>{ tks=0; let p; if(pin){ const r=pin.getBoundingClientRect(); p=(-r.top)/Math.max(1,r.height-VH()); } else { const r=sec.getBoundingClientRect(); p=(innerHeight-r.top)/innerHeight-.5; }
       const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
       scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
-      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-innerHeight); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(innerHeight*1.02-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
+      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-VH()); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(VH()*1.02-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
 /* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
 function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }
@@ -233,7 +234,7 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
   const bw=document.createElement('i'), bb=document.createElement('i'); bw.className='hvx-fbg hvx-fw'; bb.className='hvx-fbg hvx-fb'; const gl=document.createElement('i'); gl.className='hvx-fbg hvx-glow'; const pin=sec.querySelector('.hvx-pin'); [gl,bb,bw].forEach(x=>{ x.setAttribute('aria-hidden','true'); pin.prepend(x); }); /* lueurs bleues déséquilibrées derrière VALUE */ /* fixés à l'écran, mais dans la section : ils passent par-dessus le papier */
   const pres=[...sec.querySelectorAll('.hvx-pres .hvx-pre')], subs=[...sec.querySelectorAll('.hvx-subs .hvx-s')]; let raf=0;
   const cl=v=>Math.max(0,Math.min(1,v));
-  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=innerHeight, run=r.height-H; const k=cl(-r.top/Math.max(1,run)); /* temps d'arrêt doux sur chaque mot, puis glissé accéléré-freiné */ const seg=k*2, si=Math.floor(seg), sf=seg-si, hold=.28, st=sf<hold?0:sf>1-hold?1:(sf-hold)/(1-2*hold), se=st<.5?4*st*st*st:1-Math.pow(-2*st+2,3)/2, pos=Math.min(2,si+se);
+  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=pin.offsetHeight||innerHeight, run=r.height-H; /* hauteur de l'écran épinglé (stable) et pas innerHeight, qui bouge avec la barre d'adresse sur mobile → tremblement */ const k=cl(-r.top/Math.max(1,run)); /* temps d'arrêt doux sur chaque mot, puis glissé accéléré-freiné */ const seg=k*2, si=Math.floor(seg), sf=seg-si, hold=.28, st=sf<hold?0:sf>1-hold?1:(sf-hold)/(1-2*hold), se=st<.5?4*st*st*st:1-Math.pow(-2*st+2,3)/2, pos=Math.min(2,si+se);
     if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
     const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));
