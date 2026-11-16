@@ -588,3 +588,8 @@ html.touch #tip,html.touch #cursor{display:none!important}
 }
 html.touch input,html.touch textarea,html.touch select{font-size:16px!important} /* iOS : pas de zoom automatique au focus */
 @media (max-width:1100px){ .svc+.svc::before{display:none!important} .svcs{column-gap:20px!important;row-gap:10px!important} }
+/* tactile (iOS) : « background-attachment: fixed » n'existe pas — la texture papier s'étirait sur toute la hauteur
+   de la page et devenait floue. On la pose sur un calque fixe, à la taille de l'écran. */
+html.touch,html.touch body{background:#F3F2EE!important}
+.pbg{display:none}
+html.touch .pbg{display:block;position:fixed;inset:0;z-index:-1;pointer-events:none;background:#F3F2EE url(../img/paper-warm.webp) center/cover no-repeat}
