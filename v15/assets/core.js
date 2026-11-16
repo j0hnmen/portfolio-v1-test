@@ -193,7 +193,7 @@ ${FICHE}`;
   const NEED=1300; let pull=0, last=0, raf=0, done=false;
   const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
   const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);
-  const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3);
+  const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3); document.querySelectorAll('.mm .aint').forEach(a=>{ a.style.transform=k?`rotate(${(k*720).toFixed(1)}deg)`:''; }); /* le rond de John tourne avec la jauge */
     lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); if(tideEl) tideEl.classList.toggle('on',k>.02&&!done); };
   const loop=()=>{ raf=0; const idle=performance.now()-last>650; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.012); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); }; /* on peut reprendre : la jauge attend 0,65 s avant de redescendre, doucement */
   /* résistance : pendant les 0,7 s qui suivent l'arrivée en bas, l'élan d'un scroll lancé de loin ne compte presque pas ;
