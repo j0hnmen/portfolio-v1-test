@@ -272,7 +272,7 @@ const RADIO=(function(){
    iOS demande un tap pour relancer après chaque page. Pause quand l'onglet est caché, reprise au retour. Jamais sur la page provisoire. */
 (()=>{ const H=document.documentElement; if(H.hasAttribute('data-hold')) return;
   const T=[["02","Daft Punk","Touch It / Technologic"],["04","Polo & Pan","Oasis"],["05","Wax Tailor","Que Sera"],["07","Justice","Stress"],["09","Chopin · Pollini","Étude op. 10 n° 1"],["10","Woodkid","Goliath"],["11","Gustavo Santaolalla","The Last of Us Part II"],["14","Gábor Szabó","Love Is Blue"],["15","Daft Punk","Crescendolls"],["16","Debussy · Tomita","Clair de lune"],["17","The Rah Band","Messages from the Stars"],["19","Aphex Twin","CIRKLON3"],["20","The Zombies","Time of the Season"],["21","Daft Punk","Superheroes"],["22","Air","Alpha Beta Gaga"],["23","Fleetwood Mac","The Chain"],["24","Aphex Twin","Pulsewidth"],["27","Art Garfunkel","Waters of March"],["30","Daft Punk","One More Time"],["31","Salut c'est cool","Révélations mystiques"]];
-  const FR=H.dataset.lp==='fr', base=FR?'../':'', src=i=>base+'audio/'+T[i][0]+'.mp3', SK='sndstate';
+  const FR=H.dataset.lp==='fr', base='', /* les pages FR ont <base href="../"> : le chemin relatif marche tel quel */ src=i=>base+'audio/'+T[i][0]+'.mp3', SK='sndstate';
   const touch=matchMedia('(hover:none)').matches;
   let st={i:-1,t:0,on:false,at:0}; try{ st=Object.assign(st,JSON.parse(sessionStorage.getItem(SK)||'{}')); }catch(_){}
   const save=()=>{ st.t=pos(); st.at=Date.now(); try{ sessionStorage.setItem(SK,JSON.stringify(st)); }catch(_){} };
