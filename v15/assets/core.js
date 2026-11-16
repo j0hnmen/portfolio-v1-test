@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831090'; }
-  if(g==='about'){ location.href='about.html?v=1794831090'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831090'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831090'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831371'; }
+  if(g==='about'){ location.href='about.html?v=1794831371'; }
+  if(g==='contact'){ location.href='contact.html?v=1794831371'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831371'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -176,15 +176,29 @@ ${FICHE}`;
   const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3);
     lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); };
   const loop=()=>{ raf=0; const idle=performance.now()-last>160; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.035); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); };
-  const push=d=>{ if(done||busy()||!atEnd()||d<=0) return; pull+=d; last=performance.now();
-    if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); MM.greet(HELLO()); setTimeout(()=>{ ui.classList.remove('on','go'); pull=0; paint(); },700); }
+  /* résistance : un geste lancé de loin (scroll long et rapide qui arrive en bas avec son élan) ne remplit qu'un peu la jauge ;
+     il faut un nouveau geste, commencé une fois en bas, pour aller au bout ; et plus la jauge est pleine, plus elle résiste */
+  let gLast=0, gAtEnd=false, gGain=0;
+  let endSince=0; addEventListener('scroll',()=>{ if(atEnd()){ if(!endSince) endSince=performance.now(); } else endSince=0; },{passive:true});
+  const settled=()=>atEnd()&&endSince&&performance.now()-endSince>450; /* arrivé en bas depuis un moment : pas un élan */
+  const gesture=()=>{ const now=performance.now(); if(now-gLast>320){ gAtEnd=settled(); gGain=0; } gLast=now; }; /* nouveau geste = après une vraie pause */
+  const push=d=>{ if(done||busy()||!atEnd()||d<=0) return; const k=Math.min(1,pull/NEED);
+    let add=d*(1-.55*k); if(!gAtEnd){ add=Math.max(0,Math.min(add,NEED*.22-gGain)); } gGain+=add; if(add<=0) return; pull+=add; last=performance.now();
+    if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); MM.greet(HELLO()); makeRoom(); setTimeout(()=>{ ui.classList.remove('on','go'); pull=0; paint(); },700); }
     if(!raf) raf=requestAnimationFrame(loop); };
-  addEventListener('wheel',e=>push(e.deltaMode===1?e.deltaY*32:e.deltaY),{passive:true});
-  let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; },{passive:true});
-  addEventListener('touchmove',e=>{ if(ty==null) return; const y=e.touches[0].clientY; push((ty-y)*2.2); ty=y; },{passive:true});
+  addEventListener('wheel',e=>{ gesture(); push(e.deltaMode===1?e.deltaY*32:e.deltaY); },{passive:true});
+  let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; gAtEnd=settled(); gGain=0; gLast=performance.now(); },{passive:true});
+  addEventListener('touchmove',e=>{ if(ty==null) return; const y=e.touches[0].clientY; gLast=performance.now(); push((ty-y)*2.2); ty=y; },{passive:true});
   addEventListener('touchend',()=>{ ty=null; },{passive:true});
-  /* une fois le chat refermé, on peut recommencer */
-  new MutationObserver(()=>{ if(!document.body.classList.contains('chat-on')) done=false; }).observe(document.body,{attributes:true,attributeFilter:['class']});
+  /* au bout : le site s'allonge d'un coup — le footer remonte et laisse au fil du chat sa vraie place (hauteur de la fenêtre + marges) */
+  const thread=$('#pthread'), room=document.createElement('div'); room.className='pullroom'; room.setAttribute('aria-hidden','true'); document.body.appendChild(room);
+  let roomOn=false, ro=null;
+  const need=()=>Math.ceil((thread?thread.getBoundingClientRect().height:0)+28);
+  const glide=(ms)=>{ const t0=performance.now(); const f=now=>{ scrollTo(0,document.documentElement.scrollHeight); if(now-t0<ms) requestAnimationFrame(f); }; requestAnimationFrame(f); };
+  function makeRoom(){ roomOn=true; requestAnimationFrame(()=>{ room.style.height=need()+'px'; glide(750); });
+    if(thread&&'ResizeObserver' in window&&!ro){ ro=new ResizeObserver(()=>{ if(!roomOn) return; const h=need(); if(Math.abs(parseFloat(room.style.height||0)-h)>2){ room.style.height=h+'px'; glide(450); } }); ro.observe(thread); } }
+  /* chat refermé : la place se referme, le footer redescend ; on peut recommencer */
+  new MutationObserver(()=>{ if(!document.body.classList.contains('chat-on')){ done=false; if(roomOn){ roomOn=false; room.style.height='0px'; } } }).observe(document.body,{attributes:true,attributeFilter:['class']});
 })();
 
 /* ---------- radio : des morceaux de la playlist de Nabil (à fournir) ---------- */

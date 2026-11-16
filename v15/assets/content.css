@@ -1032,3 +1032,5 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 @media (max-width:900px){.page #pricing .plans.plpre>.plan{translate:-24px 0}.page #pricing .plans.plpre>.plan:nth-child(2){translate:24px 0}.page #pricing{overflow-x:clip}}
 @media (prefers-reduced-motion:reduce){.page #pricing .plans.plpre>.plan{opacity:1;translate:0 0;transition:transform .5s,box-shadow .5s}}
 
+/* Simple Checks : au survol, le fond reste blanc comme au repos */
+.page .folr .fo2:nth-child(1):hover,.page .folr .fo2:nth-child(1):focus{background:#fff}

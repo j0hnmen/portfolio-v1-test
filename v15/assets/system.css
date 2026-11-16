@@ -690,3 +690,4 @@ footer.ftzoom .flogo{overflow:visible!important}
 .pullgo.go .pg-pill{opacity:0;scale:1.15;transition:opacity .5s,scale .5s}
 .pullgo.go .pg-tide{opacity:0;transition:opacity .7s}
 body.chat-on .pullgo{display:none}
+.pullroom{height:0;background:#5650FF;transition:height .7s cubic-bezier(.65,0,.35,1)} /* le bleu du footer continue dans la place ajoutée */
