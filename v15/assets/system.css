@@ -950,7 +950,7 @@ header.top{view-transition-name:vt-top}
 /* Active Templates : AssetsOS « cadre » l'asset + le prompt (fond + contour dégradés), le cadre épouse le contenu ; logo centré au-dessus comme un nom de frame */
 .page .ev-fr{--fx:28px;position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;gap:22px;width:100%}
 .page .ev-fr::before,.page .ev-fr::after{content:"";position:absolute;inset:calc(var(--fx)*-1);border-radius:34px;z-index:-1;pointer-events:none}
-#evolve.fr-both .ev-fr::before{background:linear-gradient(170deg,rgba(243,242,252,.75) 0%,rgba(214,211,255,.85) 50%,rgba(150,145,255,.9) 100%);box-shadow:0 30px 60px -32px rgba(40,30,240,.45)}
+#evolve.fr-both .ev-fr::before{background:linear-gradient(rgba(32,32,32,.04) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(32,32,32,.04) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(rgba(86,79,255,0) 0%,rgba(86,79,255,0) 34%,rgba(86,79,255,.05) 43%,rgba(86,79,255,.16) 54%,rgba(86,79,255,.34) 66%,rgba(86,79,255,.58) 78%,rgba(86,79,255,.82) 90%,#564FFF 100%),#fff;box-shadow:0 30px 60px -32px rgba(40,30,240,.45)}
 #evolve.fr-both .ev-fr::after{padding:2px;background:linear-gradient(160deg,#a9a5ff,#5751FF 45%,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 .page .ev-stage{gap:calc(28px + 18px)!important}
 .page .ev .ev-flabel{line-height:0;display:flex;justify-content:center;width:100%}
