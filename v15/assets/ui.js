@@ -57,8 +57,15 @@ const els=[...document.querySelectorAll('[data-i]')]; els.forEach(e=>e.dataset.e
 function setLang(l){ els.forEach(e=>{ const v=l==='fr'?FR[e.dataset.i]:e.dataset.en; if(v!==undefined) e.innerHTML=v; }); document.documentElement.lang=l;
   const fb=document.getElementById('flag'); if(fb){ fb.dataset.to=l==='fr'?'en':'fr'; const t=l==='fr'?'Read in English':'Lire en français'; fb.setAttribute('aria-label',t); fb.title=t; }
   try{localStorage.setItem('lang',l)}catch(e){} }
-const fb=document.getElementById('flag'); if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to||'fr'));
-let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
+const fb=document.getElementById('flag'), LP=document.documentElement.dataset.lp;
+if(LP){ /* pages statiques EN + /fr/ : le texte est déjà dans la bonne langue ; le drapeau mène à l'autre version */
+  const other=()=>{ const p=location.pathname; return (LP==='fr'?p.replace(/\/fr\/([^/]*)$/,'/$1'):p.replace(/\/([^/]*)$/,'/fr/$1'))+location.hash; };
+  if(fb){ fb.dataset.to=LP==='fr'?'en':'fr'; const t=LP==='fr'?'Read in English':'Lire en français'; fb.setAttribute('aria-label',t); fb.title=t;
+    fb.addEventListener('click',e=>{ e.preventDefault(); try{localStorage.setItem('lang',LP==='fr'?'en':'fr')}catch(_){} location.href=other(); }); }
+  let st=null; try{ st=localStorage.getItem('lang') }catch(e){}
+  if(LP==='en'&&st==='fr') location.replace(other()); else { try{localStorage.setItem('lang',LP)}catch(e){} } }
+else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to||'fr'));
+  let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); } }
 { document.querySelectorAll('.mk-aos').forEach(a=>{ const lg=a.querySelector('.mlogo.sigm'); if(!lg) return; let t=0;
   a.addEventListener('mouseenter',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); void lg.getBoundingClientRect(); lg.classList.remove('sigreset'); lg.classList.add('sigplay'); t=setTimeout(()=>lg.classList.add('sigok'),1540); });
   a.addEventListener('mouseleave',()=>{ clearTimeout(t); lg.classList.remove('sigok','sigplay'); lg.classList.add('sigreset'); }); }); }
@@ -142,8 +149,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794838973'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794838973'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"],a[href^="fr/index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href=(document.documentElement.dataset.lp==='fr'?'fr/':'')+'work.html'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href=(document.documentElement.dataset.lp==='fr'?'fr/':'')+'index.html'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
