@@ -85,7 +85,7 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
   const pr=document.querySelector('#pricing'); const glowZones=[pr,document.querySelector('.page .hero'),document.querySelector('.abt.abtleft')].filter(Boolean); if(glowZones.length){ ['l','r'].forEach(k=>{ const g=document.createElement('div'); g.className='sideglow '+k; g.setAttribute('aria-hidden','true'); document.body.prepend(g); });
     /* lueurs latérales : sur le header de la page AssetsOS et sur Pricing */
     const zones=glowZones, on=new Set();
-    const io=new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?on.add(e.target):on.delete(e.target)); H.classList.toggle('prion',on.size>0); },{rootMargin:'-30% 0px -30% 0px'});
+    const io=new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?on.add(e.target):on.delete(e.target)); H.classList.toggle('prion',on.size>0); H.classList.toggle('prhero',on.size>0&&!on.has(pr)); },{rootMargin:'-30% 0px -30% 0px'});
     zones.forEach(z=>io.observe(z)); }
   // frise : la bille passe d'une étape à l'autre, de gauche à droite (survol bloqué pendant ce temps) ; ensuite les ronds derrière la bille restent bleus et « fusionnent » avec elle quand on la ramène vers la gauche
   const ol=document.querySelector('.tl2'), ball=ol&&ol.querySelector('.tball'); if(ol&&ball&&!RM){ const items=[...ol.querySelectorAll('.tli')]; let run=true, k=0;
@@ -109,8 +109,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794822604'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794822604'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794822847'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794822847'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],

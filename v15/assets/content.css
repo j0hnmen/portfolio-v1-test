@@ -983,3 +983,10 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev-post.wide .ev-quote{font-size:2.4cqw;padding:2cqw;gap:1cqw;border-radius:2.4cqw}.page .ev-post.wide .ev-quote small{font-size:1.8cqw}
 .page .ev-post.wide .ev-cta{font-size:2.2cqw}
 .page .ev-post.mint .ev-quote{background:#fff}
+
+/* Active Templates : template à gauche, texte à droite, le tout centré, texte proche de la carte */
+@media (min-width:901px){
+  .page .ev{grid-template-columns:400px minmax(0,460px)!important;justify-content:center;column-gap:clamp(56px,6vw,96px)!important}
+  .page .ev-stage{order:1;justify-self:start!important}
+  .page .ev .ev-head{order:2}
+}

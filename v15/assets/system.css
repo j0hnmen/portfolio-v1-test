@@ -619,14 +619,21 @@ html.touch body{background:transparent!important} /* le calque papier fixe doit 
 .page .vti.on .vlm{background:var(--blue,#564FFF)}
 @media (max-width:760px){.mtop{height:calc(92px + env(safe-area-inset-top))!important}}
 .page img.vlogo.vink{max-height:clamp(40px,3.6vw,52px)}
-/* tuile AssetsOS : les étapes 1-2-3 arrivent l'une après l'autre */
-.aosx .sysl li{opacity:0;translate:0 14px;transition:opacity .6s cubic-bezier(.2,.8,.2,1),translate .7s cubic-bezier(.2,.8,.2,1)}
-.aosx .sysl.sysin li{opacity:1;translate:0 0}
-.aosx .sysl.sysin li:nth-child(1){transition-delay:.15s}
-.aosx .sysl.sysin li:nth-child(2){transition-delay:.55s}
-.aosx .sysl.sysin li:nth-child(3){transition-delay:.95s}
+/* tuile AssetsOS : étape 1, puis 2, puis 3 — au rythme des bulles de la conversation Claude */
+.aosx .sysl li{opacity:0;translate:0 16px;filter:blur(4px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),translate .9s cubic-bezier(.2,.8,.2,1),filter .8s}
+.aosx .aost.seen .sysl li{opacity:1;translate:0 0;filter:none}
+.aosx .aost.seen .sysl li:nth-child(1){transition-delay:.9s}
+.aosx .aost.seen .sysl li:nth-child(2){transition-delay:2.1s}
+.aosx .aost.seen .sysl li:nth-child(3){transition-delay:3.4s}
 @media (prefers-reduced-motion:reduce){.aosx .sysl li{opacity:1;translate:none}}
 /* bas de page : quand on force le scroll (rebond), le fond reste bleu comme le footer */
 html.atend{background:#5650FF!important} /* seul html : le body garde son papier */
 .whomore{display:flex;justify-content:center;margin-top:clamp(40px,6vh,64px)}
 .page .whomore{display:none!important} /* lien vers À propos : sur la home seulement */
+
+/* lueurs des headers (AssetsOS, À propos) : déséquilibrées et vivantes */
+html.prhero .sideglow.l{width:38vw;background:radial-gradient(58% 48% at 0% 34%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
+html.prhero .sideglow.r{width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(59,233,206,.16),rgba(86,79,255,.10) 45%,rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
+@keyframes hgl{0%{translate:0 -6vh;scale:1}50%{translate:2vw 4vh;scale:1.08}100%{translate:-1vw 10vh;scale:.96}}
+@keyframes hgr{0%{translate:0 6vh;scale:.95}100%{translate:-1.5vw -8vh;scale:1.1}}
+@media (prefers-reduced-motion:reduce){html.prhero .sideglow{animation:none!important}}
