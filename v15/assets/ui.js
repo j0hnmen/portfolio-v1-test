@@ -40,25 +40,11 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   /* toutes les 25 s, la signature refait d'elle-même le geste du survol (jamais quand l'onglet est caché) */
   setInterval(()=>{ if(!document.hidden) replay(); },25000); };
 SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
-/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS).
-   Dessinée dans un <canvas> à la résolution réelle de l'écran : à chaque image, le masque (le trait qui avance) est recalculé pour la taille affichée,
-   puis la vraie signature est peinte à travers. Aucun masque SVG (Chrome ne repeignait pas toujours les grands masques animés : signature coupée). */
+/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS), en SVG plein, SANS tracé ni masque :
+   elle apparaît entière, en fondu léger. Rien ne peut la couper, à aucune taille. */
 function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
-  const vb=pick[0].split(/[\s,]+/).map(Number), cv=document.createElement('canvas'); w.appendChild(cv); cv.style.aspectRatio=vb[2]+'/'+vb[3];
-  const ctx=cv.getContext('2d'), mPath=new Path2D(pick[1]), fPath=new Path2D(pick[2]);
-  const tr=[...pick[3].matchAll(/(translate|scale)\(([^)]*)\)/g)].map(m=>[m[1],m[2].trim().split(/[\s,]+/).map(Number)]);
-  let L=0; { const NS='http://www.w3.org/2000/svg', sv=document.createElementNS(NS,'svg'), p=document.createElementNS(NS,'path'); sv.style.cssText='position:absolute;width:0;height:0;overflow:hidden'; p.setAttribute('d',pick[1]); sv.appendChild(p); document.body.appendChild(sv); L=p.getTotalLength(); sv.remove(); }
-  const rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let t=rm?1:0, raf=0, col='#202020';
-  const draw=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(3,devicePixelRatio||1), W=Math.round(r.width*dpr), Hh=Math.round(r.height*dpr);
-    if(cv.width!==W||cv.height!==Hh){ cv.width=W; cv.height=Hh; } const k=W/vb[2];
-    ctx.setTransform(1,0,0,1,0,0); ctx.globalCompositeOperation='source-over'; ctx.clearRect(0,0,W,Hh); if(t<=0) return;
-    ctx.setTransform(k,0,0,k,-vb[0]*k,-vb[1]*k);
-    if(t<1){ ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=64; ctx.strokeStyle='#000'; ctx.setLineDash([L*t,L+10]); ctx.stroke(mPath); ctx.restore(); ctx.globalCompositeOperation='source-in'; }
-    ctx.save(); tr.forEach(([f,v])=>{ if(f==='translate') ctx.translate(v[0],v[1]||0); else ctx.scale(v[0],v[1]==null?v[0]:v[1]); }); ctx.fillStyle=col; ctx.fill(fPath); ctx.restore(); ctx.globalCompositeOperation='source-over'; };
-  w.play=(dur)=>{ cancelAnimationFrame(raf); col=getComputedStyle(w).color||col; w.classList.add('on'); if(rm){ t=1; draw(); return; } const D=dur||1700, s0=performance.now();
-    const f=n=>{ const x=Math.min(1,(n-s0)/D); t=x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; draw(); if(x<1) raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
-  w.hide=()=>{ cancelAnimationFrame(raf); w.classList.remove('on'); if(!rm){ t=0; draw(); } };
-  new ResizeObserver(()=>draw()).observe(cv);
+  w.innerHTML=`<svg viewBox="${pick[0]}"><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></svg>`;
+  w.play=()=>w.classList.add('on'); w.hide=()=>w.classList.remove('on');
   return w; }
 
 /*abtsig*/ /* « Your one-man design studio » : grande signature en fond, qui se dessine à l'arrivée — la signature propre (celle du logo AssetsOS) */
