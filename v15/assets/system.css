@@ -691,3 +691,6 @@ footer.ftzoom .flogo{overflow:visible!important}
 .pullgo.go .pg-tide{opacity:0;transition:opacity .7s}
 body.chat-on .pullgo{display:none}
 .pullroom{height:0;background:#5650FF;transition:height .7s cubic-bezier(.65,0,.35,1)} /* le bleu du footer continue dans la place ajoutée */
+/* « Let's build your system » : bouton Book a call un peu plus gros, toujours noir */
+html body section.end .row .pill{height:74px!important;padding:0 42px!important;font-size:23px!important}
+@media (max-width:760px){html body section.end .row .pill{height:62px!important;padding:0 30px!important;font-size:20px!important}}

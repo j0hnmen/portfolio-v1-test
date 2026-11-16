@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831371'; }
-  if(g==='about'){ location.href='about.html?v=1794831371'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831371'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831371'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831612'; }
+  if(g==='about'){ location.href='about.html?v=1794831612'; }
+  if(g==='contact'){ location.href='contact.html?v=1794831612'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831612'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -170,25 +170,26 @@ ${FICHE}`;
   const fr=()=>document.documentElement.lang==='fr';
   const TXT=()=>fr()?['Continuez à scroller…','Encore un peu…','Lâchez rien…']:['Keep scrolling…','A bit more…','Almost there…'];
   const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis le mini-moi de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s mini-me: ask me anything about his work.';
-  const NEED=1400; let pull=0, last=0, raf=0, done=false;
+  const NEED=1300; let pull=0, last=0, raf=0, done=false;
   const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
   const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);
   const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3);
     lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); };
-  const loop=()=>{ raf=0; const idle=performance.now()-last>160; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.035); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); };
-  /* résistance : un geste lancé de loin (scroll long et rapide qui arrive en bas avec son élan) ne remplit qu'un peu la jauge ;
-     il faut un nouveau geste, commencé une fois en bas, pour aller au bout ; et plus la jauge est pleine, plus elle résiste */
-  let gLast=0, gAtEnd=false, gGain=0;
+  const loop=()=>{ raf=0; const idle=performance.now()-last>650; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.012); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); }; /* on peut reprendre : la jauge attend 0,65 s avant de redescendre, doucement */
+  /* résistance : pendant les 0,7 s qui suivent l'arrivée en bas, l'élan d'un scroll lancé de loin ne compte presque pas ;
+     ensuite chaque geste compte, plusieurs gestes s'additionnent (la jauge ne redescend que si on s'arrête vraiment) ; plus elle est pleine, plus elle résiste */
   let endSince=0; addEventListener('scroll',()=>{ if(atEnd()){ if(!endSince) endSince=performance.now(); } else endSince=0; },{passive:true});
-  const settled=()=>atEnd()&&endSince&&performance.now()-endSince>450; /* arrivé en bas depuis un moment : pas un élan */
-  const gesture=()=>{ const now=performance.now(); if(now-gLast>320){ gAtEnd=settled(); gGain=0; } gLast=now; }; /* nouveau geste = après une vraie pause */
-  const push=d=>{ if(done||busy()||!atEnd()||d<=0) return; const k=Math.min(1,pull/NEED);
-    let add=d*(1-.55*k); if(!gAtEnd){ add=Math.max(0,Math.min(add,NEED*.22-gGain)); } gGain+=add; if(add<=0) return; pull+=add; last=performance.now();
+  /* un « flux » = des évènements de scroll sans pause ; s'il a commencé avant d'arriver en bas, c'est de l'élan : il ne remplit que 22 % au plus.
+     Un nouveau geste (après une pause, ou une reprise nette du doigt) commencé en bas compte pleinement. */
+  let sLast=0, sPrev=0, sElan=false, sGain=0;
+  const stream=d=>{ const now=performance.now(); if(now-sLast>120||(d>sPrev*1.6&&d>24)){ sElan=!(atEnd()&&endSince&&now-endSince>250); sGain=0; } sLast=now; sPrev=d; };
+  const push=d=>{ if(d>0) stream(d); if(done||busy()||!atEnd()||d<=0) return; const now=performance.now(); if(!endSince) endSince=now;
+    const k=Math.min(1,pull/NEED); let add=d*(1-.5*k); if(sElan){ add=Math.max(0,Math.min(add*.35,NEED*.22-sGain)); } sGain+=add; if(add<=0) return; pull+=add; last=now;
     if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); MM.greet(HELLO()); makeRoom(); setTimeout(()=>{ ui.classList.remove('on','go'); pull=0; paint(); },700); }
     if(!raf) raf=requestAnimationFrame(loop); };
-  addEventListener('wheel',e=>{ gesture(); push(e.deltaMode===1?e.deltaY*32:e.deltaY); },{passive:true});
-  let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; gAtEnd=settled(); gGain=0; gLast=performance.now(); },{passive:true});
-  addEventListener('touchmove',e=>{ if(ty==null) return; const y=e.touches[0].clientY; gLast=performance.now(); push((ty-y)*2.2); ty=y; },{passive:true});
+  addEventListener('wheel',e=>push(e.deltaMode===1?e.deltaY*32:e.deltaY),{passive:true});
+  let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; sLast=0; },{passive:true}); /* chaque contact = nouveau geste */
+  addEventListener('touchmove',e=>{ if(ty==null) return; const y=e.touches[0].clientY; push((ty-y)*2.2); ty=y; },{passive:true});
   addEventListener('touchend',()=>{ ty=null; },{passive:true});
   /* au bout : le site s'allonge d'un coup — le footer remonte et laisse au fil du chat sa vraie place (hauteur de la fenêtre + marges) */
   const thread=$('#pthread'), room=document.createElement('div'); room.className='pullroom'; room.setAttribute('aria-hidden','true'); document.body.appendChild(room);
