@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831897'; }
-  if(g==='about'){ location.href='about.html?v=1794831897'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831897'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831897'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832199'; }
+  if(g==='about'){ location.href='about.html?v=1794832199'; }
+  if(g==='contact'){ location.href='contact.html?v=1794832199'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832199'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -150,6 +150,11 @@ ${FICHE}`;
       m.textContent=e&&e.code==='rate_limited'?'Easy, I’m catching my breath. Try again in a minute.':'The AIntern is asleep for now. Write to me on LinkedIn: linkedin.com/in/nabilamara'; linkify(m); }
     el.classList.remove('talk'); busy=false; send.disabled=false; log.scrollTop=log.scrollHeight; }
   el.onclick=()=>inp.focus();
+  /* la spirale : un tour sur elle-même au survol, et de temps en temps un petit geste (tour ou balancement), jamais onglet caché */
+  { const play=c=>{ if(el.classList.contains('talk')) return; el.classList.remove('spin','wig'); void el.offsetWidth; el.classList.add(c); };
+    el.addEventListener('animationend',()=>el.classList.remove('spin','wig'));
+    box.addEventListener('mouseenter',()=>play('spin'));
+    const later=()=>setTimeout(()=>{ if(!document.hidden) play(Math.random()<.5?'spin':'wig'); later(); },7000+Math.random()*8000); later(); }
   inp.addEventListener('focus',open);
   document.addEventListener('pointerdown',e=>{ if(document.body.classList.contains('chat-on')&&!box.contains(e.target)) close(); });
   $('#chatX').onclick=close;
