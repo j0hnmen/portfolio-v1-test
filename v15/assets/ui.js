@@ -244,11 +244,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
   let sg=null; if(ws[2]){ sg=BSIG('hvx-sig'); ws[2].appendChild(sg); }
   const on=[0,0,0];
   /* effets typo au scroll, légers : a = arrivée du mot (0 → 1 quand il atteint le centre) */
-  const fx=(pos,en)=>{ const cl=v=>Math.max(0,Math.min(1,v)), ar=i=>cl(1-(i-pos)), E=t=>1-Math.pow(1-t,3);
-    if(ws[0]){ const a=E(cl(en)); ws[0].style.setProperty('--lsx',((1-a)*.2).toFixed(4)+'em'); }
-    if(ws[1]){ const a=ar(1); ws[1].style.scale=(1+.12*Math.sin(Math.PI*a)).toFixed(4); }
-    if(ws[2]){ const a=E(ar(2)); ws[2].style.scale=(.86+.14*a).toFixed(4); ws[2].style.setProperty('--lsx',((1-a)*.16).toFixed(4)+'em'); ws[2].style.setProperty('--sh',(130-a*160).toFixed(1)+'%'); } };
-  sec._mk=(pos,vis,en)=>{ fx(pos,en==null?1:en); ws.forEach((w,i)=>{ const near=vis&&Math.abs(pos-i)<.12, far=!vis||Math.abs(pos-i)>.7;
+  /* effets typo : joués (animation CSS) chaque fois que le mot arrive au centre — voir .hvon dans system.css */
+  sec._mk=(pos,vis,en)=>{ en=en==null?1:en; ws.forEach((w,i)=>{ const near=vis&&Math.abs(pos-i)<.12&&(i>0||en>.85), far=!vis||Math.abs(pos-i)>.7||(i===0&&en<.4);
       if(near&&!on[i]){ on[i]=1; w.classList.add('hvon'); if(i===2&&sg) sg.play(1300); }
       else if(far&&on[i]){ on[i]=0; w.classList.remove('hvon'); if(i===2&&sg) sg.hide(); } }); };
 } }
