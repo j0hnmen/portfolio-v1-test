@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794832991'; }
-  if(g==='about'){ location.href='about.html?v=1794832991'; }
-  if(g==='contact'){ location.href='contact.html?v=1794832991'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794832991'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794833280'; }
+  if(g==='about'){ location.href='about.html?v=1794833280'; }
+  if(g==='contact'){ location.href='contact.html?v=1794833280'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794833280'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -182,7 +182,7 @@ ${FICHE}`;
 /*pullchat*/ /* après le footer, on continue à scroller fort : une marée bleue monte et une jauge se remplit ; au bout, le chat s'ouvre et le mini-moi dit bonjour */
 (()=>{ const box=$('#chat'); if(!box||window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   const ui=document.createElement('div'); ui.className='pullgo'; ui.setAttribute('aria-hidden','true');
-  ui.innerHTML='<div class="pg-tide"></div><div class="pg-pill"><svg viewBox="0 0 36 36"><circle class="pg-bg" cx="18" cy="18" r="15"/><circle class="pg-ring" cx="18" cy="18" r="15" pathLength="1"/></svg><span class="pg-t"></span></div>';
+  ui.innerHTML='<div class="pg-tide"></div><div class="pg-pill"><svg viewBox="0 0 36 36"><defs><linearGradient id="pgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#564FFF"/><stop offset=".55" stop-color="#3BE9CE"/><stop offset="1" stop-color="#FFF186"/></linearGradient></defs><circle class="pg-bg" cx="18" cy="18" r="15"/><circle class="pg-ring" cx="18" cy="18" r="15" pathLength="1"/></svg><span class="pg-t"></span></div>';
   document.body.appendChild(ui); const ring=ui.querySelector('.pg-ring'), lab=ui.querySelector('.pg-t');
   /* la marée passe sous tout le contenu du footer : elle vit dans le footer, derrière ses éléments */
   const ftr=document.querySelector('footer.ftr'); if(ftr){ const tide=ui.querySelector('.pg-tide'); ftr.prepend(tide); ftr.classList.add('hastide'); }
