@@ -977,3 +977,5 @@ html body section.end .row .pill:has(:is([data-i="t2"],[data-i="t75"])):hover{ou
 .page .testi,.aosx .testi{margin-left:auto!important;margin-right:auto!important}
 
 .mm .aint{transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.prob h2 .blu{color:#564FFF;-webkit-text-fill-color:#564FFF;background:none}
+html.src .prob h2 .blu{color:var(--c-acc)!important;-webkit-text-fill-color:var(--c-acc)!important}
