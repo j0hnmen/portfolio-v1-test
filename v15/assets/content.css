@@ -1024,3 +1024,9 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 /* Grow Bigger : dégradé bleu de la charte, du blanc vers un lavande, halo bleu à droite (esprit carte Signature Ship) */
 .page .folr .fo2:nth-child(2){background:radial-gradient(50% 180% at 100% 0%,rgba(86,79,255,.16) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#fff 35%,#f3f2ff 75%,#eae8ff 100%)} /* plus léger */
 @media (hover:hover){.page .folr .fo2:nth-child(2):hover,.page .folr .fo2:nth-child(2):focus{background:radial-gradient(55% 190% at 100% 0%,rgba(86,79,255,.24) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#f8f8ff 30%,#efeeff 70%,#e3e1ff 100%)}}
+/* Pricing : les deux cartes arrivent légèrement de part et d'autre, puis se posent */
+.page #pricing .plans.plpre>.plan{opacity:0;translate:-56px 0;transition:translate 1.25s cubic-bezier(.16,1,.3,1),opacity .9s ease-out}
+.page #pricing .plans.plpre>.plan:nth-child(2){translate:56px 0;transition-delay:.08s}
+.page #pricing .plans.plpre.plin>.plan{opacity:1;translate:0 0}
+@media (max-width:900px){.page #pricing .plans.plpre>.plan{translate:-24px 0}.page #pricing .plans.plpre>.plan:nth-child(2){translate:24px 0}.page #pricing{overflow-x:clip}}
+@media (prefers-reduced-motion:reduce){.page #pricing .plans.plpre>.plan{opacity:1;translate:0 0;transition:none}}

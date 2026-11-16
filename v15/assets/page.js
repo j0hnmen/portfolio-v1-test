@@ -205,3 +205,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     const m=document.createElement('span'); m.className=im.className+' vlm'; m.setAttribute('role','img'); m.setAttribute('aria-label',im.alt||'');
     const u=im.currentSrc||im.src; m.style.cssText=`display:block;height:${h}px;aspect-ratio:${nw}/${nh};max-width:100%;-webkit-mask:url("${u}") left center/contain no-repeat;mask:url("${u}") left center/contain no-repeat;`; im.replaceWith(m); };
   if(im.complete&&im.naturalWidth) go(); else im.addEventListener('load',go,{once:true}); }); }
+
+/*plansin*/ /* Pricing : les deux cartes glissent légèrement depuis la gauche et la droite, puis se posent */
+{ const pl=document.querySelector('#pricing .plans'); if(pl&&'IntersectionObserver' in window){ pl.classList.add('plpre');
+  new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); requestAnimationFrame(()=>pl.classList.add('plin')); } },{threshold:.18}).observe(pl); } }
