@@ -180,7 +180,7 @@ ${FICHE}`;
 })();
 
 /*pullchat*/ /* après le footer, on continue à scroller fort : une marée bleue monte et une jauge se remplit ; au bout, le chat s'ouvre et le mini-moi dit bonjour */
-(()=>{ const box=$('#chat'); if(!box||window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+(()=>{ const box=$('#chat'); if(!box||document.documentElement.hasAttribute('data-hold')||window.matchMedia('(prefers-reduced-motion:reduce)').matches) return; /* pas sur la page provisoire : pas de footer, la molette y déplace le canvas */
   const ui=document.createElement('div'); ui.className='pullgo'; ui.setAttribute('aria-hidden','true');
   ui.innerHTML='<div class="pg-tide"></div><div class="pg-pill"><svg viewBox="0 0 36 36"><defs><linearGradient id="pgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#564FFF"/><stop offset=".55" stop-color="#3BE9CE"/><stop offset="1" stop-color="#FFF186"/></linearGradient></defs><circle class="pg-bg" cx="18" cy="18" r="15"/><circle class="pg-ring" cx="18" cy="18" r="15" pathLength="1"/></svg><span class="pg-t"></span></div>';
   document.body.appendChild(ui); const ring=ui.querySelector('.pg-ring'), lab=ui.querySelector('.pg-t');
