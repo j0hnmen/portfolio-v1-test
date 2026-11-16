@@ -58,7 +58,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       if(x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
   /* à chaque envoi : une grande onde bleue part de la tuile et traverse l'écran, derrière le contenu */
-  const wave=()=>{ if(RM||!src) return; const r=src.getBoundingClientRect(); [0,380].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+r.width/2)+'px'; w.style.top=(r.top+r.height/2)+'px'; w.style.animationDelay=d+'ms'; document.body.appendChild(w); setTimeout(()=>w.remove(),3200+d); }); };
+  const wave=()=>{ if(RM||!src) return; const r=src.getBoundingClientRect(); [0,700].forEach((d,n)=>{ const w=document.createElement('i'); w.className='cs-wave'+(n?' w2':''); w.style.left=(r.left+r.width/2)+'px'; w.style.top=(r.top+r.height/2)+'px'; w.style.animationDelay=d+'ms'; document.body.appendChild(w); setTimeout(()=>w.remove(),5800+d); }); };
   /* boucle : écrire → envoyer (un asset sort) → effacer → suivant */
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
