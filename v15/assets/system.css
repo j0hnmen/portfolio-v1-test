@@ -948,3 +948,13 @@ header.top{view-transition-name:vt-top}
 @keyframes vtwipe{from{-webkit-mask-position:0 0%;mask-position:0 0%}to{-webkit-mask-position:0 100%;mask-position:0 100%}}
 @keyframes vtout{to{transform:translateY(-3vh);filter:blur(4px)}}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* Active Templates : AssetsOS « cadre » l'asset + le prompt (contour dégradé ou fond dégradé), logo posé au-dessus comme un nom de frame */
+.page .ev-stage{--fx:30px;isolation:isolate}
+.page .ev-stage::before{content:"";position:absolute;inset:calc(var(--fx)*-1);border-radius:34px;z-index:-1;pointer-events:none}
+#evolve.fr-line .ev-stage::before{padding:2px;background:linear-gradient(160deg,#8f8aff,#5751FF 45%,#1C14F2);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+#evolve.fr-fill .ev-stage::before{background:linear-gradient(170deg,rgba(233,232,251,.9) 0%,#c9c6ff 45%,#7e79ff 80%,#5650FF 100%);box-shadow:0 30px 60px -30px rgba(40,30,240,.45)}
+.page .ev .ev-flabel{position:absolute;left:calc(var(--fx)*-1 + 6px);bottom:calc(100% + var(--fx) + 14px);line-height:0}
+.page .ev .ev-flabel .ev-aos{margin:0!important;width:132px}
+.page .ev-stage{margin-top:calc(var(--fx) + 70px)!important;margin-bottom:var(--fx)!important}
+@media (max-width:900px){.page .ev-stage{--fx:16px}.page .ev .ev-flabel{left:calc(var(--fx)*-1 + 4px)}.page .ev .ev-flabel .ev-aos{width:112px}}
