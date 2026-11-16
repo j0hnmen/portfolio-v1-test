@@ -155,7 +155,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
       e.innerHTML=n==='title'?'<span class="evtt"></span><i class="ev-caret"></i>':c.blocks[n]; post.appendChild(e); B[n]=e; }
     tEl=post.querySelector('.evtt'); };
   const lang=(lg)=>{ txtLang=lg; post.querySelectorAll('.evt').forEach(e=>e.textContent=e.dataset[lg]); };
-  const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,c.S.length-1)];
+  const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,2)]; /* v4 = même mise en page que v3, seul le thème change */
     post.style.aspectRatio=c.fmt[k]; post.classList.toggle('wide',c.fmt[k]==='16/9'||c.fmt[k]==='16/10'); post.classList.remove('dark','yellow','mint'); if(c.theme[k]) post.classList.add(c.theme[k]);
     for(const n in B){ const p=st[n], e=B[n];
       if(!p){ e.classList.add('off'); continue; }

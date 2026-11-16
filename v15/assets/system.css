@@ -643,8 +643,10 @@ html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
 .node [data-cl=stop]{display:none}
 .node.islive [data-cl=stop]{display:grid}
 /* footer : le nom arrive comme sur le canvas (animé en JS) */
-footer.ftfx.ftzoom .flogo path{opacity:1;filter:none;transition:none;transform:none;transform-box:fill-box!important} /* sans !important : l’animation JS (opacité + flou) doit pouvoir passer ; origine posée en JS = centre du nom */
-footer.ftfx.ftzoom .fsub{opacity:1;transition:none;transform:none}
+footer.ftfx.ftzoom{overflow-x:clip;overflow-y:visible} /* le nom zoomé et flou ne doit pas être coupé */
+footer.ftfx.ftzoom .flogo path{opacity:0} /* état de base : invisible ; l’animation JS (attributs SVG, compatibles Safari) le fait apparaître */
+footer.ftfx.ftzoom.ft-shown .flogo path{opacity:1}
+footer.ftfx.ftzoom .fsub{opacity:0;transition:none;transform:none}footer.ftfx.ftzoom.ft-on .fsub{opacity:1}
 footer.ftzoom .flogo{overflow:visible!important}
 /* grande signature noire en fond de « Your one-man design studio » */
 .abt section{position:relative;isolation:isolate}

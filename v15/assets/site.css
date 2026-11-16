@@ -1219,8 +1219,8 @@ html.endblue #home:not(:where(.page *:not(.aosx,.aosx *))),html.endblue #invader
 html.bluepg .bluebg:not(:where(.page *:not(.aosx,.aosx *))){z-index:0}
 html.bluepg main:not(:where(.page *:not(.aosx,.aosx *))),html.bluepg footer:not(:where(.page *:not(.aosx,.aosx *))){position:relative;z-index:1}
 html.blueon .bluebg:not(:where(.page *:not(.aosx,.aosx *))){opacity:1}
-footer.ftfx .flogo path:not(:where(.page *:not(.aosx,.aosx *))){transform-box:fill-box;transform-origin:50% 100%;opacity:0;transform:translateY(55%);filter:blur(6px);transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .6s,filter .7s}
-footer.ftfx.ft-on .flogo path:not(:where(.page *:not(.aosx,.aosx *))){opacity:1;transform:none;filter:blur(0)}
+footer.ftfx:not(.ftzoom) .flogo path:not(:where(.page *:not(.aosx,.aosx *))){transform-box:fill-box;transform-origin:50% 100%;opacity:0;transform:translateY(55%);filter:blur(6px);transition:transform 1s cubic-bezier(.16,1,.3,1),opacity .6s,filter .7s}
+footer.ftfx:not(.ftzoom).ft-on .flogo path:not(:where(.page *:not(.aosx,.aosx *))){opacity:1;transform:none;filter:blur(0)}
 footer.ftfx .fcap:not(:where(.page *:not(.aosx,.aosx *))){opacity:0;transform:translateY(26px) scale(.96);transition:opacity .7s .5s,transform 1s cubic-bezier(.16,1,.3,1) .5s}
 footer.ftfx.ft-on .fcap:not(:where(.page *:not(.aosx,.aosx *))){opacity:1;transform:none}
 footer.ftfx .flinks>a:not(:where(.page *:not(.aosx,.aosx *))){opacity:0;transform:translateY(12px);transition:opacity .6s,transform .8s cubic-bezier(.16,1,.3,1)}

@@ -112,11 +112,24 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     /* nom du footer : même arrivée que le canvas — lettre par lettre, en zoom arrière depuis le centre du nom, avec flou */
     const fps=[...ft.querySelectorAll('.flogo path')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>Math.abs(a.b.y-b.b.y)>40?a.b.y-b.b.y:a.b.x-b.b.x).map(o=>o.p);
     const fsub=ft.querySelector('.fsub'), E1='cubic-bezier(.16,1,.3,1)';
-    /* comme le canvas : zoom arrière autour du centre du nom (une seule origine pour toutes les lettres), lettre par lettre */
+    /* comme le canvas : zoom arrière autour du centre du nom, lettre par lettre, opacité 0 + flou au départ.
+       Animé en attributs SVG (matrice + filtre feGaussianBlur) : Safari n’applique ni le filtre CSS ni l’origine CSS sur les tracés SVG. */
+    const fsvg=ft.querySelector('.flogo'), NS='http://www.w3.org/2000/svg';
     const zoom=()=>{ const G=1.3, bs=fps.map(p=>p.getBBox()); const x0=Math.min(...bs.map(b=>b.x)), y0=Math.min(...bs.map(b=>b.y)), x1=Math.max(...bs.map(b=>b.x+b.width)), y1=Math.max(...bs.map(b=>b.y+b.height)), cx=(x0+x1)/2, cy=(y0+y1)/2;
-      fps.forEach((p,i)=>{ const b=bs[i]; p.style.transformOrigin=`${((cx-b.x)/b.width*100).toFixed(2)}% ${((cy-b.y)/b.height*100).toFixed(2)}%`;
-        p.animate([{transform:`scale(${G})`,opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:2000,delay:150+i*120,easing:E1,fill:'backwards'}); });
-      if(fsub){ const lr=ft.querySelector('.flogo').getBoundingClientRect(), fr=fsub.getBoundingClientRect(); fsub.style.transformOrigin=`50% ${(lr.top+lr.height/2-fr.top).toFixed(1)}px`;
+      const k=fsvg.viewBox.baseVal.width/(fsvg.getBoundingClientRect().width||1), B0=10*k; /* 10 px de flou à l’écran, en unités du SVG */
+      let defs=fsvg.querySelector('defs'); if(!defs){ defs=document.createElementNS(NS,'defs'); fsvg.prepend(defs); }
+      const L=fps.map((p,i)=>{ const f=document.createElementNS(NS,'filter'); f.id='fzb'+i; f.setAttribute('filterUnits','userSpaceOnUse');
+        f.setAttribute('x',x0-(x1-x0)); f.setAttribute('y',y0-(y1-y0)); f.setAttribute('width',(x1-x0)*3); f.setAttribute('height',(y1-y0)*3);
+        const g=document.createElementNS(NS,'feGaussianBlur'); g.setAttribute('stdDeviation',B0); f.appendChild(g); defs.appendChild(f); p.setAttribute('filter',`url(#fzb${i})`);
+        return {p,g,d:150+i*120}; });
+      const ease=t=>1-Math.pow(1-t,4), D=2000, t0=performance.now();
+      const frame=now=>{ let live=0;
+        L.forEach(o=>{ const t=Math.max(0,Math.min(1,(now-t0-o.d)/D)), e=ease(t), s=G+(1-G)*e; if(t<1) live=1;
+          o.p.setAttribute('transform',`matrix(${s} 0 0 ${s} ${cx*(1-s)} ${cy*(1-s)})`); o.p.style.opacity=Math.min(1,e*1.6).toFixed(3); o.g.setAttribute('stdDeviation',(B0*(1-Math.min(1,e*1.3))).toFixed(2));
+          if(t>=1&&o.p.hasAttribute('filter')){ o.p.removeAttribute('filter'); o.p.removeAttribute('transform'); } });
+        if(live) requestAnimationFrame(frame); else ft.classList.add('ft-shown'); };
+      requestAnimationFrame(frame);
+      if(fsub){ const lr=fsvg.getBoundingClientRect(), fr=fsub.getBoundingClientRect(); fsub.style.transformOrigin=`${(lr.left+lr.width/2-fr.left).toFixed(1)}px ${(lr.top+lr.height/2-fr.top).toFixed(1)}px`;
         fsub.animate([{transform:'scale(1.3)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); } };
     new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); zoom(); } },{threshold:.25}).observe(ft); }
   // « AssetsOS » en casse normale, « ASSETS OS » quand le texte est en capitales
@@ -125,8 +138,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794826278'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794826278'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794826549'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794826549'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
