@@ -594,3 +594,24 @@ html.touch,html.touch body{background:#F3F2EE!important}
 .pbg{display:none}
 html.touch .pbg{display:block;position:fixed;inset:0;z-index:-1;pointer-events:none;background:#F3F2EE url(../img/paper-warm.webp) center/cover no-repeat}
 html.touch body{background:transparent!important} /* le calque papier fixe doit rester visible derrière le contenu */
+
+/* À propos : section Expertise */
+.page .abx{padding-top:clamp(40px,7vh,80px)}
+.page .axgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(32px,5vh,56px)}
+.page .axc{display:flex;flex-direction:column;gap:14px;padding:26px 24px 28px;border-radius:20px;background:#fff;box-shadow:0 0 0 1px rgba(32,32,32,.06),0 20px 44px -30px rgba(32,32,32,.35)}
+.page .axi{display:grid;place-items:center;width:46px;height:46px;border-radius:13px;background:#F3F2EE;color:#564FFF}
+.page .axi svg{width:24px;height:24px}
+.page .axlogo img{height:22px;width:auto}
+.page .axfr svg{height:22px;width:auto;color:#202020}
+.page .axc b{font-size:clamp(24px,2vw,30px);line-height:.95;text-transform:uppercase}
+.page .axc p{margin:0;font-size:16px;line-height:1.45;color:#5f5e5a}
+@media (max-width:1100px){.page .axgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.page .axgrid{grid-template-columns:1fr;gap:12px}.page .axc{flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:8px;padding:20px}.page .axc p{flex-basis:100%}.page .axc b{font-size:24px}}
+/* frise : étape moyenne (Framer) */
+.page .vti.vmid{padding-bottom:clamp(80px,13vh,140px)}
+.page .vfr{display:inline-flex;align-items:center;gap:10px;color:#202020;transition:color .4s}
+.page .vfr svg{height:clamp(30px,2.6vw,38px);width:auto}
+.page .vfr b{font:700 clamp(30px,2.6vw,38px)/1 var(--ui,Inter,system-ui,sans-serif);letter-spacing:-.03em}
+.page .vti.on .vfr{color:var(--blue,#564FFF)}
+.page .vti.vmid .vtx{font-size:clamp(18px,1.5vw,22px)}
+@media (max-width:760px){.page .vti.vmid{padding-bottom:56px!important}.page .vfr svg{height:26px}.page .vfr b{font-size:26px}}
