@@ -91,7 +91,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     const end=()=>{ cancelAnimationFrame(raf); H.style.scrollBehavior=sb; ['wheel','touchstart','keydown'].forEach(ev=>removeEventListener(ev,end)); stop=null; };
     ['wheel','touchstart','keydown'].forEach(ev=>addEventListener(ev,end,{passive:true})); stop=end;
     const step=now=>{ const k=Math.min(1,(now-t0)/dur), d=dest(id); scrollTo(0,y0+(d-y0)*ease(k)); if(k<1) raf=requestAnimationFrame(step); else end(); }; raf=requestAnimationFrame(step); return true; };
-  document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"]'); if(!a||e.defaultPrevented) return; const id=decodeURIComponent(a.getAttribute('href').slice(1)); if(!id) return;
+  document.addEventListener('click',e=>{ const a=e.target.closest('a[href*="#"]'); if(!a||e.defaultPrevented||a.pathname!==location.pathname) return; const id=decodeURIComponent(a.hash.slice(1)); if(!id) return;
     if(go(id)){ e.preventDefault(); history.replaceState(null,'','#'+id); } }); }
 
 /*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
