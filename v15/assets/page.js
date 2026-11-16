@@ -135,20 +135,20 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
         {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,52,48,27],date:[7,85,48,7]},
         {logo:[5,8,40,7],eye:[5,19,15,9],title:[5,31,50,24],photo:[60,9,35,82],talk:[5,58,50,22],date:[5,84,40,9]},
         {logo:[5,8,40,7],eye:[5,19,15,9],title:[5,31,50,24],photo:[60,9,35,66],talk:[5,58,50,22],date:[5,84,40,9],partners:[60,79,35,12]}]},
-   { blocks:{logo:'<i></i>Pulse', eye:'<span>'+t('We’re hiring','On recrute')+'</span>', title:'',
-       salary:t('€60–70k · Paris, hybrid','60–70 k€ · Paris, hybride'), team:'<i></i><i></i><i></i>',
-       perks:'<span>'+t('4-day week','Semaine de 4 jours')+'</span><span>'+t('Remote Fridays','Télétravail le vendredi')+'</span><span>'+t('Learning budget','Budget formation')+'</span>',
-       cta:t('Apply now','Postuler')+' →'},
-     cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',salary:'ev-salary',team:'ev-team',perks:'ev-perks',cta:'ev-cta'},
-     title:{en:'Senior product designer',fr:'Product designer senior'},
-     req:{en:['Add the salary range','Add a photo of the team','List three perks','Add an “Apply now” button','Translate it into French'],
-          fr:['Ajoute la fourchette de salaire','Ajoute une photo de l’équipe','Liste trois avantages','Ajoute un bouton « Postuler »','Traduis-le en anglais']},
-     fmt:['4/5','4/5','4/5','4/5','4/5','4/5'], theme:[0,0,0,0,0,0], flip:5,
-     S:[{logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30]},
-        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7]},
-        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7],team:[7,66,86,28]},
-        {logo:[7,6,30,6],eye:[7,15,30,6],title:[7,24,86,30],salary:[7,56,64,7],team:[52,66,41,28],perks:[7,66,42,28]},
-        {logo:[7,5,30,6],eye:[7,13,30,6],title:[7,21,86,26],salary:[7,49,64,7],team:[52,59,41,24],perks:[7,59,42,24],cta:[7,87,50,7]}]}];
+   { blocks:{ann:t('New: AI reports are live →','Nouveau : les rapports IA sont en ligne →'), nav:'<b><i></i>Orbit</b><span></span><span></span><span></span><em>'+t('Log in','Connexion')+'</em>', title:'',
+       sub:'<i></i><i></i>', cta:t('Start free','Essai gratuit')+' →', shot:'<span class="ev-wd"><i></i><i></i><i></i></span><span class="ev-wc"><i></i><i></i><i></i></span>',
+       quote:t('“We shipped our new site in a week.”','« Notre nouveau site, en ligne en une semaine. »')+'<small>'+t('Head of growth, Orbit','Head of growth, Orbit')+'</small>',
+       logos:'<small>'+t('Trusted by','Ils nous font confiance')+'</small><i></i><i></i><i></i><i></i>'},
+     cls:{ann:'ev-ann',nav:'ev-nav',title:'ev-title',sub:'ev-subl',cta:'ev-cta',shot:'ev-shot',quote:'ev-quote',logos:'ev-logos'},
+     title:{en:'Ship faster with Orbit',fr:'Livrez plus vite avec Orbit'},
+     req:{en:['Add a row of customer logos','Add a testimonial','Make the mobile version','Add an announcement banner','Switch to the spring campaign colors'],
+          fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Fais la version mobile','Ajoute un bandeau d’annonce','Passe aux couleurs de la campagne de printemps']},
+     fmt:['16/10','16/10','16/10','9/16','9/16','9/16'], theme:[0,0,0,0,0,'mint'],
+     S:[{nav:[4,5,92,8],title:[4,22,46,28],sub:[4,53,38,9],cta:[4,67,20,8],shot:[54,20,42,64]},
+        {nav:[4,5,92,8],title:[4,20,46,26],sub:[4,48,38,9],cta:[4,61,20,8],shot:[54,19,42,58],logos:[4,85,92,8]},
+        {nav:[4,5,92,8],title:[4,18,46,22],sub:[4,42,38,8],cta:[4,53,20,7.5],quote:[4,64,46,16],shot:[54,18,42,60],logos:[4,85,92,8]},
+        {nav:[6,3,88,4],title:[6,10,88,14],sub:[6,25,80,5],cta:[6,32,40,4.5],shot:[6,40,88,26],quote:[6,69,88,13],logos:[6,85,88,5]},
+        {ann:[0,0,100,3.8],nav:[6,6,88,4],title:[6,12.5,88,13],sub:[6,26.5,80,5],cta:[6,33.5,40,4.5],shot:[6,41,88,24],quote:[6,68,88,13],logos:[6,85,88,5]}]}];
   let C=0, B={}, tEl=null, txtLang=null;
   const build=()=>{ const c=CASES[C]; post.innerHTML=''; B={};
     for(const n in c.blocks){ const e=document.createElement('div'); e.className='ev-b '+c.cls[n]+' off'; e.dataset.b=n;
@@ -156,7 +156,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     tEl=post.querySelector('.evtt'); };
   const lang=(lg)=>{ txtLang=lg; post.querySelectorAll('.evt').forEach(e=>e.textContent=e.dataset[lg]); };
   const apply=(k,born)=>{ const c=CASES[C], st=c.S[Math.min(k,c.S.length-1)];
-    post.style.aspectRatio=c.fmt[k]; post.classList.toggle('wide',c.fmt[k]==='16/9'); post.classList.remove('dark','yellow'); if(c.theme[k]) post.classList.add(c.theme[k]);
+    post.style.aspectRatio=c.fmt[k]; post.classList.toggle('wide',c.fmt[k]==='16/9'||c.fmt[k]==='16/10'); post.classList.remove('dark','yellow','mint'); if(c.theme[k]) post.classList.add(c.theme[k]);
     for(const n in B){ const p=st[n], e=B[n];
       if(!p){ e.classList.add('off'); continue; }
       const wasOff=e.classList.contains('off'); e.classList.remove('off');

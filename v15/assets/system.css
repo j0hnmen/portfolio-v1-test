@@ -626,3 +626,7 @@ html.touch body{background:transparent!important} /* le calque papier fixe doit 
 .aosx .sysl.sysin li:nth-child(2){transition-delay:.55s}
 .aosx .sysl.sysin li:nth-child(3){transition-delay:.95s}
 @media (prefers-reduced-motion:reduce){.aosx .sysl li{opacity:1;translate:none}}
+/* bas de page : quand on force le scroll (rebond), le fond reste bleu comme le footer */
+html.atend{background:#5650FF!important} /* seul html : le body garde son papier */
+.whomore{display:flex;justify-content:center;margin-top:clamp(40px,6vh,64px)}
+.page .whomore{display:none!important} /* lien vers À propos : sur la home seulement */
