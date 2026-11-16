@@ -67,10 +67,10 @@ const menu=$('#menu'), veil=$('#veil');
 $('#menuBtn').onclick=()=>{menu.classList.add('on');veil.classList.add('on');sOpen()};
 veil.onclick=()=>closeTop();
 menu.querySelector('nav').onclick=e=>{const b_=e.target.closest('[data-go]'); const g=b_&&b_.dataset.go; if(!g) return;
-  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831006'; }
-  if(g==='about'){ location.href='about.html?v=1794831006'; }
-  if(g==='contact'){ location.href='contact.html?v=1794831006'; } sTick(); };
-function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831006'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
+  if(g==='work'){ if(typeof setMode==='function'){ closeTop(); setMode('ring'); } else location.href='work.html?v=1794831090'; }
+  if(g==='about'){ location.href='about.html?v=1794831090'; }
+  if(g==='contact'){ location.href='contact.html?v=1794831090'; } sTick(); };
+function goAbout(){ if(typeof setMode!=='function'){ location.href='about.html?v=1794831090'; return; } if(!document.body.classList.contains('is-canvas')) setMode('canvas'); setTimeout(()=>{ const a=document.getElementById('about'); if(a) scrollTo({top:a.getBoundingClientRect().top+scrollY-110,behavior:'smooth'}); },120); }
 function closeTop(){ if(G.on) return G.stop();
   if(typeof viewer!=='undefined'&&viewer.classList.contains('on')) return closeViewer();
   if(menu.classList.contains('on')){ menu.classList.remove('on'); veil.classList.remove('on'); return sClose(); }
@@ -155,7 +155,36 @@ ${FICHE}`;
   $('#chatX').onclick=close;
   form.onsubmit=e=>{ e.preventDefault(); ask(inp.value); };
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('chat-on')){ e.stopPropagation(); close(); } },true);
-  return { open, close };
+  /* message d'accueil tapé lettre par lettre (une seule fois par visite) */
+  let greeted=false;
+  function greet(t){ open(); if(greeted) return; greeted=true; chips.innerHTML=''; const m=add('a',''); el.classList.add('talk'); let i=0;
+    const tick=()=>{ m.textContent=t.slice(0,++i); log.scrollTop=log.scrollHeight; if(i<t.length) setTimeout(tick,22); else { el.classList.remove('talk'); hist.push({role:'assistant',content:t}); chipsOn(); } }; tick(); }
+  return { open, close, greet };
+})();
+
+/*pullchat*/ /* après le footer, on continue à scroller fort : une marée bleue monte et une jauge se remplit ; au bout, le chat s'ouvre et le mini-moi dit bonjour */
+(()=>{ const box=$('#chat'); if(!box||window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const ui=document.createElement('div'); ui.className='pullgo'; ui.setAttribute('aria-hidden','true');
+  ui.innerHTML='<div class="pg-tide"></div><div class="pg-pill"><svg viewBox="0 0 36 36"><circle class="pg-bg" cx="18" cy="18" r="15"/><circle class="pg-ring" cx="18" cy="18" r="15" pathLength="1"/></svg><span class="pg-t"></span></div>';
+  document.body.appendChild(ui); const ring=ui.querySelector('.pg-ring'), lab=ui.querySelector('.pg-t');
+  const fr=()=>document.documentElement.lang==='fr';
+  const TXT=()=>fr()?['Continuez à scroller…','Encore un peu…','Lâchez rien…']:['Keep scrolling…','A bit more…','Almost there…'];
+  const HELLO=()=>fr()?'Bonjour ! Vous êtes allé jusqu’au bout. Je suis le mini-moi de Nabil : demandez-moi ce que vous voulez sur son travail.':'Hey, you made it all the way down. I’m Nabil’s mini-me: ask me anything about his work.';
+  const NEED=1400; let pull=0, last=0, raf=0, done=false;
+  const atEnd=()=>innerHeight+scrollY>=document.documentElement.scrollHeight-4;
+  const busy=()=>document.body.classList.contains('chat-on')||(typeof G!=='undefined'&&G.on);
+  const paint=()=>{ const k=Math.min(1,pull/NEED); document.documentElement.style.setProperty('--pull',k.toFixed(3)); ring.style.strokeDashoffset=(1-k).toFixed(3);
+    lab.textContent=TXT()[k<.4?0:k<.75?1:2]; ui.classList.toggle('on',k>.02&&!done); };
+  const loop=()=>{ raf=0; const idle=performance.now()-last>160; if(idle&&pull>0&&!done){ pull=Math.max(0,pull-NEED*.035); } paint(); if(pull>0&&!done) raf=requestAnimationFrame(loop); };
+  const push=d=>{ if(done||busy()||!atEnd()||d<=0) return; pull+=d; last=performance.now();
+    if(pull>=NEED){ done=true; paint(); ui.classList.add('go'); MM.greet(HELLO()); setTimeout(()=>{ ui.classList.remove('on','go'); pull=0; paint(); },700); }
+    if(!raf) raf=requestAnimationFrame(loop); };
+  addEventListener('wheel',e=>push(e.deltaMode===1?e.deltaY*32:e.deltaY),{passive:true});
+  let ty=null; addEventListener('touchstart',e=>{ ty=e.touches[0].clientY; },{passive:true});
+  addEventListener('touchmove',e=>{ if(ty==null) return; const y=e.touches[0].clientY; push((ty-y)*2.2); ty=y; },{passive:true});
+  addEventListener('touchend',()=>{ ty=null; },{passive:true});
+  /* une fois le chat refermé, on peut recommencer */
+  new MutationObserver(()=>{ if(!document.body.classList.contains('chat-on')) done=false; }).observe(document.body,{attributes:true,attributeFilter:['class']});
 })();
 
 /* ---------- radio : des morceaux de la playlist de Nabil (à fournir) ---------- */
