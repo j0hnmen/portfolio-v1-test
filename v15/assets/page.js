@@ -70,7 +70,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   let pi=0, on=false, timer=0; const wait=ms=>new Promise(r=>timer=setTimeout(r,ms));
   const loop=async()=>{ if(on) return; on=true; while(vis){ const txt=P[pi%P.length][0];
       for(let i=1;i<=txt.length&&vis;i++){ pt.textContent=txt.slice(0,i); await wait(38+Math.random()*40); }
-      await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi); wave(); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
+      await wait(380); if(!vis) break; bar.classList.add('sent'); wave(); await wait(160); spawn(pi); src&&src.classList.add('emit'); /* l'onde part juste avant l'asset */ await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
       await wait(700); for(let i=txt.length;i>=0&&vis;i--){ pt.textContent=txt.slice(0,i); await wait(14); } await wait(320); pi++; }
     on=false; };
   new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(step); } loop(); } else if(wl){ wl.querySelectorAll('.cs-wave').forEach(w=>w.remove()); } },{rootMargin:'0px'}).observe(stage);
