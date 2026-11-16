@@ -36,10 +36,10 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <link rel="stylesheet" href="assets/site.css?v=a50e42fa"><link rel="stylesheet" href="assets/system.css?v=db26da46">
-<script>window.HOLDGO={"atelier": "https://www.linkedin.com/feed/update/urn:li:activity:7510960044809568257/", "sorare": "https://www.linkedin.com/feed/update/urn:li:activity:7300220200203739137/", "sportgen": "https://www.linkedin.com/feed/update/urn:li:activity:7466105289935736832/", "inktober": "https://inktober.nabilamara.com/", "filly": "https://www.linkedin.com/in/nabilamara/", "abc": "https://figmabc.figma.site/"};</script>
+<script>window.HOLDGO={"atelier": "https://www.linkedin.com/feed/update/urn:li:activity:7510960044809568257/", "sorare": "https://www.linkedin.com/feed/update/urn:li:activity:7300220200203739137/", "sportgen": "https://www.linkedin.com/feed/update/urn:li:activity:7466105289935736832/", "inktober": "https://inktober.nabilamara.com/", "abc": "https://figmabc.figma.site/"};</script>
 <style id="holdcss">
 html[data-hold],html[data-hold] body{overflow:hidden!important;height:100%;overscroll-behavior:none}
-html[data-hold] :is(#pres,.pres,.cvspace,.hstack,.aosend,#invader,.toast,#snd,#veil,#menu,#game,#chat,.pbox,#menuBtn,.burger,#scrollHint,.scrollhint,#backCv,.hint.l,.hint.r,#srcbg,#srctoast,.mtop){display:none!important}
+html[data-hold] :is(#pres,.pres,.cvspace,.hstack,.aosend,#invader,.toast,#snd,#veil,#menu,#game,#menuBtn,.burger,#scrollHint,.scrollhint,#backCv,.hint.l,.hint.r,#srcbg,#srctoast,.mtop){display:none!important}
 /* bandeau « Building website… » : jaune de la charte, rubans de chantier qui défilent */
 .holdbar{position:fixed;z-index:60;top:calc(26px + env(safe-area-inset-top));left:50%;translate:-50% 0;display:flex;align-items:stretch;height:40px;border-radius:999px;overflow:hidden;
   background:#FFF186;color:#202020;box-shadow:0 0 0 1px rgba(32,32,32,.12),0 10px 30px -14px rgba(32,32,32,.45);font:500 15px/1 var(--ui,Inter,system-ui,sans-serif);white-space:nowrap;pointer-events:none}
@@ -47,6 +47,12 @@ html[data-hold] :is(#pres,.pres,.cvspace,.hstack,.aosend,#invader,.toast,#snd,#v
 .hb-in{display:flex;align-items:center;gap:9px;padding:0 16px}
 .hb-ic{width:19px;height:19px;flex:none}
 html[data-hold] .cvhint{top:84px!important}
+/* barre d'outils seule : on garde la boîte, sans le prompt */
+html[data-hold] :is(#pthread,.pthread,#chips,.chips,#mm,.mm,#cin,#csend,.pform .kbd){display:none!important}
+html[data-hold] .pbox{width:auto!important;left:50%!important;right:auto!important;translate:-50% 0!important}
+html[data-hold] .pbox .pform{width:auto!important;padding-right:6px!important}
+html[data-hold] .pform .tools .sep:last-of-type{display:none!important}
+@media (max-width:760px){html[data-hold] .pbox{display:none!important}}
 @keyframes hbmove{to{background-position:19.8px 0}}
 @media (prefers-reduced-motion:reduce){.hb-tape{animation:none}}
 @media (max-width:760px){.holdbar{top:calc(84px + env(safe-area-inset-top));height:34px;font-size:14px}.hb-tape{width:22px}}
@@ -59,7 +65,7 @@ html[data-hold] .cvhint{top:84px!important}
   <div class="modes" role="group" aria-label="Affichage">
     <button id="mCanvas" aria-pressed="false" hidden>Canvas</button><button id="mRing" aria-pressed="true">Tiles</button><button id="mList" aria-pressed="false">List</button>
   </div>
-  <div class="ntr"><button type="button" class="flag" id="flag" aria-label="Lire en français" title="Lire en français"><span class="f-fr"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg></span><span class="f-uk"><svg viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><rect width="60" height="30"/></clipPath><g clip-path="url(#ukc)"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" stroke="#C8102E" stroke-width="2.4"/><path d="M30,0V30M0,15H60" stroke="#fff" stroke-width="10"/><path d="M30,0V30M0,15H60" stroke="#C8102E" stroke-width="6"/></g></svg></span></button><a class="vbook" href="https://www.linkedin.com/in/nabilamara/" target="_blank" rel="noopener"><span data-i="t2">Book a call</span></a></div>
+  <div class="ntr"><button type="button" class="flag" id="flag" aria-label="Lire en français" title="Lire en français"><span class="f-fr"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg></span><span class="f-uk"><svg viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><rect width="60" height="30"/></clipPath><g clip-path="url(#ukc)"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" stroke="#C8102E" stroke-width="2.4"/><path d="M30,0V30M0,15H60" stroke="#fff" stroke-width="10"/><path d="M30,0V30M0,15H60" stroke="#C8102E" stroke-width="6"/></g></svg></span></button><a class="vbook" href="https://www.linkedin.com/in/nabilamara/" target="_blank" rel="noopener"><span data-i="f1">Let’s build</span></a></div>
   <button class="burger" id="menuBtn" aria-label="Open menu"><i></i><i></i></button>
   <button class="rmute" id="rMute" aria-label="Mute the radio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path class="w1" d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path class="w2" d="M18 7.5a6.5 6.5 0 0 1 0 9"/><path class="x" d="M16 9.5l5 5M21 9.5l-5 5"/></svg></button>
 </header>
@@ -249,6 +255,6 @@ html[data-hold] .cvhint{top:84px!important}
 <div class="tip" id="tip" aria-hidden="true"><svg viewBox="0 0 80 78"><path d="M2.43566 10.2293C0.557465 5.39905 5.25275 0.609822 10.1193 2.39242L73.3458 25.5526C78.9768 27.6152 78.4617 35.7432 72.6153 37.078L47.5001 42.8104C46.8028 42.9697 46.2429 43.4878 46.0304 44.1707L37.6398 71.1424C35.9468 76.5842 28.3421 76.8476 26.2765 71.536L2.43566 10.2293Z" fill="#000" stroke="#fff" stroke-width="5"/></svg><span><i></i></span><b class="pv"><img alt=""></b></div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
-<script src="assets/core.js?v=5191a38b"></script><script src="assets/home.js?v=d678bf69"></script><script src="assets/ui.js?v=3f8c7d8e"></script>
+<script src="assets/core.js?v=5191a38b"></script><script src="assets/home.js?v=5dcd26ae"></script><script src="assets/ui.js?v=3f8c7d8e"></script>
 </body>
 </html>
