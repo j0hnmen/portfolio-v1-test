@@ -250,7 +250,9 @@ html.src .tl2 .tlm{background:var(--c-tx)}
 .abt .svcs{margin:0 0 clamp(26px,3.6vh,40px)!important}
 
 /* ===== frames Live du canvas : le site s'utilise directement, comme un code layer ===== */
-.node.islive .lv iframe{pointer-events:auto!important}
+/* zoom/déplacement du canvas toujours actifs au-dessus d’un code layer : le site ne capte la souris qu’après un clic dessus (.using), et la rend en sortant */
+.node.islive .lv iframe{pointer-events:none!important}
+.node.islive.using .lv iframe{pointer-events:auto!important}
 
 
 /* ===== The problem : plus de carte blanche, le contenu est posé sur la page (l'effet de recul flou reste) ===== */
@@ -895,3 +897,10 @@ html.hvxdark #toast{opacity:0!important}
 .testi.tmdraw .tmh .scrib{stroke-dashoffset:0}
 /* sous-titre : même taille que les autres chapôs de la home (22 px) */
 .testi .tmsub,.testi .tmsub span{font-size:clamp(19px,1.6vw,22px)!important}
+
+/* IMPACT en blanc sur le dégradé */
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w,.hvx .hvx-track .hvx-p:nth-child(2) .hvx-w.hvx-white{color:#fff!important}
+.hvx .hvx-track .hvx-p:nth-child(2) .hvx-nf{color:rgba(255,255,255,.8)!important}
+/* fond IMPACT un peu plus bleu derrière le mot pour que le blanc se lise ; textes du haut et du bas en blanc aussi */
+.hvx-fb{background:linear-gradient(180deg,#dcdafc 0%,#aaa6ff 28%,#7e79ff 55%,#5650FF 100%)!important}
+.hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}
