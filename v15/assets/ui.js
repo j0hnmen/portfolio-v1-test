@@ -222,3 +222,48 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3); gl.style.opacity=(Math.max(0,Math.min(1,pos-1))*cl((r.bottom-H*.35)/(H*.65))).toFixed(3);
     pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }
+
+/*editmode*/ /* mode édition des textes (sites de test seulement) : ?edit pour l'activer, on clique un texte, on le réécrit, puis « Copier mes changements » → à coller à Claude */
+(()=>{ const H=document.documentElement; if(H.hasAttribute('data-hold')||/(^|\.)nabilamara\.com$/.test(location.hostname)) return;
+  const q=new URLSearchParams(location.search); let on=false; try{ if(q.has('edit')) sessionStorage.setItem('editmode','1'); if(q.has('noedit')) sessionStorage.removeItem('editmode'); on=sessionStorage.getItem('editmode')==='1'; }catch(_){}
+  if(!on) return;
+  const LANG=H.dataset.lp||(H.lang||'en').slice(0,2), PAGE=(location.pathname.split('/').pop()||'index.html').replace('.html','')||'index', SK='editchanges';
+  const load=()=>{ try{ return JSON.parse(localStorage.getItem(SK)||'{}'); }catch(_){ return {}; } }, save=o=>{ try{ localStorage.setItem(SK,JSON.stringify(o)); }catch(_){} };
+  const id=k=>LANG+'|'+PAGE+'|'+k, txt=el=>{ const c=el.cloneNode(true); c.querySelectorAll('br').forEach(b=>b.replaceWith('\n')); return c.textContent.replace(/\u00a0/g,' ').replace(/[ \t]+/g,' ').replace(/ ?\n ?/g,'\n').trim(); };
+  const css=document.createElement('style'); css.textContent=`
+    html.editing [data-i]:not(:has([data-i])){outline:1.5px dashed rgba(86,79,255,.55);outline-offset:3px;border-radius:3px;cursor:text;-webkit-user-select:text;user-select:text}
+    html.editing [data-i]:not(:has([data-i])):hover{outline-color:#564FFF;background:rgba(86,79,255,.06)}
+    html.editing [data-i]:focus{outline:2px solid #564FFF!important;background:rgba(86,79,255,.08)}
+    html.editing [data-i].edchg{outline:2px solid #3BE9CE!important}
+    #edbar,#edbar *{box-sizing:border-box;white-space:nowrap!important;letter-spacing:0!important;text-transform:none!important}
+    #edbar{position:fixed;left:50%;top:14px;translate:-50% 0;z-index:2147483000;display:flex!important;flex-wrap:nowrap!important;height:auto!important;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-radius:999px;background:#202020;color:#fff;font:500 14px/1 Inter,system-ui,sans-serif;box-shadow:0 12px 30px -10px rgba(0,0,0,.5)}
+    #edbar b{font-weight:600}#edbar i{font-style:normal;color:#3BE9CE}
+    #edbar button{border:0!important;border-radius:999px!important;padding:9px 14px!important;height:auto!important;width:auto!important;box-shadow:none!important;font:500 14px/1 Inter,system-ui,sans-serif!important;cursor:pointer;background:#2e2e2e;color:#fff}
+    #edbar button.edgo{background:linear-gradient(135deg,#5751FF,#1C14F2)}
+    #edbar button{margin:0!important;position:static!important;translate:none!important;transform:none!important;display:inline-block!important;flex:none!important}
+    #edbar button:hover{filter:brightness(1.15)}
+    @media (max-width:600px){#edbar{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));gap:4px;padding:6px 6px 6px 10px}#edbar>b,#edbar .edl{display:none}#edbar .eds{display:inline}#edbar,#edbar button{font-size:12px!important}#edbar button{padding:8px 10px!important}}
+    #edbar .eds{display:none}
+    #edtoast{position:fixed;left:50%;top:66px;translate:-50% 0;z-index:2147483000;padding:10px 16px;border-radius:12px;background:#3BE9CE;color:#202020;font:500 14px/1.3 Inter,system-ui,sans-serif;opacity:0;transition:opacity .3s;pointer-events:none}
+    #edtoast.on{opacity:1}`; document.head.appendChild(css);
+  H.classList.add('editing');
+  const bar=document.createElement('div'); bar.id='edbar'; bar.innerHTML='<b>Mode édition</b><span><i id="edn">0</i><span class="edl"> changement(s)</span></span><button class="edgo" id="edcopy">Copier<span class="edl"> mes changements</span></button><button id="edreset"><span class="edl">Tout </span>annuler</button><button id="edexit">Quitter</button>';
+  const toast=document.createElement('div'); toast.id='edtoast'; document.body.append(bar,toast);
+  const say=t=>{ toast.textContent=t; toast.classList.add('on'); clearTimeout(say.t); say.t=setTimeout(()=>toast.classList.remove('on'),2600); };
+  const count=()=>{ document.getElementById('edn').textContent=Object.keys(load()).length; };
+  const els=()=>[...document.querySelectorAll('[data-i]')].filter(e=>!e.querySelector('[data-i]')&&!e.closest('#edbar'));
+  const prep=()=>{ const C=load(); els().forEach(el=>{ if(el.dataset.edok) return; el.dataset.edok='1'; el._orig=el.innerHTML; el._origT=txt(el);
+      const c=C[id(el.dataset.i)]; if(c){ el.innerHTML=c.html; el.classList.add('edchg'); }
+      el.setAttribute('contenteditable','true'); el.spellcheck=true;
+      el.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); el.blur(); } if(e.key==='Escape'){ el.innerHTML=el._orig; el.blur(); } e.stopPropagation(); }); ['keyup','keypress'].forEach(ev=>el.addEventListener(ev,e=>e.stopPropagation()));
+      el.addEventListener('blur',()=>{ const C=load(), k=id(el.dataset.i), now=txt(el); if(now!==el._origT){ C[k]={lang:LANG,page:PAGE,key:el.dataset.i,was:el._origT,now,html:el.innerHTML}; el.classList.add('edchg'); } else { delete C[k]; el.classList.remove('edchg'); } save(C); count(); });
+    }); count(); };
+  /* pendant l'édition, un clic sur un texte ne suit pas le lien / n'ouvre pas l'accordéon */
+  addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('[contenteditable="true"]'); if(t){ e.preventDefault(); e.stopPropagation(); } },true);
+  document.getElementById('edcopy').onclick=async()=>{ const C=Object.values(load()); if(!C.length){ say('Aucun changement pour l’instant.'); return; }
+    const out='Changements de textes (mode édition) :\n\n'+C.map(c=>`[${c.lang.toUpperCase()} · ${c.page} · ${c.key}]\navant : ${c.was}\naprès : ${c.now}`).join('\n\n');
+    try{ await navigator.clipboard.writeText(out); say('Copié ! Colle-le à Claude.'); }catch(_){ const ta=document.createElement('textarea'); ta.value=out; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); say('Copié ! Colle-le à Claude.'); } };
+  document.getElementById('edreset').onclick=()=>{ save({}); document.querySelectorAll('[data-edok]').forEach(el=>{ el.innerHTML=el._orig; el.classList.remove('edchg'); }); count(); say('Changements annulés.'); };
+  document.getElementById('edexit').onclick=()=>{ try{ sessionStorage.removeItem('editmode'); }catch(_){} location.href=location.pathname; };
+  prep(); setTimeout(prep,1500); new MutationObserver(()=>{ clearTimeout(prep.t); prep.t=setTimeout(prep,400); }).observe(document.body,{childList:true,subtree:true});
+})();
