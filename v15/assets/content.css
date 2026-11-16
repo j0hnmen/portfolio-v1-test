@@ -902,7 +902,7 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev-send svg{position:relative;width:18px;height:18px}
 .page .ev-prompt.sent .ev-send::before{opacity:1;transition-duration:.12s}
 @media (prefers-reduced-motion:reduce){.page .ev-b,.page .ev-post{transition:none}}
-.page .ev-stage{min-height:calc(min(400px,86vw)*16/9 + 124px);justify-content:flex-start} /* place réservée pour le format story : la page ne bouge pas */
+.page .ev-stage{min-height:calc(min(400px,86vw)*5/4 + 124px);justify-content:flex-start} /* place réservée pour le format le plus haut (4/5) : la page ne bouge pas */
 .page .ev-eye{width:auto!important}.page .ev-eye span{white-space:nowrap}
 
 /* use cases supplémentaires + bouton Ship it */
@@ -993,5 +993,18 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev-eb{display:inline-flex;align-items:center;gap:10px}
 .page .ev-ic{width:1.15em;height:1.15em;flex:none}
 /* la barre de prompt reste en bas, à la même place : le template grandit vers le haut */
-.page .ev-stage{justify-content:flex-end!important}
-@media (min-width:901px){.page .ev .ev-head{margin-top:0!important;align-self:end;margin-bottom:clamp(160px,20vh,220px)!important}}
+.page .ev-stage{justify-content:flex-start!important} /* prompt en haut, au-dessus de l’asset */
+@media (min-width:901px){.page .ev .ev-head{margin-top:0!important;align-self:center;margin-bottom:0!important}}
+
+/* Ship it : bouton en dégradé de la charte, reflet qui passe, halo bleu */
+.page .ev-prompt.ship{background:transparent;box-shadow:none}
+.page .ev-prompt.ship .ev-ship{height:50px;border-radius:14px;font-size:17px;font-weight:600;letter-spacing:-.01em;background:linear-gradient(135deg,#5751FF,#1C14F2);box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 12px 34px -8px rgba(40,30,240,.75),0 0 0 6px rgba(86,79,255,.14)}
+.page .ev-prompt.ship .ev-ship{isolation:isolate}
+.page .ev-ship::before{z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.55) 48%,transparent 66%)!important;opacity:1!important;translate:-120% 0;animation:evshine 2.4s cubic-bezier(.5,0,.3,1) .5s infinite}
+@keyframes evshine{0%{translate:-120% 0}55%,100%{translate:120% 0}}
+@media (hover:hover){.page .ev-prompt.ship .ev-ship:hover{box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 16px 40px -8px rgba(40,30,240,.9),0 0 0 8px rgba(86,79,255,.2)}}
+/* logo AssetsOS en petit sous le texte de la section */
+.page .ev .ev-aos{display:block;width:150px;height:auto;margin:26px 0 0;color:#202020}
+@media (max-width:900px){.page .ev .ev-aos{margin:22px auto 0}}
+/* section « la box AssetsOS qui sort des assets » mise de côté */
+#case{display:none!important}

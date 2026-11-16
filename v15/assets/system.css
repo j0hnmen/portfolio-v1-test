@@ -643,8 +643,8 @@ html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
 .node [data-cl=stop]{display:none}
 .node.islive [data-cl=stop]{display:grid}
 /* footer : le nom arrive comme sur le canvas (animé en JS) */
-footer.ftzoom .flogo path{opacity:1!important;filter:none!important;transition:none!important;transform:none;transform-box:view-box!important;transform-origin:50% 50%!important}
-footer.ftzoom .fsub{opacity:1!important;transition:none!important;transform:none;transform-origin:50% 50%}
+footer.ftfx.ftzoom .flogo path{opacity:1;filter:none;transition:none;transform:none;transform-box:fill-box!important} /* sans !important : l’animation JS (opacité + flou) doit pouvoir passer ; origine posée en JS = centre du nom */
+footer.ftfx.ftzoom .fsub{opacity:1;transition:none;transform:none}
 footer.ftzoom .flogo{overflow:visible!important}
 /* grande signature noire en fond de « Your one-man design studio » */
 .abt section{position:relative;isolation:isolate}
@@ -655,4 +655,4 @@ footer.ftzoom .flogo{overflow:visible!important}
 .absig .absc{fill:none;stroke:#fff;stroke-width:36;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
 .absig .absf{fill:#202020}
 @media (max-width:760px){.absig{width:120vw;right:-30vw;opacity:.07}}
-.abt:not(.abtleft) section>.absig{right:auto!important;left:50%!important;translate:-50% -50%!important}
+.abt:not(.abtleft) section>.absig{left:auto!important;right:-6%!important;translate:0 -46%!important} /* home : signature décalée à droite */

@@ -114,9 +114,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        badge:t('May 12','12 mai'), cta:t('Join the beta','Rejoindre la bêta')+' →'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',img:'ev-img',quote:'ev-quote',badge:'ev-badge',cta:'ev-cta'},
      kind:{en:'Launch post',fr:'Post de lancement'}, title:{en:'Launch week is here',fr:'La semaine du lancement'},
-     req:{en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
-          fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']},
-     fmt:['4/5','4/5','4/5','9/16','9/16','9/16'], theme:[0,0,0,0,0,'dark'],
+     req:{en:['Add a quote from our founder','Add the launch date','Switch to our dark theme'],
+          fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe en thème sombre']},
+     fmt:['4/5','4/5','4/5','4/5'], theme:[0,0,0,'dark'],
      S:[{logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[7,51,86,43]},
         {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43]},
         {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43],badge:[70,3,24,0]},
@@ -127,9 +127,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        date:t('June 3 · Main stage','3 juin · Grande scène'), partners:'<i></i><i></i><i></i>'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',photo:'ev-photo',talk:'ev-talk',date:'ev-date',partners:'ev-partners'},
      kind:{en:'Speaker card',fr:'Carte speaker'}, title:{en:'Nina Moreau',fr:'Nina Moreau'},
-     req:{en:['Add her talk title','Add the date and the stage','Make the LinkedIn banner version','Add our partners’ logos','Use the yellow edition colors'],
-          fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Fais la version bannière LinkedIn','Ajoute les logos de nos partenaires','Passe aux couleurs de l’édition jaune']},
-     fmt:['1/1','1/1','1/1','16/9','16/9','16/9'], theme:[0,0,0,0,0,'yellow'],
+     req:{en:['Add her talk title','Add the date and the stage','Use the yellow edition colors'],
+          fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Passe aux couleurs de l’édition jaune']},
+     fmt:['1/1','1/1','1/1','1/1'], theme:[0,0,0,'yellow'],
      S:[{logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70]},
         {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,56,48,29]},
         {logo:[7,7,50,5],eye:[7,15,24,6],title:[7,25,48,26],photo:[58,15,35,70],talk:[7,52,48,27],date:[7,85,48,7]},
@@ -141,9 +141,9 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        logos:'<small>'+t('Trusted by','Ils nous font confiance')+'</small><i></i><i></i><i></i><i></i>'},
      cls:{ann:'ev-ann',nav:'ev-nav',title:'ev-title',sub:'ev-subl',cta:'ev-cta',shot:'ev-shot',quote:'ev-quote',logos:'ev-logos'},
      kind:{en:'Header',fr:'Header'}, title:{en:'Ship faster with Orbit',fr:'Livrez plus vite avec Orbit'},
-     req:{en:['Add a row of customer logos','Add a testimonial','Make the mobile version','Add an announcement banner','Switch to the spring campaign colors'],
-          fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Fais la version mobile','Ajoute un bandeau d’annonce','Passe aux couleurs de la campagne de printemps']},
-     fmt:['16/10','16/10','16/10','9/16','9/16','9/16'], theme:[0,0,0,0,0,'mint'],
+     req:{en:['Add a row of customer logos','Add a testimonial','Switch to the spring campaign colors'],
+          fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Passe aux couleurs de la campagne de printemps']},
+     fmt:['16/10','16/10','16/10','16/10'], theme:[0,0,0,'mint'],
      S:[{nav:[4,5,92,8],title:[4,22,46,28],sub:[4,53,38,9],cta:[4,67,20,8],shot:[54,20,42,64]},
         {nav:[4,5,92,8],title:[4,20,46,26],sub:[4,48,38,9],cta:[4,61,20,8],shot:[54,19,42,58],logos:[4,85,92,8]},
         {nav:[4,5,92,8],title:[4,18,46,22],sub:[4,42,38,8],cta:[4,53,20,7.5],quote:[4,64,46,16],shot:[54,18,42,60],logos:[4,85,92,8]},
@@ -172,7 +172,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   const loop=async()=>{ const id=++run, c=CASES[C]; bar.classList.remove('ship','sent'); ship.tabIndex=-1;
     build(); lang(L()); vlab.textContent=(fr()?'Template dynamique — ':'Active Template — ')+c.kind[L()]; ver.textContent='v1'; apply(0,false); pEl.textContent='';
     await wait(350); if(!await type(tEl,c.title[L()],70,id)) return;
-    for(let k=0;k<5;k++){ if(id!==run) return; await wait(1100);
+    for(let k=0;k<c.req.en.length;k++){ /* 3 demandes : v1 → v4 */ if(id!==run) return; await wait(1100);
       if(!await type(pEl,c.req[L()][k],34,id)) return; await wait(320);
       bar.classList.add('sent'); apply(k+1,true); bump(k+2);
       await wait(500); bar.classList.remove('sent'); pEl.textContent=''; }
@@ -181,7 +181,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     post.classList.add('fly'); await wait(720);
     C=(C+1)%CASES.length; post.classList.add('enter'); post.classList.remove('fly'); build(); lang(L()); apply(0,false); void post.offsetWidth;
     post.classList.remove('enter'); await wait(500); if(vis) loop(); });
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ build(); lang(L()); apply(5,false); typeTitle(CASES[0].title[L()]); ver.textContent='v6'; return; }
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ build(); lang(L()); apply(3,false); typeTitle(CASES[0].title[L()]); ver.textContent='v4'; return; }
   build(); apply(0,false);
   new IntersectionObserver(es=>es.forEach(en=>{ const was=vis; vis=en.isIntersecting; if(vis&&!was&&!bar.classList.contains('ship')) loop(); else if(!vis) run++; }),{threshold:.25}).observe(post);
   new MutationObserver(()=>{ if(vis) loop(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});

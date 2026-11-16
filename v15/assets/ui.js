@@ -112,8 +112,12 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     /* nom du footer : même arrivée que le canvas — lettre par lettre, en zoom arrière depuis le centre du nom, avec flou */
     const fps=[...ft.querySelectorAll('.flogo path')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>Math.abs(a.b.y-b.b.y)>40?a.b.y-b.b.y:a.b.x-b.b.x).map(o=>o.p);
     const fsub=ft.querySelector('.fsub'), E1='cubic-bezier(.16,1,.3,1)';
-    const zoom=()=>{ fps.forEach((p,i)=>p.animate([{transform:'scale(1.35)',opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1500,delay:150+i*110,easing:E1,fill:'backwards'})); /* chaque lettre depuis son propre centre : l'animation reste dans le nom */
-      if(fsub) fsub.animate([{transform:'scale(1.3)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); };
+    /* comme le canvas : zoom arrière autour du centre du nom (une seule origine pour toutes les lettres), lettre par lettre */
+    const zoom=()=>{ const G=1.3, bs=fps.map(p=>p.getBBox()); const x0=Math.min(...bs.map(b=>b.x)), y0=Math.min(...bs.map(b=>b.y)), x1=Math.max(...bs.map(b=>b.x+b.width)), y1=Math.max(...bs.map(b=>b.y+b.height)), cx=(x0+x1)/2, cy=(y0+y1)/2;
+      fps.forEach((p,i)=>{ const b=bs[i]; p.style.transformOrigin=`${((cx-b.x)/b.width*100).toFixed(2)}% ${((cy-b.y)/b.height*100).toFixed(2)}%`;
+        p.animate([{transform:`scale(${G})`,opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:2000,delay:150+i*120,easing:E1,fill:'backwards'}); });
+      if(fsub){ const lr=ft.querySelector('.flogo').getBoundingClientRect(), fr=fsub.getBoundingClientRect(); fsub.style.transformOrigin=`50% ${(lr.top+lr.height/2-fr.top).toFixed(1)}px`;
+        fsub.animate([{transform:'scale(1.3)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); } };
     new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); zoom(); } },{threshold:.25}).observe(ft); }
   // « AssetsOS » en casse normale, « ASSETS OS » quand le texte est en capitales
   const fix=()=>{ const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('AssetsOS')?1:2}); let n; while(n=w.nextNode()){ const p=n.parentElement; if(p&&getComputedStyle(p).textTransform==='uppercase') n.nodeValue=n.nodeValue.replace(/AssetsOS/g,'Assets OS'); } };
@@ -121,8 +125,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794824990'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794824990'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794826278'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794826278'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
