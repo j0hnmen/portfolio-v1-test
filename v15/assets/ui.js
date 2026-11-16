@@ -63,7 +63,7 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
     if(!document.querySelector('.bluebg')){ const b=document.createElement('div'); b.className='bluebg'; b.setAttribute('aria-hidden','true'); document.body.prepend(b); }
     if(!window.WORKPAGE) H.classList.add('bluepg');
     /* bleu seulement quand la section occupe vraiment l'écran (sinon la FAQ ou la frise passaient en bleu) */
-    let tkb=0; const blue=()=>{ tkb=0; const r=sec.getBoundingClientRect(), v=innerHeight; H.classList.toggle('endblue',r.top<=v*.3&&r.bottom>=v*.7&&!H.classList.contains('src')); };
+    let tkb=0; const blue=()=>{ tkb=0; if(sec.closest('.endpin')&&H.classList.contains('pg')) return; const r=sec.getBoundingClientRect(), v=innerHeight; H.classList.toggle('endblue',r.top<=v*.3&&r.bottom>=v*.7&&!H.classList.contains('src')); };
     addEventListener('scroll',()=>{ if(!tkb) tkb=requestAnimationFrame(blue); },{passive:true}); addEventListener('resize',blue); blue();
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
     /* tout est piloté par le scroll pendant que la section est épinglée : la signature se trace au fil du scroll, puis le trait sous « your system » (et tout revient en arrière si on remonte) */
@@ -72,7 +72,9 @@ let l='en'; try{ l=localStorage.getItem('lang')||'en' }catch(e){} setLang(l); }
       const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
-      scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3)); };
+      scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
+      /* pages : le bleu fait surface progressivement (logo d'abord sur le papier, puis le bleu monte), comme sur la home */
+      if(pin&&H.classList.contains('pg')&&!H.classList.contains('src')){ const bb=document.querySelector('.bluebg'); if(bb){ const q=cl(p,.36,.52); bb.style.transition='none'; bb.style.opacity=q.toFixed(3); H.classList.toggle('endblue',q>.5); } } };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
 /* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
 function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }
@@ -106,8 +108,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794789460'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794789460'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794789674'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794789674'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],

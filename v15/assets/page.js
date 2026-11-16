@@ -99,5 +99,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   const upd=()=>{ raf=0; const lr=line.getBoundingClientRect(), mid=innerHeight*.5;
     const p=Math.max(0,Math.min(1,(mid-lr.top)/lr.height)); L.style.setProperty('--vp',p.toFixed(4));
     let on=0; its.forEach((it,i)=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); const past=d.top+8<=mid; it.classList.toggle('past',past); if(past) on=i; });
-    its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
+    its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on);
+    /* logos : petits loin du centre de l'écran, grossissent à l'approche, dégrossissent en s'éloignant */
+    L.querySelectorAll('.vth').forEach(h=>{ const r=h.getBoundingClientRect(); const d=Math.min(1,Math.abs(r.top+r.height/2-mid)/(innerHeight*.42)); const e=1-d*d*(3-2*d); h.style.setProperty('--ls',(.62+.38*e).toFixed(3)); }); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); })();
