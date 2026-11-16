@@ -633,7 +633,10 @@ html.atend{background:#5650FF!important} /* seul html : le body garde son papier
 
 /* lueurs des headers (AssetsOS, À propos) : déséquilibrées et vivantes */
 html.prhero .sideglow.l{width:38vw;background:radial-gradient(58% 48% at 0% 34%,rgba(86,79,255,.30),rgba(86,79,255,0) 72%)!important;animation:hgl 13s ease-in-out infinite alternate!important}
-html.prhero .sideglow.r{width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(59,233,206,.16),rgba(86,79,255,.10) 45%,rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
+html.prhero .sideglow.r{width:24vw;background:radial-gradient(64% 40% at 100% 72%,rgba(86,79,255,.18),rgba(86,79,255,0) 74%)!important;animation:hgr 9s ease-in-out infinite alternate!important}
 @keyframes hgl{0%{translate:0 -6vh;scale:1}50%{translate:2vw 4vh;scale:1.08}100%{translate:-1vw 10vh;scale:.96}}
 @keyframes hgr{0%{translate:0 6vh;scale:.95}100%{translate:-1.5vw -8vh;scale:1.1}}
 @media (prefers-reduced-motion:reduce){html.prhero .sideglow{animation:none!important}}
+/* code layers : bouton stop seulement quand le site tourne */
+.node [data-cl=stop]{display:none}
+.node.islive [data-cl=stop]{display:grid}
