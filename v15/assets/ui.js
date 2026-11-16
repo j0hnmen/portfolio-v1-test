@@ -40,14 +40,15 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   /* toutes les 25 s, la signature refait d'elle-même le geste du survol (jamais quand l'onglet est caché) */
   setInterval(()=>{ if(!document.hidden) replay(); },25000); };
 SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
-/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS) ; tracée par un masque large, puis affichée entière (sans masque) */
-let bsN=0; function BSIG(cls){ const id='bsm'+(bsN++), w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
-  w.innerHTML=`<svg viewBox="${pick[0]}"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-300" y="-300" width="1600" height="1400"><path class="bsc" pathLength="1" d="${pick[1]}"/></mask></defs><g mask="url(#${id})"><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></g></svg>`;
-  const g=w.querySelector('g'), c=w.querySelector('.bsc'), rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let an=null;
-  w.play=(dur)=>{ if(rm||!c.animate){ g.removeAttribute('mask'); w.classList.add('on'); return; } if(an) an.cancel(); g.setAttribute('mask',`url(#${id})`); w.classList.add('on');
-    an=c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:dur||1700,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); an.onfinish=()=>g.removeAttribute('mask'); };
-  w.hide=()=>{ if(an){ an.cancel(); an=null; } w.classList.remove('on'); if(!rm) { g.setAttribute('mask',`url(#${id})`); c.style.strokeDashoffset=1; } };
-  if(!rm) c.style.strokeDashoffset=1; else g.removeAttribute('mask');
+/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS).
+   Sans masque (les masques SVG agrandis donnaient des morceaux) : un trait de plume suit le tracé, puis la vraie signature apparaît en fondu à sa place */
+let bsN=0; function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
+  w.innerHTML=`<svg viewBox="${pick[0]}"><path class="bsl" pathLength="1" d="${pick[1]}"/><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></svg>`;
+  const l=w.querySelector('.bsl'), rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let an=null;
+  w.play=(dur)=>{ w.classList.remove('done'); w.classList.add('on'); if(rm||!l.animate){ w.classList.add('done'); return; } if(an) an.cancel();
+    an=l.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:dur||1700,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); an.onfinish=()=>w.classList.add('done'); };
+  w.hide=()=>{ if(an){ an.cancel(); an=null; } w.classList.remove('on','done'); };
+  if(rm) w.classList.add('on','done');
   return w; }
 
 /*abtsig*/ /* « Your one-man design studio » : grande signature en fond, qui se dessine à l'arrivée — la signature propre (celle du logo AssetsOS) */
@@ -229,7 +230,7 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
     const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));
     bw.style.opacity=(w*(r.top>H||r.bottom<0?0:1)).toFixed(3); bb.style.opacity=(b*Math.min(enter,leave>0?1:0)).toFixed(3); gl.style.opacity=(Math.max(0,Math.min(1,pos-1))*cl((r.bottom-H*.35)/(H*.65))).toFixed(3);
-    pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); if(sec._mk) sec._mk(pos,r.top<H&&r.bottom>0); };
+    pres.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); subs.forEach((e,i)=>e.style.opacity=cl(1-Math.abs(pos-i)*2.2).toFixed(3)); if(sec._mk) sec._mk(pos,r.top<H&&r.bottom>0,enter); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }
 
 /*hvxmarks*/ /* Clarity entourée, Impact souligné, Value signée : en noir, tracés à la main quand le mot s'arrête au centre */
@@ -243,11 +244,11 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
   let sg=null; if(ws[2]){ sg=BSIG('hvx-sig'); ws[2].appendChild(sg); }
   const on=[0,0,0];
   /* effets typo au scroll, légers : a = arrivée du mot (0 → 1 quand il atteint le centre) */
-  const fx=pos=>{ const cl=v=>Math.max(0,Math.min(1,v)), ar=i=>cl(1-(i-pos)), E=t=>1-Math.pow(1-t,3);
-    if(ws[0]){ const a=E(cl(1-Math.abs(pos))); ws[0].style.letterSpacing=((1-a)*.09).toFixed(4)+'em'; }
-    if(ws[1]){ const a=ar(1); ws[1].style.scale=(1+.07*Math.sin(Math.PI*a)).toFixed(4); }
-    if(ws[2]){ const a=E(ar(2)); ws[2].style.scale=(.93+.07*a).toFixed(4); ws[2].style.letterSpacing=((1-a)*.08).toFixed(4)+'em'; ws[2].style.setProperty('--sh',(130-a*160).toFixed(1)+'%'); } };
-  sec._mk=(pos,vis)=>{ fx(pos); ws.forEach((w,i)=>{ const near=vis&&Math.abs(pos-i)<.12, far=!vis||Math.abs(pos-i)>.7;
+  const fx=(pos,en)=>{ const cl=v=>Math.max(0,Math.min(1,v)), ar=i=>cl(1-(i-pos)), E=t=>1-Math.pow(1-t,3);
+    if(ws[0]){ const a=E(cl(en)); ws[0].style.setProperty('--lsx',((1-a)*.2).toFixed(4)+'em'); }
+    if(ws[1]){ const a=ar(1); ws[1].style.scale=(1+.12*Math.sin(Math.PI*a)).toFixed(4); }
+    if(ws[2]){ const a=E(ar(2)); ws[2].style.scale=(.86+.14*a).toFixed(4); ws[2].style.setProperty('--lsx',((1-a)*.16).toFixed(4)+'em'); ws[2].style.setProperty('--sh',(130-a*160).toFixed(1)+'%'); } };
+  sec._mk=(pos,vis,en)=>{ fx(pos,en==null?1:en); ws.forEach((w,i)=>{ const near=vis&&Math.abs(pos-i)<.12, far=!vis||Math.abs(pos-i)>.7;
       if(near&&!on[i]){ on[i]=1; w.classList.add('hvon'); if(i===2&&sg) sg.play(1300); }
       else if(far&&on[i]){ on[i]=0; w.classList.remove('hvon'); if(i===2&&sg) sg.hide(); } }); };
 } }
