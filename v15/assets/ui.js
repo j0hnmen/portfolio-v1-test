@@ -242,12 +242,12 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     #edbar button.edgo{background:linear-gradient(135deg,#5751FF,#1C14F2)}
     #edbar button{margin:0!important;position:static!important;translate:none!important;transform:none!important;display:inline-block!important;flex:none!important}
     #edbar button:hover{filter:brightness(1.15)}
-    @media (max-width:600px){#edbar{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));gap:4px;padding:6px 6px 6px 10px}#edbar>b,#edbar .edl{display:none}#edbar .eds{display:inline}#edbar,#edbar button{font-size:12px!important}#edbar button{padding:8px 10px!important}}
     #edbar .eds{display:none}
+    @media (max-width:600px){#edbar{top:auto;bottom:calc(84px + env(safe-area-inset-bottom));gap:4px;padding:6px 6px 6px 10px}#edbar>b,#edbar .edl{display:none}#edbar .eds{display:inline}#edbar,#edbar button{font-size:12px!important}#edbar button{padding:8px 10px!important}}
     #edtoast{position:fixed;left:50%;top:66px;translate:-50% 0;z-index:2147483000;padding:10px 16px;border-radius:12px;background:#3BE9CE;color:#202020;font:500 14px/1.3 Inter,system-ui,sans-serif;opacity:0;transition:opacity .3s;pointer-events:none}
     #edtoast.on{opacity:1}`; document.head.appendChild(css);
   H.classList.add('editing');
-  const bar=document.createElement('div'); bar.id='edbar'; bar.innerHTML='<b>Mode édition</b><span><i id="edn">0</i><span class="edl"> changement(s)</span></span><button class="edgo" id="edcopy">Copier<span class="edl"> mes changements</span></button><button id="edreset"><span class="edl">Tout </span>annuler</button><button id="edexit">Quitter</button>';
+  const bar=document.createElement('div'); bar.id='edbar'; bar.innerHTML='<b>Mode édition</b><span><i id="edn">0</i><span class="edl"> changement(s)</span></span><button class="edgo" id="edcopy">Copier<span class="edl"> mes changements</span></button><button id="edreset"><span class="edl">Tout annuler</span><span class="eds">Annuler</span></button><button id="edexit">Quitter</button>';
   const toast=document.createElement('div'); toast.id='edtoast'; document.body.append(bar,toast);
   const say=t=>{ toast.textContent=t; toast.classList.add('on'); clearTimeout(say.t); say.t=setTimeout(()=>toast.classList.remove('on'),2600); };
   const count=()=>{ document.getElementById('edn').textContent=Object.keys(load()).length; };
