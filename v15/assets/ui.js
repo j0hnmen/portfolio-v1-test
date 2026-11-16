@@ -1,4 +1,9 @@
 /* V1.5 — ui.js : comportements communs à toutes les pages. */
+/*sda*/ /* mobile : les sections épinglées (Clarity/Impact/Value, Let's build) sont animées par le navigateur (scroll-driven animations, sur le fil du scroll)
+   au lieu du JavaScript à chaque frame — sur iPhone, les écritures JS pendant le défilement faisaient trembler les sections bloquées. ?sda force le mode pour tester. */
+window.__SDA=(()=>{ try{ const q=/[?&]sda\b/.test(location.search); const ok=window.CSS&&CSS.supports('animation-timeline','view()')&&CSS.supports('view-timeline-name','--x')&&!matchMedia('(prefers-reduced-motion:reduce)').matches&&(q||matchMedia('(pointer:coarse)').matches); if(ok) document.documentElement.classList.add('sda'); return !!ok; }catch(_){ return false; } })();
+window.__sdaKF=(id,css)=>{ let st=document.getElementById(id); if(!st){ st=document.createElement('style'); st.id=id; document.head.appendChild(st); } st.textContent=css; };
+window.__sdaFrames=(name,N,fn)=>{ let o='@keyframes '+name+'{'; for(let i=0;i<=N;i++){ const c=i/N; o+=(c*100).toFixed(2)+'%{'+fn(c)+'}'; } return o+'}'; };
 { const at=()=>document.body.classList.toggle('attop',scrollY<innerHeight*.4); addEventListener('scroll',at,{passive:true}); at(); }
 { const i=document.getElementById('cin'), f=document.getElementById('cform'); if(i&&f) i.addEventListener('input',()=>f.classList.toggle('typing',!!i.value)); }
 
@@ -104,10 +109,24 @@ else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to|
     const sv1=big.querySelector('svg'), sv2=sm.querySelector('svg'); if(RM){ sv2.classList.add('sigok'); return; }
     /* tout est piloté par le scroll pendant que la section est épinglée : la signature se trace au fil du scroll, puis le trait sous « your system » (et tout revient en arrière si on remonte) */
     const pin=sec.closest('.endpin'); let st=-1, tks=0; sec.classList.add('scrubfx');
+    const SDA=window.__SDA&&!!pin; if(SDA){ /* mobile : logo, trait et signatures animés par le navigateur sur la timeline de .endpin — le JS ne fait plus que basculer les étapes */
+      const C=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
+      const build=()=>{ const L=pin.offsetHeight, H=sec.offsetHeight, F=window.__sdaFrames; if(!L||!H) return; const run=Math.max(1,L-H), cov=p=>Math.min(100,Math.max(0,(p*run+H)/(L+H)*100));
+        const pAt=c=>(c*(L+H)-H)/run; const eb=sec.querySelector('.endbig'); let mid=H*.5; if(eb){ const er=eb.getBoundingClientRect(), sr=sec.getBoundingClientRect(); mid=er.top+er.height/2-sr.top; } const p0=Math.min(-(H*1.02-mid)/run,-.04);
+        let css=F('endsL',160,c=>'--lq:'+C(pAt(c),p0,.02).toFixed(4))+F('endsQ',80,c=>'--sq:'+(1-C(pAt(c),.7,.92)).toFixed(4));
+        css+='@keyframes endsX{from{transform:scaleX(0)}to{transform:scaleX(1)}}';
+        [[sv1,-.12,.36],[sv2,.56,.8]].forEach(([sv,a,b])=>{ if(!sv) return; const rg=(q0,q1)=>'cover '+cov(a+q0*(b-a)).toFixed(3)+'% cover '+cov(a+q1*(b-a)).toFixed(3)+'%';
+          const lr=document.documentElement.classList.contains('lite')&&sv.querySelector('clipPath[id^="litec"] rect');
+          if(lr){ if(!lr.__w){ const d=sv.querySelector('.sigdone'); let bb=null; try{ bb=d.getBBox(); }catch(_){ } if(bb) lr.__w=bb.width+40; } if(lr.__w){ lr.setAttribute('width',lr.__w); Object.assign(lr.style,{transformBox:'fill-box',transformOrigin:'0 0'}); lr.style.animation='endsX linear both'; lr.style.animationTimeline='--endp'; lr.style.animationRange=rg(0,1); } return; }
+          const seg=sv.__sdaSeg||(sv.__sdaSeg=[...sv.querySelectorAll('.sgw,.sgc')].map(x=>[x,parseFloat(x.style.animationDelay)||0,parseFloat(x.style.animationDuration)||.05])); /* lu une seule fois : on réécrit ces styles juste après */ const T=Math.max(.01,...seg.map(x=>x[1]+x[2]));
+          seg.forEach(([x,d,u])=>{ x.style.animation='sgk linear both'; x.style.animationTimeline='--endp'; x.style.animationRange=rg(d/T,(d+u)/T); }); });
+        window.__sdaKF('sda-end',css); };
+      build(); let lw=innerWidth; addEventListener('resize',()=>{ if(innerWidth!==lw){ lw=innerWidth; build(); } }); addEventListener('load',build); setTimeout(build,1000); }
     const prog=()=>{ tks=0; let p; if(pin){ const r=pin.getBoundingClientRect(); p=(-r.top)/Math.max(1,r.height-VH()); } else { const r=sec.getBoundingClientRect(); p=(innerHeight-r.top)/innerHeight-.5; }
       const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
+      if(SDA){ sv1&&sv1.classList.toggle('sigok',p>=.36); sv2&&sv2.classList.toggle('sigok',p>=.8); return; }
       scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
       /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-VH()); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(VH()*1.02-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
@@ -234,7 +253,20 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
   const bw=document.createElement('i'), bb=document.createElement('i'); bw.className='hvx-fbg hvx-fw'; bb.className='hvx-fbg hvx-fb'; const gl=document.createElement('i'); gl.className='hvx-fbg hvx-glow'; const pin=sec.querySelector('.hvx-pin'); [gl,bb,bw].forEach(x=>{ x.setAttribute('aria-hidden','true'); pin.prepend(x); }); /* lueurs bleues déséquilibrées derrière VALUE */ /* fixés à l'écran, mais dans la section : ils passent par-dessus le papier */
   const pres=[...sec.querySelectorAll('.hvx-pres .hvx-pre')], subs=[...sec.querySelectorAll('.hvx-subs .hvx-s')]; let raf=0;
   const cl=v=>Math.max(0,Math.min(1,v));
-  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=pin.offsetHeight||innerHeight, run=r.height-H; /* hauteur de l'écran épinglé (stable) et pas innerHeight, qui bouge avec la barre d'adresse sur mobile → tremblement */ const k=cl(-r.top/Math.max(1,run)); /* temps d'arrêt doux sur chaque mot, puis glissé accéléré-freiné */ const seg=k*2, si=Math.floor(seg), sf=seg-si, hold=.28, st=sf<hold?0:sf>1-hold?1:(sf-hold)/(1-2*hold), se=st<.5?4*st*st*st:1-Math.pow(-2*st+2,3)/2, pos=Math.min(2,si+se);
+  const posOf=k=>{ /* temps d'arrêt doux sur chaque mot, puis glissé accéléré-freiné */ const seg=k*2, si=Math.floor(seg), sf=seg-si, hold=.28, st=sf<hold?0:sf>1-hold?1:(sf-hold)/(1-2*hold), se=st<.5?4*st*st*st:1-Math.pow(-2*st+2,3)/2; return Math.min(2,si+se); };
+  const SDA=window.__SDA&&!RM; if(SDA){ /* mêmes courbes qu'en JS, précalculées en keyframes sur la timeline de la section (cover 0 → 100 %) */
+    const build=()=>{ const L=sec.offsetHeight, H=pin.offsetHeight||innerHeight, F=window.__sdaFrames; if(!L||!H) return;
+      const at=c=>{ const top=H-c*(L+H), bot=top+L, k=cl(-top/Math.max(1,L-H)), pos=posOf(k), enter=cl((H-top)/H), leave=cl(bot/H); return {top,bot,pos,enter,leave}; };
+      let css=F('hvxsT',240,c=>'transform:translate3d('+(-posOf(cl(-(H-c*(L+H))/Math.max(1,L-H)))*100/3).toFixed(3)+'%,0,0)');
+      css+=F('hvxsW',120,c=>{ const v=at(c); return 'opacity:'+((1-cl(v.pos-1))*Math.min(v.enter,1)*(v.top>H||v.bot<0?0:1)).toFixed(3); });
+      css+=F('hvxsB',120,c=>{ const v=at(c), b=v.pos<1?v.pos:Math.max(0,2-v.pos); return 'opacity:'+(b*Math.min(v.enter,v.leave>0?1:0)).toFixed(3); });
+      css+=F('hvxsG',120,c=>{ const v=at(c); return 'opacity:'+(cl(v.pos-1)*cl((v.bot-H*.35)/(H*.65))).toFixed(3); });
+      [0,1,2].forEach(i=>{ css+=F('hvxsP'+i,120,c=>'opacity:'+cl(1-Math.abs(at(c).pos-i)*2.2).toFixed(3)); });
+      window.__sdaKF('sda-hvx',css); };
+    pres.forEach((e,i)=>e.classList.add('hvxsp'+i)); subs.forEach((e,i)=>e.classList.add('hvxsp'+i));
+    build(); let lw=innerWidth; addEventListener('resize',()=>{ if(innerWidth!==lw){ lw=innerWidth; build(); } }); addEventListener('load',build); }
+  const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=pin.offsetHeight||innerHeight, run=r.height-H; /* hauteur de l'écran épinglé (stable) et pas innerHeight, qui bouge avec la barre d'adresse sur mobile → tremblement */ const k=cl(-r.top/Math.max(1,run)); const pos=posOf(k);
+    if(SDA){ const enter=cl((H-r.top)/H); if(sec._mk) sec._mk(pos,r.top<H&&r.bottom>0,enter); return; } /* mode navigateur : on ne fait que lire (pour les tracés à la main) */
     if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */
     const w=(1-cl(pos-1))*Math.min(enter,1), b=(pos<1?pos:Math.max(0,2-pos));

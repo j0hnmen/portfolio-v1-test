@@ -1122,3 +1122,19 @@ html.wk2-open .top{z-index:66}
 /*vhstable — mobile : les fonds fixes (papier, bleu de Let's build, fonds de Clarity/Impact/Value) gardent une hauteur fixe ;
   avec inset:0 ils se redimensionnaient quand la barre d'adresse apparaît/disparaît au scroll, et le papier « tremblait » */
 html.touch .pbg,.bluebg,.hvx-fbg{bottom:auto!important;height:100vh!important;height:100lvh!important}
+
+/* sda — sections épinglées animées par le navigateur (mobile) : voir le bloc sda dans ui.js */
+html.sda .hvx{view-timeline-name:--hvx}
+html.sda .hvx-track{animation:hvxsT linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+html.sda .hvx-fw{animation:hvxsW linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+html.sda .hvx-fb{animation:hvxsB linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+html.sda .hvx-glow{animation:hvxglow2 9s ease-in-out infinite alternate,hvxsG linear both!important;animation-timeline:auto,--hvx!important;animation-range:normal,cover 0% cover 100%!important}
+html.sda .hvxsp0{animation:hvxsP0 linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+html.sda .hvxsp1{animation:hvxsP1 linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+html.sda .hvxsp2{animation:hvxsP2 linear both;animation-timeline:--hvx;animation-range:cover 0% cover 100%}
+@property --lq{syntax:'<number>';inherits:true;initial-value:0}
+@property --sq{syntax:'<number>';inherits:true;initial-value:1}
+html.sda .endpin{view-timeline-name:--endp}
+html.sda .end.endfx.scrubfx .endbig{animation:endsL linear both;animation-timeline:--endp;animation-range:cover 0% cover 100%}
+html.sda .end.endfx.scrubfx:not(.es-out) .endbig{filter:none!important}
+html.sda section.end.endfx.scrubfx .scrib{animation:endsQ linear both!important;animation-timeline:--endp!important;animation-range:cover 0% cover 100%!important}
