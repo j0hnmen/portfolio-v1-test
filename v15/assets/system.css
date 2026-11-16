@@ -379,3 +379,6 @@ html body .menu{box-shadow:inset 0 0 0 1px rgba(32,32,32,.1),0 30px 70px -30px r
 .page .vlogo:not(.vaos){filter:brightness(0);transition:filter .4s}
 .page .vti.on .vlogo:not(.vaos){filter:brightness(0) saturate(100%) invert(31%) sepia(91%) saturate(4000%) hue-rotate(240deg) brightness(101%)}
 .page .vti.on .vlogo.vaos{color:var(--ink)}
+.page .vlogo.vna{height:64px;color:var(--ink)}
+.page .vti.on .vlogo.vna{color:var(--blue)}
+.page .vlogo.vfg{height:30px}
