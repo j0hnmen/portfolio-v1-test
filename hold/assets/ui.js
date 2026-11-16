@@ -101,8 +101,13 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
       const step=()=>{ if(k>=items.length-1){ run=false; ol.classList.add('tldone'); return; } k++; show(k); setTimeout(step,650); };
       setTimeout(step,700); },{threshold:0,rootMargin:'0px 0px -35% 0px'}).observe(ol); }
   // footer : le nom monte lettre par lettre, la carte « Let's build » et les liens suivent
-  const ft=document.querySelector('footer.ftr'); if(ft&&!RM){ ft.classList.add('ftfx'); ft.querySelectorAll('.flogo path').forEach((p,i)=>p.style.transitionDelay=(i*.06)+'s'); ft.querySelectorAll('.flinks>a').forEach((a,i)=>a.style.transitionDelay=(.7+i*.07)+'s');
-    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); } },{threshold:.25}).observe(ft); }
+  const ft=document.querySelector('footer.ftr'); if(ft&&!RM){ ft.classList.add('ftfx','ftzoom'); ft.querySelectorAll('.flinks>a').forEach((a,i)=>a.style.transitionDelay=(.7+i*.07)+'s');
+    /* nom du footer : même arrivée que le canvas — lettre par lettre, en zoom arrière depuis le centre du nom, avec flou */
+    const fps=[...ft.querySelectorAll('.flogo path')].map(p=>({p,b:p.getBBox()})).sort((a,b)=>Math.abs(a.b.y-b.b.y)>40?a.b.y-b.b.y:a.b.x-b.b.x).map(o=>o.p);
+    const fsub=ft.querySelector('.fsub'), E1='cubic-bezier(.16,1,.3,1)';
+    const zoom=()=>{ fps.forEach((p,i)=>p.animate([{transform:'scale(2.2)',opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:2000,delay:150+i*120,easing:E1,fill:'backwards'}));
+      if(fsub) fsub.animate([{transform:'scale(1.6)',opacity:0,filter:'blur(6px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:1400,delay:150+fps.length*120,easing:E1,fill:'backwards'}); };
+    new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); ft.classList.add('ft-on'); zoom(); } },{threshold:.25}).observe(ft); }
   // « AssetsOS » en casse normale, « ASSETS OS » quand le texte est en capitales
   const fix=()=>{ const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('AssetsOS')?1:2}); let n; while(n=w.nextNode()){ const p=n.parentElement; if(p&&getComputedStyle(p).textTransform==='uppercase') n.nodeValue=n.nodeValue.replace(/AssetsOS/g,'Assets OS'); } };
   fix(); let ft2=0; new MutationObserver(()=>{ clearTimeout(ft2); ft2=setTimeout(fix,30); }).observe(document.body,{childList:true,subtree:true,characterData:true});

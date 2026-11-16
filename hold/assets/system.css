@@ -642,3 +642,7 @@ html.prhero .sideglow.hl,html.prhero .sideglow.hr{opacity:1!important}
 /* code layers : bouton stop seulement quand le site tourne */
 .node [data-cl=stop]{display:none}
 .node.islive [data-cl=stop]{display:grid}
+/* footer : le nom arrive comme sur le canvas (animé en JS) */
+footer.ftzoom .flogo path{opacity:1!important;filter:none!important;transition:none!important;transform:none;transform-box:view-box!important;transform-origin:50% 50%!important}
+footer.ftzoom .fsub{opacity:1!important;transition:none!important;transform:none;transform-origin:50% 50%}
+footer.ftzoom .flogo{overflow:visible!important}

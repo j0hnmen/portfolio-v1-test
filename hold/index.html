@@ -35,7 +35,7 @@
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=a50e42fa"><link rel="stylesheet" href="assets/system.css?v=33c99e1f">
+<link rel="stylesheet" href="assets/site.css?v=a50e42fa"><link rel="stylesheet" href="assets/system.css?v=88d5546b">
 <script>window.HOLDGO={"atelier": "https://www.linkedin.com/feed/update/urn:li:activity:7510960044809568257/", "sorare": "https://www.linkedin.com/feed/update/urn:li:activity:7300220200203739137/", "sportgen": "https://www.linkedin.com/feed/update/urn:li:activity:7466105289935736832/", "inktober": "https://inktober.nabilamara.com/", "abc": "https://figmabc.figma.site/"};</script>
 <style id="holdcss">
 html[data-hold],html[data-hold] body{overflow:hidden!important;height:100%;overscroll-behavior:none}
@@ -47,11 +47,6 @@ html[data-hold] :is(#pres,.pres,.cvspace,.hstack,.aosend,#invader,.toast,#snd,#v
 .hb-in{display:flex;align-items:center;gap:9px;padding:0 16px}
 .hb-ic{width:19px;height:19px;flex:none}
 html[data-hold] .cvhint{top:84px!important}
-/* barre d'outils seule : on garde la boîte, sans le prompt */
-html[data-hold] :is(#pthread,.pthread,#chips,.chips,#mm,.mm,#cin,#csend,.pform .kbd){display:none!important}
-html[data-hold] .pbox{width:max-content!important;left:0!important;right:0!important;margin-left:auto!important;margin-right:auto!important;translate:none!important;transform:none!important}
-html[data-hold] .pbox .pform{width:auto!important;padding-right:6px!important}
-html[data-hold] .pform .tools .sep:last-of-type{display:none!important}
 @media (max-width:760px){html[data-hold] .pbox{display:none!important}}
 /* réseaux dans l'en-tête */
 html[data-hold] .hsoc{display:flex;align-items:center;gap:0;margin-right:8px;padding:0 3px;height:44px;border-radius:999px;background:rgba(243,242,238,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(32,32,32,.10)}
@@ -91,6 +86,19 @@ html[data-hold] .ntr{display:flex!important;align-items:center}
   .mbuild{pointer-events:auto!important;display:inline-flex;align-items:center;justify-content:center;position:fixed;z-index:71;left:50%;translate:-50% 0;bottom:calc(16px + env(safe-area-inset-bottom));height:52px;padding:0 28px;border:0;border-radius:999px;background:#202020;color:#fff;font:400 17px/1 "Akke DA","Newsreader DA",Georgia,serif;box-shadow:0 10px 30px -10px rgba(32,32,32,.5);cursor:pointer}
   .mwrap .mveil{bottom:calc(84px + env(safe-area-inset-bottom))!important}
 }
+/* barre d'outils complète, seule, en bas au centre (la prompt box est retirée) */
+html[data-hold] .pbox{display:none!important}
+html[data-hold] body>#tools{display:flex!important;position:fixed!important;z-index:40;left:0!important;right:0!important;top:auto!important;margin:0 auto!important;width:max-content!important;transform:none!important;translate:none!important;bottom:calc(26px + env(safe-area-inset-bottom))!important;align-items:center;gap:4px;padding:8px;border-radius:18px;background:#fff;
+  box-shadow:0 0 0 1px rgba(32,32,32,.06),0 14px 34px -14px rgba(32,32,32,.28);font:500 15px/1 Inter,system-ui,sans-serif;color:#202020}
+html[data-hold] body>#tools button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:12px;background:none;color:#202020;cursor:pointer;font:inherit;transition:background .15s}
+html[data-hold] body>#tools button:hover{background:rgba(32,32,32,.06)}
+html[data-hold] body>#tools button[aria-pressed=true]{background:linear-gradient(135deg,#5751FF,#1C14F2);color:#fff}
+html[data-hold] body>#tools svg{width:20px;height:20px}
+html[data-hold] body>#tools .sep{width:1px;height:26px;margin:0 8px;background:rgba(32,32,32,.12)}
+html[data-hold] body>#tools #zOut,html[data-hold] body>#tools #zIn{width:40px;font-size:18px}
+html[data-hold] body>#tools .zl{min-width:58px;text-align:center;color:#5f5e5a;font-variant-numeric:tabular-nums}
+html[data-hold] body>#tools #zFit{width:auto;padding:0 14px;white-space:nowrap}
+@media (max-width:760px){html[data-hold] body>#tools{display:none!important}}
 html.src .holdbar{display:none!important} /* mode console : la bulle « quit console mode » prend la place du bandeau */
 html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 @media (max-width:760px){html[data-hold] .srctoast{top:calc(84px + env(safe-area-inset-top))}}
@@ -325,7 +333,8 @@ html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 <div class="tip" id="tip" aria-hidden="true"><svg viewBox="0 0 80 78"><path d="M2.43566 10.2293C0.557465 5.39905 5.25275 0.609822 10.1193 2.39242L73.3458 25.5526C78.9768 27.6152 78.4617 35.7432 72.6153 37.078L47.5001 42.8104C46.8028 42.9697 46.2429 43.4878 46.0304 44.1707L37.6398 71.1424C35.9468 76.5842 28.3421 76.8476 26.2765 71.536L2.43566 10.2293Z" fill="#000" stroke="#fff" stroke-width="5"/></svg><span><i></i></span><b class="pv"><img alt=""></b></div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
-<script src="assets/core.js?v=8cdd171e"></script><script src="assets/home.js?v=8ac36e1c"></script><script src="assets/ui.js?v=79c79596"></script>
+<script src="assets/core.js?v=8cdd171e"></script><script src="assets/home.js?v=8ac36e1c"></script><script src="assets/ui.js?v=1e7b9e35"></script>
+<script>(()=>{const t=document.getElementById("tools");if(t)document.body.appendChild(t);})();</script>
 <div class="mwrap"><div class="mveil" id="mveil" role="dialog" aria-labelledby="mtitle">
   <div class="mbox">
     <button class="x" type="button" id="mclose" aria-label="Close">✕</button>

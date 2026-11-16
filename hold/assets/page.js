@@ -105,7 +105,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
 
 /*evolve*/ /* Templates dynamiques : 3 use cases ; chaque demande à Claude fait évoluer le template ; à la fin, « Ship it » envoie l'asset */
 (()=>{ const post=document.getElementById('evpost'); if(!post) return;
-  const stage=post.parentNode, bar=stage.querySelector('.ev-prompt'), ship=stage.querySelector('.ev-ship'), tEl0=null, pEl=document.getElementById('evp'), ver=document.getElementById('evv'), verBox=ver.parentNode;
+  const stage=post.parentNode, bar=stage.querySelector('.ev-prompt'), ship=stage.querySelector('.ev-ship'), tEl0=null, pEl=document.getElementById('evp'), ver=document.getElementById('evv'), verBox=ver.parentNode, vlab=verBox.querySelector('.ev-vl');
   const fr=()=>document.documentElement.lang==='fr', L=()=>fr()?'fr':'en';
   const t=(en,frr)=>`<span class="evt" data-en="${en}" data-fr="${frr}">${en}</span>`;
   const CASES=[
@@ -113,7 +113,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        quote:t('“Our brand, finally consistent everywhere.”','« Notre marque, enfin cohérente partout. »')+'<small>'+t('Founder, Nova','Fondatrice, Nova')+'</small>',
        badge:t('May 12','12 mai'), cta:t('Join the beta','Rejoindre la bêta')+' →'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',img:'ev-img',quote:'ev-quote',badge:'ev-badge',cta:'ev-cta'},
-     title:{en:'Launch week is here',fr:'La semaine du lancement'},
+     kind:{en:'Launch post',fr:'Post de lancement'}, title:{en:'Launch week is here',fr:'La semaine du lancement'},
      req:{en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
           fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']},
      fmt:['4/5','4/5','4/5','9/16','9/16','9/16'], theme:[0,0,0,0,0,'dark'],
@@ -126,7 +126,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        talk:'<small>'+t('Talk','Talk')+'</small>'+t('Design systems that scale','Des design systems qui passent à l’échelle'),
        date:t('June 3 · Main stage','3 juin · Grande scène'), partners:'<i></i><i></i><i></i>'},
      cls:{logo:'ev-logo',eye:'ev-eye',title:'ev-title',photo:'ev-photo',talk:'ev-talk',date:'ev-date',partners:'ev-partners'},
-     title:{en:'Nina Moreau',fr:'Nina Moreau'},
+     kind:{en:'Speaker card',fr:'Carte speaker'}, title:{en:'Nina Moreau',fr:'Nina Moreau'},
      req:{en:['Add her talk title','Add the date and the stage','Make the LinkedIn banner version','Add our partners’ logos','Use the yellow edition colors'],
           fr:['Ajoute le titre de son talk','Ajoute la date et la scène','Fais la version bannière LinkedIn','Ajoute les logos de nos partenaires','Passe aux couleurs de l’édition jaune']},
      fmt:['1/1','1/1','1/1','16/9','16/9','16/9'], theme:[0,0,0,0,0,'yellow'],
@@ -140,7 +140,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
        quote:t('“We shipped our new site in a week.”','« Notre nouveau site, en ligne en une semaine. »')+'<small>'+t('Head of growth, Orbit','Head of growth, Orbit')+'</small>',
        logos:'<small>'+t('Trusted by','Ils nous font confiance')+'</small><i></i><i></i><i></i><i></i>'},
      cls:{ann:'ev-ann',nav:'ev-nav',title:'ev-title',sub:'ev-subl',cta:'ev-cta',shot:'ev-shot',quote:'ev-quote',logos:'ev-logos'},
-     title:{en:'Ship faster with Orbit',fr:'Livrez plus vite avec Orbit'},
+     kind:{en:'Header',fr:'Header'}, title:{en:'Ship faster with Orbit',fr:'Livrez plus vite avec Orbit'},
      req:{en:['Add a row of customer logos','Add a testimonial','Make the mobile version','Add an announcement banner','Switch to the spring campaign colors'],
           fr:['Ajoute une rangée de logos clients','Ajoute un témoignage','Fais la version mobile','Ajoute un bandeau d’annonce','Passe aux couleurs de la campagne de printemps']},
      fmt:['16/10','16/10','16/10','9/16','9/16','9/16'], theme:[0,0,0,0,0,'mint'],
@@ -170,7 +170,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
   const typeTitle=txt=>{ if(tEl) tEl.textContent=txt; };
   const bump=v=>{ ver.textContent='v'+v; verBox.classList.add('bump'); setTimeout(()=>verBox.classList.remove('bump'),450); };
   const loop=async()=>{ const id=++run, c=CASES[C]; bar.classList.remove('ship','sent'); ship.tabIndex=-1;
-    build(); lang(L()); ver.textContent='v1'; apply(0,false); pEl.textContent='';
+    build(); lang(L()); vlab.textContent=(fr()?'Template dynamique — ':'Active Template — ')+c.kind[L()]; ver.textContent='v1'; apply(0,false); pEl.textContent='';
     await wait(350); if(!await type(tEl,c.title[L()],70,id)) return;
     for(let k=0;k<5;k++){ if(id!==run) return; await wait(1100);
       if(!await type(pEl,c.req[L()][k],34,id)) return; await wait(320);
