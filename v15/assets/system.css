@@ -721,4 +721,5 @@ footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
 .mm.spinr .aint{animation:aintSpin .95s cubic-bezier(.45,0,.2,1) reverse}
 #chat .chips{flex-wrap:nowrap}
 #chat .chips button{white-space:nowrap;flex:none}
-@media (max-width:760px){#chat .chips{overflow-x:auto;scrollbar-width:none;justify-content:flex-start}#chat .chips::-webkit-scrollbar{display:none}#chat .chips{gap:6px}#chat .chips button{font-size:12px;padding:8px 9px}}
+#chat .chips{justify-content:center;overflow:visible} /* une seule ligne, centrée : elle peut déborder des deux côtés */
+@media (max-width:760px){#chat .chips{gap:6px;justify-content:flex-start;margin-left:-54px;width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}#chat .chips::-webkit-scrollbar{display:none}#chat .chips button{font-size:12px;padding:8px 9px}} /* mobile : la ligne prend toute la largeur de l’écran ; si elle dépasse, elle glisse au doigt au lieu d’être coupée */
