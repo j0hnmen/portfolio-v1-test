@@ -715,3 +715,6 @@ footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
 @keyframes aintSpin{from{rotate:0deg}to{rotate:360deg}}
 @keyframes aintWig{0%{rotate:0deg}30%{rotate:-28deg;scale:1.08}65%{rotate:12deg}100%{rotate:0deg;scale:1}}
 @media (prefers-reduced-motion:reduce){.mm .aint{animation:none!important}}
+/* prompt box : léger grossissement au survol (souris uniquement) */
+@media (hover:hover){#chat .pform{transition:scale .45s cubic-bezier(.3,1.5,.5,1),box-shadow .35s}
+#chat .pform:hover,#chat .pform:focus-within{scale:1.025}}
