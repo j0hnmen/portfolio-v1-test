@@ -90,7 +90,7 @@ else { if(fb) fb.addEventListener('click',e=>setLang(e.currentTarget.dataset.to|
       const s=p<-.15?0:p<.46?1:p<.54?2:3;
       if(s!==st){ sec.classList.toggle('es-lg',s>=1); sec.classList.toggle('es-out',s>=2); sec.classList.toggle('es-ph',s>=3); st=s; }
       scrubSig(sv1,cl(p,-.12,.36)); scrubSig(sv2,cl(p,.56,.8)); sec.style.setProperty('--sq',(1-cl(p,.7,.92)).toFixed(3));
-      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const lq=cl(p,-.62,-.04); sec.style.setProperty('--lq',lq.toFixed(4)); };
+      /* le logo grossit et apparaît pendant l'arrivée de la section (plus de grand vide avant) */ const eb=sec.querySelector('.endbig'); let lq; if(pin&&eb){ const r=pin.getBoundingClientRect(), er=eb.getBoundingClientRect(), mid=er.top+er.height/2-r.top, run=Math.max(1,r.height-innerHeight); /* commence quand le logo est vraiment dans l'écran (centre à 82 % de la hauteur), fini quand la section se fige */ const p0=-(innerHeight*.82-mid)/run; lq=cl(p,Math.min(p0,-.04),.02); } else lq=cl(p,-.3,-.02); sec.style.setProperty('--lq',lq.toFixed(4)); };
     addEventListener('scroll',()=>{ if(!tks) tks=requestAnimationFrame(prog); },{passive:true}); addEventListener('resize',prog); prog(); }); }
 /* trace une signature (masques segment par segment) à une position donnée, 0 → 1 */
 function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySelectorAll('.sgw,.sgc')].map(p=>{ const d=parseFloat(p.style.animationDelay)||0, u=parseFloat(p.style.animationDuration)||.05; return [p,d,u]; }); sv.__T=Math.max(.01,...sv.__seg.map(x=>x[1]+x[2])); sv.classList.add('sigscrub'); }

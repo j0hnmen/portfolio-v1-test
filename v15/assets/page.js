@@ -209,3 +209,6 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 /*plansin*/ /* Pricing : les deux cartes glissent légèrement depuis la gauche et la droite, puis se posent */
 { const pl=document.querySelector('#pricing .plans'); if(pl&&'IntersectionObserver' in window){ pl.classList.add('plpre');
   new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ o.disconnect(); requestAnimationFrame(()=>pl.classList.add('plin')); } },{threshold:.18}).observe(pl); } }
+/*skok*/ document.querySelectorAll('#skill details.sk').forEach(d=>{ const on=()=>{ d.classList.remove('skon'); if(d.open){ void d.offsetWidth; d.classList.add('skon'); } };
+  d.addEventListener('toggle',on);
+  if(d.open){ const io=new IntersectionObserver(es=>{ if(es[0].isIntersecting){ on(); io.disconnect(); } },{threshold:.6}); io.observe(d); } });
