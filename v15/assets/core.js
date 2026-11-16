@@ -266,3 +266,52 @@ const RADIO=(function(){
 
 /* mobile : bandeau papier sous l'en-tête dès qu'on a quitté le haut de page */
 { const H=document.documentElement; const band=document.createElement('div'); band.className='mtop'; band.setAttribute('aria-hidden','true'); document.body.appendChild(band); let tk=0; const f=()=>{ tk=0; H.classList.toggle('mscr',scrollY>40); }; addEventListener('scroll',()=>{ if(!tk) tk=requestAnimationFrame(f); },{passive:true}); f(); }
+
+/*sound*/ /* bloc son en bas à droite : un morceau au hasard, qui continue d'une page à l'autre (même morceau, même seconde).
+   Ordinateur : <audio> (Chrome relance tout seul après un changement de page). Mobile : Web Audio, sans carte « en lecture » sur l'écran verrouillé ;
+   iOS demande un tap pour relancer après chaque page. Pause quand l'onglet est caché, reprise au retour. Jamais sur la page provisoire. */
+(()=>{ const H=document.documentElement; if(H.hasAttribute('data-hold')) return;
+  const T=[["02","Daft Punk","Touch It / Technologic"],["04","Polo & Pan","Oasis"],["05","Wax Tailor","Que Sera"],["07","Justice","Stress"],["09","Chopin · Pollini","Étude op. 10 n° 1"],["10","Woodkid","Goliath"],["11","Gustavo Santaolalla","The Last of Us Part II"],["14","Gábor Szabó","Love Is Blue"],["15","Daft Punk","Crescendolls"],["16","Debussy · Tomita","Clair de lune"],["17","The Rah Band","Messages from the Stars"],["19","Aphex Twin","CIRKLON3"],["20","The Zombies","Time of the Season"],["21","Daft Punk","Superheroes"],["22","Air","Alpha Beta Gaga"],["23","Fleetwood Mac","The Chain"],["24","Aphex Twin","Pulsewidth"],["27","Art Garfunkel","Waters of March"],["30","Daft Punk","One More Time"],["31","Salut c'est cool","Révélations mystiques"]];
+  const FR=H.dataset.lp==='fr', base=FR?'../':'', src=i=>base+'audio/'+T[i][0]+'.mp3', SK='sndstate';
+  const touch=matchMedia('(hover:none)').matches;
+  let st={i:-1,t:0,on:false,at:0}; try{ st=Object.assign(st,JSON.parse(sessionStorage.getItem(SK)||'{}')); }catch(_){}
+  const save=()=>{ st.t=pos(); st.at=Date.now(); try{ sessionStorage.setItem(SK,JSON.stringify(st)); }catch(_){} };
+  const rnd=()=>{ let n; do{ n=Math.floor(Math.random()*T.length); }while(T.length>1&&n===st.i); return n; };
+  /* —— moteur —— */
+  let A=null, ctx=null, buf=null, node=null, gain=null, t0=0, off=0, loading=0;
+  const pos=()=> touch ? (node? (ctx.currentTime-t0)+off : off) : (A? A.currentTime : st.t);
+  async function startAt(i,t){ st.i=i; const my=++loading; label();
+    if(!touch){ if(!A){ A=new Audio(); A.preload='auto'; A.setAttribute('playsinline',''); A.disableRemotePlayback=true; A.addEventListener('ended',()=>next()); }
+      if(!A.src.endsWith(src(i))){ A.src=src(i); }
+      try{ A.currentTime=t||0; }catch(_){} A.volume=0; await A.play(); fade(1); }
+    else { ctx=ctx||new (window.AudioContext||window.webkitAudioContext)(); gain=gain||ctx.createGain(); gain.connect(ctx.destination);
+      if(ctx.state!=='running') await ctx.resume();
+      const r=await fetch(src(i)); const b=await ctx.decodeAudioData(await r.arrayBuffer()); if(my!==loading) return; buf=b; play(t||0); }
+    try{ if('mediaSession' in navigator) navigator.mediaSession.metadata=null; }catch(_){} }
+  function play(t){ stopNode(); node=ctx.createBufferSource(); node.buffer=buf; node.connect(gain); off=Math.min(t,buf.duration-.05); t0=ctx.currentTime;
+    gain.gain.setValueAtTime(0,ctx.currentTime); gain.gain.linearRampToValueAtTime(1,ctx.currentTime+.6); node.onended=()=>{ if(node&&st.on&&pos()>=buf.duration-.2) next(); }; node.start(0,off); }
+  function stopNode(){ if(node){ node.onended=null; try{ node.stop(); }catch(_){} node.disconnect(); node=null; } }
+  function fade(to){ if(!A) return; const a=A.volume, d=500, s=performance.now(); const f=n=>{ const k=Math.min(1,(n-s)/d); A.volume=a+(to-a)*k; if(k<1) requestAnimationFrame(f); }; requestAnimationFrame(f); }
+  function pause(){ if(touch){ off=pos(); stopNode(); } else if(A){ A.pause(); } }
+  async function go(){ st.on=true; ui(); try{ await startAt(st.i<0?rnd():st.i, st.t); waiting(false); flash(); }catch(_){ waiting(true); } save(); }
+  function flash(){ b.classList.add('show'); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('show'),2600); }
+  function stop(){ st.on=false; st.t=pos(); pause(); ui(); save(); }
+  function next(){ st.t=0; st.i=rnd(); if(st.on) go(); else { label(); save(); } }
+  /* —— interface —— */
+  const b=document.createElement('div'); b.className='mus'; b.id='mus';
+  b.innerHTML=`<span class="mus-l" aria-live="polite"><b></b><i></i></span><button class="mus-n" type="button" aria-label="${FR?'Morceau suivant':'Next track'}"><svg viewBox="0 0 24 24"><path d="M6 6l8 6-8 6zM16 6h2v12h-2z"/></svg></button><button class="mus-b" type="button" aria-label="${FR?'Musique':'Music'}"><span class="eq"><i></i><i></i><i></i><i></i></span><svg class="mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l4 6M21 9l-4 6"/></svg></button>`;
+  document.body.appendChild(b);
+  const lb=b.querySelector('.mus-l');
+  function label(){ const t=T[st.i]; if(!t) return; lb.querySelector('b').textContent=t[2]; lb.querySelector('i').textContent=t[1]; }
+  function ui(){ b.classList.toggle('on',st.on); b.querySelector('.mus-b').setAttribute('aria-pressed',st.on); }
+  function waiting(w){ b.classList.toggle('wait',w); if(w){ const once=()=>{ removeEventListener('pointerdown',once,true); removeEventListener('keydown',once,true); if(st.on) go(); }; addEventListener('pointerdown',once,true); addEventListener('keydown',once,true); } }
+  b.querySelector('.mus-b').addEventListener('click',e=>{ e.stopPropagation(); st.on&&!b.classList.contains('wait') ? stop() : go(); });
+  b.querySelector('.mus-n').addEventListener('click',e=>{ e.stopPropagation(); next(); b.classList.add('show'); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('show'),2500); });
+  /* reprise : même morceau, même seconde (+ le temps du changement de page, comme une radio) */
+  if(st.i>=0) label(); ui();
+  if(st.on){ st.t=st.t+Math.min(3,(Date.now()-(st.at||Date.now()))/1000); go(); }
+  setInterval(()=>{ if(st.on) save(); },1000);
+  addEventListener('pagehide',save);
+  /* onglet caché / téléphone verrouillé : pause ; retour : reprise */
+  document.addEventListener('visibilitychange',()=>{ if(!st.on) return; if(document.hidden){ st.t=pos(); pause(); save(); } else go(); });
+})();

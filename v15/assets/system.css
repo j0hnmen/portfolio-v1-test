@@ -993,3 +993,31 @@ html body main section#evolve.ev.wrap.rv{padding-bottom:clamp(60px,8vh,96px)!imp
 #evolve.fr-both .ev-fr::before{background:linear-gradient(rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(32,32,32,.045) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(rgba(86,79,255,.07) 0%,rgba(86,79,255,.05) 30%,rgba(86,79,255,.08) 43%,rgba(86,79,255,.18) 54%,rgba(86,79,255,.36) 66%,rgba(86,79,255,.6) 78%,rgba(86,79,255,.84) 90%,#564FFF 100%),#f7f7fb!important}
 /* space invader : le survol (saut, bleu, grossi) marche partout, pas seulement en bas de la home */
 @media (hover:hover){html:not(.atend) .invader:hover{scale:1.35;color:#564FFF;animation:invjump .5s steps(2) infinite;transition:scale .35s cubic-bezier(.3,1.6,.5,1),color .3s}}
+
+/* ===== bloc son, en bas à droite ===== */
+.mus{position:fixed;right:24px;bottom:calc(12px + (var(--pbh,52px) - 44px)/2);z-index:60;display:flex;align-items:center;gap:8px;font:500 13px/1.15 var(--ui,Inter,system-ui,sans-serif)}
+.mus button{all:unset;cursor:pointer;display:grid;place-items:center;border-radius:999px;-webkit-tap-highlight-color:transparent}
+.mus .mus-b{width:44px;height:44px;background:#fff;color:#202020;box-shadow:0 0 0 1px rgba(32,32,32,.08),0 10px 24px -12px rgba(40,30,240,.45);transition:scale .35s cubic-bezier(.3,1.6,.5,1),background .3s,color .3s}
+.mus.on .mus-b{background:linear-gradient(135deg,#5751FF,#1C14F2);color:#fff}
+.mus .mus-b svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mus .mus-b .mute path:first-child{fill:currentColor;stroke:none}
+.mus .eq{display:none;align-items:flex-end;gap:2.5px;height:16px}
+.mus .eq i{display:block;width:3px;height:100%;border-radius:2px;background:currentColor;transform-origin:bottom;animation:museq 1s ease-in-out infinite}
+.mus .eq i:nth-child(2){animation-delay:-.35s}.mus .eq i:nth-child(3){animation-delay:-.7s}.mus .eq i:nth-child(4){animation-delay:-.15s}
+@keyframes museq{0%,100%{scale:1 .25}50%{scale:1 1}}
+.mus.on .eq{display:flex}.mus.on .mute{display:none}
+.mus.wait .mus-b{animation:muswait 1.4s ease-in-out infinite}
+@keyframes muswait{0%,100%{box-shadow:0 0 0 1px rgba(32,32,32,.08),0 0 0 0 rgba(86,79,255,.45)}50%{box-shadow:0 0 0 1px rgba(32,32,32,.08),0 0 0 10px rgba(86,79,255,0)}}
+.mus-l{display:flex;flex-direction:column;align-items:flex-end;max-width:220px;padding:8px 12px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(32,32,32,.08),0 10px 24px -14px rgba(40,30,240,.4);opacity:0;translate:8px 0;pointer-events:none;transition:opacity .3s,translate .35s cubic-bezier(.3,1.4,.5,1);white-space:nowrap}
+.mus-l b{font-weight:600;color:#202020;overflow:hidden;text-overflow:ellipsis;max-width:196px}.mus-l i{font-style:normal;color:#8a8984;font-size:12px;overflow:hidden;text-overflow:ellipsis;max-width:196px}
+.mus .mus-n{width:32px;height:32px;background:#fff;color:#202020;box-shadow:0 0 0 1px rgba(32,32,32,.08);opacity:0;scale:.6;pointer-events:none;transition:opacity .25s,scale .35s cubic-bezier(.3,1.6,.5,1)}
+.mus .mus-n svg{width:14px;height:14px;fill:currentColor}
+@media (hover:hover){.mus .mus-b:hover{scale:1.08}.mus.on:hover .mus-l,.mus.on:hover .mus-n{opacity:1;translate:0 0;scale:1;pointer-events:auto}.mus .mus-n:hover{scale:1.1}}
+.mus.on.show .mus-l,.mus.on.show .mus-n{opacity:1;translate:0 0;scale:1;pointer-events:auto}
+html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
+@media (max-width:760px){
+  .mus{right:12px}
+  .pbox,body:not(.is-canvas) .pbox,html.cvs .pbox{right:64px!important}
+  .mus-l{position:absolute;right:44px;bottom:52px}.mus .mus-n{position:absolute;right:6px;bottom:54px}
+  .mus.on .mus-n{opacity:1;scale:1;pointer-events:auto}
+}
