@@ -990,3 +990,8 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
   .page .ev-stage{order:1;justify-self:start!important}
   .page .ev .ev-head{order:2}
 }
+.page .ev-eb{display:inline-flex;align-items:center;gap:10px}
+.page .ev-ic{width:1.15em;height:1.15em;flex:none}
+/* la barre de prompt reste en bas, à la même place : le template grandit vers le haut */
+.page .ev-stage{justify-content:flex-end!important}
+@media (min-width:901px){.page .ev .ev-head{margin-top:0!important;align-self:end;margin-bottom:clamp(160px,20vh,220px)!important}}
