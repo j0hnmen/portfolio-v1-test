@@ -112,9 +112,13 @@ html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 @media (max-width:760px){html[data-hold] .srctoast{top:calc(84px + env(safe-area-inset-top))}}
 @keyframes hbmove{to{background-position:19.8px 0}}
 @media (prefers-reduced-motion:reduce){.hb-tape{animation:none}}
-.holdsoon{position:fixed;z-index:60;top:calc(26px + 40px + 10px + env(safe-area-inset-top));left:0;right:0;margin:0 auto;width:max-content;font:400 15px/1 var(--text,Georgia,serif);color:#5f5e5a;letter-spacing:.01em;pointer-events:none}
-html.src .holdsoon{display:none!important}
-@media (max-width:760px){.holdsoon{top:auto;bottom:calc(100px + 34px + 9px + env(safe-area-inset-bottom));font-size:13px}} /* mobile : le bandeau est en bas, la date passe juste au-dessus */
+/* « Coming Jan 2027 » dans le bandeau jaune, sous « Building website… » : bandeau un peu plus haut */
+.holdbar{height:54px!important}
+.hb-tape{width:34px}
+.hb-in{gap:11px;padding:0 20px}
+.hb-tx{display:flex;flex-direction:column;align-items:flex-start;gap:4px;line-height:1}
+.holdsoon{font:400 13px/1 var(--text,Georgia,serif);color:#5a5420;letter-spacing:.01em}
+@media (max-width:760px){.holdbar{height:46px!important}.holdsoon{font-size:12px}}
 @media (max-width:760px){.holdbar{top:auto;bottom:calc(100px + env(safe-area-inset-bottom));height:34px;font-size:14px}.hb-tape{width:22px}} /* mobile : juste au-dessus du bouton Let’s talk */
 .mwrap{opacity:0;animation:fadein .6s 2s forwards}
 .mveil{position:absolute;z-index:20;bottom:78px;left:50%;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));pointer-events:none}
@@ -147,7 +151,7 @@ html.src .holdsoon{display:none!important}
 </style>
 </head>
 <body class="pg-home">
-<div class="holdbar" role="status"><i class="hb-tape" aria-hidden="true"></i><span class="hb-in"><svg class="hb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 22 20.5H2z" fill="#202020"/><path d="M12 9.6v5.2" stroke="#FFF186" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.3" fill="#FFF186"/></svg><span data-i="hold">Building website…</span></span><i class="hb-tape" aria-hidden="true"></i></div><p class="holdsoon"><span data-i="holdsoon">Coming Jan 2027</span></p>
+<div class="holdbar" role="status"><i class="hb-tape" aria-hidden="true"></i><span class="hb-in"><svg class="hb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 22 20.5H2z" fill="#202020"/><path d="M12 9.6v5.2" stroke="#FFF186" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.3" fill="#FFF186"/></svg><span class="hb-tx"><span data-i="hold">Building website…</span><small class="holdsoon" data-i="holdsoon">Coming Jan 2027</small></span></span><i class="hb-tape" aria-hidden="true"></i></div>
 <header class="top">
   <a class="mono" href="#" id="home" aria-label="Nabil Amara, accueil"><svg class="nsig" viewBox="-14 -14 864 706" aria-hidden="true"><defs><mask id="nsm" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1200"><path class="nsc" pathLength="1" d=""/></mask></defs><g mask="url(#nsm)"><path class="nsf" d=""/></g></svg></a>
   <div class="modes" role="group" aria-label="Affichage">
