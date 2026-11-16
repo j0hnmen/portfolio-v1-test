@@ -1010,7 +1010,13 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 /* section « la box AssetsOS qui sort des assets » mise de côté */
 #case{display:none!important}
 /* hero AssetsOS : texte + boutons ferrés à gauche, calés sur le bord du A d'ASSETS (1,23 % de la largeur du logo), plus d'air sous le logo */
-.page .hero .hbot{align-self:stretch;align-items:flex-start!important;text-align:left;padding-left:1.23%!important;margin-top:clamp(48px,5.6vw,84px)!important;gap:clamp(28px,3.4vh,40px)!important}
+.page .hero .hbot{align-self:stretch;align-items:flex-start!important;text-align:left;padding-left:1.23%!important;margin-top:clamp(4px,.8vw,14px)!important;gap:clamp(28px,3.4vh,40px)!important}
 .page .hero .hsub .hl{margin:0!important;max-width:34ch}
 .page .hero .row{justify-content:flex-start}
 @media (max-width:600px){.page .hero .hl br{display:none}} /* mobile : pas de mot seul en bout de ligne */
+@media (max-width:600px){.page .hero .hbot{margin-top:40px!important}} /* mobile : la signature ne touche pas le texte */
+
+/* hero : Impact · Clarity · Value, une ligne sobre entre le logo et le texte */
+.page .hero .hvals{display:flex;align-items:center;gap:14px;margin:0;font-size:clamp(20px,1.7vw,26px);line-height:1;letter-spacing:.01em;color:var(--ink)}
+.page .hero .hvals i{width:6px;height:6px;border-radius:50%;background:var(--blue,#564FFF)}
+.page .mani{display:none!important}

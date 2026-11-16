@@ -78,8 +78,18 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   document.addEventListener('visibilitychange',()=>{ if(document.hidden) vis=false; }); } }
 
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
-document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricing"]'); if(!a) return; const t=document.getElementById('pricing-title'); if(!t) return; e.preventDefault();
-  const y=t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*.14); const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto'; scrollTo(0,y); H.style.scrollBehavior=sb; history.replaceState(null,'','#pricing'); });
+/*smoothanchor*/ /* ancres internes (See pricing…) : défilement fluide, avec une courbe douce ; la cible est remesurée à chaque image (les sections qui apparaissent peuvent décaler la page) ; la molette ou le doigt reprennent la main */
+{ const RMq=matchMedia('(prefers-reduced-motion:reduce)'); let stop=null;
+  const dest=(id)=>{ const t=id==='pricing'?(document.getElementById('pricing-title')||document.getElementById('pricing')):document.getElementById(id); if(!t) return null;
+    return Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight, t.getBoundingClientRect().top+scrollY-Math.round(innerHeight*(id==='pricing'?.14:.08)))); };
+  const go=(id)=>{ if(stop) stop(); const y0=scrollY, d0=dest(id); if(d0==null) return false; const H=document.documentElement, sb=H.style.scrollBehavior; H.style.scrollBehavior='auto';
+    if(RMq.matches){ scrollTo(0,d0); H.style.scrollBehavior=sb; return true; }
+    const dur=Math.min(1300,Math.max(650,Math.abs(d0-y0)*.45)), t0=performance.now(), ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; let raf=0;
+    const end=()=>{ cancelAnimationFrame(raf); H.style.scrollBehavior=sb; ['wheel','touchstart','keydown'].forEach(ev=>removeEventListener(ev,end)); stop=null; };
+    ['wheel','touchstart','keydown'].forEach(ev=>addEventListener(ev,end,{passive:true})); stop=end;
+    const step=now=>{ const k=Math.min(1,(now-t0)/dur), d=dest(id); scrollTo(0,y0+(d-y0)*ease(k)); if(k<1) raf=requestAnimationFrame(step); else end(); }; raf=requestAnimationFrame(step); return true; };
+  document.addEventListener('click',e=>{ const a=e.target.closest('a[href^="#"]'); if(!a||e.defaultPrevented) return; const id=decodeURIComponent(a.getAttribute('href').slice(1)); if(!id) return;
+    if(go(id)){ e.preventDefault(); history.replaceState(null,'','#'+id); } }); }
 
 /*ysol*/ /* page AssetsOS : la tuile répond à « The problem » */
 { const card=document.querySelector('#system .aoscard'), l=card&&card.querySelector('.aosl'); if(l&&!l.querySelector('.ysol')){ const e=document.createElement('div'); e.className='eb ysol'; e.innerHTML='<span data-i="ysol">Your solution</span>'; l.insertBefore(e,l.firstChild);} }
