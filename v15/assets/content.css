@@ -993,9 +993,9 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev-eb{display:inline-flex;align-items:center;gap:10px}
 .page .ev-ic{width:1.15em;height:1.15em;flex:none}
 /* la barre de prompt reste en bas, à la même place : le template grandit vers le haut */
-.page .ev-stage{justify-content:flex-end!important}
+.page .ev-stage{justify-content:center!important} /* label + asset + prompt centrés dans la place réservée */
 .page .ev-prompt{position:relative;z-index:3} /* la prompt box passe au-dessus de l’ombre de l’asset */
-@media (min-width:901px){.page .ev .ev-head{margin-top:0!important;align-self:end;margin-bottom:clamp(160px,20vh,220px)!important}}
+@media (min-width:901px){.page .ev .ev-head{margin-top:0!important;align-self:center;margin-bottom:0!important}} /* texte centré sur le même axe que l’asset */
 
 /* Ship it : bouton en dégradé de la charte, reflet qui passe, halo bleu */
 .page .ev-prompt.ship{background:transparent;box-shadow:none}
