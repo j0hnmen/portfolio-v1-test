@@ -776,3 +776,5 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .testi .tmc{gap:18px!important}
 .testi .tmq-mark{height:30px!important;line-height:.95!important;margin:0 0 -2px -3px!important;font-size:84px!important}
 .testi figcaption{margin-top:12px}
+/* carrousel : assez de place en haut et en bas pour que l'ombre des cartes (et leur montée au survol) ne soit jamais coupée ; marges négatives pour garder le même espacement */
+.testi .tmq{padding:40px 0 90px!important;margin-top:calc(clamp(40px,5vh,56px) - 40px)!important;margin-bottom:-90px!important}
