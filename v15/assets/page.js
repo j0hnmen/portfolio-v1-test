@@ -58,7 +58,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       if(x>W){ c.el.remove(); live.splice(j,1); } }
     if(vis) raf=requestAnimationFrame(step); };
   /* à chaque envoi : une grande onde bleue part de la tuile et traverse l'écran, derrière le contenu */
-  let wl=null; const wave=()=>{ if(RM||!src) return;
+  let wl=null; const wave=()=>{ if(RM||!src||document.hidden) return; { const s=stage.getBoundingClientRect(); if(s.bottom<innerHeight*.35||s.top>innerHeight*.65) return; } /* pas d'onde si la section n'est pas vraiment à l'écran */
     /* l'onde est accrochée à la page (pas à l'écran) : elle suit la tuile quand on scrolle */
     if(!wl){ wl=document.createElement('div'); wl.className='cs-wavelayer'; wl.setAttribute('aria-hidden','true'); document.body.appendChild(wl); }
     wl.style.height=document.documentElement.scrollHeight+'px';
@@ -70,7 +70,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       await wait(380); if(!vis) break; bar.classList.add('sent'); spawn(pi); wave(); src&&src.classList.add('emit'); await wait(260); bar.classList.remove('sent'); src&&src.classList.remove('emit');
       await wait(700); for(let i=txt.length;i>=0&&vis;i--){ pt.textContent=txt.slice(0,i); await wait(14); } await wait(320); pi++; }
     on=false; };
-  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(step); } loop(); } },{rootMargin:'100px 0px'}).observe(stage);
+  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(step); } loop(); } else if(wl){ wl.querySelectorAll('.cs-wave').forEach(w=>w.remove()); } },{rootMargin:'0px'}).observe(stage);
   document.addEventListener('visibilitychange',()=>{ if(document.hidden) vis=false; }); } }
 
 /*pricinglink*/ /* « See pricing » : saut immédiat (pas de défilement animé) sur le titre Pricing */
