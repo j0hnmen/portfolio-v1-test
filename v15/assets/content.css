@@ -1023,21 +1023,11 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .mani{display:none!important}
 /* Grow Bigger : dégradé bleu de la charte, du blanc vers un lavande, halo bleu à droite (esprit carte Signature Ship) */
 .page .folr .fo2:nth-child(2){background:radial-gradient(50% 180% at 100% 0%,rgba(86,79,255,.16) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#fff 35%,#f3f2ff 75%,#eae8ff 100%)} /* plus léger */
+@media (hover:hover){.page .folr .fo2:nth-child(2):hover,.page .folr .fo2:nth-child(2):focus{background:radial-gradient(55% 190% at 100% 0%,rgba(86,79,255,.24) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#f8f8ff 30%,#efeeff 70%,#e3e1ff 100%)}}
 /* Pricing : les deux cartes arrivent légèrement de part et d'autre, puis se posent */
-.page #pricing .plans.plpre>.plan{opacity:0;translate:-56px 0;transition:translate 1.25s cubic-bezier(.16,1,.3,1),opacity .9s ease-out}
-.page #pricing .plans.plpre>.plan:nth-child(2){translate:56px 0;transition-delay:.08s}
+.page #pricing .plans.plpre>.plan{opacity:0;translate:-56px 0;transition:translate 1.25s cubic-bezier(.16,1,.3,1),opacity .9s ease-out,transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s cubic-bezier(.2,.8,.2,1)} /* garde la transition du survol (montée + ombre) */
+.page #pricing .plans.plpre>.plan:nth-child(2){translate:56px 0;transition-delay:.08s,.08s,0s,0s}
 .page #pricing .plans.plpre.plin>.plan{opacity:1;translate:0 0}
 @media (max-width:900px){.page #pricing .plans.plpre>.plan{translate:-24px 0}.page #pricing .plans.plpre>.plan:nth-child(2){translate:24px 0}.page #pricing{overflow-x:clip}}
-@media (prefers-reduced-motion:reduce){.page #pricing .plans.plpre>.plan{opacity:1;translate:0 0;transition:none}}
+@media (prefers-reduced-motion:reduce){.page #pricing .plans.plpre>.plan{opacity:1;translate:0 0;transition:transform .5s,box-shadow .5s}}
 
-/* suivis : survol fluide — la teinte arrive en fondu (calque), le texte se déplie en douceur */
-.page .folr .fo2{position:relative;isolation:isolate}
-.page .folr .fo2:hover,.page .folr .fo2:focus{background:#fff}
-.page .folr .fo2:nth-child(2):hover,.page .folr .fo2:nth-child(2):focus{background:radial-gradient(50% 180% at 100% 0%,rgba(86,79,255,.16) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#fff 35%,#f3f2ff 75%,#eae8ff 100%)}
-.page .folr .fo2::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;opacity:0;transition:opacity .55s cubic-bezier(.4,0,.2,1);background:#ececff}
-.page .folr .fo2:nth-child(2)::before{background:radial-gradient(55% 190% at 100% 0%,rgba(86,79,255,.24) 0%,rgba(86,79,255,0) 100%),linear-gradient(100deg,#f8f8ff 30%,#efeeff 70%,#e3e1ff 100%)}
-@media (hover:hover){.page .folr .fo2:hover::before,.page .folr .fo2:focus::before{opacity:1}}
-.page .folr .fod{transition:grid-template-rows .7s cubic-bezier(.65,0,.35,1)!important}
-.page .folr .fodi{transform:translateY(-6px);transition:opacity .5s ease .15s,transform .7s cubic-bezier(.22,1,.36,1) .1s!important}
-.page .folr .fo2:is(:hover,:focus,:focus-within) .fodi{transform:none}
-@media (hover:none){.page .folr .fodi{transform:none}}
