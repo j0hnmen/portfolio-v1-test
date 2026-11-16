@@ -1118,3 +1118,22 @@ html body #main.wk2.wk2>section.wk2-in.wk2-in{padding:0!important;margin:0!impor
    (la perspective de .case faisait défiler le fond avec le contenu, et laissait voir le canvas derrière) */
 html body .case{perspective:none!important}
 html.wk2-open .top{z-index:66}
+
+/*mcp — lien Claude ↔ Figma dans la tuile AssetsOS*/
+.aoswins .figwin{overflow:visible}
+.aoswins .fghead{border-radius:24px 24px 0 0}
+.aoswins .fgbody{border-radius:0 0 24px 24px;overflow:hidden}
+.aoswins .mcpl{position:absolute;left:47%;bottom:100%;width:2px;height:34px;margin-left:-1px;z-index:6;pointer-events:none}
+.aoswins .mcpw{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,#564FFF 0 5px,transparent 5px 9px);transform-origin:50% 100%}
+.aoswins .mcpw::before{content:"";position:absolute;left:50%;top:-5px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#564FFF;box-shadow:0 0 0 3px #fff}
+.aoswins .mcpk{position:absolute;left:50%;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#3BE9CE;box-shadow:0 0 0 2px #fff,0 0 12px 2px rgba(59,233,206,.8);opacity:0}
+.aoswins .mcpp{position:absolute;left:50%;top:100%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;padding:6px 11px 6px 9px;border-radius:999px;background:linear-gradient(135deg,#5751FF,#1C14F2);color:#fff;font:600 11px/1 var(--ui,Inter,system-ui,sans-serif);letter-spacing:.08em;white-space:nowrap;box-shadow:0 0 0 2px #fff,0 10px 22px -8px rgba(28,20,242,.7)}
+.aoswins .mcpp svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:no-preference){
+.aost .aoswins .mcpw{transform:scaleY(0);transition:transform .3s cubic-bezier(.2,.9,.2,1) 3.9s}
+.aost.seen .aoswins .mcpw{transform:none}
+.aost .aoswins .mcpp{scale:.4;opacity:0;transition:scale .45s cubic-bezier(.3,1.6,.5,1) 3.95s,opacity .2s 3.95s}
+.aost.seen .aoswins .mcpp{scale:1;opacity:1}
+.aost.seen .aoswins .mcpk{animation:mcpk .45s cubic-bezier(.5,0,.75,1) 4.15s 4}
+}
+@keyframes mcpk{0%{top:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:100%;opacity:0}}
