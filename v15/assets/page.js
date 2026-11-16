@@ -102,3 +102,45 @@ document.addEventListener('click',e=>{ const a=e.target.closest('a[href="#pricin
     let on=0; its.forEach((it,i)=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); const past=d.top+8<=mid; it.classList.toggle('past',past); if(past) on=i; });
     its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); })();
+
+/*evolve*/ /* Templates dynamiques : chaque demande à Claude ajoute un élément au template, qui se réorganise */
+(()=>{ const post=document.getElementById('evpost'); if(!post) return;
+  const B={}; post.querySelectorAll('.ev-b').forEach(e=>B[e.dataset.b]=e);
+  const tEl=document.getElementById('evtitle'), pEl=document.getElementById('evp'), bar=post.parentNode.querySelector('.ev-prompt'), ver=document.getElementById('evv'), verBox=ver.parentNode;
+  const fr=()=>document.documentElement.lang==='fr';
+  const TITLE={en:'Launch week is here',fr:'La semaine du lancement'};
+  /* positions en % du post : [left, top, width, height] ; absent = caché */
+  const S=[
+    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[7,51,86,43]},
+    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43]},
+    {logo:[7,6,30,6],eye:[7,15,34,6],title:[7,24,86,24],img:[52,51,41,43],quote:[7,51,42,43],badge:[70,3,24,0]},
+    {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,30],quote:[7,64.5,86,19],badge:[70,2,24,0]},
+    {logo:[7,4,30,3.4],eye:[7,9.5,34,3.4],title:[7,15,86,14],img:[7,32,86,26],quote:[7,60.5,86,18],badge:[70,2,24,0],cta:[7,85,86,7]},
+  ];
+  const REQ={en:['Add a quote from our founder','Add the launch date','Turn it into a story','Add a “Join the beta” button','Switch to our dark theme'],
+             fr:['Ajoute une citation de notre fondatrice','Ajoute la date du lancement','Passe-le en format story','Ajoute un bouton « Rejoindre la bêta »','Passe en thème sombre']};
+  const apply=(k,born)=>{ const st=S[Math.min(k,S.length-1)];
+    post.classList.toggle('story',k>=3); post.classList.toggle('dark',k>=5);
+    for(const n in B){ const p=st[n], e=B[n];
+      if(!p){ e.classList.add('off'); continue; }
+      const wasOff=e.classList.contains('off'); e.classList.remove('off');
+      e.style.left=p[0]+'%'; e.style.top=p[1]+'%'; e.style.width=p[2]+'%';
+      if(n==='badge'){ e.style.height='auto'; e.style.aspectRatio='1'; } else e.style.height=p[3]+'%';
+      if(wasOff&&born){ e.classList.remove('pop'); void e.offsetWidth; e.classList.add('pop'); } } };
+  const lang=()=>{ post.querySelectorAll('.evt').forEach(e=>e.textContent=fr()?e.dataset.fr:e.dataset.en); };
+  const wait=ms=>new Promise(r=>setTimeout(r,ms)); let run=0, vis=false;
+  const type=async(el,txt,sp,id)=>{ el.textContent=''; for(const ch of txt){ if(id!==run) return false; el.textContent+=ch; await wait(sp); } return true; };
+  const loop=async()=>{ const id=++run; lang();
+    ver.textContent='v1'; apply(0,false); tEl.textContent=''; pEl.textContent='';
+    await wait(400); if(!await type(tEl,TITLE[fr()?'fr':'en'],70,id)) return;
+    for(let k=0;k<5;k++){ if(id!==run) return; await wait(1100);
+      if(!await type(pEl,REQ[fr()?'fr':'en'][k],34,id)) return; await wait(320);
+      bar.classList.add('sent'); apply(k+1,true); ver.textContent='v'+(k+2); verBox.classList.add('bump'); setTimeout(()=>verBox.classList.remove('bump'),450);
+      await wait(500); bar.classList.remove('sent'); pEl.textContent=''; }
+    await wait(3200); if(id===run&&vis){ post.style.opacity=0; await wait(450); post.style.transition='aspect-ratio 0s'; apply(0,false); await wait(30); post.style.transition=''; post.style.opacity=1; loop(); } };
+  post.style.transition+=',opacity .45s';
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ lang(); apply(4,false); tEl.textContent=TITLE[fr()?'fr':'en']; ver.textContent='v5'; return; }
+  apply(0,false);
+  new IntersectionObserver(es=>es.forEach(en=>{ vis=en.isIntersecting; if(vis) loop(); else run++; }),{threshold:.25}).observe(post);
+  new MutationObserver(()=>{ if(vis) loop(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
