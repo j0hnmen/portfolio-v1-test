@@ -187,7 +187,7 @@ const CV=(function(){
     // double soulignement sous la note
     ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
     // page provisoire : Filly, un simple calque vectoriel posé de travers en bas du canvas, qui arrive en dernier
-    if(window.FILLY){ const w=MOB?210:135, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:10,y:MOB?720:368,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
+    if(window.FILLY){ const w=MOB?200:120, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:14,y:MOB?740:398,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
     if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
         if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
       for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
