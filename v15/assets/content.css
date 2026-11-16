@@ -947,3 +947,11 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .ev-post.wide .ev-eye span{font-size:2.6cqw;padding:0 2cqw}
 .page .ev-post.wide .ev-date{font-size:2.6cqw;padding:0 2.2cqw}
 .page #pricing .nolp{margin:6px 0 0;font-size:14px;line-height:1.35;color:#8a8984}
+/* Templates dynamiques : à l'horizontale sur ordinateur — texte à gauche, template à droite */
+@media (min-width:901px){
+  .page .ev{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);column-gap:clamp(48px,7vw,120px);align-items:center;text-align:left}
+  .page .ev .ev-head{margin:0;max-width:560px}
+  .page .ev .ev-sub{margin-left:0;margin-right:0}
+  .page .ev-stage{margin:0;width:400px;justify-self:end}
+}
+@media (min-width:901px){ .page .ev{align-items:start} .page .ev .ev-head{margin-top:170px} }
