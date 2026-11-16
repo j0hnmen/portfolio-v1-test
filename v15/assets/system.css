@@ -1027,8 +1027,7 @@ html:has(.viewer.on) .mus,html.src .mus{opacity:0;pointer-events:none}
 /* grande signature (BSIG) : la même que celle du logo du haut */
 .bsig{display:block;line-height:0;color:#202020}
 .bsig svg{display:block;width:100%;height:auto;overflow:visible}
-.bsig .bsc{fill:none;stroke:#fff;stroke-width:64;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1}
-.bsig .bsf{fill:currentColor}
+.bsig canvas{display:block;width:100%;height:auto}
 
 /* Clarity / Impact / Value : marques tracées à la main, en noir */
 .hvx .hvx-w{position:relative}
@@ -1065,8 +1064,8 @@ html body section.end .h .mark,html body section.end .h .mark [data-i="t74"]{tra
 html:not(.cornin) .mus{opacity:0}
 /* frise (home) : la section se bloque, la bille avance au scroll, puis on repart */
 @media (min-width:901px){
-  .aoswho.tlpin{height:220vh;position:relative}
-  .aoswho.tlpin>section.who{position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
+  .aoswho.tlpin{position:relative} /* hauteur et position calculées en JS : pas de vide au-dessus */
+  .aoswho.tlpin>section.who{position:sticky;top:var(--tlt,80px)}
 }
 
 /* ===== page Work (refaite) : liste des projets ===== */
@@ -1113,3 +1112,4 @@ html.wk2-open .top,html.wk2-open header.top{opacity:0!important;pointer-events:n
 .wk2-it small{position:absolute;left:100%;top:.12em;margin-left:.45em;white-space:nowrap}
 html body main.wk2>section.wk2-in{padding:0!important;margin:0!important}
 html body #main.wk2.wk2>section.wk2-in.wk2-in{padding:0!important;margin:0!important}
+.hvx .hvx-grad span.bsig{color:#202020!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;padding:0!important;margin:0!important}

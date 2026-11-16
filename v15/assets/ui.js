@@ -40,16 +40,25 @@ const SIG=(h,delay)=>{ if(!h) return; const sv=h.querySelector('svg.nsig'), p=sv
   /* toutes les 25 s, la signature refait d'elle-même le geste du survol (jamais quand l'onglet est caché) */
   setInterval(()=>{ if(!document.hidden) replay(); },25000); };
 SIG(document.getElementById('home'),(document.getElementById('cv')&&!window.WORKPAGE&&location.hash!=='#work')?1800:120); /* hors home : la signature part dès l'arrivée */ SIG(document.querySelector('.vmono'),150);
-/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS), révélée par un masque comme dans la barre :
-   le vrai tracé (avec son grain) est visible du début à la fin. Le masque est en unités de la signature, il suit donc la taille affichée ; trait de masque large pour couvrir les pleins, retiré à la fin */
-let bsN=0; function BSIG(cls){ const id='bsm'+(bsN++), w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
-  w.innerHTML=`<svg viewBox="${pick[0]}" shape-rendering="geometricPrecision"><defs><mask id="${id}" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-400" y="-400" width="1800" height="1600"><path class="bsc" pathLength="1" d="${pick[1]}"/></mask></defs><g class="bsg"><path class="bsf" d="${pick[2]}" transform="${pick[3]}"/></g></svg>`;
-  const g=w.querySelector('.bsg'), c=w.querySelector('.bsc'), rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let an=null;
-  const masked=on=>{ if(on) g.setAttribute('mask',`url(#${id})`); else g.removeAttribute('mask'); };
-  w.play=(dur)=>{ w.classList.add('on'); if(rm||!c.animate){ masked(false); return; } if(an) an.cancel(); c.style.strokeDashoffset=1; masked(true);
-    an=c.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:dur||1700,easing:'cubic-bezier(.65,0,.35,1)',fill:'both'}); an.onfinish=()=>masked(false); };
-  w.hide=()=>{ if(an){ an.cancel(); an=null; } w.classList.remove('on'); if(!rm){ c.style.strokeDashoffset=1; masked(true); } };
-  if(rm) masked(false); else { c.style.strokeDashoffset=1; masked(true); }
+/* grande signature = exactement celle du logo de la barre du haut (même tirage NSIGS).
+   Dessinée dans un <canvas> à la résolution réelle de l'écran : à chaque image, le masque (le trait qui avance) est recalculé pour la taille affichée,
+   puis la vraie signature est peinte à travers. Aucun masque SVG (Chrome ne repeignait pas toujours les grands masques animés : signature coupée). */
+function BSIG(cls){ const w=document.createElement('span'); w.className='bsig '+(cls||''); w.setAttribute('aria-hidden','true');
+  const vb=pick[0].split(/[\s,]+/).map(Number), cv=document.createElement('canvas'); w.appendChild(cv); cv.style.aspectRatio=vb[2]+'/'+vb[3];
+  const ctx=cv.getContext('2d'), mPath=new Path2D(pick[1]), fPath=new Path2D(pick[2]);
+  const tr=[...pick[3].matchAll(/(translate|scale)\(([^)]*)\)/g)].map(m=>[m[1],m[2].trim().split(/[\s,]+/).map(Number)]);
+  let L=0; { const NS='http://www.w3.org/2000/svg', sv=document.createElementNS(NS,'svg'), p=document.createElementNS(NS,'path'); sv.style.cssText='position:absolute;width:0;height:0;overflow:hidden'; p.setAttribute('d',pick[1]); sv.appendChild(p); document.body.appendChild(sv); L=p.getTotalLength(); sv.remove(); }
+  const rm=matchMedia('(prefers-reduced-motion:reduce)').matches; let t=rm?1:0, raf=0, col='#202020';
+  const draw=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(3,devicePixelRatio||1), W=Math.round(r.width*dpr), Hh=Math.round(r.height*dpr);
+    if(cv.width!==W||cv.height!==Hh){ cv.width=W; cv.height=Hh; } const k=W/vb[2];
+    ctx.setTransform(1,0,0,1,0,0); ctx.globalCompositeOperation='source-over'; ctx.clearRect(0,0,W,Hh); if(t<=0) return;
+    ctx.setTransform(k,0,0,k,-vb[0]*k,-vb[1]*k);
+    if(t<1){ ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=64; ctx.strokeStyle='#000'; ctx.setLineDash([L*t,L+10]); ctx.stroke(mPath); ctx.restore(); ctx.globalCompositeOperation='source-in'; }
+    ctx.save(); tr.forEach(([f,v])=>{ if(f==='translate') ctx.translate(v[0],v[1]||0); else ctx.scale(v[0],v[1]==null?v[0]:v[1]); }); ctx.fillStyle=col; ctx.fill(fPath); ctx.restore(); ctx.globalCompositeOperation='source-over'; };
+  w.play=(dur)=>{ cancelAnimationFrame(raf); col=getComputedStyle(w).color||col; w.classList.add('on'); if(rm){ t=1; draw(); return; } const D=dur||1700, s0=performance.now();
+    const f=n=>{ const x=Math.min(1,(n-s0)/D); t=x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; draw(); if(x<1) raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
+  w.hide=()=>{ cancelAnimationFrame(raf); w.classList.remove('on'); if(!rm){ t=0; draw(); } };
+  new ResizeObserver(()=>draw()).observe(cv);
   return w; }
 
 /*abtsig*/ /* « Your one-man design studio » : grande signature en fond, qui se dessine à l'arrivée — la signature propre (celle du logo AssetsOS) */
@@ -129,8 +138,11 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     const follow=()=>{ if(run) return; const m=/translateX\(([-\d.]+)px\)/.exec(ball.style.transform||''); if(m){ fill.style.transition='none'; mark(+m[1]); } };
     /* survol : la bille ne quitte plus le fil du scroll */
     /* la bille suit le scroll (plus d'animation automatique) : de la 1re étape quand la frise entre dans l'écran, à la dernière quand elle arrive vers le haut */
-    ol.classList.add('tlscroll'); { const pw=ol.closest('.aoswho'); if(pw) pw.classList.add('tlpin'); } let raf=0;
-    const upd=()=>{ raf=0; if(innerWidth<=900) return; const r=ol.getBoundingClientRect(), H=innerHeight, p=xs(), n=p.length-1; const pin=ol.closest('.aoswho'), pr=pin&&pin.classList.contains('tlpin')?pin.getBoundingClientRect():null; const k=pr?Math.max(0,Math.min(1,(-pr.top)/Math.max(1,pr.height-H))):Math.max(0,Math.min(1,(H*.88-r.top)/(H*.5))); /* section épinglée : la bille avance pendant que la section reste bloquée */
+    ol.classList.add('tlscroll'); { const pw=ol.closest('.aoswho'); if(pw){ pw.classList.add('tlpin'); const ws=pw.querySelector('section.who');
+      /* la section se bloque centrée dans l'écran, sans vide au-dessus ; la bille a 1,1 écran de scroll pour aller au bout */
+      const size=()=>{ if(innerWidth<=900){ pw.style.height=''; return; } const h=ws.offsetHeight, t=Math.max(70,Math.round((innerHeight-h)/2)); pw._t=t; ws.style.setProperty('--tlt',t+'px'); pw.style.height=(h+Math.round(innerHeight*1.1))+'px'; };
+      size(); addEventListener('resize',size); addEventListener('load',size); } } let raf=0;
+    const upd=()=>{ raf=0; if(innerWidth<=900) return; const r=ol.getBoundingClientRect(), H=innerHeight, p=xs(), n=p.length-1; const pin=ol.closest('.aoswho'), pr=pin&&pin.classList.contains('tlpin')?pin.getBoundingClientRect():null, ws=pin&&pin.querySelector('section.who'); const k=pr?Math.max(0,Math.min(1,((pin._t||0)-pr.top)/Math.max(1,pr.height-ws.offsetHeight))):Math.max(0,Math.min(1,(H*.88-r.top)/(H*.5))); /* section épinglée : la bille avance pendant que la section reste bloquée */
       const x=p[0]+(p[n]-p[0])*k; ball.style.transition='none'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='none'; fill.style.width=Math.max(0,x)+'px';
       let on=0; p.forEach((v,j)=>{ if(v<=x+4) on=j; }); items.forEach((it,j)=>{ it.classList.toggle('past',p[j]<=x+4); it.classList.toggle('on',j===on); }); ol.classList.toggle('tldone',k>=1); };
     addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); }
