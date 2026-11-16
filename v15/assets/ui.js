@@ -141,8 +141,8 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 }
 /*workpage*/{ const isWork=/work\.html$/.test(location.pathname);
   // Work est une page à part entière : work.html
-  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794834809'; },true);
-  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794834809'; },true); }
+  document.addEventListener('click',e=>{ const a=e.target.closest('[data-go="work"],a[href^="index.html#work"]'); if(!a||isWork&&a.matches('[data-go="work"]')) return; e.preventDefault(); e.stopImmediatePropagation(); location.href='work.html?v=1794834919'; },true);
+  if(isWork){ const h=document.getElementById('home'); if(h) h.addEventListener('click',e=>{ e.preventDefault(); e.stopImmediatePropagation(); location.href='index.html?v=1794834919'; },true); }
 }
 /*frextra*/{ const H=document.documentElement;
   const T=[['#menuTxt','AI Creative Designer in Paris. I design and I build.<br>Brand · Web · Marketing.','AI Creative Designer à Paris. Je conçois et je construis.<br>Brand · Web · Marketing.'],
@@ -199,6 +199,9 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
 /*hvx*/ /* Impact / Clarity / Value : la piste avance horizontalement au rythme du scroll vertical */
 { const sec=document.querySelector('.hvx'); if(sec&&!matchMedia('(prefers-reduced-motion:reduce)').matches){ const tr=sec.querySelector('.hvx-track'); let raf=0;
   const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), run=r.height-innerHeight; const k=Math.max(0,Math.min(1,-r.top/Math.max(1,run)));
-    /* en continu : la piste glisse au même rythme que le scroll, sans arrêt */
-    tr.style.transform=`translate3d(${(-k*200/3).toFixed(3)}%,0,0)`; sec.style.setProperty('--hp',k.toFixed(4)); };
+    /* le texte glisse d'un mot à l'autre avec un temps d'arrêt doux sur chacun ; le fond, lui, reste fixe et passe en fondu (blanc → bleu → papier) */
+    const steps=2, seg=k*steps, i=Math.floor(seg), f=seg-i, hold=.28, t=f<hold?0:f>1-hold?1:(f-hold)/(1-2*hold), ease=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const pos=Math.min(steps,i+ease); tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
+    const bw=sec.querySelector('.hvx-bw'), bb=sec.querySelector('.hvx-bb');
+    if(bw) bw.style.opacity=(1-Math.max(0,Math.min(1,pos-1))).toFixed(3); if(bb) bb.style.opacity=(pos<1?pos:Math.max(0,2-pos)).toFixed(3); sec.style.setProperty('--hp',k.toFixed(4)); };
   addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); } }

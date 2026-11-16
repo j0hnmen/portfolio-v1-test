@@ -833,3 +833,10 @@ html body .tools button[aria-pressed=true],html.cvs body .pform .tools button[ar
 .hvx-p:nth-child(2) .hvx-w{position:relative}
 .hvx-s{margin-left:auto;margin-right:auto}
 @media (max-width:760px){.hvx-w{font-size:clamp(80px,22vw,150px)!important}.hvx-nf{position:static;display:block;margin:10px auto 0!important;transform:none}}
+
+/* fond fixe en fondu (plus de fond par « slide ») */
+.hvx-p:nth-child(n){background:none!important}
+.hvx-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hvx-bw{background:#fff;opacity:1}
+.hvx-bb{background:linear-gradient(135deg,#5751FF,#1C14F2);opacity:0}
+.hvx-track{position:relative;z-index:1}
