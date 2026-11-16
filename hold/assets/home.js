@@ -186,7 +186,9 @@ const CV=(function(){
     ink('Arrow',1065,410,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
     // double soulignement sous la note
     ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
-    if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
+    // page provisoire : Filly, un simple calque vectoriel posé de travers en bas du canvas, qui arrive en dernier
+    if(window.FILLY){ const w=MOB?210:135, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:10,y:MOB?720:368,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
+    if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
         if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
       for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
     center(); }
@@ -212,7 +214,7 @@ const CV=(function(){
     NAMEL.filter(n=>n!==SUBN).forEach((n,i)=>zoomIn(n,2.2,{dur:2000,delay:300+i*120,blur:10})); /* lettres dans l'ordre de lecture */
     if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:1500,blur:6});
     // 2. puis les projets et le reste du canvas, un par un
-    const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))];
+    const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))].filter(n=>n.name!=='Filly').concat(rest.filter(n=>n.name==='Filly'));
     ord.forEach((n,i)=>{ const dl=2100+i*160; zoomIn(n,1.45,{dur:1700,delay:dl,blur:14});
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface

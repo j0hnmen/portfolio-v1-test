@@ -41,25 +41,13 @@
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=97d7bea0"><link rel="stylesheet" href="assets/system.css?v=00df5529">
+<link rel="stylesheet" href="assets/site.css?v=97d7bea0"><link rel="stylesheet" href="assets/system.css?v=c785ff7c">
 <script>window.HOLDFR={talk:"Discutons"};</script>
 <script>window.HOLDGO={"atelier": "https://www.linkedin.com/feed/update/urn:li:activity:7510960044809568257/", "sorare": "https://www.linkedin.com/feed/update/urn:li:activity:7300220200203739137/", "sportgen": "https://www.linkedin.com/feed/update/urn:li:activity:7466105289935736832/", "inktober": "https://inktober.nabilamara.com/", "abc": "https://figmabc.figma.site/"};</script>
 <style id="holdcss">
 html[data-hold],html[data-hold] body{overflow:hidden!important;height:100%;overscroll-behavior:none}
 html[data-hold] :is(.pullgo,.pullroom,.pg-tide){display:none!important}
-/* Filly : posé en bas au milieu du canvas, il vit tout seul (respire, cligne des yeux, se balance, sautille de temps en temps) */
-.flyw{position:absolute;width:118px;height:127px;pointer-events:auto;z-index:3;cursor:default}
-.flyw .fly-svg{width:100%;height:100%;display:block;overflow:visible;transform-origin:40% 96%;animation:flyIdle 4.6s ease-in-out infinite}
-.flyw .fly-eyes{transform-box:fill-box;transform-origin:50% 55%;animation:flyBlink 5.2s infinite}
-.flyw.hop .fly-svg{animation:flyHop .9s cubic-bezier(.3,1.4,.5,1)}
-.flyw.wig .fly-svg{animation:flyWig .8s cubic-bezier(.3,1.5,.5,1)}
-.flyw::after{content:"";position:absolute;left:18%;right:28%;bottom:-6px;height:10px;border-radius:50%;background:rgba(32,32,32,.12);filter:blur(3px);animation:flyShadow 4.6s ease-in-out infinite;z-index:-1}
-@keyframes flyIdle{0%,100%{transform:rotate(-2deg) scale(1,1)}50%{transform:rotate(2.5deg) scale(1.02,.985)}}
-@keyframes flyShadow{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.92)}}
-@keyframes flyBlink{0%,90%,100%{transform:scaleY(1)}93%,95%{transform:scaleY(.12)}}
-@keyframes flyHop{0%{transform:translateY(0) scale(1,1)}20%{transform:translateY(0) scale(1.08,.9)}50%{transform:translateY(-22px) scale(.95,1.06) rotate(-4deg)}80%{transform:translateY(0) scale(1.05,.94)}100%{transform:translateY(0) scale(1,1)}}
-@keyframes flyWig{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}55%{transform:rotate(7deg)}80%{transform:rotate(-3deg)}}
-@media (prefers-reduced-motion:reduce){.flyw .fly-svg,.flyw .fly-eyes,.flyw::after{animation:none!important}} /* pas de « Keep scrolling » sur la page provisoire */
+ /* pas de « Keep scrolling » sur la page provisoire */
 html[data-hold] :is(#pres,.pres,.cvspace,.hstack,.aosend,#invader,.toast,#snd,#veil,#menu,#game,#menuBtn,.burger,#scrollHint,.scrollhint,#backCv,.hint.l,.hint.r,.mtop){display:none!important}
 /* bandeau « Building website… » : jaune de la charte, rubans de chantier qui défilent */
 .holdbar{position:fixed;z-index:60;top:calc(26px + env(safe-area-inset-top));left:50%;translate:-50% 0;display:flex;align-items:stretch;height:40px;border-radius:999px;overflow:hidden;
@@ -195,7 +183,7 @@ html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 <section class="pres" id="pres" aria-label="About"><div class="hstack">
 <div class="aosx abt" id="about">
   <section class="wrap rv">
-    <ul class="svcs" aria-label="Services"><li class="svc" style="--k:0"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l6 7.5-6 9.5-6-9.5z"/><circle cx="12" cy="11.5" r="1.6"/><path d="M12 13.1v7.4"/></svg></span><span data-i="sv1">Branding</span></li><li class="svc" style="--k:1"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><path d="M6.5 6.8h.01M9 6.8h.01"/></svg></span><span data-i="sv2">Websites</span></li><li class="svc" style="--k:2"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span><span data-i="sv3">Marketing assets</span></li><li class="svc" style="--k:3"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l7 4.5v-13L7 10z"/><path d="M17.5 9.5c1 .7 1.5 1.5 1.5 2.5s-.5 1.8-1.5 2.5"/><path d="M7 14l1.2 5"/></svg></span><span data-i="sv4">Social campaigns</span></li><li class="svc svc-all" style="--k:4"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5l1.6 4.9 4.9 1.6-4.9 1.6L10 16.5l-1.6-4.9-4.9-1.6 4.9-1.6z"/><path d="M18 14l.8 2.2 2.2.8-2.2.8L18 20l-.8-2.2-2.2-.8 2.2-.8z"/></svg></span><span data-i="sv5">Assets Systems</span></li></ul>
+    <ul class="svcs" aria-label="Services"><li class="svc" style="--k:0"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l6 7.5-6 9.5-6-9.5z"/><circle cx="12" cy="11.5" r="1.6"/><path d="M12 13.1v7.4"/></svg></span><span data-i="sv1">Branding</span></li><li class="svc" style="--k:1"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><path d="M6.5 6.8h.01M9 6.8h.01"/></svg></span><span data-i="sv2">Websites</span></li><li class="svc" style="--k:2"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span><span data-i="sv3">Marketing assets</span></li><li class="svc" style="--k:3"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="12" r="7.5"/><path d="M11.2 9.2v5.6l4.4-2.8z"/><path d="M2.5 9h2.5M2 12h2M2.5 15h2.5"/></svg></span><span data-i="sv4">Motion design</span></li><li class="svc svc-all" style="--k:4"><span class="svi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5l1.6 4.9 4.9 1.6-4.9 1.6L10 16.5l-1.6-4.9-4.9-1.6 4.9-1.6z"/><path d="M18 14l.8 2.2 2.2.8-2.2.8L18 20l-.8-2.2-2.2-.8 2.2-.8z"/></svg></span><span data-i="sv5">Assets Systems</span></li></ul>
     <h2 class="d abth" data-i="abh">Your <span class="mark">one-man<svg viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true"><path class="scrib" pathLength="1" d="M6 34 C120 8 250 10 330 22 C380 30 352 52 318 44 C292 36 420 14 594 20"/></svg></span><br>design studio.</h2>
     <p class="abtlead" data-i="ab1">I design and I build. Brand, web and marketing, from the first idea to the live site.</p>
     <div class="abtcta">
@@ -223,7 +211,7 @@ html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
     </div>
     <div class="aoswins">
     <div class="figwin" aria-hidden="true">
-      <div class="fghead"><span class="dots"><i></i><i></i><i></i></span><img class="fgw" src="img/clients/figma.png" alt=""><span class="fgfile">AssetsOS · Templates</span></div>
+      <div class="fghead"><span class="dots"><i></i><i></i><i></i></span><img class="fgw" src="img/clients/figma.png" alt=""><span class="fgfile" data-i="fgf">AssetsOS · Active Templates</span></div>
       <div class="fgbody">
         <div class="fglayers"><b></b><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div>
         <div class="fgcanvas">
@@ -387,8 +375,7 @@ html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 <div class="tip" id="tip" aria-hidden="true"><svg viewBox="0 0 80 78"><path d="M2.43566 10.2293C0.557465 5.39905 5.25275 0.609822 10.1193 2.39242L73.3458 25.5526C78.9768 27.6152 78.4617 35.7432 72.6153 37.078L47.5001 42.8104C46.8028 42.9697 46.2429 43.4878 46.0304 44.1707L37.6398 71.1424C35.9468 76.5842 28.3421 76.8476 26.2765 71.536L2.43566 10.2293Z" fill="#000" stroke="#fff" stroke-width="5"/></svg><span><i></i></span><b class="pv"><img alt=""></b></div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
-<script src="assets/core.js?v=cef6f8ed"></script><script src="assets/home.js?v=5f31a080"></script><script src="assets/ui.js?v=e0816c47"></script>
-<script>/*filly*/(()=>{const go=()=>{const w=document.getElementById("world");if(!w)return setTimeout(go,300);fetch("img/filly-char.svg").then(r=>r.text()).then(t=>{const d=document.createElement("div");d.className="flyw";d.setAttribute("aria-hidden","true");const M=innerWidth<761;d.style.left=(M?-60:-62)+"px";d.style.top=(M?560:330)+"px";d.innerHTML=t;w.appendChild(d);const play=c=>{d.classList.remove("hop","wig");void d.offsetWidth;d.classList.add(c);};d.addEventListener("animationend",e=>{if(e.target.classList.contains("fly-svg"))d.classList.remove("hop","wig");});d.addEventListener("mouseenter",()=>play("wig"));const later=()=>setTimeout(()=>{if(!document.hidden)play(Math.random()<.6?"hop":"wig");later();},6000+Math.random()*7000);later();}).catch(()=>{});};go();})();</script>
+<script src="assets/core.js?v=cef6f8ed"></script><script>window.FILLY={src:"img/filly-char.svg"};</script><script src="assets/home.js?v=4b21f8ee"></script><script src="assets/ui.js?v=5a1ab410"></script>
 <script>(()=>{const t=document.getElementById("tools");if(t)document.body.appendChild(t);})();</script>
 <div class="mwrap"><div class="mveil" id="mveil" role="dialog" aria-labelledby="mtitle">
   <div class="mbox">

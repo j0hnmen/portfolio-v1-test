@@ -904,3 +904,33 @@ html.hvxdark #toast{opacity:0!important}
 /* fond IMPACT un peu plus bleu derrière le mot pour que le blanc se lise ; textes du haut et du bas en blanc aussi */
 .hvx-fb{background:linear-gradient(180deg,#dcdafc 0%,#aaa6ff 28%,#7e79ff 55%,#5650FF 100%)!important}
 .hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}
+/* « Design consistency » au-dessus de la barre bleue (la ligne pointillée reste sur toute la largeur) */
+.page .decay .ax span{position:absolute;left:0;bottom:calc(100% + 14px);background:none!important;padding:0!important;white-space:nowrap}
+.page .decay{margin-top:calc(clamp(32px,5vh,56px) + 18px)!important}
+
+/* Claude skill : pastille « On brand » qui apparaît à chaque ouverture */
+#skill .sk .dw{display:flex;flex-direction:column;align-items:flex-start}
+#skill .sk .dt{padding-bottom:12px!important}
+#skill .skok{display:inline-flex;align-items:center;gap:7px;margin:0 0 24px calc(clamp(26px,2.2vw,34px) + clamp(14px,2vw,24px));padding:9px 15px 9px 12px;border-radius:999px;font:600 15px/1 var(--ui);color:#564FFF;background:rgba(86,79,255,.1);box-shadow:inset 0 0 0 1px rgba(86,79,255,.22);opacity:0;transform:scale(.6) translateY(4px);transform-origin:left center}
+#skill .skok svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+#skill .skok path{stroke-dasharray:24;stroke-dashoffset:24}
+#skill .sk.skon .skok{animation:skpop .55s cubic-bezier(.3,1.6,.5,1) .3s forwards}
+#skill .sk.skon .skok path{animation:skdraw .4s cubic-bezier(.6,0,.2,1) .6s forwards}
+@keyframes skpop{to{opacity:1;transform:none}}
+@keyframes skdraw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){#skill .skok{opacity:1;transform:none}#skill .skok path{stroke-dashoffset:0}}
+html.src #skill .skok{outline:1px dashed var(--c-line)!important;color:var(--c-acc)!important}
+
+/* mode console : Clarity / Impact / Value rendus comme le reste (monospace, balises, pas de fonds) */
+html.src .hvx-fbg{opacity:0!important}
+html.src .hvx :is(.hvx-pre,.hvx-s,.hvx-s span,.hvx-w,.hvx-w span,.hvx-nf){font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace!important;font-stretch:normal!important;letter-spacing:-.02em!important;background:none!important;-webkit-text-fill-color:currentColor!important;text-shadow:none!important}
+html.src .hvx :is(.hvx-pre,.hvx-s,.hvx-s span){color:var(--c-dim)!important}
+html.src .hvx :is(.hvx-w,.hvx-w span){font-weight:600!important;font-size:clamp(64px,12.5vw,220px)!important;line-height:1!important;color:var(--c-tx)!important;text-transform:none!important}
+html.src .hvx .hvx-grad,html.src .hvx .hvx-grad span{color:var(--c-acc)!important}
+html.src .hvx .hvx-nf{color:var(--c-acc)!important;font-size:max(12px,.1em)!important}
+html.src .hvx .hvx-w::before{content:"<b>";font:400 max(12px,.14em)/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--c-acc);vertical-align:middle;margin-right:.25em;-webkit-text-fill-color:var(--c-acc)}
+html.src .hvx .hvx-w::after{content:"</b>";font:400 max(12px,.14em)/1 ui-monospace,"SF Mono",Menlo,monospace;color:var(--c-acc);vertical-align:middle;margin-left:.25em;-webkit-text-fill-color:var(--c-acc)}
+html.src .hvx .hvx-s::before{content:"<p> ";color:var(--c-acc)}
+html.src .hvx .hvx-s::after{content:" </p>";color:var(--c-acc)}
+html.src .hvx .hvx-pin{outline:1px dashed var(--c-line);outline-offset:-12px}
+@media (max-width:760px){html.src .hvx :is(.hvx-w,.hvx-w span){font-size:clamp(40px,13vw,90px)!important}}
