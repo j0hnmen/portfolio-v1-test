@@ -808,7 +808,8 @@ html.darkon .burger i{background:#F3F2EE!important;transition:background .5s}
 .page .cs-caret{flex:none;width:1.5px;height:17px;background:#564FFF;animation:cscaret 1s steps(2) infinite}
 @keyframes cscaret{50%{opacity:0}}
 .page .cs-send{position:relative;overflow:hidden;flex:none;margin-left:auto;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#202020}
-.page .cs-send::before{content:"";position:absolute;inset:0;background:var(--grad-blue);opacity:0;transition:opacity .35s}
+.page .cs-send::before{content:"";position:absolute;inset:0;background:var(--grad-blue);opacity:0;transition:opacity .4s}
+.page .cs-prompt.sent .cs-send::before{transition-duration:.12s}
 .page .cs-send svg{position:relative}
 .page .cs-prompt.sent .cs-send::before{opacity:1}
 .page .cs-send svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
