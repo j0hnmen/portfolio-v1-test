@@ -904,3 +904,6 @@ html.hvxdark #toast{opacity:0!important}
 /* fond IMPACT un peu plus bleu derrière le mot pour que le blanc se lise ; textes du haut et du bas en blanc aussi */
 .hvx-fb{background:linear-gradient(180deg,#dcdafc 0%,#aaa6ff 28%,#7e79ff 55%,#5650FF 100%)!important}
 .hvx-stack .hvx-on-blue,.hvx-stack .hvx-on-blue span{color:#fff!important}
+/* « Design consistency » au-dessus de la barre bleue (la ligne pointillée reste sur toute la largeur) */
+.page .decay .ax span{position:absolute;left:0;bottom:calc(100% + 14px);background:none!important;padding:0!important;white-space:nowrap}
+.page .decay{margin-top:calc(clamp(32px,5vh,56px) + 18px)!important}
