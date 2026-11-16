@@ -30,7 +30,7 @@
 
 <script>/* toujours repartir du canvas (haut de page), jamais du scroll d'avant */ try{history.scrollRestoration='manual'}catch(e){} if(!location.hash){ scrollTo(0,0); addEventListener('DOMContentLoaded',()=>scrollTo(0,0)); addEventListener('load',()=>scrollTo(0,0)); } addEventListener('pageshow',e=>{ if(e.persisted&&!location.hash) scrollTo(0,0); });</script>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
 
 
@@ -104,7 +104,7 @@ html[data-hold] body>#tools .sep{width:1px;height:26px;margin:0 8px;background:r
 html[data-hold] body>#tools #zOut,html[data-hold] body>#tools #zIn{width:40px;font-size:18px}
 html[data-hold] body>#tools .zl{min-width:58px;text-align:center;color:#5f5e5a;font-variant-numeric:tabular-nums}
 html[data-hold] body>#tools #zFit{width:auto;padding:0 14px;white-space:nowrap}
-@media (max-width:760px){html[data-hold] body>#tools{display:none!important}}
+@media (max-width:760px){html[data-hold] body>#tools,html[data-hold] .cvhint{display:none!important}html[data-hold],html[data-hold] body,html[data-hold] .cv{touch-action:none!important;overscroll-behavior:none!important}} /* mobile : pas de canvas manipulable, rien ne bouge */
 html.src .holdbar{display:none!important} /* mode console : la bulle « quit console mode » prend la place du bandeau */
 html[data-hold] .srctoast{top:calc(26px + env(safe-area-inset-top))}
 @media (max-width:760px){html[data-hold] .srctoast{top:calc(84px + env(safe-area-inset-top))}}
