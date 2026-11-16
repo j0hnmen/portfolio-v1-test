@@ -722,4 +722,4 @@ footer.ftr.hastide>:not(.pg-tide){position:relative;z-index:1}
 #chat .chips{flex-wrap:nowrap}
 #chat .chips button{white-space:nowrap;flex:none}
 #chat .chips{justify-content:center;overflow:visible} /* une seule ligne, centrée : elle peut déborder des deux côtés */
-@media (max-width:760px){#chat .chips{gap:6px;justify-content:flex-start;margin-left:-54px;width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}#chat .chips::-webkit-scrollbar{display:none}#chat .chips button{font-size:12px;padding:8px 9px}} /* mobile : la ligne prend toute la largeur de l’écran ; si elle dépasse, elle glisse au doigt au lieu d’être coupée */
+@media (max-width:760px){#chat .chips{flex-wrap:wrap;justify-content:flex-end;gap:6px}#chat .chips button{font-size:13px}} /* mobile : sur deux lignes, comme avant */
