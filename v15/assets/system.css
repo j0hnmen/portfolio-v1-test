@@ -1213,3 +1213,12 @@ html body .tl2 .tla .tfof img{display:inline-block!important;height:18px;width:a
 .tpub,.vpub{gap:6px!important;margin-top:8px!important}
 .tpm{width:30px!important;height:28px!important}
 @media (max-width:900px){.tpm{width:28px!important;height:26px!important}}
+/* « With Publicis Groupe » rattaché au logo Sephora (juste dessous, avant le texte) */
+.tl2 .tpub{margin-top:6px!important}
+.page .vti>.vpub{grid-column:1!important;grid-row:3!important;margin-top:8px!important}
+.page .vti:has(>.vpub)>.vts{grid-row:3!important}
+.page .vti:has(>.vpub)>.vtlink{grid-row:4!important}
+.page .vth:has(.vpub){display:block!important}
+.page .vth .vpub{margin-top:10px!important}
+/* Sephora : deux phrases, deux lignes, partout */
+html body .nw2{max-width:none!important;white-space:nowrap}
