@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Ship It! — the 4 cards</title>
+<style>
+@font-face{font-family:Mozer;src:url(../fonts/mozer-black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:Mozer;src:url(../fonts/mozer-bold.woff2) format("woff2");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#efe9dc;--blue:#564fff}
+body{background:#0e0f16;color:var(--cream);font-family:Mozer,Impact,sans-serif;padding:clamp(24px,5vw,60px) 20px 60px;text-align:center}
+h1{font:900 clamp(40px,8vw,90px)/.9 Mozer;text-transform:uppercase}
+p.s{font:700 13px Mozer;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-top:12px}
+.row{display:flex;flex-wrap:wrap;gap:34px 30px;justify-content:center;margin-top:44px}
+.it{width:250px}.it em{display:block;margin-top:22px;font:700 11px/1.4 Mozer;letter-spacing:.12em;text-transform:uppercase;font-style:normal;opacity:.75}
+.card{--a:#efe9dc;--b:#14151c;width:250px;aspect-ratio:5/7;margin:20px auto 0;border-radius:14px;background:var(--a);color:var(--b);padding:14px;position:relative;rotate:-3deg;box-shadow:0 30px 50px -20px #000,inset 0 0 0 5px var(--b);display:flex;flex-direction:column;}
+@keyframes cd{from{transform:rotateY(180deg) scale(.4);opacity:0}}
+.card small{font:700 11px Mozer;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between}
+.card .ph{flex:1;margin:10px 0;border-radius:8px;background:var(--pb);display:grid;place-items:center;font:900 90px/1 Mozer;color:var(--pc);position:relative;overflow:hidden}
+.card .ph::after{content:"portrait to come";position:absolute;bottom:8px;left:0;right:0;font:700 9px Mozer;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+.card b{font:900 26px/.95 Mozer;text-transform:uppercase}
+.card.c0{--a:#ead9a0;--b:#2a2118;--pb:#c9742e;--pc:#ead9a0}.card.c1{--a:#14151c;--b:#3be9ce;--pb:repeating-linear-gradient(0deg,#1c14f2 0 2px,#0c0c22 2px 14px);--pc:#3be9ce}.card.c2{--a:#fff186;--b:#1c14f2;--pb:conic-gradient(from 45deg,#1c14f2 0 25%,#3be9ce 0 50%,#1c14f2 0 75%,#fff186 0);--pc:#fff}.card.c3{--a:#b9d8ee;--b:#22324a;--pb:radial-gradient(60% 40% at 30% 30%,#fff 0 60%,transparent 62%),radial-gradient(50% 34% at 72% 62%,#fff 0 60%,transparent 62%),#8cbfe6;--pc:#22324a}
+
+.it:nth-child(even) .card{rotate:3deg}
+</style></head><body>
+<h1>Collect<br>them all</h1><p class="s">4 cards · one per day shipped · portraits to come</p>
+<div class="row"><div class="it"><div class="card c0"><small><span>1960s</span><span>1/4</span></small><div class="ph">N</div><b>Nabil,<br>Marketing Designer</b><small style="margin-top:6px"><span>The ad man</span><span>New</span></small></div><em>Mostly Social Ads shipped</em></div><div class="it"><div class="card c1"><small><span>1980s</span><span>2/4</span></small><div class="ph">N</div><b>Nabil,<br>Web Designer</b><small style="margin-top:6px"><span>The geek</span><span>New</span></small></div><em>Mostly Web Design shipped</em></div><div class="it"><div class="card c2"><small><span>1970s</span><span>3/4</span></small><div class="ph">N</div><b>Nabil,<br>Brand Designer</b><small style="margin-top:6px"><span>The poster maker</span><span>New</span></small></div><em>Mostly General Brand shipped</em></div><div class="it"><div class="card c3"><small><span>1950s</span><span>4/4</span></small><div class="ph">N</div><b>Nabil,<br>Artist</b><small style="margin-top:6px"><span>The dreamer</span><span>New</span></small></div><em>Rare · no complaint, 12+ briefs</em></div></div>
+</body></html>
