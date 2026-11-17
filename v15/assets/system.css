@@ -1245,3 +1245,5 @@ html body .tl2 .tla .tfof .fofd,.page .vfd{padding-left:38.8px}
 .page .vti:not(:has(>.vts))>.vfd{grid-row:4!important}
 .page .vti>.vth{grid-row:2 / span 4!important}
 @media (max-width:900px){.page .vti>.vth{grid-row:auto!important}}
+/* titre de la frise sur mobile : « … Systems since 2022 » sur la même ligne */
+@media (max-width:760px){br.dbr{display:none}}
