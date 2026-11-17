@@ -67,13 +67,19 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
 .aosl{width:min(64vw,360px);height:auto;color:var(--cream);display:block;margin:0 auto 18px}
 .ov h2{font:900 clamp(34px,6vw,72px)/.92 Mozer;text-transform:uppercase}
 .ov a.lk{display:inline-block;font:900 19px Mozer;text-transform:uppercase;letter-spacing:.03em;padding:13px 26px;border-radius:99px;background:linear-gradient(180deg,#5751ff,#1c14f2);color:#fff;text-decoration:none}
-.card{--a:#efe9dc;--b:#14151c;width:min(62vw,250px);aspect-ratio:5/7;margin:20px auto 0;border-radius:14px;background:var(--a);color:var(--b);padding:14px;position:relative;rotate:-3deg;box-shadow:0 30px 50px -20px #000,inset 0 0 0 5px var(--b);display:flex;flex-direction:column;animation:cd .7s cubic-bezier(.2,1.4,.4,1)}
+#dayEnd{overflow:auto;align-items:start}#dayEnd>div{margin:auto;padding:10px 0}#dayEnd h2{font-size:clamp(30px,5vw,56px)}
+.card{--a:#efe9dc;--b:#14151c;width:min(62vw,250px,31vh);aspect-ratio:5/7;margin:20px auto 0;border-radius:14px;background:var(--a);color:var(--b);padding:14px;position:relative;rotate:-3deg;box-shadow:0 30px 50px -20px #000,inset 0 0 0 5px var(--b);display:flex;flex-direction:column;animation:cd .7s cubic-bezier(.2,1.4,.4,1)}
 @keyframes cd{from{transform:rotateY(180deg) scale(.4);opacity:0}}
 .card small{font:700 11px Mozer;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between}
-.card .ph{flex:1;margin:10px 0;border-radius:8px;background:var(--pb);display:grid;place-items:center;font:900 90px/1 Mozer;color:var(--pc);position:relative;overflow:hidden}
+.card .ph{flex:1;margin:10px 0;border-radius:8px;background:var(--pb);display:grid;place-items:center;font:900 clamp(50px,10vh,90px)/1 Mozer;color:var(--pc);position:relative;overflow:hidden}
 .card .ph::after{content:"portrait to come";position:absolute;bottom:8px;left:0;right:0;font:700 9px Mozer;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
-.card b{font:900 26px/.95 Mozer;text-transform:uppercase}
+.card b{font:900 clamp(18px,3.2vh,26px)/.95 Mozer;text-transform:uppercase}
 .card.c0{--a:#ead9a0;--b:#2a2118;--pb:#c9742e;--pc:#ead9a0}.card.c1{--a:#14151c;--b:#3be9ce;--pb:repeating-linear-gradient(0deg,#1c14f2 0 2px,#0c0c22 2px 14px);--pc:#3be9ce}.card.c2{--a:#fff186;--b:#1c14f2;--pb:conic-gradient(from 45deg,#1c14f2 0 25%,#3be9ce 0 50%,#1c14f2 0 75%,#fff186 0);--pc:#fff}.card.c3{--a:#b9d8ee;--b:#22324a;--pb:radial-gradient(60% 40% at 30% 30%,#fff 0 60%,transparent 62%),radial-gradient(50% 34% at 72% 62%,#fff 0 60%,transparent 62%),#8cbfe6;--pc:#22324a}
+.stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.stats span{font:700 12px/1 Mozer;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px 7px;border-radius:99px;background:rgba(239,233,220,.1);box-shadow:inset 0 0 0 1px rgba(239,233,220,.2)}
+.stats span b{font:900 17px/1 Mozer;margin-right:5px;letter-spacing:0}
+.stats span.k{color:#14151c;box-shadow:none;background:var(--c)}
+.why{font:15px/1.45 Akke,Georgia,serif;max-width:440px;margin:18px auto 0;opacity:.9}.why b{font:900 15px Mozer;text-transform:uppercase;letter-spacing:.04em}
 .coll{display:flex;gap:6px;justify-content:center;margin-top:16px}.coll i{width:30px;height:42px;border-radius:5px;box-shadow:inset 0 0 0 2px rgba(239,233,220,.3)}.coll i.on{background:var(--cream);box-shadow:none}
 .cl{font:700 12px Mozer;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;opacity:.85}
 @media (max-aspect-ratio:85/100){.now{bottom:auto;top:max(56px,calc(env(safe-area-inset-top) + 56px))}.now b{display:none}.auto{top:auto;bottom:max(14px,env(safe-area-inset-bottom))}}
@@ -506,7 +512,7 @@ function snd(f, d = 0.08, type = "square", vol = 0.05, slide = 0) { if (!AC || m
 const S = { fax() { [0, 70, 140, 210, 280].forEach((d) => late_(d, () => snd(1500 + Math.random() * 500, 0.04, "square", 0.025))); }, pick() { snd(420, 0.05, "triangle", 0.05, 160); }, drop() { snd(200, 0.06, "triangle", 0.07, -70); }, thunk() { snd(85, 0.18, "sine", 0.34, -45); snd(700, 0.03, "square", 0.02); }, no() { snd(150, 0.14, "sawtooth", 0.045, -60); }, scr() { snd(2400 + Math.random() * 900, 0.015, "sawtooth", 0.012); }, rol() { snd(120 + Math.random() * 40, 0.05, "triangle", 0.03); }, done() { snd(880, 0.06, "triangle", 0.06); late_(70, () => snd(1320, 0.09, "triangle", 0.06)); }, ship() { [660, 990, 1320, 1760].forEach((f, i) => late_(i * 60, () => snd(f, 0.1, "triangle", 0.06))); }, gold() { [660, 880, 1100, 1320, 1760, 2200].forEach((f, i) => late_(i * 55, () => snd(f, 0.12, "triangle", 0.06))); }, lose() { snd(220, 0.5, "sawtooth", 0.07, -170); }, tick() { snd(1000, 0.02, "square", 0.02); }, out() { snd(300, 0.6, "sawtooth", 0.06, -260); }, on() { snd(160, 0.35, "triangle", 0.06, 420); }, jam() { snd(300, 0.08, "square", 0.05); late_(90, () => snd(210, 0.12, "square", 0.05)); }, fix() { snd(500, 0.06, "triangle", 0.07); late_(70, () => snd(1000, 0.1, "triangle", 0.07)); }, lever() { [0, 90, 180].forEach((d, i) => late_(d, () => { snd([941, 1209, 852][i], 0.07, "sine", 0.06); snd([1336, 697, 1477][i], 0.07, "sine", 0.06); })); } };
 
 /* ---------- jeu ---------- */
-const G = { kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
+const G = { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
 const IV = [7, 6.2, 5.5, 4.9, 4.4, 4.0, 3.7, 3.4, 3.2, 3.0];
 const LV = [null, ["Lvl 2", "Read twice. Unclear brief? Shred it."], ["Lvl 3", "Fine print. Some briefs skip a Master."], ["Lvl 4", "The stamp may lose its die. Put it back."], ["Lvl 5", "The lamp may go out. The fax won't."]];
 const FORCE = { 1: ["trap", "kudos"], 2: ["intern"], 3: ["gold"], 5: ["trap"], 7: ["gold"] };
@@ -523,7 +529,7 @@ function complaint(pos, why) { G.combo = 0; popup(pos, why, true); S.lose(); sha
 function levelUp() { const L = Math.floor(G.shipped / 3); if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
   [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
-  Object.assign(G, { kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0 }); document.body.classList.remove("outage"); lever.busy = false; setHS(0);
+  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0 }); document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   $("auto").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume();
 }
@@ -535,7 +541,10 @@ function endDay() {
   if (G.shipped > 0) { const mx = Math.max(...G.kinds); c = G.cmp === 0 && G.shipped >= 12 ? 3 : pick([0, 1, 2].filter((i) => G.kinds[i] === mx)); }
   let own = owned(); const fresh = c >= 0 && !own.includes(c); if (fresh) { own = [...own, c]; try { localStorage.setItem("shipit-cards", JSON.stringify(own)); } catch (e) {} }
   $("deF").textContent = `${G.shipped} briefs shipped · ${G.score} pts`;
-  $("deC").innerHTML = (c < 0 ? '<p>No brief shipped, no card today.</p>' : `<div class="card c${c}"><small><span>${CARDS[c][1]}</span><span>${c + 1}/4</span></small><div class="ph">N</div><b>Nabil,<br>${CARDS[c][0]}</b><small style="margin-top:6px"><span>${CARDS[c][2]}</span><span>${fresh ? "New" : "Double"}</span></small></div>`) + `<div class="coll">${[0, 1, 2, 3].map((i) => `<i class="${own.includes(i) ? "on" : ""}"></i>`).join("")}</div><div class="cl">Collect them all · ${own.length}/4</div>`;
+  const KN = ["Social Ads", "Web Design", "General Brand"], KC = ["#fff186", "#8a85ff", "#3be9ce"], top = c >= 0 && c < 3 ? KN[c] : "";
+  const stats = `<div class="stats">${KN.map((n, i) => `<span class="k" style="--c:${KC[i]}"><b>${G.kinds[i]}</b>${n}</span>`).join("")}<span><b>${G.cmp}</b>${G.cmp === 1 ? "complaint" : "complaints"}</span><span><b>×${Math.max(1, G.bestPull)}</b>best call</span></div>`;
+  const why = c < 0 ? "" : c === 3 ? `<p class="why"><b>Why this card.</b> ${G.shipped} briefs and not one complaint. That is the rare one.</p>` : `<p class="why"><b>Why this card.</b> ${G.kinds[c]} of your ${G.shipped} briefs went to ${top}${[0, 1, 2].filter((i) => G.kinds[i] === G.kinds[c]).length > 1 ? " (a tie, picked at random)" : ""}. The Artist card needs 12 briefs and no complaint.</p>`;
+  $("deC").innerHTML = stats + (c < 0 ? '<p>No brief shipped, no card today.</p>' : `<div class="card c${c}"><small><span>${CARDS[c][1]}</span><span>${c + 1}/4</span></small><div class="ph">N</div><b>Nabil,<br>${CARDS[c][0]}</b><small style="margin-top:6px"><span>${CARDS[c][2]}</span><span>${fresh ? "New" : "Double"}</span></small></div>`) + `${why}<div class="coll">${[0, 1, 2, 3].map((i) => `<i class="${own.includes(i) ? "on" : ""}"></i>`).join("")}</div><div class="cl">Collect them all · ${own.length}/4</div>`;
   late_(600, () => { $("dayEnd").classList.remove("hide"); S.gold(); });
 }
 function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
@@ -606,7 +615,7 @@ function pull() {
         const pts = gold ? 500 : Math.round(100 * (1 + Math.min(G.combo - 1, 8) * 0.25) * good / 10) * 10; removePaper(p);
         res.push(() => after(pi * 0.16, () => { asset(m, kind); gold ? S.gold() : S.ship(); score(pts, pos, gold ? "Easy ship" : G.combo > 1 ? "×" + G.combo : ""); }));
       }); });
-      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
+      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); G.bestPull = Math.max(G.bestPull, ok); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
       tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.55);
     });
   });
