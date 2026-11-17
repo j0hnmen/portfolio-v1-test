@@ -1174,8 +1174,8 @@ html.touch .hvx-pin{overflow:visible!important;overflow-x:clip!important}
 html.touch .hvx-pin>.hvx-fb::before,html.touch .hvx-pin>.hvx-fb::after{content:"";position:absolute;left:0;right:0;height:40vh;pointer-events:none}
 html.touch .hvx-pin>.hvx-fb::before{bottom:100%;background:#dcdafc}
 html.touch .hvx-pin>.hvx-fb::after{top:100%;background:#5650FF}
-/* iPhone (Safari 26, page bord à bord) : les fonds fixes s'arrêtent à la zone d'affichage, sous l'heure et sous la barre du bas on voyait le papier.
-   On les déborde de 15vh en haut et en bas ; le fondu clair du bas est recalé pour rester au même endroit à l'écran */
-html.touch .bluebg{top:-15vh!important;bottom:-15vh!important}
-html.touch .bluebg::before{background:linear-gradient(180deg,rgba(240,240,240,0) 56.2%,rgba(240,240,240,.92) 88.5%)!important}
-html.touch .pbg{top:-15vh!important;bottom:-15vh!important}
+/* iPhone (Safari 26, page bord à bord) : sous l'heure et sous la barre du bas, Safari n'affiche que le contenu qui défile et la couleur de fond de la page,
+   jamais les fonds fixes. Quand le bleu est affiché, la page prend donc la même couleur ; et le fondu clair en bas du bleu est retiré sur mobile pour que le bas raccorde aussi */
+html.touch{transition:background-color .3s linear}
+html.touch.blueon,html.touch.endblue{background:#6863F2!important}
+html.touch .bluebg::before{display:none!important}
