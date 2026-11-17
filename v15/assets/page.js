@@ -115,7 +115,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   sv.innerHTML='<defs><linearGradient id="vgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5751FF"/><stop offset="1" stop-color="#1C14F2"/></linearGradient></defs><path class="vbase"/><path class="vblue"/>';
   line.insertBefore(sv,line.firstChild); line.classList.add('vcurve'); const pb=sv.querySelector('.vbase'), pf=sv.querySelector('.vblue'), ball=line.querySelector('.vball');
   let TL=1, AY=[], AL=[], HH=1;
-  const geo=()=>{ const lr=line.getBoundingClientRect(); if(!lr.height) return; const H=lr.height, c=W/2, mob=innerWidth<=760, AM=mob?17:32, k=mob?.62:.95;
+  const geo=()=>{ const lr=line.getBoundingClientRect(); if(!lr.height) return; const H=lr.height, c=W/2, mob=innerWidth<=760, AM=mob?8:32 /* mobile : ondulation plus douce */, k=mob?.62:.95;
     const ys=its.map(it=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); return d.top+d.height/2-lr.top; });
     const f=n=>n.toFixed(1); const jit=[1,.82,1.12,.9,1.05,.86,1.1,.95,1,.88,1.08,.92,1.02,.9,1.1,.96]; /* amplitude un peu irrégulière : main levée */
     /* deux petites boucles, comme celles des soulignés : dans les deux plus grands écarts entre ronds (pas côte à côte), côté extérieur */
@@ -123,7 +123,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
     let s=1, d=''; const y0=ys[0], d0=(ys[1]||y0+200)-y0, A0=Math.min(AM,d0*.16)*jit[0], pre=[];
     d+=`M${f(c-AM*.55)} 0 C${f(c-AM*.55)} ${f(y0*.35)} ${f(c-A0*.7)} ${f(y0-d0*.2)} ${f(c)} ${f(y0)}`; /* attaque : arrive de la gauche vers le 1er rond */
     let lastC=[c-A0*.7,y0-d0*.2]; pre.push(d);
-    for(let i=0;i<ys.length-1;i++){ const ya=ys[i], yb=ys[i+1], dd=yb-ya, A=Math.min(AM,dd*.2)*jit[(i+1)%jit.length]*s;
+    for(let i=0;i<ys.length-1;i++){ const ya=ys[i], yb=ys[i+1], dd=yb-ya, A=Math.min(AM,dd*(mob?.1:.2))*(mob?1:jit[(i+1)%jit.length])*s;
       const c1=[2*c-lastC[0], Math.min(ya+(ya-lastC[1]), ya+dd*.3)]; /* tangente continue au passage du rond */
       if(loops.includes(i)){ /* boucle : la ligne descend, part sur le côté, remonte, se recroise puis repart vers le rond suivant */
         const yl=ya+dd*.6, x0=c+A*.35, sd=mob?-1:1 /* mobile : boucle côté texte (à gauche, le bord d'écran est trop près) */, X=x=>f(x0-sd*x*k), Y=y=>f(yl+y*k);
