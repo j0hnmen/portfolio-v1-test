@@ -1179,3 +1179,9 @@ html.touch .hvx-pin>.hvx-fb::after{top:100%;background:#5650FF}
 html.touch{transition:background-color .3s linear}
 html.touch.blueon,html.touch.endblue{background:#6863F2!important}
 html.touch .bluebg::before{display:none!important}
+/* cache sous la barre d'état (iPhone) — voir sbcover dans ui.js */
+.sbcover{display:none}
+html.touch .sbcover{display:block;position:sticky;top:-140px;height:140px;margin-top:-140px;z-index:60;pointer-events:none;background:#F3F2EE;transition:background-color .3s linear}
+html.touch.blueon .sbcover,html.touch.endblue .sbcover{background:#6863F2}
+html.touch.hvxblue .sbcover{background:#dcdafc}
+html.touch.atend .sbcover{background:#5650FF}
