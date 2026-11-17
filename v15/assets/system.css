@@ -1185,3 +1185,7 @@ html.touch .sbcover{display:block;position:sticky;top:-140px;height:140px;margin
 html.touch.blueon .sbcover,html.touch.endblue .sbcover{background:#6863F2}
 html.touch.hvxblue .sbcover{background:#dcdafc}
 html.touch.atend .sbcover{background:#5650FF}
+/* home : signature d'intro, tracée vite au centre puis effacée avant le nom (home.js arrive) */
+.bsig.introsig{position:fixed;left:50%;top:47%;translate:-50% -50%;width:min(64vw,520px);z-index:30;pointer-events:none;color:#202020;transition:opacity .45s ease,filter .45s ease,scale .45s ease}
+.bsig.introsig.out{opacity:0;filter:blur(10px);scale:1.06}
+@media (max-width:760px){.bsig.introsig{width:78vw;top:44%}}

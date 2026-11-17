@@ -204,6 +204,12 @@ const CV=(function(){
   // une à une avec un léger décalage irrégulier, puis le sous-titre, puis l'interface
   function arrive(){ document.documentElement.classList.add('cornin'); if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const E1='cubic-bezier(.16,1,.3,1)';
+    /* 0. la signature se trace vite au centre, s'efface, puis le nom arrive dans la foulée */
+    let D0=0; if(document.getElementById('msigF')&&location.hash!=='#work'){ D0=1450; const SP=1.5;
+      const go=()=>{ if(typeof BSIG!=='function') return; const sg=BSIG('introsig'); document.body.appendChild(sg); const ssv=sg.querySelector('svg'); if(!ssv){ sg.remove(); return; }
+        ssv.setAttribute('data-spd',SP); if(window.__litePrep) __litePrep(ssv); sg.play(); void sg.getBoundingClientRect(); try{ sg.getAnimations({subtree:true}).forEach(a=>a.playbackRate=SP); }catch(e){}
+        setTimeout(()=>sg.classList.add('out'),1250); setTimeout(()=>sg.remove(),2100); };
+      if(typeof BSIG==='function') go(); else if(document.readyState==='loading') addEventListener('DOMContentLoaded',go,{once:true}); else setTimeout(go,0); } /* ui.js (BSIG) se charge après home.js */
     // zoom arrière autour du centre de l'écran (= centre du bloc nom + sous-titre, point 0,0 du canvas) :
     // chaque élément part de sa position agrandie depuis ce centre, pas de son propre centre
     const zoomIn=(n,G,o)=>{ const cx=n.x+n.w/2, cy=n.y+n.h/2;
@@ -211,15 +217,15 @@ const CV=(function(){
         {duration:o.dur,delay:o.delay,easing:E1,fill:'backwards'}); };
     // 1. le nom d'abord, lettre par lettre avec de petits décalages irréguliers
     const jit=[0,90,30,140,60,110,20,160,45,95];
-    NAMEL.filter(n=>n!==SUBN).forEach((n,i)=>zoomIn(n,2.2,{dur:2000,delay:300+i*120,blur:10})); /* lettres dans l'ordre de lecture */
-    if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:1500,blur:6});
+    NAMEL.filter(n=>n!==SUBN).forEach((n,i)=>zoomIn(n,2.2,{dur:2000,delay:D0+300+i*120,blur:10})); /* lettres dans l'ordre de lecture */
+    if(SUBN) zoomIn(SUBN,1.6,{dur:1400,delay:D0+1500,blur:6});
     // 2. puis les projets et le reste du canvas, un par un
     const rest=nodes.filter(n=>!NAMEL.includes(n)), ord=[...rest.filter(n=>n.type==='frame'),...rest.filter(n=>n.type!=='frame'&&!n.el.classList.contains('ink')),...rest.filter(n=>n.el.classList.contains('ink'))].filter(n=>n.name!=='Filly').concat(rest.filter(n=>n.name==='Filly'));
-    ord.forEach((n,i)=>{ const dl=2100+i*160; if(!n.el.classList.contains('ink')) zoomIn(n,1.45,{dur:1700,delay:dl,blur:14}); /* gribouillis : pas de zoom, ils se tracent directement à leur place */
+    ord.forEach((n,i)=>{ const dl=D0+2100+i*160; if(!n.el.classList.contains('ink')) zoomIn(n,1.45,{dur:1700,delay:dl,blur:14}); /* gribouillis : pas de zoom, ils se tracent directement à leur place */
       const sv=n.el.classList.contains('ink')&&n.el.querySelector('svg'); if(sv) sv.style.setProperty('--d',((dl+350)/1000).toFixed(2)+'s'); }); // les traits se dessinent dans la foulée, sans attente
     // 3. enfin l'interface
     // NA + space invader glissent depuis la gauche, opaques ; burger + chatbot depuis la droite, partant de 10 % d'opacité
-    [['#home',1700,'-180px 0',1],['#invader',1800,'-180px 0',1],['#menuBtn',1700,'180px 0',0],['#mus',1750,'180px 0',0],['.top .ntr',1700,'180px 0',0],['#chat',1900,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1500,delay:d,easing:E1,fill:'backwards'}); }); }
+    [['#home',1700,'-180px 0',1],['#invader',1800,'-180px 0',1],['#menuBtn',1700,'180px 0',0],['#mus',1750,'180px 0',0],['.top .ntr',1700,'180px 0',0],['#chat',1900,'0 140px',1]].forEach(([q,d,t,o])=>{ const el=$(q); if(el&&location.hash!=='#work') el.animate([{translate:t,opacity:o},{translate:'0 0',opacity:1}],{duration:1500,delay:D0+d,easing:E1,fill:'backwards'}); }); }
   let tmp=null;
   if(MOB) cv.addEventListener('click',e=>{ const f=e.target.closest&&e.target.closest('.node.frame'); if(f&&f._n&&!f.querySelector('.cl')) openProject(f._n.pi,null); });
   cv.addEventListener('pointerdown',e=>{ if(MOB) return; document.querySelectorAll('.node.using').forEach(x=>{ if(!x.contains(e.target)) x.classList.remove('using'); }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});

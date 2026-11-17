@@ -243,10 +243,11 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     const id='litec'+(n++), cp=document.createElementNS(NS,'clipPath'); cp.setAttribute('id',id); cp.setAttribute('clipPathUnits','userSpaceOnUse');
     const r=document.createElementNS(NS,'rect'); r.setAttribute('x',bb.x-20); r.setAttribute('y',bb.y-20); r.setAttribute('height',bb.height+40); r.setAttribute('width',0); cp.appendChild(r);
     d.parentNode.insertBefore(cp,d); d.setAttribute('clip-path',`url(#${id})`); const W=bb.width+40; let raf=0;
-    const run=()=>{ cancelAnimationFrame(raf); const t0=performance.now(), D=1500; const f=now=>{ const p=Math.min(1,(now-t0)/D), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; r.setAttribute('width',(W*e).toFixed(1)); if(p<1) raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
+    const run=()=>{ cancelAnimationFrame(raf); const t0=performance.now(), D=1500/(parseFloat(sv.getAttribute('data-spd'))||1); const f=now=>{ const p=Math.min(1,(now-t0)/D), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; r.setAttribute('width',(W*e).toFixed(1)); if(p<1) raf=requestAnimationFrame(f); }; raf=requestAnimationFrame(f); };
     const reset=()=>{ cancelAnimationFrame(raf); r.setAttribute('width',0); }; sv.__liteSet=q=>{ cancelAnimationFrame(raf); r.setAttribute('width',(W*q).toFixed(1)); };
     new MutationObserver(()=>{ const c=sv.classList; if(c.contains('sigreset')) reset(); else if(c.contains('sigplay')&&!sv.__run){ sv.__run=1; run(); setTimeout(()=>sv.__run=0,1600); } }).observe(sv,{attributes:true,attributeFilter:['class']});
     if(sv.classList.contains('sigok')||sv.matches('.page .logo')){ run(); } };
+  window.__litePrep=prep; /* pour les signatures créées après coup (intro de la home) */
   const all=()=>document.querySelectorAll('svg .sigan').forEach(a=>prep(a.ownerSVGElement||a.closest('svg')));
   if(document.readyState==='loading') addEventListener('DOMContentLoaded',all); else all(); setTimeout(all,800); } }
 
