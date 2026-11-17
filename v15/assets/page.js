@@ -29,7 +29,8 @@ all.forEach(d=>d.querySelector("summary").addEventListener("click",e=>{e.prevent
       const x0=bb.x-W, x1=bb.x, t0=performance.now()+D+250, dur=SIGT-250; r.setAttribute("x",x0); /* le texte s'écrit pendant la signature */
       const f=now=>{ const p=Math.min(1,Math.max(0,(now-t0)/dur)), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; r.setAttribute("x",(x0+(x1-x0)*e).toFixed(1)); if(p<1) requestAnimationFrame(f); else T.removeAttribute("mask"); }; requestAnimationFrame(f); }catch(e){} }
   setTimeout(ok,SIGT+D);
-  if(hero){ hero.classList.add("hbin"); [...hero.querySelectorAll(".hbot>*")].forEach((el,i)=>el.animate([{opacity:0,translate:"0 -14px"},{opacity:1,translate:"0 0"}],{duration:800,delay:SIGT+D+i*140,easing:E,fill:"backwards"})); }})();
+  if(hero){ hero.classList.add("hbin"); [...hero.querySelectorAll(".hbot>*")].forEach((el,i)=>{ const dl=SIGT+D+i*140; /* même apparition que partout au scroll (.rv) : depuis le bas, 24px, fondu .8s, glissé .9s */
+    el.animate([{opacity:0},{opacity:1}],{duration:800,delay:dl,easing:"ease",fill:"backwards"}); el.animate([{transform:"translateY(24px)"},{transform:"none"}],{duration:900,delay:dl,easing:"cubic-bezier(.2,.8,.2,1)",fill:"backwards"}); }); }})();
 /* AssetsOS : « The problem » puis la tuile AssetsOS qui monte par-dessus */
 (()=>{const p=document.querySelector('.stack>.band.prob'),c=document.getElementById('system');if(!p||!c)return;
 const place=()=>{[p,c].forEach(el=>{const h=el.offsetHeight,v=innerHeight;el.style.setProperty('--st',Math.round(h<v-32?(v-h)/2:Math.min(16,v-h-16))+'px')})};
