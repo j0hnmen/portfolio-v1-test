@@ -165,6 +165,11 @@ ${FICHE}`;
     new MutationObserver(()=>{ const t=document.body.classList.contains('attop'); if(t!==top){ top=t; if(document.body.classList.contains('is-canvas')||document.getElementById('cv')) play(t?'spinr':'spin'); } /* vers la section 1 : sens horaire ; retour au canvas : à l'envers */ }).observe(document.body,{attributes:true,attributeFilter:['class']});
     const later=()=>setTimeout(()=>{ if(!document.hidden) play(Math.random()<.5?'spin':'wig'); later(); },7000+Math.random()*8000); later(); }
   inp.addEventListener('focus',open);
+  /* iPhone : quand le clavier s'ouvre, la barre fixée en bas restait derrière lui — on la remonte de la hauteur du clavier (visualViewport) */
+  if(window.visualViewport){ const vv=visualViewport; let kr=0; const lift=()=>{ kr=0; const kb=document.activeElement===inp?Math.max(0,Math.round(innerHeight-vv.height-vv.offsetTop)):0;
+      if(kb>40){ box.style.setProperty('bottom',(12+kb)+'px','important'); box.classList.add('kbup'); } else { box.style.removeProperty('bottom'); box.classList.remove('kbup'); } };
+    const q=()=>{ if(!kr) kr=requestAnimationFrame(lift); }; vv.addEventListener('resize',q); vv.addEventListener('scroll',q);
+    inp.addEventListener('focus',()=>{ q(); [150,350,700].forEach(t=>setTimeout(q,t)); }); inp.addEventListener('blur',()=>setTimeout(q,60)); }
   /* mobile : au toucher, on ouvre le clavier sans laisser le navigateur faire défiler la page tout seul */
   inp.addEventListener('touchend',e=>{ if(document.activeElement===inp) return; e.preventDefault(); const y=scrollY; inp.focus({preventScroll:true});
     let n=0; const keep=()=>{ if(Math.abs(scrollY-y)>2) scrollTo(0,y); if(++n<40) requestAnimationFrame(keep); }; requestAnimationFrame(keep); },{passive:false});
