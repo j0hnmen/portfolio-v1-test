@@ -11,7 +11,14 @@ all.forEach(d=>d.querySelector("summary").addEventListener("click",e=>{e.prevent
 /* courbe « decay » */
 (()=>{const d=document.querySelector(".decay");if(!d)return;const p=d.querySelector(".trend path");function draw(){const r=d.getBoundingClientRect();const pts=[...d.querySelectorAll(".dot")].map(e=>{const b=e.getBoundingClientRect();return[b.left+b.width/2-r.left,b.top+b.height/2-r.top]});if(pts.length<2)return;let s="M"+pts[0].join(" ");for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[c,e]=pts[i],m=(c-a)/2;s+=` C${a+m} ${b} ${c-m} ${e} ${c} ${e}`}p.setAttribute("d",s)}draw();addEventListener("resize",draw);document.fonts&&document.fonts.ready.then(draw)})();
 /* logo du hero AssetsOS */
-(()=>{const l=document.querySelector(".page .logo");if(!l)return;const ok=()=>l.classList.add("sigok");if(matchMedia("(prefers-reduced-motion:reduce)").matches)ok();else setTimeout(ok,1780)})();
+(()=>{const l=document.querySelector(".page .logo");if(!l)return;const ok=()=>l.classList.add("sigok");if(matchMedia("(prefers-reduced-motion:reduce)").matches){ok();return;}
+  /* ASSETS arrive de la gauche, OS de la droite, puis la signature se dessine */
+  const D=650, E="cubic-bezier(.16,1,.3,1)"; l.setAttribute("data-sigdelay",D+250); /* Safari (lite) : même départ que le tracé segment par segment */
+  l.querySelectorAll(".sgw,.sgc").forEach(p=>{ p.style.animationDelay=((parseFloat(p.style.animationDelay)||0)+D/1000).toFixed(3)+"s"; });
+  const A=l.querySelector("#aosA"), O=l.querySelector("#aosO");
+  if(A) A.animate([{transform:"translateX(-260px)",opacity:0},{transform:"translateX(0)",opacity:1}],{duration:1100,easing:E,fill:"backwards"});
+  if(O) O.animate([{transform:"translateX(260px)",opacity:0},{transform:"translateX(0)",opacity:1}],{duration:1100,delay:80,easing:E,fill:"backwards"});
+  setTimeout(ok,1780+D)})();
 /* AssetsOS : « The problem » puis la tuile AssetsOS qui monte par-dessus */
 (()=>{const p=document.querySelector('.stack>.band.prob'),c=document.getElementById('system');if(!p||!c)return;
 const place=()=>{[p,c].forEach(el=>{const h=el.offsetHeight,v=innerHeight;el.style.setProperty('--st',Math.round(h<v-32?(v-h)/2:Math.min(16,v-h-16))+'px')})};
