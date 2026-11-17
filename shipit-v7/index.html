@@ -177,7 +177,8 @@ const deskTex = cv(1024, 1024, (g, w) => {
 });
 deskTex.wrapS = deskTex.wrapT = THREE.RepeatWrapping; deskTex.repeat.set(2, 1.4);
 const desk = box(1, 0.6, 1, new THREE.MeshStandardMaterial({ map: deskTex, roughness: 0.62, metalness: 0.08 }), 0.06); desk.castShadow = false; scene.add(desk);
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), mat(0x15161d, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -7; ground.receiveShadow = true; scene.add(ground);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), mat(0x15161d, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -7; ground.receiveShadow = false; scene.add(ground);
+const dsh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false, map: cv(256, 256, (g) => { g.filter = "blur(22px)"; g.fillStyle = "rgba(0,0,0,.85)"; rr(g, 44, 44, 168, 168, 14); g.fill(); }) })); dsh.rotation.x = -Math.PI / 2; dsh.position.y = -6.98; scene.add(dsh);
 
 /* lampe de bureau + faisceau + poussière */
 const lamp = new THREE.Group(); scene.add(lamp);
@@ -190,8 +191,8 @@ dustG.setAttribute("position", new THREE.BufferAttribute(dustP, 3)); const dust 
   const b2 = cyl(0.3, 0.22, W_, 24); b2.position.y = 0.26; lamp.add(b2);
   const seg = (a, c) => { const d = c.clone().sub(a), m = cyl(0.075, d.length(), W_, 14); m.position.copy(a).addScaledVector(d, 0.5); m.quaternion.setFromUnitVectors(V3(0, 1, 0), d.clone().normalize()); lamp.add(m); const j = new THREE.Mesh(new THREE.SphereGeometry(0.13, 14, 10), W_); j.position.copy(c); j.castShadow = true; lamp.add(j); };
   const A = V3(0, 0.3, 0), B = V3(-0.5, 3.3, -0.5), C = V3(0.5, 6.0, 0.9); seg(A, B); seg(B, C);
-  const hd = new THREE.Group(); hd.position.copy(C).add(V3(0.25, -0.1, 0.35)); hd.rotation.set(0.5, 0, -0.3); lamp.add(hd); lamp.head = hd;
-  const sh = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.95, 1.05, 32, 1, true), mat(0xf1eee6, { roughness: 0.4, side: THREE.DoubleSide })); sh.castShadow = false; hd.add(sh);
+  const hd = new THREE.Group(); hd.position.copy(C).add(V3(0.25, -0.1, 0.35)); hd.quaternion.setFromUnitVectors(V3(0, -1, 0), V3(0.42, -0.74, 0.52).normalize()); lamp.add(hd); lamp.head = hd;
+  const sh = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 1.05, 1.2, 40, 1, true), mat(0xf1eee6, { roughness: 0.4, side: THREE.DoubleSide })); sh.castShadow = false; hd.add(sh);
   const cap = cyl(0.3, 0.3, W_); cap.position.y = 0.66; cap.castShadow = false; hd.add(cap);
   const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.32, 20, 14), new THREE.MeshBasicMaterial({ color: 0xfff1d6 })); bulb.position.y = -0.15; hd.add(bulb); lamp.bulb = bulb;
 }
@@ -290,33 +291,38 @@ const machines = SK.map((S, i) => {
 const lever = new THREE.Group(); scene.add(lever);
 {
   const C1 = mat(0xe9e0c6, { roughness: 0.42 }), C2 = mat(0xdcd2b6, { roughness: 0.45 });
-  const b = box(2.6, 0.4, 2.05, C1, 0.16); b.position.y = 0.2; lever.add(b);
+  const b = box(2.6, 0.72, 2.05, C1, 0.18); b.position.y = 0.36; lever.add(b);
   const b2 = box(2.66, 0.12, 2.1, C2, 0.06); b2.position.y = 0.06; lever.add(b2);
-  const cr = box(0.74, 0.3, 1.95, C1, 0.12); cr.position.set(-0.82, 0.5, 0); lever.add(cr);
-  for (let i = 0; i < 12; i++) { const kx = cyl(0.11, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 14); kx.position.set(0.1 + (i % 3) * 0.33, 0.43, -0.18 + ((i / 3) | 0) * 0.29); lever.add(kx); }
-  const pl = box(1.2, 0.03, 0.5, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(0.43, 0.41, -0.64); lever.add(pl);
-  const l = label("Pick up to", "Ship", "#1b1c25", 0.8, 0.42); l.position.set(0.5, 0.43, -0.64); lever.add(l);
-  const hs = new THREE.Group(); hs.position.set(-0.82, 0.74, 0); lever.add(hs); lever.hs = hs;
-  const bar = box(0.44, 0.26, 2.05, C1, 0.13); hs.add(bar);
-  [-0.74, 0.74].forEach((z) => { const e = box(0.6, 0.34, 0.6, C1, 0.15); e.position.set(0, -0.06, z); hs.add(e); });
-  const pts = []; for (let i = 0; i <= 150; i++) { const q = i / 150, cx = -1.25 - Math.sin(q * Math.PI) * 0.85, cz = 0.7 - q * 1.2, cy = 0.45 * (1 - q) * (1 - q) + 0.09, a = q * Math.PI * 2 * 17; pts.push(V3(cx, cy + Math.sin(a) * 0.075, cz + Math.cos(a) * 0.075)); }
+  const cr = box(0.78, 0.34, 1.98, C1, 0.14); cr.position.set(-0.82, 0.84, 0); lever.add(cr);
+  for (let i = 0; i < 12; i++) { const kx = cyl(0.11, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 14); kx.position.set(0.1 + (i % 3) * 0.33, 0.75, -0.18 + ((i / 3) | 0) * 0.29); lever.add(kx); }
+  const pl = box(1.2, 0.03, 0.5, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(0.43, 0.73, -0.64); lever.add(pl);
+  const l = label("Pick up to", "Ship", "#1b1c25", 0.8, 0.42); l.position.set(0.5, 0.75, -0.64); lever.add(l);
+  const hs = new THREE.Group(); hs.position.set(-0.82, 1.22, 0); lever.add(hs); lever.hs = hs;
+  const bar = box(0.5, 0.34, 2.1, C1, 0.16); hs.add(bar);
+  [-0.74, 0.74].forEach((z) => { const e = box(0.68, 0.5, 0.64, C1, 0.2); e.position.set(0, -0.12, z); hs.add(e); });
+  const pts = []; for (let i = 0; i <= 150; i++) { const q = i / 150, cx = -1.25 - Math.sin(q * Math.PI) * 0.85, cz = 0.7 - q * 1.2, cy = 0.9 * (1 - q) * (1 - q) + 0.09, a = q * Math.PI * 2 * 17; pts.push(V3(cx, cy + Math.sin(a) * 0.075, cz + Math.cos(a) * 0.075)); }
   const cord = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 420, 0.026, 6), C2); cord.castShadow = true; lever.add(cord);
-  const h = hitBox(2.8, 1.4, 2.3); h.position.y = 0.6; h.userData = { kind: "lever" }; lever.add(h); lever.hb = h; lever.busy = false;
+  const h = hitBox(2.8, 2.0, 2.3); h.position.y = 0.9; h.userData = { kind: "lever" }; lever.add(h); lever.hb = h; lever.busy = false;
 }
-const setHS = (v) => { lever.hs.position.y = 0.74 + v * 1.0; lever.hs.position.x = -0.82 - v * 0.3; lever.hs.rotation.set(v * 0.2, v * 0.3, -v * 0.45); };
+const setHS = (v) => { lever.hs.position.y = 1.22 + v * 1.0; lever.hs.position.x = -0.82 - v * 0.3; lever.hs.rotation.set(v * 0.2, v * 0.3, -v * 0.45); };
 /* déchiqueteuse : pour les briefs flous */
 const bin = new THREE.Group(); scene.add(bin);
 {
-  const gl = box(2.5, 1.0, 1.5, new THREE.MeshPhysicalMaterial({ color: 0xdfe6f2, roughness: 0.05, transparent: true, opacity: 0.22, depthWrite: false }), 0.06); gl.position.y = 0.5; gl.castShadow = false; bin.add(gl);
-  const fl = box(2.5, 0.06, 1.5, mat(0x9aa0ad), 0.03); fl.position.y = 0.03; bin.add(fl);
-  const top = box(2.6, 0.36, 1.6, mat(0x2a211c, { roughness: 0.4 }), 0.12); top.position.y = 1.16; bin.add(top);
-  const sl = box(2.1, 0.04, 0.2, mat(0x030305), 0.02); sl.position.set(-0.05, 1.345, -0.42); bin.add(sl);
-  const l = label("Unclear brief?", "Shred it", "#fff186", 1.9, 0.5); l.position.set(-0.1, 1.345, 0.28); bin.add(l);
-  const ck = new THREE.Group(); ck.position.set(1.36, 1.1, 0.1); bin.add(ck); bin.ck = ck;
-  const a1 = box(0.1, 0.7, 0.16, mat(0x1a1512), 0.04); a1.position.y = 0.3; ck.add(a1); const k1 = cyl(0.11, 0.4, mat(0x1a1512), 14); k1.rotation.z = Math.PI / 2; k1.position.set(0.2, 0.62, 0); ck.add(k1);
+  const gg = new RoundedBoxGeometry(2.6, 1.3, 1.6, 2, 0.05), gl = new THREE.Mesh(gg, new THREE.MeshPhysicalMaterial({ color: 0xe6ecf5, roughness: 0.05, transparent: true, opacity: 0.3, depthWrite: false })); gl.position.y = 0.65; bin.add(gl);
+  const ed = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.6, 1.3, 1.6)), new THREE.LineBasicMaterial({ color: 0xefe9dc, transparent: true, opacity: 0.55 })); ed.position.y = 0.65; bin.add(ed);
+  const fl = box(2.6, 0.06, 1.6, mat(0xaeb3bf), 0.03); fl.position.y = 0.03; bin.add(fl);
+  const top = box(2.78, 0.44, 1.78, mat(0x3b2b23, { roughness: 0.35 }), 0.14); top.position.y = 1.5; bin.add(top);
+  const pl = box(2.4, 0.03, 0.46, mat(0xefe9dc, { roughness: 0.4 }), 0.02); pl.position.set(-0.05, 1.725, -0.42); bin.add(pl);
+  const sl = box(2.16, 0.04, 0.2, mat(0x020203), 0.02); sl.position.set(-0.05, 1.735, -0.42); bin.add(sl);
+  for (let i = 0; i < 18; i++) { const th = box(0.05, 0.05, 0.2, metal(0xb9bcc4, { roughness: 0.3, metalness: 0.9 }), 0.01); th.position.set(-1.07 + i * 0.12, 1.735, -0.42); th.castShadow = false; bin.add(th); }
+  const l = flat(cv(600, 230, (g) => { g.textBaseline = "top"; g.fillStyle = "#efe9dc"; g.font = "900 64px Mozer"; g.fillText("UNCLEAR BRIEF?", 6, 6); g.fillStyle = "#fff186"; g.font = "900 128px Mozer"; g.fillText("SHRED IT", 6, 84); }), 2.3, 2.3 * 230 / 600, { emissiveIntensity: 0.45 }); l.position.set(-0.1, 1.725, 0.35); bin.add(l);
+  const ck = new THREE.Group(); ck.position.set(1.46, 1.45, 0.15); bin.add(ck); bin.ck = ck;
+  const hub = cyl(0.16, 0.14, mat(0x1a1512), 16); hub.rotation.z = Math.PI / 2; ck.add(hub); const a1 = box(0.1, 0.85, 0.2, mat(0x1a1512), 0.04); a1.position.set(0.08, 0.36, 0); ck.add(a1); const k1 = cyl(0.13, 0.5, mat(0x1a1512), 14); k1.rotation.z = Math.PI / 2; k1.position.set(0.34, 0.74, 0); ck.add(k1);
   bin.strips = [];
 }
-function shredFx() { tw(0.9, (q) => { bin.ck.rotation.x = q * Math.PI * 4; }); for (let i = 0; i < 7 && bin.strips.length < 60; i++) { const st = box(0.07, rnd(0.35, 0.7), 0.02, mat(0xefe9dc), 0.005); st.castShadow = false; st.position.set(rnd(-1.0, 1.0), 0.9, rnd(-0.55, 0.55)); st.rotation.set(rnd(-0.3, 0.3), rnd(0, 3), rnd(-0.4, 0.4)); bin.add(st); bin.strips.push(st); const y1 = rnd(0.25, 0.6); tw(0.5, (q) => { st.position.y = lerp(0.9, y1, q * q); }, null, 0.25 + i * 0.07); } for (let i = 0; i < 5; i++) late_(i * 120, () => snd(180 + Math.random() * 120, 0.09, "sawtooth", 0.03)); }
+function strips(n, now) { for (let i = 0; i < n && bin.strips.length < 70; i++) { const st = box(0.07, rnd(0.4, 0.8), 0.02, mat(0xf4f0e6), 0.005); st.castShadow = false; const y1 = rnd(0.3, 0.75); st.position.set(rnd(-1.05, 1.05), now ? y1 : 1.25, rnd(-0.6, 0.6)); st.rotation.set(rnd(-0.3, 0.3), rnd(0, 3), rnd(-0.4, 0.4)); bin.add(st); bin.strips.push(st); if (!now) tw(0.5, (q) => { st.position.y = lerp(1.25, y1, q * q); }, null, 0.25 + i * 0.07); } }
+function shredFx() { tw(0.9, (q) => { bin.ck.rotation.x = q * Math.PI * 4; }); strips(7); for (let i = 0; i < 5; i++) late_(i * 120, () => snd(180 + Math.random() * 120, 0.09, "sawtooth", 0.03)); }
+strips(12, true);
 /* café : une tasse qu'on peut boire (ou renverser) et une cafetière qui fume */
 const CUP0 = [0, 0], cup = { g: new THREE.Group(), x: 0, z: 0, tx: 0, tz: 0, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, warn: 0, wob: 0, hint: false }; scene.add(cup.g);
 const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: cv(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.5, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }), color: 0xffc94a, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(glow);
@@ -376,6 +382,7 @@ function layout() {
     INB.x = -2.0; INB.z = -0.2; RET.x = -2.3; RET.z = 6.75; pad.position.set(0, 0.008, 4.05); pot.position.set(1.75, 0, -6.9); CUP0[0] = 3.3; CUP0[1] = -5.55; hS.position.set(-1.1, 0.011, -2.12); hM.position.set(-1.1, 0.011, 2.52); camT.set(0, 0, -0.3);
   }
   machines.forEach((m) => (m.hinge.rotation.x = OPEN)); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
+  dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + 0.25; clipP[2].constant = clipP[3].constant = BZ + 0.25;
   bin.position.set(RET.x, 0, RET.z); desk.scale.set(BX * 2 + 0.6, 1, BZ * 2 + 0.6); desk.position.set(0, -0.3, 0);
   rest = [-2.45, 0, 2.5].map((dx, i) => [pad.position.x + dx - (i === 1 ? 0.75 : 0), pad.position.z + 0.2]);
@@ -515,7 +522,7 @@ function score(n, pos, txt) { G.score = Math.max(0, G.score + n); popup(pos, (n 
 function complaint(pos, why) { G.combo = 0; popup(pos, why, true); S.lose(); shake = 1; if (G.mode === "chill") return; G.cmp++; hud(); if (G.cmp >= 3) gameOver(); }
 function levelUp() { const L = Math.floor(G.shipped / 3); if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
-  [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
+  [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
   Object.assign(G, { kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0 }); document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   $("auto").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume();
@@ -545,7 +552,7 @@ function spawn(force) {
 }
 function flyOff(p, to, sc = 0.3, cb) { p.state = "fly"; machines.forEach((m) => { m.papers = m.papers.filter((q) => q !== p); }); const a = p.g.position.clone(), s0 = p.g.scale.x; tw(0.3, (q) => { const e = ease(q); p.g.position.lerpVectors(a, to, e); p.g.scale.setScalar(lerp(s0, sc, e)); }, () => { removePaper(p); cb && cb(); }); hud(); }
 function tooLate(p) { p.late = true; compose(p); complaint(V3(p.x, 1, p.z), "Backlog overflow"); after(0.5, () => p.state !== "gone" && flyOff(p, V3(p.x, 3, BZ + 9), 1)); hud(); }
-function ret(p) { const pos = bin.position.clone().setY(2.0), to = bin.position.clone().add(V3(-0.05, 1.3, -0.42)); shredFx();
+function ret(p) { const pos = bin.position.clone().setY(2.6), to = bin.position.clone().add(V3(-0.05, 1.7, -0.42)); shredFx();
   if (p.type === "trap") { S.ship(); score(100, pos, "Good call"); } else if (p.type === "gold") { popup(pos, "You shredded gold", true); S.no(); } else complaint(pos, "That was a real brief"); flyOff(p, to, 0.2); }
 
 /* ---------- gestes : press, sign, stamp ---------- */
