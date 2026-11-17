@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ship It! — 2 propositions de DA</title>
+<style>
+@font-face{font-family:Mozer;src:url(../fonts/mozer-heavy.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Mozer;src:url(../fonts/mozer-black.woff2) format("woff2");font-weight:900}
+@font-face{font-family:Mozer;src:url(../fonts/mozer-bold.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Mozer;src:url(../fonts/mozer-semibold.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Akke;src:url(../fonts/akke-micro-book.woff2) format("woff2")}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#ecebe7;color:#202020;font-family:Akke,Georgia,serif;padding:clamp(20px,4vw,56px) clamp(14px,4vw,56px) 80px}
+h1{font:900 clamp(40px,7vw,88px)/.9 Mozer,Impact,sans-serif;text-transform:uppercase;letter-spacing:-.01em}
+.intro{max-width:640px;margin:14px 0 48px;font-size:16px;line-height:1.5;color:#55534f}
+.prop{margin:0 0 72px}
+.prop h2{font:900 clamp(28px,4vw,48px)/1 Mozer,Impact,sans-serif;text-transform:uppercase;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.prop h2 small{font:600 14px Mozer;letter-spacing:.06em;color:#8a877f}
+.prop p.d{max-width:720px;margin:10px 0 22px;line-height:1.5;color:#55534f}
+.stage{width:100%;aspect-ratio:960/600;position:relative;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(0,0,0,.45)}
+.board{position:absolute;left:0;top:0;width:960px;height:600px;transform-origin:0 0;transform:scale(var(--s,1));font-family:Mozer,Impact,sans-serif}
+.under{display:grid;grid-template-columns:1fr auto;gap:18px;margin-top:18px;align-items:stretch}
+@media(max-width:760px){.under{grid-template-columns:1fr}}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw div{width:92px;border-radius:10px;overflow:hidden;background:#fff;font:600 11px/1.3 Mozer;letter-spacing:.04em;text-transform:uppercase}
+.sw div i{display:block;height:56px}
+.sw div span{display:block;padding:7px 8px}
+.go{border-radius:12px;display:grid;place-items:center;min-width:300px;min-height:120px;padding:18px 26px;position:relative;overflow:hidden}
+
+/* ================= éléments communs du plateau ================= */
+.hud{position:absolute;left:0;right:0;top:0;height:92px;display:flex;align-items:center;gap:18px;padding:0 26px}
+.logo{font:900 34px/0.9 Mozer;text-transform:uppercase;width:150px}
+.tks{display:flex;gap:12px;flex:1}
+.tk{width:150px;height:62px;border-radius:8px;padding:9px 11px;position:relative;font:700 13px/1.15 Mozer;text-transform:uppercase}
+.tk em{position:absolute;left:11px;right:11px;bottom:9px;height:5px;border-radius:3px}
+.tk em::after{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--t)*100%);border-radius:3px}
+.score{text-align:right;font:900 13px/1 Mozer;text-transform:uppercase;letter-spacing:.06em}
+.score b{display:block;font-size:44px;letter-spacing:0}
+.lbl{position:absolute;font:800 12px/1 Mozer;text-transform:uppercase;letter-spacing:.08em}
+.st{position:absolute;border-radius:14px}
+.st .nm{position:absolute;left:14px;top:12px;font:900 15px/1 Mozer;text-transform:uppercase;letter-spacing:.02em}
+.st .nm small{display:block;font:700 10px Mozer;letter-spacing:.1em;opacity:.7;margin-bottom:3px}
+.doc{position:absolute;width:66px;height:88px;border-radius:5px;padding:7px 6px;display:flex;flex-direction:column;gap:4px}
+.doc b{font:800 7.5px/1.05 Mozer;text-transform:uppercase}
+.doc i{display:block;height:4px;border-radius:2px}
+.doc i.hd{height:16px;border-radius:3px}
+.doc i.s{width:62%}
+.ring{position:absolute;width:104px;height:104px;border-radius:50%}
+.seal{position:absolute;right:-12px;bottom:-12px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:900 16px Mozer;transform:rotate(-12deg)}
+.out{position:absolute;right:16px;top:50%;translate:0 -50%;display:flex;gap:6px}
+.pass{position:absolute;left:300px;right:300px;bottom:22px;height:58px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:12px;font:900 26px Mozer;text-transform:uppercase;letter-spacing:.04em}
+.hand{position:absolute;width:30px;height:30px}
+
+/* ================= A · RISOGRAPHIE ================= */
+.riso{--paper:#f2ede2;--blue:#4b47e8;--mint:#6fdcc8;--butter:#ffe48a;--ink:#25232b;background:var(--paper);color:var(--ink)}
+.riso::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .37 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* grille : croix de repérage tous les 48px */
+.riso .grid{position:absolute;inset:0;opacity:.35;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M20.5 24h7M24 20.5v7' stroke='%234b47e8' stroke-width='1.2'/%3E%3C/svg%3E") 0 0/48px 48px}
+/* dégradé en trame de points */
+.riso .halftone{position:absolute;right:-120px;top:-170px;width:560px;height:360px;
+  background:radial-gradient(circle,var(--blue) 0 2.1px,transparent 2.4px) 0 0/7px 7px;
+  -webkit-mask:radial-gradient(closest-side,#000 10%,rgba(0,0,0,.55) 45%,transparent 100%);mask:radial-gradient(closest-side,#000 10%,rgba(0,0,0,.55) 45%,transparent 100%);opacity:.9;mix-blend-mode:multiply}
+.riso .halftone.b2{left:-140px;right:auto;top:auto;bottom:-170px;width:460px;height:380px;background-image:radial-gradient(circle,var(--mint) 0 2.1px,transparent 2.4px)}
+.riso .logo{color:var(--blue);text-shadow:2px 2px 0 var(--mint);mix-blend-mode:multiply}
+.riso .tk{background:#fffaf0;box-shadow:3px 3px 0 var(--butter),0 0 0 1.5px var(--ink) inset}
+.riso .tk em{background:rgba(37,35,43,.12)}
+.riso .tk em::after{background:var(--blue)}
+.riso .tk.hot em::after{background:#ff7a59;background:var(--ink)}
+.riso .lbl{color:var(--blue)}
+.riso .st.m{mix-blend-mode:multiply}
+.riso .st.m{background:var(--butter);box-shadow:4px 3px 0 var(--mint)}
+.riso .st.m.g{background:var(--mint);box-shadow:4px 3px 0 var(--blue)}
+.riso .st.m.c{background:var(--butter);box-shadow:4px 3px 0 var(--blue)}
+.riso .st.m.k{background:#c7c5f7;box-shadow:4px 3px 0 var(--mint)}
+.riso .st.sk{background:var(--blue);color:#fffaf0;box-shadow:4px 3px 0 var(--mint)}
+.riso .st.sk .nm{color:#fffaf0}
+.riso .doc{background:#fffaf0;box-shadow:0 0 0 1.5px var(--ink) inset,3px 3px 0 rgba(37,35,43,.18)}
+.riso .doc i{background:rgba(37,35,43,.18)}
+.riso .doc.g i.hd{background:var(--blue)}
+.riso .doc.g i{background:rgba(75,71,232,.35)}
+.riso .doc.c i:not(.hd){background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 4px,var(--ink) 4px 9px,transparent 9px 11px)}
+.riso .doc.c i.hd{background:var(--blue)}
+.riso .ring{border:3px dashed rgba(37,35,43,.35)}
+.riso .ring::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--blue) calc(var(--p)*1turn),transparent 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px))}
+.riso .seal{background:var(--mint);color:var(--ink);box-shadow:2px 2px 0 var(--blue)}
+.riso .pass{background:var(--ink);color:var(--butter);box-shadow:4px 4px 0 var(--blue)}
+.riso .score{color:var(--ink)}
+.riso .score b{color:var(--blue);text-shadow:2px 2px 0 var(--mint)}
+
+/* ================= B · COMPTOIR CARRELÉ ================= */
+.tile{--grout:#dcd6ca;--blue:#564fff;--deep:#1c14f2;--ink:#202020;color:var(--ink);
+  background:
+   linear-gradient(var(--grout) 0 3px,transparent 3px) 0 0/48px 48px,
+   linear-gradient(90deg,var(--grout) 0 3px,transparent 3px) 0 0/48px 48px,
+   linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,0) 38%,rgba(0,0,0,0) 70%,rgba(0,0,0,.03)) 0 0/48px 48px,
+   #f3f0e9}
+.tile .light{position:absolute;inset:0;background:radial-gradient(70% 60% at 70% 20%,rgba(255,255,255,.55),transparent 70%),radial-gradient(60% 50% at 10% 100%,rgba(86,79,255,.08),transparent 70%);pointer-events:none}
+.tile .logo{color:var(--blue)}
+.tile .tk{background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.06),0 8px 14px -10px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.06)}
+.tile .tk em{background:#ece8df}
+.tile .tk em::after{background:linear-gradient(90deg,var(--blue),var(--deep))}
+.tile .lbl{color:#8a8578}
+/* comptoirs émaillés : petits carreaux + reflet */
+.tile .st{overflow:visible}
+.tile .st::before{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:
+   linear-gradient(rgba(255,255,255,.3) 0 1.5px,transparent 1.5px) 0 0/24px 24px,
+   linear-gradient(90deg,rgba(255,255,255,.3) 0 1.5px,transparent 1.5px) 0 0/24px 24px,
+   linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,0) 45%) 0 0/24px 24px;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -6px 0 rgba(0,0,0,.12),0 14px 22px -14px rgba(20,14,120,.55)}
+.tile .st::after{content:"";position:absolute;left:10px;right:40%;top:5px;height:18px;border-radius:9px;background:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,0));pointer-events:none}
+.tile .st > *{z-index:1}
+.tile .st.m.g{background:linear-gradient(180deg,#5ff0d9,#22c9ae)}
+.tile .st.m.c{background:linear-gradient(180deg,#fff6a8,#f3dd52)}
+.tile .st.m.k{background:linear-gradient(180deg,#f4f2ec,#ddd8cc)}
+.tile .st.sk{background:linear-gradient(180deg,#5751ff,#1c14f2);color:#fff}
+.tile .doc{background:#fff;box-shadow:0 10px 14px -8px rgba(0,0,0,.35),inset 0 0 0 1px rgba(0,0,0,.06);z-index:2}
+.tile .doc i{background:#e7e3da}
+.tile .doc.g i.hd{background:linear-gradient(180deg,#5751ff,#1c14f2)}
+.tile .doc.g i{background:#d7d4ff}
+.tile .doc.c i:not(.hd){background:repeating-linear-gradient(90deg,#202020 0 3px,transparent 3px 4px,#202020 4px 9px,transparent 9px 11px)}
+.tile .doc.c i.hd{background:linear-gradient(180deg,#5751ff,#1c14f2)}
+.tile .ring{z-index:1;background:radial-gradient(closest-side,rgba(255,255,255,.35),transparent)}
+.tile .ring::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#fff calc(var(--p)*1turn),rgba(255,255,255,.25) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))}
+.tile .seal{background:linear-gradient(180deg,#5751ff,#1c14f2);color:#fff;box-shadow:0 4px 8px -3px rgba(28,20,242,.6),inset 0 1px 0 rgba(255,255,255,.5)}
+.tile .pass{background:linear-gradient(180deg,#2b2b2b,#141414);color:#fff;box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 14px 22px -14px rgba(0,0,0,.6)}
+.tile .pass::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(rgba(255,255,255,.12) 0 1.5px,transparent 1.5px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.12) 0 1.5px,transparent 1.5px) 0 0/24px 24px}
+.tile .score b{background:linear-gradient(180deg,#5751ff,#1c14f2);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* GAME OVER */
+.go.r{background:#f2ede2}
+.go.r b{font:900 64px/.9 Mozer;color:#4b47e8;text-shadow:4px 3px 0 #6fdcc8;mix-blend-mode:multiply;text-transform:uppercase;letter-spacing:.01em}
+.go.r::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,#ffe48a 0 2px,transparent 2.3px) 0 0/7px 7px;mix-blend-mode:multiply;opacity:.9;-webkit-mask:linear-gradient(135deg,#000,transparent 60%);mask:linear-gradient(135deg,#000,transparent 60%)}
+.go.t{background:
+   linear-gradient(rgba(255,255,255,.3) 0 2px,transparent 2px) 0 0/30px 30px,
+   linear-gradient(90deg,rgba(255,255,255,.3) 0 2px,transparent 2px) 0 0/30px 30px,
+   linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,0) 45%) 0 0/30px 30px,
+   linear-gradient(180deg,#5751ff,#1c14f2)}
+.go.t b{font:900 64px/.9 Mozer;color:#fff;text-transform:uppercase;text-shadow:0 3px 0 rgba(0,0,0,.18)}
+.go small{display:block;text-align:center;font:700 12px Mozer;letter-spacing:.12em;text-transform:uppercase;margin-top:8px}
+.go.r small{color:#25232b}.go.t small{color:#fff}
+.modes{display:flex;gap:6px;margin-top:12px}
+.modes span{font:800 12px Mozer;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:99px}
+.note{font-size:13px;color:#8a877f;margin-top:40px;line-height:1.5}
+</style>
+</head>
+<body>
+<h1>Ship It!<br>2 DA</h1>
+<p class="intro">Même plateau, deux directions. Vue de dessus : les tickets en haut, les briefs à gauche, les 3 Masters au centre, les 3 skills à droite, le passe <b>Ship</b> en bas. Ce sont des maquettes figées, rien n'est jouable pour l'instant.</p>
+
+<section class="prop">
+  <h2>A · Risographie <small>papier crème · 3 encres · trame</small></h2>
+  <p class="d">Ta palette passe en encres riso, plus douces, imprimées en surimpression avec un léger décalage de calage. Le dégradé bleu devient une trame de points. La grille devient des croix de repérage d'imprimeur.</p>
+  <div class="stage"><div class="board riso" id="bA"></div></div>
+  <div class="under">
+    <div class="sw">
+      <div><i style="background:#f2ede2"></i><span>Papier<br>#F2EDE2</span></div>
+      <div><i style="background:#4b47e8"></i><span>Encre bleue<br>#4B47E8</span></div>
+      <div><i style="background:#6fdcc8"></i><span>Menthe<br>#6FDCC8</span></div>
+      <div><i style="background:#ffe48a"></i><span>Beurre<br>#FFE48A</span></div>
+      <div><i style="background:#25232b"></i><span>Encre noire<br>#25232B</span></div>
+    </div>
+    <div class="go r"><div><b>Game over</b><small>7 assets shipped · retry</small></div></div>
+  </div>
+</section>
+
+<section class="prop">
+  <h2>B · Comptoir carrelé <small>blanc cassé · émail · carreaux</small></h2>
+  <p class="d">La grille du site devient un carrelage blanc cassé avec ses joints. Les postes sont des comptoirs émaillés, carrelés plus petit. Le dégradé bleu de la charte devient la lumière sur l'émail. Les couleurs restent celles de ta charte.</p>
+  <div class="stage"><div class="board tile" id="bB"></div></div>
+  <div class="under">
+    <div class="sw">
+      <div><i style="background:#f6f4ef"></i><span>Carreau<br>#F6F4EF</span></div>
+      <div><i style="background:#d9d4c8"></i><span>Joint<br>#D9D4C8</span></div>
+      <div><i style="background:linear-gradient(#5751ff,#1c14f2)"></i><span>Émail bleu<br>charte</span></div>
+      <div><i style="background:linear-gradient(#5ff0d9,#22c9ae)"></i><span>Émail vert<br>#3BE9CE</span></div>
+      <div><i style="background:linear-gradient(#fff6a8,#f3dd52)"></i><span>Émail jaune<br>#FFF186</span></div>
+    </div>
+    <div class="go t"><div><b>Game over</b><small>7 assets shipped · retry</small></div></div>
+  </div>
+</section>
+
+<p class="note">Deux modes au menu : <b>Normal</b> (rythme qui s'intensifie, game over) et <b>Chill</b>. Konami code : pilote auto. Les titres de briefs sont des exemples, à remplacer.</p>
+
+<template id="tpl">
+  <div class="grid"></div><div class="halftone"></div><div class="halftone b2"></div><div class="light"></div>
+  <div class="hud">
+    <div class="logo">Ship<br>It!</div>
+    <div class="tks">
+      <div class="tk" style="--t:.82">Webinar landing page<em></em></div>
+      <div class="tk" style="--t:.55">Launch post, 4 formats<em></em></div>
+      <div class="tk hot" style="--t:.22">Q4 sales deck<em></em></div>
+    </div>
+    <div class="score">Shipped<b>07</b></div>
+  </div>
+
+  <span class="lbl" style="left:30px;top:118px">Briefs</span>
+  <div class="doc" style="left:34px;top:142px;rotate:-4deg"><b>Hiring post</b><i class="hd"></i><i></i><i class="s"></i><i></i></div>
+  <div class="doc" style="left:52px;top:250px;rotate:3deg"><b>Event badge</b><i class="hd"></i><i></i><i></i><i class="s"></i></div>
+  <div class="doc" style="left:30px;top:360px;rotate:-2deg"><b>Pricing page</b><i class="hd"></i><i class="s"></i><i></i><i></i></div>
+
+  <span class="lbl" style="left:180px;top:118px">Masters</span>
+  <div class="st m g" style="left:176px;top:142px;width:170px;height:250px"><div class="nm"><small>Master</small>Guidelines</div>
+    <div class="ring" style="left:33px;top:96px;--p:.7"></div>
+    <div class="doc g" style="left:52px;top:104px"><b>Launch post</b><i class="hd"></i><i></i><i class="s"></i><i></i></div></div>
+  <div class="st m c" style="left:362px;top:142px;width:170px;height:250px"><div class="nm"><small>Master</small>Copy</div>
+    <div class="ring" style="left:33px;top:96px;--p:.35"></div>
+    <div class="doc c" style="left:52px;top:104px"><b>Webinar landing</b><i class="hd"></i><i></i><i class="s"></i><i></i></div></div>
+  <div class="st m k" style="left:548px;top:142px;width:170px;height:250px"><div class="nm"><small>Master</small>Check</div>
+    <div class="doc c" style="left:52px;top:104px"><b>Sales deck</b><i class="hd"></i><i></i><i></i><i class="s"></i><span class="seal">✓</span></div></div>
+
+  <span class="lbl" style="left:744px;top:118px">Skills</span>
+  <div class="st sk" style="left:740px;top:142px;width:196px;height:74px"><div class="nm"><small>/aos-</small>Social Ads</div></div>
+  <div class="st sk" style="left:740px;top:230px;width:196px;height:74px"><div class="nm"><small>/aos-</small>Web Design</div></div>
+  <div class="st sk" style="left:740px;top:318px;width:196px;height:74px"><div class="nm"><small>/aos-</small>Everything Else</div></div>
+
+  <div class="pass">Ship →</div>
+</template>
+
+<script>
+const t=document.getElementById("tpl");
+for(const id of ["bA","bB"]) document.getElementById(id).append(t.content.cloneNode(true));
+const fit=()=>document.querySelectorAll(".stage").forEach(s=>s.style.setProperty("--s",s.clientWidth/960));
+new ResizeObserver(fit).observe(document.body);fit();
+</script>
+</body>
+</html>
