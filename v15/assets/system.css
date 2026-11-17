@@ -1153,3 +1153,12 @@ html.touch .pres{overflow-x:visible!important}
 .page .vline .vsvg .vbase{stroke:#DEDCD6}
 .page .vline .vsvg .vblue{stroke:url(#vgr);stroke-width:2.6}
 .page .vline.vcurve .vball{top:0!important;left:1px!important}
+
+/* frise (home, AssetsOS) : trait courbe à main levée en SVG (ui.js), comme la frise About */
+.tl2.tlcurve::before{display:none!important}
+.tl2.tlcurve .tlfill{display:none!important}
+.tl2 .tlsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1}
+.tl2 .tlsvg path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tl2 .tlsvg .tlbase{stroke:#202020;stroke-width:1.6;opacity:.85}
+.tl2 .tlsvg .tlblue{stroke:url(#tlgr);stroke-width:2.4}
+.tl2.tlcurve .tball{display:block!important;top:0!important;left:0!important;margin:-8.5px 0 0 -8.5px!important}

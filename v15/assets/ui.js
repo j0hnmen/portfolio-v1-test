@@ -144,23 +144,39 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     const io=new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?on.add(e.target):on.delete(e.target)); H.classList.toggle('prion',on.has(pr)||on.has(ev)); H.classList.toggle('prhero',[...on].some(z=>z!==pr&&z!==ev)); /* les lueurs de Pricing démarrent dès Active Templates et continuent sans coupure */ /* deux jeux de lueurs distincts, chacun en fondu : pas de saut */ },{rootMargin:'-30% 0px -30% 0px'});
     zones.forEach(z=>io.observe(z)); }
   // frise : la bille passe d'une étape à l'autre, de gauche à droite (survol bloqué pendant ce temps) ; ensuite les ronds derrière la bille restent bleus et « fusionnent » avec elle quand on la ramène vers la gauche
-  const ol=document.querySelector('.tl2'), ball=ol&&ol.querySelector('.tball'); if(ol&&ball&&!RM){ const items=[...ol.querySelectorAll('.tli')]; let run=true, k=0;
+  const ol=document.querySelector('.tl2'), ball=ol&&ol.querySelector('.tball'); if(ol&&ball&&!RM){ const items=[...ol.querySelectorAll('.tli')];
     const fill=document.createElement('i'); fill.className='tlfill'; ol.appendChild(fill); ol.classList.add('tlfx');
-    const xs=()=>{ const r=ol.getBoundingClientRect(); return items.map(it=>it.querySelector('.tdot').getBoundingClientRect().left-r.left); };
-    const mark=x=>{ const p=xs(); fill.style.width=Math.max(0,x)+'px'; items.forEach((it,j)=>it.classList.toggle('past',p[j]<x-3)); };
-    let reachT=0; const show=i=>{ const x=xs()[i]; clearTimeout(reachT); reachT=setTimeout(()=>{ if(i===k&&items[i]) items[i].classList.add('past'); },620); /* le rond devient bleu quand la bille y est arrivée */ ball.style.transition='transform .6s cubic-bezier(.65,0,.35,1)'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='width .6s cubic-bezier(.65,0,.35,1)'; /* sans rebond : la bille couvre toujours le rond */ mark(x); items.forEach((it,j)=>it.classList.toggle('on',j===i)); };
-    ['mousemove','mouseover'].forEach(t=>ol.addEventListener(t,e=>{ if(run) e.stopImmediatePropagation(); },true));
-    const follow=()=>{ if(run) return; const m=/translateX\(([-\d.]+)px\)/.exec(ball.style.transform||''); if(m){ fill.style.transition='none'; mark(+m[1]); } };
-    /* survol : la bille ne quitte plus le fil du scroll */
-    /* la bille suit le scroll (plus d'animation automatique) : de la 1re étape quand la frise entre dans l'écran, à la dernière quand elle arrive vers le haut */
+    ['mousemove','mouseover'].forEach(t=>ol.addEventListener(t,e=>e.stopImmediatePropagation(),true)); /* la bille ne quitte pas le fil du scroll */
+    /* trait à main levée (comme la frise About) : ondule d'un rond à l'autre en passant par chacun, attaque douce et swoop final ; horizontal sur ordinateur, vertical sur mobile ; le bleu se dessine le long de la courbe et la bille la suit */
+    const NS='http://www.w3.org/2000/svg', sv=document.createElementNS(NS,'svg'); sv.setAttribute('class','tlsvg'); sv.setAttribute('aria-hidden','true');
+    sv.innerHTML='<defs><linearGradient id="tlgr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5751FF"/><stop offset="1" stop-color="#1C14F2"/></linearGradient></defs><path class="tlbase"/><path class="tlblue"/>';
+    ol.insertBefore(sv,ol.firstChild); ol.classList.add('tlcurve'); const pb=sv.querySelector('.tlbase'), pf=sv.querySelector('.tlblue');
+    let G=null; /* {vert, us, AL, TL, len} */
+    const geo=()=>{ const r=ol.getBoundingClientRect(); if(!r.width||!r.height) return; const vert=innerWidth<=900, mob=innerWidth<=760;
+      const cs=items.map(it=>{ const b=it.querySelector('.tdot').getBoundingClientRect(); return [b.left+b.width/2-r.left, b.top+b.height/2-r.top]; });
+      const us=cs.map(q=>vert?q[1]:q[0]), c=cs.reduce((a,q)=>a+(vert?q[0]:q[1]),0)/cs.length, LEN=vert?r.height:r.width;
+      const AM=vert?(mob?7:10):9, fac=vert?.1:.06, jit=[1,.84,1.1,.9,1.05,.88,1.08];
+      const P=(u,v)=>vert?(c+v).toFixed(1)+' '+u.toFixed(1):u.toFixed(1)+' '+(c+v).toFixed(1);
+      let s=1, lastC=null, d='', pre=[]; const u0=us[0], d0=(us[1]||u0+200)-u0, A0=Math.min(AM,d0*fac);
+      const st=Math.min(u0*.15,8); d+='M'+P(st,-AM*.6)+' C'+P(st+(u0-st)*.4,-AM*.6)+' '+P(u0-d0*.2,-A0*.7)+' '+P(u0,0); lastC=[u0-d0*.2,-A0*.7]; pre.push(d);
+      for(let i=0;i<us.length-1;i++){ const ua=us[i], ub=us[i+1], dd=ub-ua, A=Math.min(AM,dd*fac)*jit[(i+1)%jit.length]*s; const c1=[Math.min(ua+(ua-lastC[0]),ua+dd*.3), -lastC[1]], c2=[ub-dd*.3, A];
+        d+=' C'+P(c1[0],c1[1])+' '+P(c2[0],c2[1])+' '+P(ub,0); lastC=c2; pre.push(d); s=-s; }
+      const un=us[us.length-1], room=Math.max(24,LEN-un-4), e=Math.min(room,vert?(mob?90:120):160), k=vert?(mob?.35:.6):.9, w=vert?1:-1; /* fin : swoop qui part d'un côté puis remonte d'un coup de poignet */
+      d+=' C'+P(un+(un-lastC[0])*.9,-lastC[1])+' '+P(un+e*.72,w*20*k)+' '+P(un+e*.85,w*4*k)+' C'+P(un+e*.95,-w*8*k)+' '+P(un+e*.82,-w*26*k)+' '+P(un+e*.64,-w*36*k);
+      sv.setAttribute('viewBox','0 0 '+r.width.toFixed(1)+' '+r.height.toFixed(1)); pb.setAttribute('d',d); pf.setAttribute('d',d);
+      const TL=pb.getTotalLength(), tmp=document.createElementNS(NS,'path'); sv.appendChild(tmp); const AL=pre.map(x=>{ tmp.setAttribute('d',x); return tmp.getTotalLength(); }); tmp.remove();
+      pf.style.strokeDasharray=TL+' '+TL; G={vert,us,AL,TL,LEN}; };
+    const lenAt=u=>{ const {us,AL}=G; if(u<=us[0]) return AL[0]*Math.max(0,u)/Math.max(1,us[0]); if(u>=us[us.length-1]) return AL[AL.length-1]; let j=0; while(j<us.length-2&&us[j+1]<=u) j++; return AL[j]+(AL[j+1]-AL[j])*(u-us[j])/Math.max(1,us[j+1]-us[j]); };
     ol.classList.add('tlscroll'); { const pw=ol.closest('.aoswho'); if(pw){ pw.classList.add('tlpin'); const ws=pw.querySelector('section.who');
       /* la section se bloque centrée dans l'écran, sans vide au-dessus ; la bille a 1,1 écran de scroll pour aller au bout */
       const size=()=>{ if(innerWidth<=900){ pw.style.height=''; return; } const h=ws.offsetHeight, t=Math.max(70,Math.round((innerHeight-h)/2)); pw._t=t; ws.style.setProperty('--tlt',t+'px'); pw.style.height=(h+Math.round(innerHeight*1.1))+'px'; };
-      size(); addEventListener('resize',size); addEventListener('load',size); } } let raf=0;
-    const upd=()=>{ raf=0; if(innerWidth<=900) return; const r=ol.getBoundingClientRect(), H=innerHeight, p=xs(), n=p.length-1; const pin=ol.closest('.aoswho'), pr=pin&&pin.classList.contains('tlpin')?pin.getBoundingClientRect():null, ws=pin&&pin.querySelector('section.who'); const k=pr?Math.max(0,Math.min(1,((pin._t||0)-pr.top)/Math.max(1,pr.height-ws.offsetHeight))):Math.max(0,Math.min(1,(H*.88-r.top)/(H*.5))); /* section épinglée : la bille avance pendant que la section reste bloquée */
-      const x=p[0]+(p[n]-p[0])*k; ball.style.transition='none'; ball.style.transform=`translateX(${x}px)`; fill.style.transition='none'; fill.style.width=Math.max(0,x)+'px';
-      let on=0; p.forEach((v,j)=>{ if(v<=x+4) on=j; }); items.forEach((it,j)=>{ it.classList.toggle('past',p[j]<=x+4); it.classList.toggle('on',j===on); }); ol.classList.toggle('tldone',k>=1); };
-    addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); }
+      size(); addEventListener('resize',size); addEventListener('load',size); } }     let raf=0;
+    const upd=()=>{ raf=0; if(!G) geo(); if(!G) return; const r=ol.getBoundingClientRect(), H=innerHeight, n=G.us.length-1; let u;
+      if(G.vert){ u=Math.max(0,Math.min(G.us[n],H*.55-r.top)); } /* mobile : la bille suit le milieu de l'écran */
+      else { const pin=ol.closest('.aoswho'), pr=pin&&pin.classList.contains('tlpin')?pin.getBoundingClientRect():null, ws=pin&&pin.querySelector('section.who'); const k=pr?Math.max(0,Math.min(1,((pin._t||0)-pr.top)/Math.max(1,pr.height-ws.offsetHeight))):Math.max(0,Math.min(1,(H*.88-r.top)/(H*.5))); u=G.us[0]+(G.us[n]-G.us[0])*k; } /* section épinglée : la bille avance pendant que la section reste bloquée */
+      const L=lenAt(u), q=pb.getPointAtLength(L); pf.style.strokeDashoffset=(G.TL-L).toFixed(1); ball.style.transition='none'; ball.style.transform='translate('+q.x.toFixed(1)+'px,'+q.y.toFixed(1)+'px)';
+      let on=-1; G.us.forEach((v,j)=>{ if(v<=u+4) on=j; }); items.forEach((it,j)=>{ it.classList.toggle('past',G.us[j]<=u+4); it.classList.toggle('on',j===on); }); ol.classList.toggle('tldone',u>=G.us[n]-1); };
+    const re=()=>{ geo(); upd(); }; addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',re); addEventListener('load',re); if(window.ResizeObserver) new ResizeObserver(()=>{ clearTimeout(re._t); re._t=setTimeout(re,60); }).observe(ol); re(); }
   // footer : le nom monte lettre par lettre, la carte « Let's build » et les liens suivent
   const ft=document.querySelector('footer.ftr'); if(ft&&!RM){ ft.classList.add('ftfx','ftzoom'); ft.querySelectorAll('.flinks>a').forEach((a,i)=>a.style.transitionDelay=(.7+i*.07)+'s');
     /* nom du footer : même arrivée que le canvas — lettre par lettre, en zoom arrière depuis le centre du nom, avec flou */
