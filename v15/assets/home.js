@@ -190,7 +190,7 @@ const CV=(function(){
     if(window.FILLY){ const w=MOB?200:120, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:14,y:MOB?740:398,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
     /* logo AssetsOS posé tel quel sur le canvas (calque vectoriel, signature déjà tracée) */
     { const src=document.querySelector('.mlogo'); if(src){ const w=MOB?300:360, h=Math.round(w*152/822); const html=src.outerHTML.replace('class="mlogo sigm"','class="cvaos sigm sigok"').replace(' role="img"',' aria-hidden="true"');
-      add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:650,y:MOB?720:-40,w,h,r:0,html}); } }
+      add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:650,y:MOB?720:-40,w,h,r:-5,html}); } }
     if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||n.name==='AssetsOS'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
         if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
       for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
@@ -208,13 +208,7 @@ const CV=(function(){
   function arrive(){ document.documentElement.classList.add('cornin'); if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const E1='cubic-bezier(.16,1,.3,1)';
     /* 0. la signature se trace vite au centre, s'efface, puis le nom arrive dans la foulée */
-    /* 0. la signature : même entrée que le nom (zoom arrière depuis x2,2, flou, fondu), tracée vite, puis elle s'efface en fondu et le nom arrive dans la foulée */
-    let D0=0; if(document.getElementById('msigF')&&location.hash!=='#work'){ D0=950; const SP=2.2;
-      const go=()=>{ if(typeof BSIG!=='function') return; const sg=BSIG('introsig'); document.body.appendChild(sg); const ssv=sg.querySelector('svg'); if(!ssv){ sg.remove(); return; }
-        ssv.setAttribute('data-spd',SP); if(window.__litePrep) __litePrep(ssv); sg.play(); void sg.getBoundingClientRect(); try{ sg.getAnimations({subtree:true}).forEach(a=>a.playbackRate=SP); }catch(e){}
-        sg.animate([{scale:2.2,opacity:0,filter:'blur(10px)'},{scale:1,opacity:1,filter:'blur(0px)'}],{duration:900,easing:E1,fill:'both'});
-        setTimeout(()=>{ sg.animate([{scale:1,opacity:1,filter:'blur(0px)'},{scale:.9,opacity:0,filter:'blur(10px)'}],{duration:500,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'}).finished.then(()=>sg.remove()).catch(()=>sg.remove()); },850); };
-      if(typeof BSIG==='function') go(); else if(document.readyState==='loading') addEventListener('DOMContentLoaded',go,{once:true}); else setTimeout(go,0); } /* ui.js (BSIG) se charge après home.js */
+    const D0=0; /* (signature d'intro retirée à la demande de Nabil : l'entrée reste comme avant) */
     // zoom arrière autour du centre de l'écran (= centre du bloc nom + sous-titre, point 0,0 du canvas) :
     // chaque élément part de sa position agrandie depuis ce centre, pas de son propre centre
     const zoomIn=(n,G,o)=>{ const cx=n.x+n.w/2, cy=n.y+n.h/2;

@@ -11,14 +11,25 @@ all.forEach(d=>d.querySelector("summary").addEventListener("click",e=>{e.prevent
 /* courbe « decay » */
 (()=>{const d=document.querySelector(".decay");if(!d)return;const p=d.querySelector(".trend path");function draw(){const r=d.getBoundingClientRect();const pts=[...d.querySelectorAll(".dot")].map(e=>{const b=e.getBoundingClientRect();return[b.left+b.width/2-r.left,b.top+b.height/2-r.top]});if(pts.length<2)return;let s="M"+pts[0].join(" ");for(let i=1;i<pts.length;i++){const[a,b]=pts[i-1],[c,e]=pts[i],m=(c-a)/2;s+=` C${a+m} ${b} ${c-m} ${e} ${c} ${e}`}p.setAttribute("d",s)}draw();addEventListener("resize",draw);document.fonts&&document.fonts.ready.then(draw)})();
 /* logo du hero AssetsOS */
-(()=>{const l=document.querySelector(".page .logo");if(!l)return;const ok=()=>l.classList.add("sigok");if(matchMedia("(prefers-reduced-motion:reduce)").matches){ok();return;}
-  /* ASSETS arrive de la gauche, OS de la droite, puis la signature se dessine */
-  const D=650, E="cubic-bezier(.16,1,.3,1)"; l.setAttribute("data-sigdelay",D+250); /* Safari (lite) : même départ que le tracé segment par segment */
+(()=>{const l=document.querySelector(".page .logo");if(!l)return;const ok=()=>l.classList.add("sigok"); const hero=l.closest(".hero");
+  const show=()=>{ l.classList.add("lgin"); hero&&hero.classList.add("hbin"); };
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){ok();show();return;}
+  /* 1. ASSETS arrive de la gauche, OS de la droite (opacité 0 au départ) ; 2. la signature se dessine pendant que « Built once. Used every day. » s'écrit ;
+     3. à la fin, le texte et les boutons apparaissent (léger y négatif + fondu) */
+  const D=650, E="cubic-bezier(.16,1,.3,1)", SIGT=1780; l.setAttribute("data-sigdelay",D+250); /* Safari (lite) : même départ que le tracé segment par segment */
   l.querySelectorAll(".sgw,.sgc").forEach(p=>{ p.style.animationDelay=((parseFloat(p.style.animationDelay)||0)+D/1000).toFixed(3)+"s"; });
-  const A=l.querySelector("#aosA"), O=l.querySelector("#aosO");
+  const A=l.querySelector("#aosA"), O=l.querySelector("#aosO"), T=l.querySelector(".lgtag");
+  l.classList.add("lgin");
   if(A) A.animate([{transform:"translateX(-260px)",opacity:0},{transform:"translateX(0)",opacity:1}],{duration:1100,easing:E,fill:"backwards"});
   if(O) O.animate([{transform:"translateX(260px)",opacity:0},{transform:"translateX(0)",opacity:1}],{duration:1100,delay:80,easing:E,fill:"backwards"});
-  setTimeout(ok,1780+D)})();
+  if(T){ try{ const NS="http://www.w3.org/2000/svg", bb=T.getBBox(), F=40, W=bb.width+F, m=document.createElementNS(NS,"mask"), g=document.createElementNS(NS,"linearGradient"), r=document.createElementNS(NS,"rect");
+      m.setAttribute("id","lgtm"); m.setAttribute("maskUnits","userSpaceOnUse"); g.setAttribute("id","lgtg"); g.innerHTML=`<stop offset="0" stop-color="#fff"/><stop offset="${(bb.width/W).toFixed(3)}" stop-color="#fff"/><stop offset="1" stop-color="#000"/>`;
+      r.setAttribute("y",bb.y-10); r.setAttribute("height",bb.height+20); r.setAttribute("width",W); r.setAttribute("fill","url(#lgtg)"); m.appendChild(r);
+      const df=l.querySelector("defs")||l.insertBefore(document.createElementNS(NS,"defs"),l.firstChild); df.appendChild(g); df.appendChild(m); T.setAttribute("mask","url(#lgtm)");
+      const x0=bb.x-W, x1=bb.x, t0=performance.now()+D+250, dur=SIGT-250; r.setAttribute("x",x0); /* le texte s'écrit pendant la signature */
+      const f=now=>{ const p=Math.min(1,Math.max(0,(now-t0)/dur)), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; r.setAttribute("x",(x0+(x1-x0)*e).toFixed(1)); if(p<1) requestAnimationFrame(f); else T.removeAttribute("mask"); }; requestAnimationFrame(f); }catch(e){} }
+  setTimeout(ok,SIGT+D);
+  if(hero){ hero.classList.add("hbin"); [...hero.querySelectorAll(".hbot>*")].forEach((el,i)=>el.animate([{opacity:0,translate:"0 -14px"},{opacity:1,translate:"0 0"}],{duration:800,delay:SIGT+D+i*140,easing:E,fill:"backwards"})); }})();
 /* AssetsOS : « The problem » puis la tuile AssetsOS qui monte par-dessus */
 (()=>{const p=document.querySelector('.stack>.band.prob'),c=document.getElementById('system');if(!p||!c)return;
 const place=()=>{[p,c].forEach(el=>{const h=el.offsetHeight,v=innerHeight;el.style.setProperty('--st',Math.round(h<v-32?(v-h)/2:Math.min(16,v-h-16))+'px')})};
