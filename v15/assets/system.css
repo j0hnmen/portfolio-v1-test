@@ -1221,4 +1221,15 @@ html body .tl2 .tla .tfof img{display:inline-block!important;height:18px;width:a
 .page .vth:has(.vpub){display:block!important}
 .page .vth .vpub{margin-top:10px!important}
 /* Sephora : deux phrases, deux lignes, partout */
-html body .nw2{max-width:none!important;white-space:nowrap}
+html body .nw2,html body .nw2 *{max-width:none!important;white-space:nowrap!important}
+/* frises : le lien = « Talk with Friends of Figma ↗ » seulement ; la date passe à la ligne, plus petite et plus légère */
+html body .tl2 .tla .tfof::after{content:none!important}
+html body .tl2 .tla .tfof>span[data-i="fof"]::after{content:" ↗";font-family:system-ui,sans-serif;font-size:13px;display:inline-block;margin-left:3px}
+html body .tl2 .tla .tfof .fofd{display:block;margin-top:4px;font-size:12px!important;opacity:.55;text-decoration:none!important}
+html body .tl2 .tla .tfof .fofd *{text-decoration:none!important}
+.page .vfd{display:block;margin-top:6px;font-size:13px;line-height:1.3;opacity:.55;color:var(--ink)}
+.page .vti>.vfd{grid-column:2;grid-row:5}
+/* About : « With Publicis Groupe » un peu plus grand */
+.page .vth .vpub .tpm{width:44px!important;height:41px!important}
+.page .vth .vpub{font-size:15px!important;gap:8px!important}
+html body .tl2 .tla .tfof>span[data-i="fof"]::after{content:"\00a0↗"!important;display:inline!important;margin-left:0!important}
