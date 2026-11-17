@@ -1119,9 +1119,7 @@ html body #main.wk2.wk2>section.wk2-in.wk2-in{padding:0!important;margin:0!impor
 html body .case{perspective:none!important}
 html.wk2-open .top{z-index:66}
 
-/*vhstable — mobile : les fonds fixes (papier, bleu de Let's build, fonds de Clarity/Impact/Value) gardent une hauteur fixe ;
-  avec inset:0 ils se redimensionnaient quand la barre d'adresse apparaît/disparaît au scroll, et le papier « tremblait » */
-html.touch .pbg,.bluebg,.hvx-fbg{bottom:auto!important;height:100vh!important;height:100lvh!important}
+/* (vhstable retiré : sur iPhone, Safari étire les fonds fixes en inset:0 sous la barre d'état et la barre du bas ; une hauteur fixe laissait deux bandes non couvertes) */
 
 /* sda — sections épinglées animées par le navigateur (mobile) : voir le bloc sda dans ui.js */
 html.sda .hvx{view-timeline-name:--hvx}
