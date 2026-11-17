@@ -61,9 +61,6 @@ let bsN=0; function BSIG(cls){ const w=document.createElement('span'); w.classNa
   if(!rm) sv.classList.add('sigreset'); else sv.classList.add('sigok');
   return w; }
 
-/*sbcover*/ /* iPhone (Safari bord à bord) : sous l'heure, Safari montre le contenu qui défile (titres coupés, etc.). Un cache « sticky » collé juste au-dessus de l'écran le masque,
-   à la couleur du moment (papier, bleu du hero / Let's build, haut du bleu d'Impact) */
-(()=>{ if(!document.documentElement.classList.contains('touch')||document.querySelector('.sbcover')) return; const c=document.createElement('div'); c.className='sbcover'; c.setAttribute('aria-hidden','true'); document.body.prepend(c); })();
 /*omswap*/ /* titre « Your full-stack … studio » : au milieu du scroll du titre, « full-stack » laisse place à « one-man » (et revient en remontant) */
 (()=>{ const h=document.querySelector('.abth'); if(!h||document.documentElement.hasAttribute('data-hold')) return; let raf=0, on=false;
   const st=document.querySelector('.hstack'), tl=st&&st.querySelector('#aos');
@@ -293,7 +290,6 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
     pres.forEach((e,i)=>e.classList.add('hvxsp'+i)); subs.forEach((e,i)=>e.classList.add('hvxsp'+i));
     build(); let lw=innerWidth; addEventListener('resize',()=>{ if(innerWidth!==lw){ lw=innerWidth; build(); } }); addEventListener('load',build); }
   const upd=()=>{ raf=0; const r=sec.getBoundingClientRect(), H=pin.offsetHeight||innerHeight, run=r.height-H; /* hauteur de l'écran épinglé (stable) et pas innerHeight, qui bouge avec la barre d'adresse sur mobile → tremblement */ const k=cl(-r.top/Math.max(1,run)); const pos=posOf(k);
-    { const on=r.top<=1&&r.bottom>=H-1&&pos>.35&&pos<1.65; if(on!==sec._hb){ sec._hb=on; document.documentElement.classList.toggle('hvxblue',on); } } /* iPhone : couleur du cache sous l'heure pendant le bleu d'Impact */
     if(SDA){ const enter=cl((H-r.top)/H); if(sec._mk) sec._mk(pos,r.top<H&&r.bottom>0,enter); return; } /* mode navigateur : on ne fait que lire (pour les tracés à la main) */
     if(!RM) tr.style.transform=`translate3d(${(-pos*100/3).toFixed(3)}%,0,0)`;
     const enter=cl((H-r.top)/H), leave=cl(r.bottom/H); /* fondu d'entrée (la section arrive) et de sortie */

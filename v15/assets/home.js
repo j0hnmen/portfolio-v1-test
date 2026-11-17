@@ -205,10 +205,12 @@ const CV=(function(){
   function arrive(){ document.documentElement.classList.add('cornin'); if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const E1='cubic-bezier(.16,1,.3,1)';
     /* 0. la signature se trace vite au centre, s'efface, puis le nom arrive dans la foulée */
-    let D0=0; if(document.getElementById('msigF')&&location.hash!=='#work'){ D0=1450; const SP=1.5;
+    /* 0. la signature : même entrée que le nom (zoom arrière depuis x2,2, flou, fondu), tracée vite, puis elle s'efface en fondu et le nom arrive dans la foulée */
+    let D0=0; if(document.getElementById('msigF')&&location.hash!=='#work'){ D0=950; const SP=2.2;
       const go=()=>{ if(typeof BSIG!=='function') return; const sg=BSIG('introsig'); document.body.appendChild(sg); const ssv=sg.querySelector('svg'); if(!ssv){ sg.remove(); return; }
         ssv.setAttribute('data-spd',SP); if(window.__litePrep) __litePrep(ssv); sg.play(); void sg.getBoundingClientRect(); try{ sg.getAnimations({subtree:true}).forEach(a=>a.playbackRate=SP); }catch(e){}
-        setTimeout(()=>sg.classList.add('out'),1250); setTimeout(()=>sg.remove(),2100); };
+        sg.animate([{scale:2.2,opacity:0,filter:'blur(10px)'},{scale:1,opacity:1,filter:'blur(0px)'}],{duration:900,easing:E1,fill:'both'});
+        setTimeout(()=>{ sg.animate([{scale:1,opacity:1,filter:'blur(0px)'},{scale:.9,opacity:0,filter:'blur(10px)'}],{duration:500,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'}).finished.then(()=>sg.remove()).catch(()=>sg.remove()); },850); };
       if(typeof BSIG==='function') go(); else if(document.readyState==='loading') addEventListener('DOMContentLoaded',go,{once:true}); else setTimeout(go,0); } /* ui.js (BSIG) se charge après home.js */
     // zoom arrière autour du centre de l'écran (= centre du bloc nom + sous-titre, point 0,0 du canvas) :
     // chaque élément part de sa position agrandie depuis ce centre, pas de son propre centre
