@@ -1233,3 +1233,9 @@ html body .tl2 .tla .tfof .fofd *{text-decoration:none!important}
 .page .vth .vpub .tpm{width:44px!important;height:41px!important}
 .page .vth .vpub{font-size:15px!important;gap:8px!important}
 html body .tl2 .tla .tfof>span[data-i="fof"]::after{content:"\00a0↗"!important;display:inline!important;margin-left:0!important}
+/* lien Friends of Figma toujours sur une ligne */
+html body .tl2 .tla .tfof{white-space:nowrap!important}
+html body .tl2 .tla .tfof .fofd{white-space:normal}
+.page .vtlink:has(.vfof){white-space:nowrap}
+/* date alignée sur le début du texte « Talk… » (largeur du logo FoF + marge) */
+html body .tl2 .tla .tfof .fofd,.page .vfd{padding-left:38.8px}
