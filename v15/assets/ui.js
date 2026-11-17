@@ -162,7 +162,7 @@ function scrubSig(sv,q){ if(!sv) return; if(!sv.__seg){ sv.__seg=[...sv.querySel
       for(let i=0;i<us.length-1;i++){ const ua=us[i], ub=us[i+1], dd=ub-ua, A=Math.min(AM,dd*fac)*jit[(i+1)%jit.length]*s; const c1=[Math.min(ua+(ua-lastC[0]),ua+dd*.3), -lastC[1]], c2=[ub-dd*.3, A];
         d+=' C'+P(c1[0],c1[1])+' '+P(c2[0],c2[1])+' '+P(ub,0); lastC=c2; pre.push(d); s=-s; }
       const un=us[us.length-1], room=Math.max(24,LEN-un-4), e=Math.min(room,vert?(mob?90:120):160), k=vert?(mob?.35:.6):.9, w=vert?1:-1; /* fin : swoop qui part d'un côté puis remonte d'un coup de poignet */
-      d+=' C'+P(un+(un-lastC[0])*.9,-lastC[1])+' '+P(un+e*.72,w*20*k)+' '+P(un+e*.85,w*4*k)+' C'+P(un+e*.95,-w*8*k)+' '+P(un+e*.82,-w*26*k)+' '+P(un+e*.64,-w*36*k);
+      d+=' C'+P(un+(un-lastC[0])*.9,-lastC[1])+' '+P(un+e*.35,0)+' '+P(un+e*.45,0); /* fin : la courbe se pose et s'arrête, sans swoop */
       sv.setAttribute('viewBox','0 0 '+r.width.toFixed(1)+' '+r.height.toFixed(1)); pb.setAttribute('d',d); pf.setAttribute('d',d);
       const TL=pb.getTotalLength(), tmp=document.createElementNS(NS,'path'); sv.appendChild(tmp); const AL=pre.map(x=>{ tmp.setAttribute('d',x); return tmp.getTotalLength(); }); tmp.remove();
       pf.style.strokeDasharray=TL+' '+TL; G={vert,us,AL,TL,LEN}; };

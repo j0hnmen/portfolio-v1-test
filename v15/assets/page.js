@@ -133,7 +133,7 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
       else { const c2=[c+A, yb-dd*.3]; d+=` C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(c)} ${f(yb)}`; lastC=c2; }
       pre.push(d); s=-s; }
     const yn=ys[ys.length-1], room=Math.max(30,H-yn), e=Math.min(room*.9,mob?110:150), kk=mob?.7:1;
-    d+=` C${f(2*c-lastC[0])} ${f(yn+e*.35)} ${f(c-22*kk)} ${f(yn+e*.75)} ${f(c-4*kk)} ${f(yn+e*.86)} C${f(c+10*kk)} ${f(yn+e*.95)} ${f(c+30*kk)} ${f(yn+e*.8)} ${f(c+42*kk)} ${f(yn+e*.62)}`; /* swoop final : la courbe repart vers la gauche puis remonte d'un coup de poignet */
+    d+=` C${f(2*c-lastC[0])} ${f(yn+e*.3)} ${f(c)} ${f(yn+e*.45)} ${f(c)} ${f(yn+e*.55)}`; /* fin : la courbe se pose et s'arrête, sans swoop */
     sv.setAttribute('viewBox',`0 0 ${W} ${f(H)}`); sv.style.height=H+'px'; pb.setAttribute('d',d); pf.setAttribute('d',d);
     TL=pb.getTotalLength(); const tmp=document.createElementNS(NS,'path'); sv.appendChild(tmp); AL=pre.map(x=>{ tmp.setAttribute('d',x); return tmp.getTotalLength(); }); tmp.remove();
     AY=ys; HH=H; pf.style.strokeDasharray=TL+' '+TL; };
