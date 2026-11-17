@@ -1168,3 +1168,9 @@ html.touch .pres{overflow-x:visible!important}
 .abth.om2 .omsw>.w1{opacity:0;translate:0 -.3em;filter:blur(6px)}
 .abth.om2 .omsw>.w2{opacity:1;translate:0 0;filter:none}
 @media (prefers-reduced-motion:reduce){.abth .omsw>span{transition:opacity .2s}.abth .omsw>span{translate:none!important;filter:none!important}}
+/* iPhone : le fond bleu d'Impact déborde sous la barre d'état et la barre du bas (comme les fonds plein écran) — on ne rogne l'écran épinglé qu'en largeur
+   et le dégradé est prolongé par sa couleur de départ en haut et d'arrivée en bas */
+html.touch .hvx-pin{overflow:visible!important;overflow-x:clip!important}
+html.touch .hvx-pin>.hvx-fb::before,html.touch .hvx-pin>.hvx-fb::after{content:"";position:absolute;left:0;right:0;height:40vh;pointer-events:none}
+html.touch .hvx-pin>.hvx-fb::before{bottom:100%;background:#dcdafc}
+html.touch .hvx-pin>.hvx-fb::after{top:100%;background:#5650FF}
