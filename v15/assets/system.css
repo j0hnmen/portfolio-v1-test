@@ -1189,3 +1189,10 @@ html.touch .pres{overflow-x:visible!important}
 .tl2 .tfof{display:block!important}
 .tl2 .tfof img{display:inline-block;vertical-align:-4px;margin-right:7px}
 .tl2 .tfof .fofd{white-space:nowrap}
+/* frise home = même design que la frise About : ligne Friends of Figma en texte simple (gris, sans icône ni soulignement),
+   un seul lien « Talk on YouTube ↗ » souligné en dessous */
+.tl2 .tla .tfof span{text-decoration:none!important}
+.tl2 .tfof img{display:none!important}
+.tl2 .tla .lbl{display:inline-flex!important;gap:6px;align-items:center;margin-top:16px;font-size:15px;line-height:1.2;color:var(--ink)!important;text-decoration:none!important;border-bottom:1px solid currentColor;padding-bottom:2px;transition:color .25s}
+.tl2 .tla .lbl::after{content:"↗";font-family:system-ui,sans-serif;font-size:13px}
+.tl2 .tla:hover .lbl,.tl2 .tla:focus-visible .lbl{color:var(--blue)!important}
