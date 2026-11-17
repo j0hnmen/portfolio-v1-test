@@ -1185,3 +1185,7 @@ html.touch .pres{overflow-x:visible!important}
 .page .vti:has(>.vpub)>.vtlink{grid-row:5}
 .tpm{width:47px;height:44px}
 @media (max-width:900px){.tpm{width:39px;height:36px}}
+/* ligne Friends of Figma : logo + texte + date dans le même flux (la date ne fait plus une colonne à part) */
+.tl2 .tfof{display:block!important}
+.tl2 .tfof img{display:inline-block;vertical-align:-4px;margin-right:7px}
+.tl2 .tfof .fofd{white-space:nowrap}
