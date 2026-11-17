@@ -110,11 +110,31 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
 (()=>{ const L=document.querySelector('.vlist'); if(!L) return; const its=[...L.querySelectorAll('.vti')], yr=document.querySelector('.vyr'), line=L.querySelector('.vline'); let cur=-1, raf=0;
   const set=i=>{ if(i===cur||!yr) return; cur=i; const it=its[i], y=it.dataset.y, now=it.classList.contains('vnow');
     if(yr.textContent===y&&yr.classList.contains('now')===now) return; /* même année : rien ne bouge */ yr.classList.add('flip'); clearTimeout(yr._t); yr._t=setTimeout(()=>{ yr.textContent=y; yr.classList.toggle('now',now); yr.classList.remove('flip'); },180); };
+  /* trait de la frise : une ligne à la main qui ondule d'un rond à l'autre (passe par chaque rond), avec une petite boucle d'attaque et un swoop final ; le bleu se dessine le long de la courbe et la bille la suit */
+  const NS='http://www.w3.org/2000/svg', W=120, sv=document.createElementNS(NS,'svg'); sv.setAttribute('class','vsvg'); sv.setAttribute('aria-hidden','true');
+  sv.innerHTML='<defs><linearGradient id="vgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5751FF"/><stop offset="1" stop-color="#1C14F2"/></linearGradient></defs><path class="vbase"/><path class="vblue"/>';
+  line.insertBefore(sv,line.firstChild); line.classList.add('vcurve'); const pb=sv.querySelector('.vbase'), pf=sv.querySelector('.vblue'), ball=line.querySelector('.vball');
+  let LUT=[], TL=1;
+  const geo=()=>{ const lr=line.getBoundingClientRect(); if(!lr.height) return; const H=lr.height, c=W/2, mob=innerWidth<=760, AM=mob?17:32;
+    const ys=its.map(it=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); return d.top+d.height/2-lr.top; });
+    const f=n=>n.toFixed(1); const jit=[1,.82,1.12,.9,1.05,.86,1.1,.95,1,.88,1.08,.92,1.02,.9,1.1,.96]; /* amplitude un peu irrégulière : main levée */
+    let s=1, d=''; const y0=ys[0], d0=(ys[1]||y0+200)-y0, A0=Math.min(AM,d0*.16)*jit[0];
+    d+=`M${f(c-AM*.55)} 0 C${f(c-AM*.55)} ${f(y0*.35)} ${f(c-A0*.7)} ${f(y0-d0*.2)} ${f(c)} ${f(y0)}`; /* attaque : arrive de la gauche vers le 1er rond */
+    let lastC=[c-A0*.7,y0-d0*.2];
+    for(let i=0;i<ys.length-1;i++){ const ya=ys[i], yb=ys[i+1], dd=yb-ya, A=Math.min(AM,dd*.2)*jit[(i+1)%jit.length]*s;
+      const c1=[2*c-lastC[0], ya+(ya-lastC[1])]; /* tangente continue au passage du rond */ const c2=[c+A, yb-dd*.3];
+      d+=` C${f(c1[0])} ${f(Math.min(c1[1],ya+dd*.45))} ${f(c2[0])} ${f(c2[1])} ${f(c)} ${f(yb)}`; lastC=c2; s=-s; }
+    const yn=ys[ys.length-1], room=Math.max(30,H-yn), e=Math.min(room*.9,mob?110:150), k=mob?.7:1;
+    d+=` C${f(2*c-lastC[0])} ${f(yn+e*.35)} ${f(c-22*k)} ${f(yn+e*.75)} ${f(c-4*k)} ${f(yn+e*.86)} C${f(c+10*k)} ${f(yn+e*.95)} ${f(c+30*k)} ${f(yn+e*.8)} ${f(c+42*k)} ${f(yn+e*.62)}`; /* swoop final : la courbe repart vers la gauche puis remonte d'un coup de poignet */
+    sv.setAttribute('viewBox',`0 0 ${W} ${f(H)}`); sv.style.height=H+'px'; pb.setAttribute('d',d); pf.setAttribute('d',d);
+    TL=pb.getTotalLength(); LUT=[]; for(let i=0;i<=400;i++){ const q=pb.getPointAtLength(TL*i/400); LUT.push([q.x,q.y,TL*i/400]); } pf.style.strokeDasharray=TL+' '+TL; };
+  const at=y=>{ /* longueur parcourue quand la courbe atteint la hauteur y (elle descend toujours) */ let lo=0; for(let i=0;i<LUT.length;i++){ if(LUT[i][1]<=y) lo=i; else break; } return LUT[lo]||[W/2,0,0]; };
   const upd=()=>{ raf=0; const lr=line.getBoundingClientRect(), mid=innerHeight*.5;
     const p=Math.max(0,Math.min(1,(mid-lr.top)/lr.height)); L.style.setProperty('--vp',p.toFixed(4));
+    if(LUT.length){ const q=at(p*lr.height); pf.style.strokeDashoffset=(TL-q[2]).toFixed(1); if(ball) ball.style.transform=`translate(${(q[0]-W/2).toFixed(1)}px,${q[1].toFixed(1)}px)`; }
     let on=0; its.forEach((it,i)=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); const past=d.top+8<=mid; it.classList.toggle('past',past); if(past) on=i; });
     its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
-  addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',upd); upd(); })();
+  const re=()=>{ geo(); upd(); }; addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',re); addEventListener('load',re); if(window.ResizeObserver) new ResizeObserver(()=>{ clearTimeout(re._t); re._t=setTimeout(re,60); }).observe(L); re(); })();
 
 /*evolve*/ /* Templates dynamiques : 3 use cases ; chaque demande à Claude fait évoluer le template ; à la fin, « Ship it » envoie l'asset */
 (()=>{ const post=document.getElementById('evpost'); if(!post) return;

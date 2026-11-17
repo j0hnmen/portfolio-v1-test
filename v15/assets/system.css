@@ -1144,3 +1144,12 @@ html.sda section.end.endfx.scrubfx .scrib{animation:endsQ linear both!important;
 /* iPhone : le overflow-x:clip de .pres (le seul parent qui rogne les sections sticky) empêche Safari de gérer le sticky pendant le scroll
    → la section est replacée en retard à chaque image et tremble. Sur écran tactile on le retire (rien ne déborde sur mobile, html coupe déjà en x). */
 html.touch .pres{overflow-x:visible!important}
+
+/* frise About : trait courbe à main levée (dessiné en SVG par page.js) à la place du trait droit */
+.page .vline.vcurve{background:none!important;overflow:visible}
+.page .vline.vcurve .vfill{display:none}
+.page .vline .vsvg{position:absolute;top:0;left:-59px;width:120px;overflow:visible;pointer-events:none}
+.page .vline .vsvg path{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.page .vline .vsvg .vbase{stroke:#DEDCD6}
+.page .vline .vsvg .vblue{stroke:url(#vgr);stroke-width:2.6}
+.page .vline.vcurve .vball{top:0!important;left:1px!important}
