@@ -1174,3 +1174,14 @@ html.touch .pres{overflow-x:visible!important}
 /* header AssetsOS : tout part invisible, page.js lance la séquence (ASSETS / OS, signature + tagline qui s'écrit, puis texte et boutons) */
 .page .hero .logo:not(.lgin) :is(#aosA,#aosO,.lgtag){opacity:0}
 .page .hero:not(.hbin) .hbot>*{opacity:0}
+/* Sephora : « With Publicis Groupe » (logo en masque, suit la couleur du texte comme les autres logos) */
+.tpub,.vpub{display:flex;align-items:center;gap:8px;margin:12px 0 0;font-size:14px;line-height:1;color:rgba(32,32,32,.55);transition:color .35s}
+.vpub{margin-top:10px}
+.tpm{display:inline-block;flex:none;width:39px;height:36px;background:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:left center;mask-position:left center}
+.tl2 .tli.on .tpub,.page .vti.on .vpub{color:#564FFF}
+@media (max-width:900px){.tpm{width:33px;height:31px}}
+.page .vti>.vpub{grid-column:2;grid-row:3}
+.page .vti:has(>.vpub)>.vts{grid-row:4}
+.page .vti:has(>.vpub)>.vtlink{grid-row:5}
+.tpm{width:47px;height:44px}
+@media (max-width:900px){.tpm{width:39px;height:36px}}
