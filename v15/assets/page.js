@@ -114,24 +114,37 @@ document.querySelectorAll('.ct .rv').forEach(el=>setTimeout(()=>el.classList.add
   const NS='http://www.w3.org/2000/svg', W=120, sv=document.createElementNS(NS,'svg'); sv.setAttribute('class','vsvg'); sv.setAttribute('aria-hidden','true');
   sv.innerHTML='<defs><linearGradient id="vgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5751FF"/><stop offset="1" stop-color="#1C14F2"/></linearGradient></defs><path class="vbase"/><path class="vblue"/>';
   line.insertBefore(sv,line.firstChild); line.classList.add('vcurve'); const pb=sv.querySelector('.vbase'), pf=sv.querySelector('.vblue'), ball=line.querySelector('.vball');
-  let LUT=[], TL=1;
-  const geo=()=>{ const lr=line.getBoundingClientRect(); if(!lr.height) return; const H=lr.height, c=W/2, mob=innerWidth<=760, AM=mob?17:32;
+  let TL=1, AY=[], AL=[], HH=1;
+  const geo=()=>{ const lr=line.getBoundingClientRect(); if(!lr.height) return; const H=lr.height, c=W/2, mob=innerWidth<=760, AM=mob?17:32, k=mob?.62:.95;
     const ys=its.map(it=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); return d.top+d.height/2-lr.top; });
     const f=n=>n.toFixed(1); const jit=[1,.82,1.12,.9,1.05,.86,1.1,.95,1,.88,1.08,.92,1.02,.9,1.1,.96]; /* amplitude un peu irrégulière : main levée */
-    let s=1, d=''; const y0=ys[0], d0=(ys[1]||y0+200)-y0, A0=Math.min(AM,d0*.16)*jit[0];
+    /* deux petites boucles, comme celles des soulignés : dans les deux plus grands écarts entre ronds (pas côte à côte), côté extérieur */
+    const gaps=ys.slice(1).map((y,i)=>[y-ys[i],i]).filter(g=>g[0]>150*k+60).sort((a,b)=>b[0]-a[0]); const loops=[]; gaps.forEach(g=>{ if(loops.length<2&&loops.every(l=>Math.abs(l-g[1])>2)) loops.push(g[1]); });
+    let s=1, d=''; const y0=ys[0], d0=(ys[1]||y0+200)-y0, A0=Math.min(AM,d0*.16)*jit[0], pre=[];
     d+=`M${f(c-AM*.55)} 0 C${f(c-AM*.55)} ${f(y0*.35)} ${f(c-A0*.7)} ${f(y0-d0*.2)} ${f(c)} ${f(y0)}`; /* attaque : arrive de la gauche vers le 1er rond */
-    let lastC=[c-A0*.7,y0-d0*.2];
+    let lastC=[c-A0*.7,y0-d0*.2]; pre.push(d);
     for(let i=0;i<ys.length-1;i++){ const ya=ys[i], yb=ys[i+1], dd=yb-ya, A=Math.min(AM,dd*.2)*jit[(i+1)%jit.length]*s;
-      const c1=[2*c-lastC[0], ya+(ya-lastC[1])]; /* tangente continue au passage du rond */ const c2=[c+A, yb-dd*.3];
-      d+=` C${f(c1[0])} ${f(Math.min(c1[1],ya+dd*.45))} ${f(c2[0])} ${f(c2[1])} ${f(c)} ${f(yb)}`; lastC=c2; s=-s; }
-    const yn=ys[ys.length-1], room=Math.max(30,H-yn), e=Math.min(room*.9,mob?110:150), k=mob?.7:1;
-    d+=` C${f(2*c-lastC[0])} ${f(yn+e*.35)} ${f(c-22*k)} ${f(yn+e*.75)} ${f(c-4*k)} ${f(yn+e*.86)} C${f(c+10*k)} ${f(yn+e*.95)} ${f(c+30*k)} ${f(yn+e*.8)} ${f(c+42*k)} ${f(yn+e*.62)}`; /* swoop final : la courbe repart vers la gauche puis remonte d'un coup de poignet */
+      const c1=[2*c-lastC[0], Math.min(ya+(ya-lastC[1]), ya+dd*.3)]; /* tangente continue au passage du rond */
+      if(loops.includes(i)){ /* boucle : la ligne descend, part sur le côté, remonte, se recroise puis repart vers le rond suivant */
+        const yl=ya+dd*.6, x0=c+A*.35, sd=mob?-1:1 /* mobile : boucle côté texte (à gauche, le bord d'écran est trop près) */, X=x=>f(x0-sd*x*k), Y=y=>f(yl+y*k);
+        d+=` C${f(c1[0])} ${f(c1[1])} ${f(x0)} ${f(yl-dd*.25)} ${f(x0)} ${f(yl)}`;
+        d+=` C${X(-1)} ${Y(26)} ${X(30)} ${Y(32)} ${X(30)} ${Y(10)} C${X(30)} ${Y(-8)} ${X(9)} ${Y(-8)} ${X(5)} ${Y(14)}`;
+        const ex=x0-sd*5*k, ey=yl+14*k, c2=[c+A, yb-(yb-ey)*.35]; d+=` C${f(ex-sd*1.5*k)} ${f(ey+(yb-ey)*.4)} ${f(c2[0])} ${f(c2[1])} ${f(c)} ${f(yb)}`; lastC=c2; }
+      else { const c2=[c+A, yb-dd*.3]; d+=` C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(c)} ${f(yb)}`; lastC=c2; }
+      pre.push(d); s=-s; }
+    const yn=ys[ys.length-1], room=Math.max(30,H-yn), e=Math.min(room*.9,mob?110:150), kk=mob?.7:1;
+    d+=` C${f(2*c-lastC[0])} ${f(yn+e*.35)} ${f(c-22*kk)} ${f(yn+e*.75)} ${f(c-4*kk)} ${f(yn+e*.86)} C${f(c+10*kk)} ${f(yn+e*.95)} ${f(c+30*kk)} ${f(yn+e*.8)} ${f(c+42*kk)} ${f(yn+e*.62)}`; /* swoop final : la courbe repart vers la gauche puis remonte d'un coup de poignet */
     sv.setAttribute('viewBox',`0 0 ${W} ${f(H)}`); sv.style.height=H+'px'; pb.setAttribute('d',d); pf.setAttribute('d',d);
-    TL=pb.getTotalLength(); LUT=[]; for(let i=0;i<=400;i++){ const q=pb.getPointAtLength(TL*i/400); LUT.push([q.x,q.y,TL*i/400]); } pf.style.strokeDasharray=TL+' '+TL; };
-  const at=y=>{ /* longueur parcourue quand la courbe atteint la hauteur y (elle descend toujours) */ let lo=0; for(let i=0;i<LUT.length;i++){ if(LUT[i][1]<=y) lo=i; else break; } return LUT[lo]||[W/2,0,0]; };
+    TL=pb.getTotalLength(); const tmp=document.createElementNS(NS,'path'); sv.appendChild(tmp); AL=pre.map(x=>{ tmp.setAttribute('d',x); return tmp.getTotalLength(); }); tmp.remove();
+    AY=ys; HH=H; pf.style.strokeDasharray=TL+' '+TL; };
+  const at=y=>{ /* la longueur suit le scroll étape par étape (les boucles se parcourent pendant qu'on descend d'un rond au suivant) */
+    let len; if(!AY.length) return null; if(y<=AY[0]) len=AL[0]*Math.max(0,y)/Math.max(1,AY[0]);
+    else if(y>=AY[AY.length-1]){ const n=AY.length-1; len=AL[n]+(TL-AL[n])*Math.min(1,(y-AY[n])/Math.max(1,HH-AY[n])); }
+    else { let j=0; while(j<AY.length-2&&AY[j+1]<=y) j++; len=AL[j]+(AL[j+1]-AL[j])*(y-AY[j])/Math.max(1,AY[j+1]-AY[j]); }
+    const q=pb.getPointAtLength(len); return [q.x,q.y,len]; };
   const upd=()=>{ raf=0; const lr=line.getBoundingClientRect(), mid=innerHeight*.5;
     const p=Math.max(0,Math.min(1,(mid-lr.top)/lr.height)); L.style.setProperty('--vp',p.toFixed(4));
-    if(LUT.length){ const q=at(p*lr.height); pf.style.strokeDashoffset=(TL-q[2]).toFixed(1); if(ball) ball.style.transform=`translate(${(q[0]-W/2).toFixed(1)}px,${q[1].toFixed(1)}px)`; }
+    { const q=at(p*lr.height); if(q){ pf.style.strokeDashoffset=(TL-q[2]).toFixed(1); if(ball) ball.style.transform=`translate(${(q[0]-W/2).toFixed(1)}px,${q[1].toFixed(1)}px)`; } }
     let on=0; its.forEach((it,i)=>{ const d=it.querySelector('.vdot').getBoundingClientRect(); const past=d.top+8<=mid; it.classList.toggle('past',past); if(past) on=i; });
     its.forEach((it,i)=>it.classList.toggle('on',i===on&&its[i].classList.contains('past'))); set(on); };
   const re=()=>{ geo(); upd(); }; addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(upd); },{passive:true}); addEventListener('resize',re); addEventListener('load',re); if(window.ResizeObserver) new ResizeObserver(()=>{ clearTimeout(re._t); re._t=setTimeout(re,60); }).observe(L); re(); })();
