@@ -48,6 +48,8 @@ body.drag canvas#c{cursor:grabbing}
 .ban span{font:700 clamp(12px,1.6vw,16px) Mozer;letter-spacing:.06em;text-transform:uppercase}
 .pop{position:fixed;z-index:6;pointer-events:none;font:900 20px Mozer;color:var(--cream);translate:-50% -50%;white-space:nowrap;text-transform:uppercase;background:rgba(20,21,28,.9);padding:6px 11px 5px;border-radius:9px;animation:pop 1.1s cubic-bezier(.2,.8,.2,1) forwards}
 .pop.bad{color:var(--yellow)}
+.pop.big{font-size:clamp(30px,4vw,46px);color:var(--ink);background:var(--yellow);padding:10px 18px 7px;border-radius:16px;animation:popB 2s cubic-bezier(.2,.8,.2,1) forwards;box-shadow:0 14px 30px -10px rgba(0,0,0,.7)}
+@keyframes popB{from{opacity:0;transform:translateY(14px) scale(.5)}10%{opacity:1;transform:translateY(-10px) scale(1.14)}20%{opacity:1;transform:translateY(-14px) scale(1)}80%{opacity:1;transform:translateY(-36px)}to{opacity:0;transform:translateY(-66px)}}
 @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.6)}20%{opacity:1;transform:translateY(-8px) scale(1.1)}to{opacity:0;transform:translateY(-56px)}}
 .err{position:fixed;right:clamp(12px,2vw,28px);top:max(84px,calc(env(safe-area-inset-top) + 84px));z-index:10;font:400 13px/1.4 ui-monospace,Menlo,monospace;color:var(--yellow);background:#0c0c12;border:1px solid var(--yellow);padding:9px 12px;border-radius:4px;display:none}
 body.outage .err{display:block}.err b{animation:bl .5s infinite}
@@ -135,13 +137,13 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
     <li><em>4</em><div class="pics"><i id="tu5"></i></div><small>Phone</small><b>Ship</b><span>Pick it up: every box ships at once.</span></li>
   </ol>
   <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 18:00 to win a card.</p>
-  <div class="btns"><button id="bN">Normal</button><button class="o" id="bC">Chill</button></div>
+  <div class="btns"><button class="o" id="bC">Relax</button><button id="bN">Normal</button><button class="o" id="bH">Hard</button></div>
 </div></div>
 <div class="ov hide" id="over"><div>
   <h1 class="go">Game<br>Over</h1>
   <div class="fin" id="fin"></div>
   <p id="finP"></p>
-  <div class="btns"><button id="bR">Retry</button><button class="o" id="bC2">Chill</button></div>
+  <div class="btns"><button id="bR">Retry</button><button class="o" id="bC2">Relax</button><a class="lk" href="../v15/assets-os.html">About AssetsOS</a></div>
 </div></div>
 
 <div class="ov hide" id="aosEnd"><div>
@@ -419,7 +421,7 @@ const steamTex = cv(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0
 const steam = []; for (let i = 0; i < 16; i++) { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: steamTex, transparent: true, opacity: 0, depthWrite: false })); sp.visible = false; scene.add(sp); steam.push({ sp, l: 0, L: 1, vx: 0 }); }
 let steamT = 0, steamN = 0;
 function puff(x, y, z) { const s = steam.find((q) => q.l <= 0); if (!s) return; s.l = s.L = rnd(1.6, 2.4); s.vx = rnd(-0.12, 0.12); s.sp.position.set(x + rnd(-0.1, 0.1), y, z + rnd(-0.1, 0.1)); s.sp.visible = true; }
-function cupReset() { Object.assign(cup, { hint: false, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, wob: 0 }); puddle.visible = false; cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
+function cupReset() { Object.assign(cup, { hint: false, hint2: false, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, wob: 0 }); puddle.visible = false; cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
 function drink() {
   if (cup.sips <= 0) { popup(V3(cup.x, 1.4, cup.z), "Empty · refill at the pot", true); S.no(); return; }
   cup.state = "drink"; tw(0.8, (q) => { const e = Math.sin(q * Math.PI); cup.lift = e * 1.1; cup.tilt = e * 0.85; if (q > 0.5 && !cup.sipped) { cup.sipped = true; cup.sips--; snd(300, 0.25, "sine", 0.08, 240); } }, () => { cup.sipped = false; cup.state = "idle"; cup.lift = cup.tilt = 0; G.slow = Math.max(G.slow, 8); if (G.slow <= 8) G.slowWhy = "Coffee break"; popup(V3(cup.x, 1.4, cup.z), "Coffee break · the fax slows down"); });
@@ -487,7 +489,7 @@ function drawBase(p) {
   const g = p.bctx, W = p.cw, H = p.ch, K = p.L.k, ink = p.ink; g.fillStyle = p.bg; g.fillRect(0, 0, W, H); g.textBaseline = "top"; g.fillStyle = ink; let mx = 24, y = 26, tf = "900 46px Mozer", up = true, lh = 45, al = "left";
   const hh = String(9 + ((p.id * 7) % 9)).padStart(2, "0") + ":" + String((p.id * 13) % 60).padStart(2, "0"), yEnd = H - 74;
   if (K === "kudos") { g.strokeStyle = "rgba(37,35,45,.3)"; g.lineWidth = 2; g.strokeRect(W - 86, 20, 62, 74); g.fillStyle = "#564fff"; g.font = "40px serif"; g.fillText("♥", W - 72, 36); g.fillStyle = ink; g.font = "700 28px Mozer"; wrap(g, p.title, W - 130).forEach((l, i) => g.fillText(l, 26, 30 + i * 32)); g.font = "italic 18px Georgia"; g.fillText("— " + p.who, 26, H - 96); g.font = "700 13px Mozer"; g.letterSpacing = "3px"; g.globalAlpha = 0.6; g.fillText("TAP TO KEEP", 26, H - 50); g.letterSpacing = "0px"; g.globalAlpha = 1; }
-  else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); g.font = "900 72px Mozer"; g.fillText("GOLDEN BRIEF", W / 2, 78); g.font = "700 16px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETSOS TAKES OVER", W / 2, H - 78); g.letterSpacing = "0px"; g.textAlign = "left"; }
+  else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); { const sv = document.querySelector("#aosEnd svg"), sc = (W * 0.74) / 822; g.save(); g.translate(W / 2 - 411 * sc - 124 * sc, 66 - 156 * sc); g.scale(sc, sc); g.fillStyle = "#25232d"; sv.querySelectorAll("path").forEach((q) => g.fill(new Path2D(q.getAttribute("d")))); g.restore(); } g.font = "700 16px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETSOS TAKES OVER", W / 2, H - 78); g.letterSpacing = "0px"; g.textAlign = "left"; }
   else {
     if (K === "fax") { for (let yy = 0; yy < H; yy += 46) { g.fillStyle = "rgba(0,0,0,.025)"; g.fillRect(0, yy, W, 20); } g.fillStyle = ink; g.font = `14px ${MONO}`; g.globalAlpha = 0.8; g.fillText(`FAX ${hh} · P.01/01 · FROM ${p.who.toUpperCase()}`, mx, 30); g.setLineDash([3, 4]); g.lineWidth = 2; g.strokeStyle = ink; g.beginPath(); g.moveTo(mx, 56); g.lineTo(W - mx, 56); g.stroke(); g.setLineDash([]); g.globalAlpha = 1; y = 76; tf = `700 34px ${MONO}`; lh = 39; }
     if (K === "sticky") { g.fillStyle = "rgba(0,0,0,.08)"; g.fillRect(0, 0, W, 44); g.fillStyle = ink; y = 64; tf = "italic 900 40px Mozer"; up = false; lh = 41; }
@@ -501,6 +503,7 @@ function drawBase(p) {
     if (K === "kraft") { for (let i = 0; i < 400; i++) { g.strokeStyle = `rgba(70,45,20,${Math.random() * 0.13})`; g.beginPath(); const x = Math.random() * W, yy = Math.random() * H; g.moveTo(x, yy); g.lineTo(x + rnd(-22, 22), yy + rnd(-2, 2)); g.stroke(); } g.font = `700 20px ${MONO}`; g.letterSpacing = "8px"; g.globalAlpha = 0.75; g.fillText("MEMO", mx, 28); g.letterSpacing = "0px"; g.globalAlpha = 1; g.fillRect(mx, 60, W - 2 * mx, 3); y = 80; }
     if (K === "receipt") { al = "center"; g.textAlign = "center"; g.font = `14px ${MONO}`; g.fillText("* * *  REQUEST  * * *", W / 2, 24); g.fillText(hh + "  #" + (3000 + p.id), W / 2, 44); g.setLineDash([5, 4]); g.lineWidth = 1.5; g.strokeStyle = ink; g.beginPath(); g.moveTo(16, 70); g.lineTo(W - 16, 70); g.stroke(); g.setLineDash([]); y = 86; mx = 18; tf = `700 27px ${MONO}`; lh = 31; }
     if (K === "graph") { g.strokeStyle = "rgba(47,163,144,.3)"; g.lineWidth = 1; for (let q = 0; q < W; q += 16) { g.beginPath(); g.moveTo(q, 0); g.lineTo(q, H); g.stroke(); } for (let q = 0; q < H; q += 16) { g.beginPath(); g.moveTo(0, q); g.lineTo(W, q); g.stroke(); } y = 30; tf = "italic 900 40px Mozer"; up = false; lh = 41; }
+    tf = tf.replace(/(\d+)px/, (m, n) => Math.round(n * 1.2) + "px"); lh = Math.round(lh * 1.17); // titres plus gros : c'est eux qu'on lit en premier
     const tx = al === "center" ? W / 2 : mx; g.font = tf; const tl = wrap(g, up ? p.title.toUpperCase() : p.title, W - mx - 24).slice(0, 3); tl.forEach((l, i) => g.fillText(l, tx, y + i * lh)); y += tl.length * lh + 8;
     if (K === "form") { g.font = `14px ${MONO}`; [["Format", p.meta], ["Owner", p.who], ["Due", "Today"]].forEach(([a, b], i) => { const yy = y + i * 27; g.strokeStyle = "rgba(37,35,45,.3)"; g.lineWidth = 1.5; g.strokeRect(mx, yy, W - 2 * mx, 27); g.fillStyle = "rgba(37,35,45,.08)"; g.fillRect(mx, yy, 78, 27); g.fillStyle = ink; g.fillText(a, mx + 8, yy + 7); g.fillText(b, mx + 88, yy + 7); }); y += 90; }
     else { g.font = `${K === "receipt" ? 14 : 18}px ${MONO}`; g.globalAlpha = 0.85; wrap(g, p.meta, W - mx - 24).forEach((l, i) => { g.fillText(l, tx, y); y += 22; }); g.globalAlpha = 1; y += 4; }
@@ -564,7 +567,7 @@ function info(p, hint) { const n = $("now"); if (!p && !hint) return n.classList
 const tweens = []; const tw = (d, fn, done, delay = 0) => tweens.push({ t: -delay, d, fn, done }); const after = (d, fn) => tw(0.0001, () => {}, fn, d);
 const bits = [], bGeo = new THREE.PlaneGeometry(0.14, 0.2), bMats = [BLUE, GREEN, YELLOW, CREAM].map((c) => new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide }));
 function burst(p, n = 18) { for (let i = 0; i < n; i++) { const m = new THREE.Mesh(bGeo, bMats[i % 4]); m.position.copy(p); scene.add(m); bits.push({ m, v: V3(rnd(-3, 3), rnd(4, 9), rnd(-3, 3)), r: V3(rnd(0, 9), rnd(0, 9), 0), l: 1.1 }); } }
-function popup(p, txt, bad) { const v = p.clone().project(cam), e = document.createElement("div"); e.className = "pop" + (bad ? " bad" : ""); e.textContent = txt; e.style.left = clamp((v.x * 0.5 + 0.5) * innerWidth, 90, innerWidth - 90) + "px"; e.style.top = clamp((-v.y * 0.5 + 0.5) * innerHeight, 90, innerHeight - 40) + "px"; document.body.append(e); setTimeout(() => e.remove(), 1100); }
+function popup(p, txt, bad, big) { const v = p.clone().project(cam), e = document.createElement("div"); e.className = "pop" + (bad ? " bad" : "") + (big ? " big" : ""); e.textContent = txt; e.style.left = clamp((v.x * 0.5 + 0.5) * innerWidth, 90, innerWidth - 90) + "px"; e.style.top = clamp((-v.y * 0.5 + 0.5) * innerHeight, 90, innerHeight - 40) + "px"; document.body.append(e); setTimeout(() => e.remove(), big ? 2000 : 1100); }
 function banner(a, b) { const e = $("ban"); e.querySelector("b").textContent = a; e.querySelector("span").textContent = b; e.classList.remove("on"); void e.offsetWidth; e.classList.add("on"); }
 let AC = null, muted = false; const late_ = (ms, fn) => setTimeout(fn, ms);
 function snd(f, d = 0.08, type = "square", vol = 0.05, slide = 0) { if (!AC || muted || AC.state !== "running") return; const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + d); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + 0.02); }
@@ -572,18 +575,18 @@ const S = { fax() { [0, 70, 140, 210, 280].forEach((d) => late_(d, () => snd(150
 
 /* ---------- jeu ---------- */
 const G = { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
-const IV = [7, 6.2, 5.5, 4.9, 4.4, 4.0, 3.7, 3.4, 3.2, 3.0];
+const IV = [10, 9.2, 8.5, 7.9, 7.4, 7.0, 6.6, 6.3, 6.0, 5.8], IVH = [7.5, 6.8, 6.2, 5.6, 5.1, 4.7, 4.4, 4.1, 3.9, 3.7]; // secondes entre deux briefs, par niveau : Normal, Hard
 const LV = [null, ["Lvl 2", "Read twice. Unclear brief? Shred it."], ["Lvl 3", "Fine print. Some briefs skip a Master."], ["Lvl 4", "The stamp may lose its die. Put it back."], ["Lvl 5", "The lamp may go out. The fax won't."]];
-const FORCE = { 1: ["kudos", "trap"], 2: ["gold"], 3: ["intern", "trap"], 4: ["kudos"] }; // le brief doré : une seule fois par partie
+const FORCE = { 1: ["trap", "gold"], 2: ["kudos"], 3: ["intern", "trap"], 4: ["kudos"] }; // le brief doré : une seule fois par partie
 $("pips").innerHTML = "<i></i>".repeat(MAX);
 let press = 0;
 function hud() {
-  $("sc").textContent = G.score; $("sub").textContent = `Shipped ${G.shipped} · ${G.mode === "chill" ? "Chill" : "Lvl " + (G.lvl + 1)}`;
+  $("sc").textContent = G.score; $("sub").textContent = `Shipped ${G.shipped} · ${G.mode === "chill" ? "Relax" : (G.mode === "hard" ? "Hard · " : "") + "Lvl " + (G.lvl + 1)}`;
   [...$("cmp").children].forEach((e, i) => e.classList.toggle("x", i < G.cmp)); $("cmp").style.display = G.mode === "chill" ? "none" : "flex";
   const n = open().length; [...$("pips").children].forEach((e, i) => { e.className = i < n ? "on" + (i >= MAX - 1 ? " d" : i >= MAX - 3 ? " w" : "") : ""; });
   press = G.on && G.mode !== "chill" ? clamp((n - 3) / 4, 0, 1) : 0; $("vig").style.opacity = press * 0.75; rumble = G.on && G.mode !== "chill" && n >= MAX - 1 ? 1 : 0;
 }
-function score(n, pos, txt) { G.score = Math.max(0, G.score + n); popup(pos, (n > 0 ? "+" + n + " " : "") + (txt || "") + (n < 0 ? " " + n : ""), n < 0); hud(); }
+function score(n, pos, txt, big) { G.score = Math.max(0, G.score + n); popup(pos, (n > 0 ? "+" + n + " " : "") + (txt || "") + (n < 0 ? " " + n : ""), n < 0, big); hud(); }
 function complaint(pos, why) { G.combo = 0; popup(pos, why, true); S.lose(); shake = 1; if (G.mode === "chill") return; G.cmp++; hud(); if (G.cmp >= 3) gameOver("3 complaints"); else banner("Complaint " + G.cmp + "/3", "Three and the client walks."); }
 function levelUp() { const L = Math.max(Math.floor(G.shipped / 3), Math.min(4, Math.floor(G.t / (DAY / 5)))); /* un niveau tous les 3 briefs, et au moins un par cinquième de journée : tout le monde voit les 5 */ if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
@@ -592,7 +595,7 @@ function start(mode) {
   $("auto").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume();
 }
-const AUTO = 45, DAY = 240, CARDS = [["Marketing Designer", "1960s", "The ad man"], ["Web Designer", "1980s", "The geek"], ["Brand Designer", "1970s", "The poster maker"], ["Artist", "1950s", "The dreamer"]];
+const AUTO = 45, DAY = 180, CARDS = [["Marketing Designer", "1960s", "The ad man"], ["Web Designer", "1980s", "The geek"], ["Brand Designer", "1970s", "The poster maker"], ["Artist", "1950s", "The dreamer"]];
 function owned() { try { return JSON.parse(localStorage.getItem("shipit-cards") || "[]"); } catch (e) { return []; } }
 function endAuto() { G.on = false; G.auto = false; release(); rumble = 0; $("auto").classList.remove("on"); info(null); late_(500, () => $("aosEnd").classList.remove("hide")); }
 function endDay() {
@@ -611,7 +614,7 @@ function endDay() {
 function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((540 + clamp(G.t / DAY, 0, 1) * 540) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 18:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
 function spawn(force) {
   const L = G.lvl, r = Math.random(); let type = "brief";
-  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (L >= 1 && r < 0.09) type = "kudos"; else if (L >= 1 && r < 0.24) type = "trap"; else if (L >= 3 && r < 0.27) type = "intern";
+  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (L >= 1 && r < 0.09) type = "kudos"; else if (L >= 1 && r < (G.mode === "hard" ? 0.24 : 0.18)) type = "trap"; else if (L >= 3 && r < 0.27) type = "intern";
   if (type !== "kudos" && open().length >= MAX) { if (G.mode === "chill") return false; const o = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id)[0]; if (o) tooLate(o); }
   const fr = fax.rotation.y, fd = V3(Math.sin(fr), 0, Math.cos(fr)), fs = V3(Math.cos(fr), 0, -Math.sin(fr)).multiplyScalar(0.15), p = makePaper(type), a = fax.position.clone().add(fs).addScaledVector(fd, 0.1).setY(0.3), b = fax.position.clone().add(fs).addScaledVector(fd, 1.9).setY(0.3);
   p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.scr.material.emissiveIntensity = 2.4;
@@ -642,7 +645,7 @@ function mark(t, a, b) {
 function slam(t, cb) {
   t.state = "slam"; const l0 = t.lift; tw(0.13, (q) => { t.lift = lerp(l0, 0, q * q); }, () => { t.lift = 0; t.state = "idle"; if (die.off) { S.no(); popup(V3(t.x, 1.4, t.z), "No die · no stamp", true); return cb && cb(); } S.thunk(); shake = Math.max(shake, 0.35); if (cup.state === "idle" && Math.hypot(t.x - cup.x, t.z - cup.z) < 0.85) spill(cup.x - t.x || 1, cup.z - t.z); const p = paperAt(t.x, t.z);
     if (p && p.type !== "kudos") { const ok = p.type !== "gold" && p.need[2] && !p.seal[2] && p.need.every((n, j) => j >= 2 || !n || p.seal[j]); stampInk(p, t.x, t.z, ok || !!p.seal[2]); resolve(p, 2); p.pop = Math.max(p.pop, 0.4);
-      if (ok && G.lvl >= 3 && Math.random() < Math.min(0.35, 0.14 + G.lvl * 0.03)) after(0.4, () => dropDie()); }
+      if (ok && G.lvl >= 3 && Math.random() < Math.min(0.35, 0.14 + G.lvl * 0.03) * (G.mode === "hard" ? 1 : 0.45)) after(0.4, () => dropDie()); }
     cb && cb(); });
 }
 function unjam() { const t = tools[2]; t.jam = false; t.hold = false; t.state = "idle"; t.fix = 0; S.fix(); popup(V3(t.x, 1.4, t.z), "Fixed"); }
@@ -783,13 +786,13 @@ function bite() {
   if (G.lunch !== 1 || sand.busy || !G.on) return; sand.busy = true; const n = ++G.bites, c = sand.chunks[3 - n];
   tw(0.3, (q) => { sand.position.y = Math.sin(q * Math.PI) * 0.5; sand.rotation.z = Math.sin(q * Math.PI) * 0.16; }, () => {
     sand.position.y = 0; sand.rotation.z = 0; sand.busy = false; c.visible = false; burst(V3(SAND.x, 0.6, SAND.z), 8); snd(170, 0.12, "square", 0.06, -70);
-    score(50, V3(SAND.x, 1.5, SAND.z), "Yum"); if (n >= 3) after(0.5, lunchOut);
+    score(50, V3(SAND.x, 2.2, SAND.z), "Yum", true); if (n >= 3) after(0.5, lunchOut);
   });
 }
 function croisIn() { G.crois = 1; crois.visible = true; crois.scale.setScalar(crois.s0); crois.position.set(BX + 3.5, 0, SAND.z); tw(0.7, (q) => { crois.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); banner("16:00 · Croissant", "One bite. You earned it."); S.gold(); }
 function croisOut() { if (G.crois !== 1) return; G.crois = 2; const x0 = crois.position.x; tw(0.5, (q) => { crois.position.x = lerp(x0, BX + 3.8, q * q); }, () => { crois.visible = false; }); }
 function biteC() {
-  if (G.crois !== 1 || !G.on) return; G.crois = 2; burst(V3(SAND.x, 0.6, SAND.z), 10); snd(170, 0.12, "square", 0.06, -70); score(100, V3(SAND.x, 1.5, SAND.z), "Croissant");
+  if (G.crois !== 1 || !G.on) return; G.crois = 2; burst(V3(SAND.x, 0.6, SAND.z), 10); snd(170, 0.12, "square", 0.06, -70); score(100, V3(SAND.x, 2.2, SAND.z), "Croissant", true);
   tw(0.25, (q) => { crois.scale.setScalar(crois.s0 * (1 - q)); }, () => { crois.visible = false; });
 }
 /* ---------- brief doré : AssetsOS prend le bureau quelques secondes, puis rend la main ---------- */
@@ -806,11 +809,11 @@ function update(dt, T) {
   if (!frozen) for (let i = tweens.length - 1; i >= 0; i--) { const w = tweens[i]; w.t += dt; if (w.t < 0) continue; const q = Math.min(1, w.t / w.d); w.fn(q); if (q >= 1) { tweens.splice(tweens.indexOf(w), 1); w.done && w.done(); } }
   for (let i = bits.length - 1; i >= 0; i--) { const c = bits[i]; c.l -= dt; c.v.y -= 18 * dt; c.m.position.addScaledVector(c.v, dt); c.m.rotation.x += c.r.x * dt; c.m.rotation.y += c.r.y * dt; if (c.l <= 0 || c.m.position.y < 0) { scene.remove(c.m); bits.splice(i, 1); } }
   if (G.on) {
-    G.t += dt; G.slow -= dt; { const c = $("cof"), on = G.slow > 0 || G.x2; if (on !== c.classList.contains("on")) c.classList.toggle("on", on); if (on) { const v = (G.slow > 0 ? (G.slowWhy || "Coffee break") + " · " + Math.ceil(G.slow) + "s" : "") + (G.x2 ? (G.slow > 0 ? " · " : "") + "Next call ×2" : ""); if (c.textContent !== v) c.textContent = v; } } G.spawnT -= dt * (G.slow > 0 ? 0.3 : 1); if (G.spawnT <= 0) { const iv = G.mode === "chill" ? 7 : IV[Math.min(G.lvl, IV.length - 1)]; G.spawnT = spawn() ? iv * (G.t < 8 ? 0.5 : 1) : 1.5; }
+    G.t += dt; G.slow -= dt; { const c = $("cof"), on = G.slow > 0 || G.x2; if (on !== c.classList.contains("on")) c.classList.toggle("on", on); if (on) { const v = (G.slow > 0 ? (G.slowWhy || "Coffee break") + " · " + Math.ceil(G.slow) + "s" : "") + (G.x2 ? (G.slow > 0 ? " · " : "") + "Next call ×2" : ""); if (c.textContent !== v) c.textContent = v; } } G.spawnT -= dt * (G.slow > 0 ? 0.3 : 1); if (G.spawnT <= 0) { const iv = G.mode === "chill" ? 8 : (G.mode === "hard" ? IVH : IV)[Math.min(G.lvl, IV.length - 1)]; G.spawnT = spawn() ? iv * (G.t < 8 ? 0.5 : 1) : 1.5; }
     if (!G.auto && G.slow <= 0 && G.t > 4 && G.spawnT > 1 && !open().length && !machines.some((m) => m.papers.length)) G.spawnT = 1; // bureau vide : pas d'attente
-    if (G.out > 0) { G.out -= dt; if (G.out <= 0) { document.body.classList.remove("outage"); lampOn = 1; S.on(); G.outT = rnd(30, 48) - Math.min(10, G.lvl * 2); } }
-    else if (G.mode === "normal" && G.lvl >= 4) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
-    const n = open().length; if (G.mode === "normal" && n >= 4) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = Math.max(0.18, 0.85 - (n - 4) * 0.2); S.tick(); } }
+    if (G.out > 0) { G.out -= dt; if (G.out <= 0) { document.body.classList.remove("outage"); lampOn = 1; S.on(); G.outT = G.mode === "hard" ? rnd(30, 48) - Math.min(10, G.lvl * 2) : 999; /* Normal : une seule panne par journée */ } }
+    else if (G.mode !== "chill" && G.lvl >= 4) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
+    const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
     { const dp = clamp(G.t / DAY, 0, 1); clockSet(dp);
       if (!G.lunch && dp >= 3 / 9) lunchIn(); if (G.lunch === 1 && dp >= 4 / 9) lunchOut();
       if (!G.crois && dp >= 7 / 9) croisIn(); if (G.crois === 1 && dp >= 8 / 9) croisOut();
@@ -857,7 +860,8 @@ function update(dt, T) {
     if (cup.state === "drag") { cup.lift = lerp(cup.lift, 0.3, k(dt, 12)); if (sp > 24 && cup.sips > 0) { drag = null; document.body.classList.remove("drag"); spill(cup.x - px, cup.z - pz); } } else if (cup.state === "idle") cup.lift = lerp(cup.lift, 0, k(dt, 12));
     cup.wob = Math.max(0, cup.wob - dt * 2); cup.g.position.set(cup.x, cup.lift, cup.z); cup.g.rotation.x = cup.tilt; cup.g.rotation.z = -cup.tz_ + Math.sin(cup.wob * 30) * 0.08 * cup.wob; if (cup.state !== "spilt") cup.g.rotation.y = lerp(cup.g.rotation.y, 0, 0.2);
     cup.co.visible = cup.sips > 0; cup.co.material.color.setRGB(0.075, 0.025, 0.007).multiplyScalar(0.25 + 0.75 * lampOn); const cy = 0.2 + cup.sips * 0.47; cup.co.position.y = lerp(cup.co.position.y, cy, 0.2); cup.co.scale.setScalar((0.4 + 0.08 * cup.co.position.y / 0.75) / 0.44);
-    { const want = G.on && cup.sips > 0 && cup.state === "idle" && open().length >= 4 ? 0.55 + Math.sin(T * 5) * 0.25 : 0; glow.material.opacity = lerp(glow.material.opacity, want * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + Math.sin(T * 5) * 0.25); if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Need a break? Tap the coffee"); } }
+    { const nb = open().length, hot = clamp((nb - 4) / 2, 0, 1), sp = 5 + hot * 4, want = G.on && cup.sips > 0 && cup.state === "idle" && nb >= 4 ? 0.5 + hot * 0.4 + Math.sin(T * sp) * (0.2 - hot * 0.1) : 0; glow.material.opacity = lerp(glow.material.opacity, Math.min(1, want) * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + hot * 2.4 + Math.sin(T * sp) * 0.3); // plus le backlog monte, plus la tasse brille
+      if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it"); } if (nb >= 6 && want && !cup.hint2) { cup.hint2 = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it", true); } }
     steamT -= dt; if (steamT <= 0 && lampOn) { steamT = 0.16; if (steamN++ % 2 || cup.sips < 1 || cup.state !== "idle") puff(pot.position.x, 1.4, pot.position.z + 0.42); else puff(cup.x, 0.85, cup.z); }
     for (const s of steam) { if (s.l <= 0) continue; s.l -= dt; const q = 1 - s.l / s.L; s.sp.position.y += dt * 0.6; s.sp.position.x += s.vx * dt + Math.sin(T * 2 + s.L * 9) * 0.002; s.sp.scale.setScalar(0.35 + q * 1.0); s.sp.material.opacity = Math.sin(q * Math.PI) * 0.3; if (s.l <= 0) s.sp.visible = false; } }
   for (const m of machines) { if (!m.busy) { const full = m.papers.length >= CAP && m.papers.every((p) => p.state === "loaded" && Math.hypot(p.x - p.tx, p.z - p.tz) < 0.25); if (full && !m.full) { S.drop(); m.j = Math.max(m.j, 0.35); } m.full = full; m.hinge.rotation.x = lerp(m.hinge.rotation.x, full ? 0 : OPEN, k(dt, full ? 16 : 10)); }
@@ -884,7 +888,7 @@ function tutoShots() {
   R.setPixelRatio(pr); layout();
 }
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(tutoShots, 250));
-$("bN").onclick = $("bR").onclick = $("bP").onclick = $("bA").onclick = () => start("normal"); $("bC").onclick = $("bC2").onclick = () => start("chill");
+$("bN").onclick = $("bP").onclick = () => start("normal"); $("bH").onclick = () => start("hard"); $("bC").onclick = $("bC2").onclick = () => start("chill"); $("bR").onclick = $("bA").onclick = () => start(G.mode || "normal"); // Retry / Play again : même mode
 $("mute").onclick = () => { muted = !muted; $("mute").textContent = muted ? "Sound off" : "Sound on"; };
 requestAnimationFrame(loop);
 window.__g = { die, dropDie, endDay, cup, spill, drink, scr: (x, z) => { const v = V3(x, 0.05, z).project(cam); return [(v.x * 0.5 + 0.5) * innerWidth, (-v.y * 0.5 + 0.5) * innerHeight]; }, G, start, spawn, outage, toggleAuto, tools, machines, lever, pull, get papers() { return papers; }, update: (dt) => update(dt, (TT_ += dt)) };
