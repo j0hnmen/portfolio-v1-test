@@ -62,8 +62,11 @@ body.drag canvas#c{cursor:grabbing}
 body.outage .err{display:block}
 body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.outage .mute{font-family:ui-monospace,"SF Mono",Menlo,monospace!important;letter-spacing:0!important;color:#e9e7f2}body.outage .sc{color:#8f89ff}
 .auto{position:fixed;left:50%;top:max(58px,calc(env(safe-area-inset-top) + 58px));translate:-50% 0;z-index:6;background:var(--cream);color:var(--ink);font:700 11px Mozer;letter-spacing:.14em;text-transform:uppercase;padding:8px 13px;border-radius:99px;display:none}
-.auto.on{display:flex;align-items:center;justify-content:center;gap:14px}
-.auto{padding:12px 20px 14px!important;border-radius:16px!important;box-shadow:0 16px 30px -10px #000;line-height:1}.auto svg{height:clamp(26px,3.4vw,38px);width:auto;display:block;color:var(--ink);margin:0!important;flex:none}.auto svg path[fill="#8a85ff"]{fill:#564fff}
+.auto.on{display:flex;align-items:center;justify-content:center;gap:18px;animation:autoIn 2.4s cubic-bezier(.3,.9,.25,1) both}
+.auto{--cy:calc(50vh - 58px - 50%);font-size:14px!important}
+@keyframes autoIn{0%{translate:-50% var(--cy);scale:.6;opacity:0}10%{translate:-50% var(--cy);scale:2;opacity:1}58%{translate:-50% var(--cy);scale:2;opacity:1}100%{translate:-50% 0;scale:1;opacity:1}}
+@media (prefers-reduced-motion:reduce){.auto.on{animation:none}}
+.auto{padding:14px 26px 16px!important;border-radius:16px!important;box-shadow:0 16px 30px -10px #000;line-height:1}.auto svg{height:clamp(32px,4.2vw,50px);width:auto;display:block;color:var(--ink);margin:0!important;flex:none}.auto svg path[fill="#8a85ff"]{fill:#564fff}
 .mute{position:fixed;left:clamp(12px,2vw,28px);top:max(74px,calc(env(safe-area-inset-top) + 74px));z-index:6;font:700 10px Mozer;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;color:var(--cream);opacity:.45;cursor:pointer;padding:8px 0}
 .ov{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(8,8,13,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .5s;padding:22px;text-align:center}
 .ov.hide{opacity:0;pointer-events:none}
@@ -90,6 +93,8 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 .tut-nav .go:active{scale:.96}@media (hover:hover){.tut-nav .go:hover{scale:1.04}}
 @keyframes tuG{50%{box-shadow:0 0 0 7px rgba(86,79,255,.55),0 0 74px 14px rgba(86,79,255,.9),inset 0 0 26px rgba(255,255,255,.16)}}
 .tut.last .k{display:none}
+.tut-n{position:fixed;z-index:1;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;display:none;place-items:center;background:var(--yellow);color:var(--ink);font:900 26px/1 Mozer;padding-top:2px;box-shadow:0 0 0 3px #14151c,0 10px 20px -6px #000;pointer-events:none;transition:left .6s cubic-bezier(.3,.9,.25,1),top .6s cubic-bezier(.3,.9,.25,1)}.tut.num .tut-n{display:grid}
+.tut-card span i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--yellow);color:var(--ink);font:900 13px/1 Mozer;margin-right:5px;vertical-align:1px}
 .tut-bon,.tut-note{display:none}.tut.bon .tut-bon{display:flex;gap:12px;justify-content:space-between;margin-top:14px}.tut.bon .tut-card{width:min(440px,calc(100vw - 28px))}.tut.bon #tutP{display:none}
 .tut-bon figure{margin:0;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
 .tut-bon i{display:block;width:clamp(72px,20vw,96px);aspect-ratio:1;border-radius:50%;background:#1b1c25 center/cover no-repeat;box-shadow:0 0 0 2px var(--blue),0 12px 22px -10px #000}
@@ -136,7 +141,8 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 .why{font:15px/1.45 Akke,Georgia,serif;max-width:440px;margin:18px auto 0;opacity:.9}.why b{font:900 15px Mozer;text-transform:uppercase;letter-spacing:.04em}
 .coll{display:flex;gap:6px;justify-content:center;margin-top:16px}.coll i{width:30px;height:42px;border-radius:5px;box-shadow:inset 0 0 0 2px rgba(239,233,220,.3)}.coll i.on{background:var(--cream);box-shadow:none}
 .cl{font:700 12px Mozer;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;opacity:.85}
-@media (max-aspect-ratio:85/100){.now{bottom:auto;top:max(56px,calc(env(safe-area-inset-top) + 56px))}.now b{display:none}.auto{top:auto;bottom:max(14px,env(safe-area-inset-bottom))}}
+@media (max-aspect-ratio:85/100){.now{bottom:auto;top:max(56px,calc(env(safe-area-inset-top) + 56px))}.now b{display:none}.auto{top:auto;bottom:max(14px,env(safe-area-inset-bottom));--cy:calc(-50vh + 14px + 50%)}.auto.on{animation-name:autoInP}}
+@keyframes autoInP{0%{translate:-50% var(--cy);scale:.6;opacity:0}10%{translate:-50% var(--cy);scale:1.45;opacity:1}58%{translate:-50% var(--cy);scale:1.45;opacity:1}100%{translate:-50% 0;scale:1;opacity:1}}
 </style>
 <script type="importmap">{"imports":{"three":"../assets/three.module.min.js"}}</script>
 </head>
@@ -159,7 +165,7 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <b>ERR 529</b> · Model overload
 <b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
-<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:00 · Sandwich<u>3 bites, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>16:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
+<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><b class="tut-n">1</b><b class="tut-n">2</b><b class="tut-n">3</b><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:00 · Sandwich<u>3 bites, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>16:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
@@ -202,7 +208,7 @@ const ease = (t) => 1 - Math.pow(1 - t, 3), back = (t) => 1 + 2.7 * Math.pow(t -
 const BRIEFS = [
   ["Launch post", "1:1 · 4:5 · 9:16", 0], ["Hiring carousel", "LinkedIn · 6 slides", 0], ["Webinar ad set", "Meta · 4 sizes", 0], ["Black Friday story", "Instagram · 9:16", 0], ["Feature teaser", "Paid social · 3 cuts", 0], ["Retargeting banners", "Ads · 5 formats", 0],
   ["Webinar landing page", "URL · /webinar", 1], ["Pricing section", "Site · /pricing", 1], ["Feature page hero", "Site · above the fold", 1], ["Waitlist page", "URL · /waitlist", 1], ["Changelog page", "Site · /changelog", 1], ["Case study page", "Site · /customers", 1],
-  ["Q4 sales deck", "Slides · 16:9", 2], ["Event badge", "Print · 90 × 120 mm", 2], ["One-pager", "PDF · A4", 2], ["Investor update", "Slides · 12 pages", 2], ["Booth poster", "Print · A1", 2], ["Email signature", "PNG · 600 px", 2]];
+  ["Q4 sales deck", "Slides · 16:9", 2], ["Event badge", "Print · 90 × 120 mm", 2], ["Business card", "Print · 85 × 55 mm", 2], ["Investor update", "Slides · 12 pages", 2], ["Booth poster", "Print · A1", 2], ["Email signature", "PNG · 600 px", 2]];
 const TRAPS = [["Make it pop??", "No format · no date"], ["Something for the thing", "See thread (which one?)"], ["Need visuals. ASAP.", "For… everything"], ["Same as last time but different", "Ref: none"], ["Quick one!!", "Details to follow (never)"]];
 const KUDOS = ["Loved the last campaign. Thank you!", "The deck landed. Client is thrilled.", "Coffee's on me this week.", "Best landing page we ever shipped."];
 const WHO = ["Léa", "Tom", "Sarah", "Inès", "Max", "Jo", "Nora", "Sam"], MN = ["Guidelines", "Copy", "Check"], VB = ["Press", "Sign", "Stamp"];
@@ -268,12 +274,18 @@ const fax = new THREE.Group(); scene.add(fax);
 {
   const body = box(2.7, 0.9, 1.9, mat(0xece8dd, { roughness: 0.55 }), 0.1); body.position.y = 0.45; fax.add(body);
   const band = box(2.74, 0.14, 1.94, mat(0xc9c4b6), 0.05); band.position.y = 0.09; fax.add(band);
-  const tr = box(2.1, 0.06, 1.3, mat(0xdedacd), 0.03); tr.position.set(0.15, 1.2, -0.95); tr.rotation.x = 0.75; fax.add(tr);
-  const stk = box(1.8, 0.06, 1.1, mat(0xfbfaf6), 0.01); stk.position.set(0.15, 1.27, -0.93); stk.rotation.x = 0.75; fax.add(stk);
-  const top = box(2.35, 0.14, 1.05, mat(DARK), 0.04); top.position.set(0.08, 0.93, -0.28); fax.add(top);
+  const tr = box(2.0, 0.06, 1.25, mat(0xdedacd), 0.03); tr.position.set(0.15, 1.3, -1.0); tr.rotation.x = 1.02; fax.add(tr);
+  [-1, 1].forEach((sd) => { const gd = box(0.08, 0.16, 1.25, mat(0xc9c4b6), 0.03); gd.position.set(0.15 + sd * 0.98, 1.34, -0.97); gd.rotation.x = 1.02; fax.add(gd); }); // guides du bac
+  const stk = box(1.72, 0.05, 1.3, mat(0xfbfaf6), 0.01); stk.position.set(0.15, 1.4, -0.98); stk.rotation.x = 1.02; fax.add(stk);
+  const feed = box(2.2, 0.2, 0.26, mat(DARK), 0.05); feed.position.set(0.15, 0.98, -0.74); fax.add(feed); // la fente d'entrée, qui cache le pied du bac
+  const top = box(2.35, 0.14, 1.05, mat(DARK), 0.04); top.position.set(0.08, 0.93, -0.2); fax.add(top);
   const hs = box(0.42, 0.26, 1.5, mat(BLUE, { roughness: 0.5 }), 0.1); hs.position.set(-1.02, 1.0, 0); fax.add(hs);
-  for (let i = 0; i < 12; i++) { const b = box(0.19, 0.08, 0.15, mat(i === 11 ? GREEN : CREAM), 0.03); b.position.set(-0.3 + (i % 4) * 0.27, 1.03, -0.5 + ((i / 4) | 0) * 0.23); fax.add(b); }
-  const scr = box(0.75, 0.05, 0.4, new THREE.MeshStandardMaterial({ color: 0x06060a, emissive: GREEN, emissiveIntensity: 0.5 }), 0.02); scr.position.set(0.88, 1.02, -0.3); fax.add(scr); fax.scr = scr;
+  for (let i = 0; i < 12; i++) { const b = box(0.19, 0.08, 0.15, mat(CREAM), 0.03); b.position.set(-0.5 + (i % 3) * 0.26, 1.03, -0.48 + ((i / 3) | 0) * 0.2); fax.add(b); } // clavier 3 × 4, à gauche de l'écran
+  const gb = box(0.3, 0.08, 0.15, mat(GREEN), 0.03); gb.position.set(0.5, 1.03, 0.14); fax.add(gb); const rb = box(0.3, 0.08, 0.15, mat(CREAM), 0.03); rb.position.set(0.88, 1.03, 0.14); fax.add(rb);
+  const bez = box(1.02, 0.06, 0.56, mat(0x050508), 0.03); bez.position.set(0.72, 1.01, -0.3); fax.add(bez);
+  /* l'écran : il dit ce que fait le fax (prochain brief, réception, pause café, relais Assets OS) */
+  const sc = document.createElement("canvas"); sc.width = 384; sc.height = 192; const stx = new THREE.CanvasTexture(sc); stx.colorSpace = THREE.SRGBColorSpace;
+  const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.92, 0.46), new THREE.MeshBasicMaterial({ map: stx })); scr.rotation.x = -Math.PI / 2; scr.position.set(0.72, 1.045, -0.3); fax.add(scr); fax.scr = scr; fax.sg = sc.getContext("2d"); fax.stx = stx; fax.rx = false; fax.m0 = 1; fax.lt = 0; fax.key = "";
   const slot = box(2.0, 0.08, 0.2, mat(0x050508), 0.02); slot.position.set(0.15, 0.34, 0.9); fax.add(slot);
   const l = label("", "Briefs in", "#1b1c25", 1.2, 0.26); l.position.set(0.3, 0.905, 0.55); fax.add(l);
 }
@@ -480,6 +492,20 @@ const fitBox = (p) => Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1);
 function lidClamp(p) { /* le couvercle ouvert est un mur : un brief porté ne passe pas au travers */
   const [a, b] = half(p); for (const m of machines) { if (m.full) continue; const mx = m.g.position.x, mz = m.g.position.z, inb = Math.abs(p.tx - mx) < TW / 2 + 0.15 && Math.abs(p.tz - mz) < TD / 2 + 0.2, sc = inb ? fitBox(p) : 1; if (Math.abs(p.tx - mx) < TW / 2 + a * sc - 0.05) p.tz = Math.max(p.tz, mz - TD / 2 + 0.14 + b * sc); }
 }
+function faxScreen(T) { /* redessiné seulement quand ce qu'il affiche change */
+  const g = fax.sg, W = 384, H = 192; if (G.spawnT > fax.lt + 0.05 || G.spawnT > fax.m0) fax.m0 = Math.max(0.5, G.spawnT); fax.lt = G.spawnT;
+  const off = G.out > 0 || lampOn < 0.5, mode = off ? "off" : !G.on ? "idle" : G.auto ? "aos" : fax.rx ? "rx" : G.slow > 0 ? "pause" : "next";
+  const pr = clamp(1 - G.spawnT / fax.m0, 0, 1), blink = (T * 2.5 | 0) % 2, key = mode + "|" + (mode === "next" || mode === "pause" ? Math.round(pr * 30) : "") + "|" + (mode === "pause" ? Math.ceil(G.slow) : "") + "|" + (mode === "rx" || mode === "pause" || mode === "aos" ? blink : ""); if (key === fax.key) return; fax.key = key;
+  g.fillStyle = off ? "#020203" : mode === "pause" ? "#2a2608" : "#06241f"; g.fillRect(0, 0, W, H); if (off) { fax.stx.needsUpdate = true; return; }
+  const C = mode === "pause" ? "#fff186" : "#3be9ce"; g.fillStyle = C; g.strokeStyle = C; g.textBaseline = "middle"; g.textAlign = "left";
+  const bar = (v) => { g.lineWidth = 6; g.strokeRect(24, 122, W - 48, 40); g.fillRect(34, 132, (W - 68) * v, 20); };
+  if (mode === "idle") { g.font = "700 44px ui-monospace,Menlo,monospace"; g.fillText("READY", 24, 96); }
+  else if (mode === "next") { g.font = "700 34px ui-monospace,Menlo,monospace"; g.fillText("NEXT BRIEF", 24, 62); bar(pr); }
+  else if (mode === "rx") { g.font = "700 38px ui-monospace,Menlo,monospace"; g.fillText("RECEIVING" + (blink ? " ▮" : ""), 24, 62); for (let i = 0; i < 9; i++) if ((i + (T * 12 | 0)) % 3) g.fillRect(24 + i * 38, 122, 26, 40); }
+  else if (mode === "pause") { if (blink) { g.fillRect(24, 28, 18, 64); g.fillRect(54, 28, 18, 64); } g.font = "700 50px ui-monospace,Menlo,monospace"; g.fillText("PAUSE", 96, 62); g.font = "700 24px ui-monospace,Menlo,monospace"; g.fillText("COFFEE · " + Math.ceil(G.slow) + "s · SLOW", 24, 106); g.lineWidth = 5; g.strokeRect(24, 136, W - 48, 30); g.fillRect(32, 144, (W - 64) * pr, 14); }
+  else { g.font = "700 36px ui-monospace,Menlo,monospace"; g.fillText("ASSETS OS", 24, 62); g.font = "700 26px ui-monospace,Menlo,monospace"; g.fillText("ON THE DESK" + (blink ? " ▮" : ""), 24, 128); }
+  fax.stx.needsUpdate = true;
+}
 function liftOver(p) { let h = 0; for (const o of OBST) if (hits(p, p.x, p.z, o)) h = Math.max(h, o.h); return h; }
 function pushOut(p) { // après un lâcher hors d'une boîte : on dégage le brief des objets, par le plus court chemin
   for (let n = 0; n < 3; n++) for (const o of OBST) { if (o.bin) continue; const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p);
@@ -491,10 +517,10 @@ function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
     BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
-    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
+    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.18); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
   } else {
     BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
-    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
+    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.42); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
   if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
   OBST.length = 0; machines.forEach((m) => OBST.push({ x: m.g.position.x, z: m.g.position.z - 0.35, hw: TW / 2, hd: TD / 2 + 0.35, h: 0.85, box: m })); // la boîte + son couvercle ouvert derrière
@@ -694,9 +720,9 @@ function spawn(force) {
   if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (G.t > 25 && r < 0.08) type = "kudos"; else if (G.t > 14 && r < (G.mode === "hard" ? 0.24 : 0.19)) type = "trap"; else if (L >= 2 && r < 0.27) type = "intern";
   if (type !== "kudos" && open().length >= MAX) { if (G.mode === "chill") return false; const o = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id)[0]; if (o) tooLate(o); }
   const fr = fax.rotation.y, fd = V3(Math.sin(fr), 0, Math.cos(fr)), fs = V3(Math.cos(fr), 0, -Math.sin(fr)).multiplyScalar(0.15), p = makePaper(type), a = fax.position.clone().add(fs).addScaledVector(fd, 0.1).setY(0.3), b = fax.position.clone().add(fs).addScaledVector(fd, 1.9).setY(0.3);
-  p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.scr.material.emissiveIntensity = 2.4;
+  p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.rx = true;
   tw(0.8, (q) => { const st = Math.min(1, Math.ceil(q * 7) / 7); p.g.position.lerpVectors(a, b, st); fax.rotation.z = Math.sin(q * 60) * 0.01 * (1 - q); }, () => {
-    fax.rotation.z = 0; fax.scr.material.emissiveIntensity = 0.5; if (p.state === "gone") return; const c = V3(INB.x + rnd(-0.3, 0.3), 0.05, INB.z + rnd(-0.4, 0.4)), r0 = rnd(-0.14, 0.14);
+    fax.rotation.z = 0; fax.rx = false; if (p.state === "gone") return; const c = V3(INB.x + rnd(-0.3, 0.3), 0.05, INB.z + rnd(-0.4, 0.4)), r0 = rnd(-0.14, 0.14);
     tw(0.42, (q) => { const e = ease(q); p.g.position.lerpVectors(b, c, e); p.g.position.y += Math.sin(q * Math.PI) * 1.4; p.g.scale.setScalar(0.78 + 0.22 * e); p.g.rotation.y = lerp(fr, r0, e); }, () => { p.state = "free"; p.x = p.tx = c.x; p.z = p.tz = c.z; p.rot = r0; p.ord = ++ord; S.drop(); hud(); });
   }); hud(); return true;
 }
@@ -910,6 +936,7 @@ function update(dt, T) {
   const fl = rumble ? 0.88 + Math.random() * 0.12 : 1; spot.intensity = lerp(spot.intensity, L0.spot * lampOn * fl * (1 - press * 0.12), 0.5); hemi.intensity = lerp(hemi.intensity, (lampOn ? L0.hemi * (1 - press * 0.4) : 0.1), 0.2); spot.angle = lerp(spot.angle, L0.angle - press * 0.13, 0.05);
   beam.material.opacity = 0.085 * lampOn * (spot.intensity / L0.spot); lamp.bulb.material.color.setScalar(0.12 + 0.88 * lampOn); dust.material.opacity = 0.5 * lampOn;
   const dp = dust.geometry.attributes.position; for (let i = 0; i < dustN; i++) { dp.array[i * 3 + 1] += Math.sin(T * 0.3 + i) * 0.0012 + 0.0008; dp.array[i * 3] += Math.cos(T * 0.2 + i * 1.7) * 0.001; if (dp.array[i * 3 + 1] > 5) dp.array[i * 3 + 1] = 0.4; } dp.needsUpdate = true;
+  faxScreen(T);
   /* papiers */
   const stack = papers.filter((p) => p.state === "free" || p.state === "drag").sort((a, b) => a.ord - b.ord); stack.forEach((p, i) => (p.y = 0.03 + i * 0.02));
   for (const p of papers) {
@@ -978,7 +1005,7 @@ function tutoShots() {
 /* tuto immersif, après l'écran d'accueil : fax, Masters, skills, téléphone, puis le lancement */
 const TUT = [
   { o: () => [fax], s: "Fax", b: "A brief comes in", p: "Read what it asks for." },
-  { o: () => [pad, hM, ...tools.map((t) => t.g)], s: "The 3 Masters", b: "Press, sign, stamp", p: "Guidelines, Copy, Check. In that order, on the brief." },
+  { o: () => [pad, hM, ...tools.map((t) => t.g)], num: true, s: "The 3 Masters · in this order", b: "Press, sign, stamp", p: "<i>1</i>Guidelines: press. <i>2</i>Copy: sign. <i>3</i>Check: stamp. Always 1, 2, 3." },
   { o: () => [hS, ...machines.map((m) => m.g)], s: "The 3 skills", b: "Pick the box", p: "Social Media, Web Interface or Brand Design. Two briefs per box." },
   { o: () => [phone], s: "Phone", b: "Ship", p: "Pick it up: every box ships at once." },
   { o: () => [bin], sec: true, s: "Also", b: "Unclear brief? Shred it", p: "No format, no date: it goes in the shredder, not in a box." },
@@ -995,9 +1022,10 @@ function tutPlace() {
   h.left = x0 + "px"; h.top = y0 + "px"; h.width = x1 - x0 + "px"; h.height = y1 - y0 + "px";
   let l, t; if (H - y1 >= ch + m * 2) { t = y1 + m; l = cx - cw / 2; } else if (y0 >= ch + m * 2) { t = y0 - m - ch; l = cx - cw / 2; } else if (W - x1 >= cw + m * 2) { l = x1 + m; t = cy - ch / 2; } else if (x0 >= cw + m * 2) { l = x0 - m - cw; t = cy - ch / 2; } else { l = cx - cw / 2; t = H - ch - m; }
   if (TUT[tutI].bon) { l = (W - cw) / 2; t = (H - ch) / 2; }
+  if (TUT[tutI].num) document.querySelectorAll(".tut-n").forEach((e, i) => { const v = V3(tools[i].hx, 0.2, tools[i].hz - 0.75).project(cam); e.style.left = (v.x * 0.5 + 0.5) * W + "px"; e.style.top = (-v.y * 0.5 + 0.5) * H + "px"; });
   c.style.left = clamp(l, 14, W - cw - 14) + "px"; c.style.top = clamp(t, 14, H - ch - 14) + "px";
 }
-function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = i < TUTN ? `${i + 1} / ${TUTN}` : ""; $("tut").classList.toggle("sec", !!s.sec); $("tut").classList.toggle("bon", !!s.bon); $("tutB").textContent = s.b; $("tutP").textContent = s.p; n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
+function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = i < TUTN ? `${i + 1} / ${TUTN}` : ""; $("tut").classList.toggle("sec", !!s.sec); $("tut").classList.toggle("bon", !!s.bon); $("tutB").textContent = s.b; $("tutP").innerHTML = s.p; $("tut").classList.toggle("num", !!s.num); n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
 function tutOpen(mode) { tutMode = mode; $("start").classList.add("hide"); $("tut").classList.add("on"); tutShow(0); clearInterval(tutTm); tutTm = setInterval(tutPlace, 300); }
 function tutEnd() { if (tutI < 0) return; tutI = -1; mem("shipit-tuto", "1"); clearInterval(tutTm); $("tut").classList.remove("on"); start(tutMode); }
 $("tutN").onclick = () => (tutI >= TUT.length - 1 ? tutEnd() : tutShow(tutI + 1)); $("tutK").onclick = tutEnd;
