@@ -165,11 +165,11 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <b>ERR 529</b> · Model overload
 <b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
-<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><b class="tut-n">1</b><b class="tut-n">2</b><b class="tut-n">3</b><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:00 · Sandwich<u>3 pieces, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>16:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
+<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><b class="tut-n">1</b><b class="tut-n">2</b><b class="tut-n">3</b><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:30 · Sandwich<u>3 pieces, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>15:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
-  <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
-  <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 18:00 to win a card.</p>
+  <p class="lead">One working day, 10:00 to 17:00. Every brief takes the same path.</p>
+  <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 17:00 to win a card.</p>
   <div class="btns"><button class="play" id="bN">Play</button></div>
   <div class="alt"><button class="ul" id="bC">Play relax</button><button class="ul" id="bH" hidden>Play hard</button></div>
 </div></div>
@@ -187,7 +187,7 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
   <div class="btns"><a class="lk" href="../v15/assets-os.html">See how it works</a><button class="o" id="bP">Play it yourself</button></div>
 </div></div>
 <div class="ov hide" id="dayEnd"><div>
-  <h2 id="deT">18:00.<br>Day shipped.</h2>
+  <h2 id="deT">17:00.<br>Day shipped.</h2>
   <div class="fin" id="deF" style="margin-top:10px"></div>
   <div id="deC"></div>
   <p class="unl" id="deU" hidden>Hard mode unlocked.</p>
@@ -724,7 +724,7 @@ function start(mode) {
   aosUI(false); $("why").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume(); modemLoad();
 }
-const AUTO = 38, DAY = 180, CARDS = [["Marketing Designer", "1960s", "The ad man"], ["Web Designer", "1980s", "The geek"], ["Brand Designer", "1970s", "The poster maker"], ["Artist", "1950s", "The dreamer"]];
+const AUTO = 38, DAY = 140, CARDS = [["Marketing Designer", "1960s", "The ad man"], ["Web Designer", "1980s", "The geek"], ["Brand Designer", "1970s", "The poster maker"], ["Artist", "1950s", "The dreamer"]];
 const mem = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; };
 function hardUI(first) { const on = mem("shipit-done") === "1"; $("bH").hidden = !on; $("bH2").hidden = !on; $("deU").hidden = !first; }
 function owned() { try { return JSON.parse(localStorage.getItem("shipit-cards") || "[]"); } catch (e) { return []; } }
@@ -743,7 +743,7 @@ function endDay() {
   { const first = G.mode !== "chill" && mem("shipit-done") !== "1"; if (first) mem("shipit-done", "1"); hardUI(first); } /* une journée finie en Normal : le mode Hard est débloqué (Relax ne compte pas) */
   late_(600, () => { $("dayEnd").classList.remove("hide"); S.gold(); });
 }
-function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((540 + clamp(G.t / DAY, 0, 1) * 540) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 18:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
+function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((600 + clamp(G.t / DAY, 0, 1) * 420) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 17:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
 function spawn(force) {
   const L = G.lvl, r = Math.random(); let type = "brief";
   if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (G.kudL < G.lvl && G.t > 16 && G.t - G.kudT > 22) { G.kudL = G.lvl; G.kudT = G.t; type = "kudos"; } /* un seul par niveau, espacés */ else if (G.t > 14 && r < (G.mode === "hard" ? 0.24 : 0.19)) type = "trap"; else if (L >= 2 && r < 0.27) type = "intern";
@@ -907,10 +907,10 @@ $("ckT").innerHTML = [...Array(60)].map((_, i) => `<line transform="rotate(${i *
 $("ckN").innerHTML = [...Array(12)].map((_, i) => { const n = i || 12, a = (i * 30 * Math.PI) / 180; return `<text x="${(Math.sin(a) * 29.5).toFixed(1)}" y="${(-Math.cos(a) * 29.5).toFixed(1)}">${n}</text>`; }).join("");
 let ckA = -1;
 function clockSet(dp) {
-  const a = 270 + 270 * dp; if (Math.abs(a - ckA) < 0.15) return; ckA = a;
-  const r = 42.5, pt = (deg) => [(Math.sin((deg * Math.PI) / 180) * r).toFixed(1), (-Math.cos((deg * Math.PI) / 180) * r).toFixed(1)], A = pt(a), B = pt(540), sw = 270 * (1 - dp);
+  const a = 300 + 210 * dp; /* 10:00 → 17:00 */ if (Math.abs(a - ckA) < 0.15) return; ckA = a;
+  const r = 42.5, pt = (deg) => [(Math.sin((deg * Math.PI) / 180) * r).toFixed(1), (-Math.cos((deg * Math.PI) / 180) * r).toFixed(1)], A = pt(a), B = pt(510), sw = 210 * (1 - dp);
   $("ckP").setAttribute("d", sw < 0.6 ? "" : `M0 0L${A[0]} ${A[1]}A${r} ${r} 0 ${sw > 180 ? 1 : 0} 1 ${B[0]} ${B[1]}Z`);
-  $("ckH").setAttribute("transform", `rotate(${a.toFixed(1)})`); $("ckM").setAttribute("transform", `rotate(${((dp * 3240) % 360).toFixed(1)})`);
+  $("ckH").setAttribute("transform", `rotate(${a.toFixed(1)})`); $("ckM").setAttribute("transform", `rotate(${((dp * 2520) % 360).toFixed(1)})`);
 }
 clockSet(0);
 $("auto").prepend(Object.assign(document.querySelector("#aosEnd svg").cloneNode(true), { id: "" })); // le logo AssetsOS dans le badge de relais
@@ -919,7 +919,7 @@ const aosUI = (on, label) => { $("auto").classList.toggle("on", on); document.bo
 function lunchIn() {
   G.lunch = 1; G.bites = 0; sand.busy = false; sand.chunks.forEach((c) => (c.visible = true)); sand.visible = true; sand.position.set(BX + 3.5, 0, SAND.z);
   tw(0.7, (q) => { sand.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); S.gold();
-  aosBurst(DAY / 9, ["12:00 · Lunch break", "Assets OS takes the desk for an hour. Eat."], ["13:00 · Back to you", "That was Assets OS."]);
+  aosBurst(DAY / 7, ["12:30 · Lunch break", "Assets OS takes the desk for an hour. Eat."], ["13:30 · Back to you", "That was Assets OS."]);
 }
 function lunchOut() { if (G.lunch !== 1) return; G.lunch = 2; const x0 = sand.position.x; tw(0.5, (q) => { sand.position.x = lerp(x0, BX + 3.8, q * q); }, () => { sand.visible = false; }); }
 function bite() {
@@ -929,7 +929,7 @@ function bite() {
     score(50, V3(SAND.x, 2.2, SAND.z), "Yum", true); if (n >= 3) after(0.5, lunchOut);
   });
 }
-function croisIn() { G.crois = 1; crois.visible = true; crois.scale.setScalar(crois.s0); crois.position.set(BX + 3.5, 0, SAND.z); tw(0.7, (q) => { crois.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); banner("16:00 · Croissant", "One bite. You earned it."); S.gold(); }
+function croisIn() { G.crois = 1; crois.visible = true; crois.scale.setScalar(crois.s0); crois.position.set(BX + 3.5, 0, SAND.z); tw(0.7, (q) => { crois.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); banner("15:00 · Croissant", "One bite. You earned it."); S.gold(); }
 function croisOut() { if (G.crois !== 1) return; G.crois = 2; const x0 = crois.position.x; tw(0.5, (q) => { crois.position.x = lerp(x0, BX + 3.8, q * q); }, () => { crois.visible = false; }); }
 function biteC() {
   if (G.crois !== 1 || !G.on) return; G.crois = 2; burst(V3(SAND.x, 0.6, SAND.z), 10); snd(170, 0.12, "square", 0.06, -70); score(100, V3(SAND.x, 2.2, SAND.z), "Croissant", true);
@@ -955,11 +955,11 @@ function update(dt, T) {
     else if (G.mode !== "chill" && G.lvl >= 3) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
     { const dp = clamp(G.t / DAY, 0, 1); clockSet(dp);
-      if (!G.lunch && dp >= 3 / 9) lunchIn(); if (G.lunch === 1 && dp >= 4 / 9) lunchOut();
+      if (!G.lunch && dp >= 2.5 / 7) lunchIn(); if (G.lunch === 1 && dp >= 3.5 / 7) lunchOut();
       if (!G.trap0 && G.t > 12) { G.trap0 = true; G.forced.push("trap"); } // le premier brief flou arrive dès le matin
-      if (!G.gold0 && dp >= 6.4 / 9 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
-      if (!G.crois && dp >= 7 / 9) croisIn(); if (G.crois === 1 && dp >= 8 / 9) croisOut();
-      if (!G.auto) { levelUp(); if (!G.warned && dp >= 8 / 9) { G.warned = true; banner("17:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
+      if (!G.gold0 && dp >= 4.9 / 7 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
+      if (!G.crois && dp >= 5 / 7) croisIn(); if (G.crois === 1 && dp >= 6 / 7) croisOut(); /* croissant de 15:00 à 16:00 */
+      if (!G.auto) { levelUp(); if (!G.warned && dp >= 6 / 7) { G.warned = true; banner("16:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
     if (G.auto) { G.autoLeft -= dt; $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
       if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(false); banner(...(G.backMsg || ["Back to you", "That was Assets OS."])); } }
     if (G.auto && !frozen) { G.busy -= dt; G.autoT -= dt; if (G.autoT <= 0) { G.autoT = 0.12; autopilot(); } }
@@ -1004,7 +1004,7 @@ function update(dt, T) {
     if (cup.state === "drag") { cup.lift = lerp(cup.lift, 0.3, k(dt, 12)); if (sp > 24 && cup.sips > 0) { drag = null; document.body.classList.remove("drag"); spill(cup.x - px, cup.z - pz); } } else if (cup.state === "idle") cup.lift = lerp(cup.lift, 0, k(dt, 12));
     cup.wob = Math.max(0, cup.wob - dt * 2); cup.g.position.set(cup.x, cup.lift, cup.z); cup.g.rotation.x = cup.tilt; cup.g.rotation.z = -cup.tz_ + Math.sin(cup.wob * 30) * 0.08 * cup.wob; if (cup.state !== "spilt") cup.g.rotation.y = lerp(cup.g.rotation.y, 0, 0.2);
     cup.co.visible = cup.sips > 0; cup.co.material.color.setRGB(0.075, 0.025, 0.007).multiplyScalar(0.25 + 0.75 * lampOn); cup.body.material.emissiveIntensity = 0.22 * lampOn; pot.led.material.color.setHex(0xffb04a).multiplyScalar(lampOn); pot.cof.material.emissiveIntensity = 0.6 * lampOn; /* panne : plus rien ne brille */ const cy = 0.2 + cup.sips * 0.47; cup.co.position.y = lerp(cup.co.position.y, cy, 0.2); cup.co.scale.setScalar((0.4 + 0.08 * cup.co.position.y / 0.75) / 0.44);
-    { if (!phGlow) { phGlow = new THREE.Sprite(glow.material.clone()); phGlow.material.color.set(0xfff186); phGlow.material.opacity = 0; scene.add(phGlow); } const need = G.on && G.auto && !lever.busy && machines.some((m) => m.papers.length); phGlow.material.opacity = lerp(phGlow.material.opacity, need ? 0.55 + Math.sin(T * 5) * 0.25 : 0, 0.12); phGlow.position.set(lever.position.x, 1.3, lever.position.z); phGlow.scale.setScalar(5 + Math.sin(T * 5) * 0.4); } /* relais Assets OS : le téléphone luit quand il y a des briefs à shipper */
+    { if (!phGlow) { phGlow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: glow.material.map, color: 0x6a63ff, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); phGlow.rotation.x = -Math.PI / 2; scene.add(phGlow); } const need = G.on && G.auto && !lever.busy && machines.some((m) => m.papers.length); phGlow.material.opacity = lerp(phGlow.material.opacity, need ? 0.8 + Math.sin(T * 5) * 0.2 : 0, 0.12); phGlow.position.set(lever.position.x, 0.03, lever.position.z); phGlow.scale.setScalar(7.5 + Math.sin(T * 5) * 0.7); } /* relais Assets OS : une lueur bleue sort de sous le téléphone quand il y a des briefs à shipper */
     { const nb = open().length, hot = clamp((nb - 4) / 2, 0, 1), sp = 5 + hot * 4, want = G.on && cup.sips > 0 && cup.state === "idle" && nb >= 4 ? 0.5 + hot * 0.4 + Math.sin(T * sp) * (0.2 - hot * 0.1) : 0; glow.material.opacity = lerp(glow.material.opacity, Math.min(1, want) * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + hot * 2.4 + Math.sin(T * sp) * 0.3); // plus le backlog monte, plus la tasse brille
       if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it"); } if (nb >= 6 && want && !cup.hint2) { cup.hint2 = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it", true); } }
     steamT -= dt; if (steamT <= 0 && lampOn) { steamT = 0.16; if (steamN++ % 2 || cup.sips < 1 || cup.state !== "idle") puff(pot.position.x, 1.4, pot.position.z + 0.42); else puff(cup.x, 0.85, cup.z); }
