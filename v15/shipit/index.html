@@ -155,7 +155,7 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
   <div class="mid"><small>Backlog</small><div class="pips" id="pips"></div><div class="cof" id="cof"></div></div>
   <div class="right"><div class="rs"><div class="sc" id="sc">0</div><div class="sub" id="sub"></div><div class="cmp" id="cmp"><i></i><i></i><i></i></div></div><div class="clock" id="clock" aria-hidden="true"><svg viewBox="-52 -60 104 112"><rect x="-5" y="-59" width="10" height="9" rx="2.5" class="kn"/><circle cy="-52" r="6.5" class="kr"/><circle r="49" class="bz"/><circle r="42.5" class="cf"/><path id="ckP" class="cp" d=""/><g id="ckT" class="ct"></g><g id="ckN" class="cn"></g><g id="ckM"><line y1="7" y2="-33" class="hm"/></g><g id="ckH"><line y1="5" y2="-21" class="hh"/></g><circle r="3.6" class="cc"/><circle r="1.2" class="cd"/></svg></div></div>
 </div>
-<div class="auto" id="auto"><span id="autoT">takes over</span><i></i></div>
+<div class="auto" id="auto"><span id="autoT">Just ship it</span><i></i></div>
 <div class="ban" id="ban"><b></b><span></span></div>
 <div class="whyc" id="why"><i></i><div><b></b><span></span></div></div>
 <div class="aosfr"></div>
@@ -412,7 +412,7 @@ function shredFx() { tw(0.9, (q) => { bin.ck.rotation.x = q * Math.PI * 4; }); s
 strips(12, true);
 /* café : une tasse qu'on peut boire (ou renverser) et une cafetière qui fume */
 const CUP0 = [0, 0], cup = { g: new THREE.Group(), x: 0, z: 0, tx: 0, tz: 0, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, warn: 0, wob: 0, hint: false }; scene.add(cup.g);
-const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: cv(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.5, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }), color: 0xffc94a, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(glow);
+let phGlow = null; const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: cv(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.5, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }), color: 0xffc94a, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(glow);
 {
   const c = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.42, 0.75, 32, 1, true), mat(CREAM, { roughness: 0.45, side: THREE.DoubleSide, emissive: CREAM, emissiveIntensity: 0.22 })); c.position.y = 0.38; c.castShadow = true; cup.g.add(c); cup.body = c;
   const bt = cyl(0.42, 0.04, mat(CREAM, { roughness: 0.45 }), 32); bt.position.y = 0.03; cup.g.add(bt);
@@ -559,13 +559,11 @@ const LOOKS = [
   { k: "form", w: 2.6, h: 3.5, bg: ["#f0ece0"], r: 0.03 }, { k: "ticket", w: 2.8, h: 2.05, bg: ["#b9e1d6", "#ecdf96"], r: 0.12, notch: 1 }, { k: "index", w: 2.8, h: 2.0, bg: ["#f2efe4", "#e2def5"], r: 0.16 },
   { k: "blue", w: 2.5, h: 3.0, bg: ["#565ca3"], r: 0.03, dark: 1 }, { k: "kraft", w: 2.4, h: 3.0, bg: ["#c4a67c"], r: 0.06 }, { k: "receipt", w: 1.85, h: 3.6, bg: ["#f2f0ea"], r: 0.01, bot: 1 }, { k: "graph", w: 2.5, h: 3.0, bg: ["#ebf1e2"], r: 0.03 }];
 const KLOOK = [{ k: "kudos", d: 0, w: 3.0, h: 3.0, bg: ["#8a85ff"], r: 0, ng: 4, dark: 1 }, { k: "kudos", d: 1, w: 2.8, h: 2.8, bg: ["#ffb877"], r: 0, sun: 1 }, { k: "kudos", d: 2, w: 2.5, h: 2.5, bg: ["#fff186"], r: 0, round: 1 }, { k: "kudos", d: 3, w: 2.5, h: 2.5, bg: ["#3be9ce"], r: 0, wave: 1 },
-  { k: "kudos", d: 4, w: 2.8, h: 2.8, bg: ["#ff9ec4"], r: 0, ng: 6 }, { k: "kudos", d: 5, w: 3.5, h: 3.5, bg: ["#5fd8ff"], r: 0, ng: 3 }, { k: "kudos", d: 6, w: 2.9, h: 2.9, bg: ["#f0483e"], r: 0, ng: 5, dark: 1 }, { k: "kudos", d: 7, w: 3.2, h: 2.6, bg: ["#f4f0e6"], r: 0, goat: 1 }]; /* le 8e, au niveau 8 : la chèvre */ /* 7 stickers, un par niveau : losange violet, soleil orange clair, smiley jaune, carré ondulé vert, hexagone rosé, triangle cyan, pentagone rouge */
+  { k: "kudos", d: 4, w: 2.8, h: 2.8, bg: ["#ff9ec4"], r: 0, ng: 6 }, { k: "kudos", d: 5, w: 3.5, h: 3.5, bg: ["#5fd8ff"], r: 0, ng: 3 }, { k: "kudos", d: 6, w: 2.9, h: 2.9, bg: ["#f0483e"], r: 0, ng: 5, dark: 1 }, { k: "kudos", d: 7, w: 3.7, h: 2.3, bg: ["#564fff"], r: 0, goat: 1, dark: 1 }]; /* le 8e, au niveau 8 : la chèvre */ /* 7 stickers, un par niveau : losange violet, soleil orange clair, smiley jaune, carré ondulé vert, hexagone rosé, triangle cyan, pentagone rouge */
 const SPEC = { kudos: KLOOK[0], gold: { k: "gold", w: 2.8, h: 1.85, bg: ["#e3c75a"], r: 0.12, notch: 1 } };
 function outline(L) { // polygone en unités monde, y vers le haut
   if (L.ng) { const n = L.ng, a = L.w / 2, P = [], c = Array.from({ length: n }, (_, i) => { const t = -Math.PI / 2 + (n === 6 ? Math.PI / 6 : 0) - i / n * 6.2832; return [Math.cos(t) * a, -Math.sin(t) * a]; }); c.forEach(([x, y], i) => { const [px, py] = c[(i + n - 1) % n], [nx, ny] = c[(i + 1) % n], u = n === 3 ? 0.9 : 0.86, ax = lerp(px, x, u), ay = lerp(py, y, u), bx = lerp(nx, x, u), by = lerp(ny, y, u); for (let k = 0; k <= 6; k++) { const t = k / 6; P.push([(1 - t) * (1 - t) * ax + 2 * t * (1 - t) * x + t * t * bx, (1 - t) * (1 - t) * ay + 2 * t * (1 - t) * y + t * t * by]); } }); return P; }
-  if (L.goat) { /* silhouette d'une chèvre de profil, tournée vers la droite (repère du dessin : 512 × 416, y vers le bas) */
-    let P = [[44, 104], [70, 118], [96, 140], [200, 132], [310, 134], [350, 96], [366, 60], [340, 34], [322, 10], [350, 16], [384, 36], [398, 56], [430, 72], [470, 96], [478, 116], [462, 130], [440, 134], [436, 172], [422, 140], [404, 150], [388, 190], [384, 236], [380, 250], [378, 374], [350, 374], [352, 280], [340, 264], [332, 270], [330, 374], [304, 374], [306, 272], [290, 262], [170, 266], [160, 282], [158, 374], [132, 374], [134, 292], [124, 272], [116, 292], [110, 374], [84, 374], [88, 282], [72, 240], [62, 180], [58, 140]];
-    for (let it = 0; it < 2; it++) { const Q = []; P.forEach((a, i) => { const b = P[(i + 1) % P.length]; Q.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); }); P = Q; } return P.reverse().map(([x, y]) => [(x / 512 - 0.5) * L.w, (0.5 - y / 416) * L.h]); }
+  if (L.goat) return Array.from({ length: 220 }, (_, i) => { const t = i / 220 * 6.2832, c = Math.abs(Math.cos(t)) / (L.w / 2), sn = Math.abs(Math.sin(t)) / (L.h / 2), r = Math.pow(Math.pow(c, 4) + Math.pow(sn, 4), -0.25) * (0.93 + 0.055 * Math.sin(t * 20)); return [Math.cos(t) * r, Math.sin(t) * r]; }); /* badge large aux bords dentelés */
   if (L.sun) return Array.from({ length: 120 }, (_, i) => { const t = i / 120 * 6.2832, r = (L.w / 2) * (0.9 + 0.1 * Math.sin(t * 12)); return [Math.cos(t) * r, Math.sin(t) * r]; });
   if (L.round) return Array.from({ length: 48 }, (_, i) => [Math.cos(i / 48 * 6.2832) * L.w / 2, Math.sin(i / 48 * 6.2832) * L.w / 2]);
   if (L.wave) { const a = L.w / 2 - 0.07, b = L.h / 2 - 0.07, P = [], side = (x0, y0, x1, y1, nx, ny, wv) => { for (let i = 0; i < 28; i++) { const t = i / 28, o = Math.sin(t * Math.PI * 2 * wv) * 0.07; P.push([lerp(x0, x1, t) + nx * o, lerp(y0, y1, t) + ny * o]); } }; side(-a, -b, a, -b, 0, -1, 4.5); side(a, -b, a, b, 1, 0, 4.5); side(a, b, -a, b, 0, 1, 4.5); side(-a, b, -a, -b, -1, 0, 4.5); return P; }
@@ -586,11 +584,14 @@ function drawBase(p) {
     if (d === 0) { g.fillStyle = p.L.dark ? "#fff186" : "#564fff"; g.font = "44px serif"; g.textAlign = "center"; g.fillText("♥", W / 2, 96); g.fillStyle = p.L.dark ? "#fff" : D; ctr(29, H / 2 + 14, W * 0.5, 32); }
     else if (d === 1) { g.fillStyle = D; ctr(31, H / 2, W * 0.58, 34); }
     else if (d === 2) { g.strokeStyle = D; g.lineWidth = 10; g.beginPath(); g.arc(W / 2, H / 2, W / 2 - 9, 0, 7); g.stroke(); g.fillStyle = D; [-1, 1].forEach((sd) => { g.beginPath(); g.ellipse(W / 2 + sd * 46, 92, 12, 20, 0, 0, 7); g.fill(); }); ctr(27, H / 2 + 6, W - 120, 29); g.lineWidth = 10; g.lineCap = "round"; g.beginPath(); g.arc(W / 2, H / 2 + 30, 118, 0.62, Math.PI - 0.62); g.stroke(); } /* smiley dessiné maison : deux yeux, un sourire, le message au milieu */
-    else if (d === 7) { g.fillStyle = D; const pg = (pts) => { g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.closePath(); g.fill(); };
-      pg([[368, 62], [342, 36], [322, 10], [350, 16], [384, 36], [398, 58]]); pg([[442, 132], [436, 172], [420, 138]]); pg([[44, 104], [72, 118], [62, 136]]); /* corne, barbiche, bout de queue */
-      [[348, 380], [302, 332], [130, 160], [82, 112]].forEach(([a, b]) => g.fillRect(b, 352, a - b, 30)); /* sabots */
-      g.beginPath(); g.arc(430, 90, 7, 0, 7); g.fill(); g.beginPath(); g.arc(470, 112, 3, 0, 7); g.fill(); g.strokeStyle = D; g.lineWidth = 5; g.lineCap = "round"; g.beginPath(); g.ellipse(378, 86, 20, 9, 0.5, 0, 7); g.stroke(); g.beginPath(); g.moveTo(452, 126); g.lineTo(468, 124); g.stroke(); /* œil, naseau, oreille, bouche */
-      g.font = "900 31px Mozer"; g.textAlign = "center"; g.fillText("A GOAT FOR", 222, 170); g.fillText("THE GOAT", 222, 205); g.textAlign = "left"; }
+    else if (d === 7) { const cx = 224, Y = "#fff186"; g.save(); g.translate(150, H / 2 + 4); g.scale(0.74, 0.74); g.translate(-cx, -182); g.lineCap = g.lineJoin = "round"; g.strokeStyle = Y;
+      g.lineWidth = 22; [-1, 1].forEach((sd) => { g.beginPath(); g.moveTo(cx + sd * 34, 128); g.bezierCurveTo(cx + sd * 44, 70, cx + sd * 96, 52, cx + sd * 122, 84); g.stroke(); }); /* cornes */
+      g.strokeStyle = D; g.fillStyle = "#fff"; g.lineWidth = 9; [-1, 1].forEach((sd) => { g.beginPath(); g.ellipse(cx + sd * 84, 168, 34, 15, sd * 0.45, 0, 7); g.fill(); g.stroke(); });
+      g.fillStyle = "#fff"; g.beginPath(); g.moveTo(cx - 22, 258); g.lineTo(cx + 22, 258); g.lineTo(cx, 318); g.closePath(); g.fill(); g.stroke(); /* barbiche */
+      g.beginPath(); g.moveTo(cx - 58, 130); g.quadraticCurveTo(cx, 104, cx + 58, 130); g.quadraticCurveTo(cx + 62, 200, cx + 34, 254); g.quadraticCurveTo(cx, 280, cx - 34, 254); g.quadraticCurveTo(cx - 62, 200, cx - 58, 130); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = D; [-1, 1].forEach((sd) => { g.beginPath(); g.ellipse(cx + sd * 27, 174, 9, 13, 0, 0, 7); g.fill(); }); g.beginPath(); g.moveTo(cx - 12, 228); g.lineTo(cx + 12, 228); g.lineTo(cx, 242); g.closePath(); g.fill(); g.lineWidth = 6; g.beginPath(); g.moveTo(cx, 242); g.lineTo(cx, 252); g.stroke(); g.restore();
+      g.textAlign = "center"; g.fillStyle = "#fff"; g.font = "900 30px Mozer"; g.fillText("HERE’S A GOAT", 386, 96); g.fillText("FOR THE", 386, 132); g.fillStyle = Y; g.font = "900 84px Mozer"; g.fillText("GOAT", 386, 168); g.textAlign = "left";
+      g.fillStyle = Y; [[520, 150], [62, 226]].forEach(([x, y]) => { g.fillRect(x - 9, y - 2, 18, 4); g.fillRect(x - 2, y - 9, 4, 18); }); } /* petits éclats */
     else if (d >= 4) { g.fillStyle = p.L.dark ? "#fff" : D; d === 5 ? ctr(29, H * 0.6, W * 0.4, 32) : ctr(30, H / 2 + (d === 6 ? 10 : 0), W * 0.56, 33); }
     else { g.fillStyle = p.L.dark ? "#fff" : D; ctr(33, H / 2, W - 110, 37); g.font = "italic 20px Georgia"; g.textAlign = "center"; g.fillText("— " + p.who, W / 2, H - 78); g.textAlign = "left"; } }
   else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); { const sv = document.querySelector("#aosEnd svg"), sc = (W * 0.74) / 822; g.save(); g.translate(W / 2 - 411 * sc - 124 * sc, 66 - 156 * sc); g.scale(sc, sc); g.fillStyle = "#25232d"; sv.querySelectorAll("path").forEach((q) => g.fill(new Path2D(q.getAttribute("d")))); g.restore(); } g.font = "900 34px Mozer"; g.fillText("BREAK TIME", W / 2, H - 116); g.font = "700 15px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETS OS TAKES OVER", W / 2, H - 74); g.letterSpacing = "0px"; g.textAlign = "left"; }
@@ -833,7 +834,7 @@ const HINT = [["Master Guidelines · Press", "Roll it across the brief"], ["Mast
 canvas.addEventListener("pointerdown", (e) => {
   if (!G.on || drag) return; if (!setN(e)) return; const h = pickAt(); if (!h) return;
   if (h.kind === "food") { canvas.setPointerCapture(e.pointerId); const c = h.what === "c" ? null : sand.chunks[2 - G.bites]; if (h.what !== "c" && !c) return; drag = { type: "food", what: h.what, c, home: c && c.position.clone() }; document.body.classList.add("drag"); S.pick(); return; } /* on le prend, il est mangé quand on lâche (aussi pendant un relais ou une panne) */
-  if (G.out > 0 || G.auto) return;
+  if (G.out > 0) return; if (G.auto) { if (h.kind === "lever") pull(); return; } /* pendant le relais Assets OS, c'est le joueur qui ship */
   if (h.kind === "lever") return pull();
   canvas.setPointerCapture(e.pointerId);
   if (h.kind === "die") { drag = { type: "die", dx: hit.x - die.x, dz: hit.z - die.z }; document.body.classList.add("drag"); S.pick(); return; }
@@ -887,7 +888,6 @@ function autopilot() {
   if (die.off && !die.fly) { const t2 = tools[2], x0 = die.x, z0 = die.z; die.fly = true; tw(0.35, (q) => { die.x = die.tx = lerp(x0, t2.x, ease(q)); die.z = die.tz = lerp(z0, t2.z, ease(q)); die.lift = Math.sin(q * Math.PI) * 0.8; }, () => { die.fly = false; fixDie(); }); return wait(0.5); } if (die.fly) return;
   const free = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id);
   const move = (p, x, z, fn) => { p.state = "fly"; p.ord = ++ord; const a = p.g.position.clone(), b = V3(x, 0.05, z); tw(0.32, (q) => { const e = ease(q); p.g.position.lerpVectors(a, b, e); p.g.position.y += Math.sin(q * Math.PI) * 1.2; }, () => { p.state = "free"; p.x = p.tx = x; p.z = p.tz = z; fn(); }); wait(0.45); };
-  if (!lever.busy && (machines.reduce((n, m) => n + m.papers.length, 0) >= 3 || machines.some((m) => m.papers.length >= CAP))) { pull(); return wait(1.3); } /* 3 briefs prêts, ou une boîte pleine : il décroche tout de suite */
   for (const p of free) {
     if (p.type === "trap") return move(p, RET.x, RET.z, () => ret(p));
     const i = p.type === "gold" ? -1 : p.need.findIndex((n, j) => n && !p.seal[j]);
@@ -895,10 +895,10 @@ function autopilot() {
     if (p.slot == null) { SLOTS.forEach((q) => { if (q.p && (q.p.state === "gone" || q.p.state === "loaded" || q.p.late)) q.p = null; }); const sp = portrait ? [[-0.5, 0.6], [2.2, 0.6]] : [[-3.9, 0.35], [-0.9, 0.35], [2.1, 0.35], [5.1, 0.35]], si = SLOTS.findIndex((q, j) => !q.p && j < sp.length); if (si < 0) continue; SLOTS[si].p = p; p.slot = si; return move(p, sp[si][0], sp[si][1], () => { p.rot = 0; }); }
     if (tools[i].state === "idle") { wait(9); autoUse(tools[i], p, () => { G.busy = 0.15; }); return; }
   }
-  if (machines.some((m) => m.papers.length) && !lever.busy) { pull(); return wait(1.3); }
+  /* Assets OS ne décroche jamais : le téléphone reste au joueur */
 }
 const KON = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]; let ki = 0;
-function toggleAuto() { if (!G.on) return; G.auto = !G.auto; G.burst = false; G.autoShip = 0; G.busy = 0; G.autoLeft = G.autoMax = AUTO; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(G.auto, "autopilot"); if (G.auto) { release(); S.gold(); } }
+function toggleAuto() { if (!G.on) return; G.auto = !G.auto; G.burst = false; G.autoShip = 0; G.busy = 0; G.autoLeft = G.autoMax = AUTO; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(G.auto, "Just ship it"); if (G.auto) { release(); S.gold(); } }
 addEventListener("keydown", (e) => { ki = e.key === KON[ki] || e.key.toLowerCase() === KON[ki] ? ki + 1 : e.key === KON[0] ? 1 : 0; if (ki === KON.length) { ki = 0; toggleAuto(); } });
 let taps = 0, tapT = 0; $("logo").addEventListener("pointerdown", () => { const n = performance.now(); taps = n - tapT < 500 ? taps + 1 : 1; tapT = n; if (taps >= 5) { taps = 0; toggleAuto(); } });
 
@@ -939,7 +939,7 @@ function biteC() {
 function aosBurst(sec, on, off) {
   if (!G.on || (G.auto && !G.burst)) return; G.backMsg = off || ["Back to you", "That was Assets OS."];
   if (G.auto) { G.autoLeft = Math.max(G.autoLeft, sec); G.autoMax = Math.max(G.autoMax, sec); } // déjà en relais : on prolonge
-  else { G.auto = true; G.burst = true; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(true, "takes over"); release(); S.gold(); }
+  else { G.auto = true; G.burst = true; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(true, "Just ship it"); release(); S.gold(); }
   banner(...(on || ["Assets OS takes over", Math.round(sec) + " seconds. Watch it work."]));
 }
 
@@ -1004,6 +1004,7 @@ function update(dt, T) {
     if (cup.state === "drag") { cup.lift = lerp(cup.lift, 0.3, k(dt, 12)); if (sp > 24 && cup.sips > 0) { drag = null; document.body.classList.remove("drag"); spill(cup.x - px, cup.z - pz); } } else if (cup.state === "idle") cup.lift = lerp(cup.lift, 0, k(dt, 12));
     cup.wob = Math.max(0, cup.wob - dt * 2); cup.g.position.set(cup.x, cup.lift, cup.z); cup.g.rotation.x = cup.tilt; cup.g.rotation.z = -cup.tz_ + Math.sin(cup.wob * 30) * 0.08 * cup.wob; if (cup.state !== "spilt") cup.g.rotation.y = lerp(cup.g.rotation.y, 0, 0.2);
     cup.co.visible = cup.sips > 0; cup.co.material.color.setRGB(0.075, 0.025, 0.007).multiplyScalar(0.25 + 0.75 * lampOn); cup.body.material.emissiveIntensity = 0.22 * lampOn; pot.led.material.color.setHex(0xffb04a).multiplyScalar(lampOn); pot.cof.material.emissiveIntensity = 0.6 * lampOn; /* panne : plus rien ne brille */ const cy = 0.2 + cup.sips * 0.47; cup.co.position.y = lerp(cup.co.position.y, cy, 0.2); cup.co.scale.setScalar((0.4 + 0.08 * cup.co.position.y / 0.75) / 0.44);
+    { if (!phGlow) { phGlow = new THREE.Sprite(glow.material.clone()); phGlow.material.color.set(0xfff186); phGlow.material.opacity = 0; scene.add(phGlow); } const need = G.on && G.auto && !lever.busy && machines.some((m) => m.papers.length); phGlow.material.opacity = lerp(phGlow.material.opacity, need ? 0.55 + Math.sin(T * 5) * 0.25 : 0, 0.12); phGlow.position.set(lever.position.x, 1.3, lever.position.z); phGlow.scale.setScalar(5 + Math.sin(T * 5) * 0.4); } /* relais Assets OS : le téléphone luit quand il y a des briefs à shipper */
     { const nb = open().length, hot = clamp((nb - 4) / 2, 0, 1), sp = 5 + hot * 4, want = G.on && cup.sips > 0 && cup.state === "idle" && nb >= 4 ? 0.5 + hot * 0.4 + Math.sin(T * sp) * (0.2 - hot * 0.1) : 0; glow.material.opacity = lerp(glow.material.opacity, Math.min(1, want) * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + hot * 2.4 + Math.sin(T * sp) * 0.3); // plus le backlog monte, plus la tasse brille
       if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it"); } if (nb >= 6 && want && !cup.hint2) { cup.hint2 = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it", true); } }
     steamT -= dt; if (steamT <= 0 && lampOn) { steamT = 0.16; if (steamN++ % 2 || cup.sips < 1 || cup.state !== "idle") puff(pot.position.x, 1.4, pot.position.z + 0.42); else puff(cup.x, 0.85, cup.z); }
