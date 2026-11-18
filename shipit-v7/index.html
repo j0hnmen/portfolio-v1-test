@@ -56,6 +56,7 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
 .ov p{font:15px/1.5 Akke,Georgia,serif;max-width:500px;margin:18px auto 0;opacity:.8}
 .how{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
 .how div{background:rgba(239,233,220,.07);border:1px solid rgba(239,233,220,.18);border-radius:10px;padding:10px 14px 11px;min-width:130px}
+.how small{display:block;font:700 10px/1 Mozer;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
 .how b{display:block;font:900 20px/1 Mozer;text-transform:uppercase}
 .how span{display:inline-block;margin-top:7px;font:900 11px/1 Mozer;letter-spacing:.14em;padding:5px 9px 4px;border-radius:99px;color:var(--ink);background:var(--c)}
 .btns{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
@@ -103,9 +104,9 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
 <div class="ov" id="start"><div>
   <h1>Ship<br>It!</h1>
   <div class="how">
-    <div style="--c:#7d77ff"><b>Guidelines</b><span>PRESS</span></div>
-    <div style="--c:#fff186"><b>Copy</b><span>SIGN</span></div>
-    <div style="--c:#3be9ce"><b>Check</b><span>STAMP</span></div>
+    <div style="--c:#7d77ff"><small>Master</small><b>Guidelines</b><span>PRESS</span></div>
+    <div style="--c:#fff186"><small>Master</small><b>Copy</b><span>SIGN</span></div>
+    <div style="--c:#3be9ce"><small>Master</small><b>Check</b><span>STAMP</span></div>
   </div>
   <p>Briefs come in by fax. Roll the brand on, sign the copy, stamp the check, in that order. Drop the brief in the right skill box, then pick up the phone to ship. Keep the backlog under seven.</p>
   <div class="btns"><button id="bN">Normal</button><button class="o" id="bC">Chill</button></div>
@@ -224,8 +225,8 @@ const matTex = cv(1480, 520, (g, W, H) => {
   for (let i = 0; i < 9000; i++) { g.fillStyle = `rgba(255,255,255,${Math.random() * 0.035})`; g.fillRect(Math.random() * W, Math.random() * H, 2, 2); }
   g.strokeStyle = "rgba(239,233,220,.35)"; g.lineWidth = 3; g.setLineDash([14, 10]); rr(g, 16, 16, W - 32, H - 32, 22); g.stroke(); g.setLineDash([]);
   [["GUIDELINES", "PRESS", "#7d77ff"], ["COPY", "SIGN", "#fff186"], ["CHECK", "STAMP", "#3be9ce"]].forEach(([a, b, c], i) => {
-    const x = 60 + i * (W - 60) / 3; g.fillStyle = "#efe9dc"; g.font = "900 58px Mozer"; g.textBaseline = "alphabetic"; g.fillText(a, x, 104); const tw = g.measureText(a).width;
-    g.font = "900 26px Mozer"; g.letterSpacing = "4px"; const pw = g.measureText(b).width + 30; g.fillStyle = c; rr(g, x + tw + 16, 60, pw, 44, 22); g.fill(); g.fillStyle = "#14151c"; g.fillText(b, x + tw + 31, 92); g.letterSpacing = "0px";
+    const x = 60 + i * (W - 60) / 3; g.fillStyle = "#efe9dc"; g.textBaseline = "alphabetic"; g.font = "900 24px Mozer"; g.letterSpacing = "5px"; g.globalAlpha = 0.6; g.fillText("MASTER", x + 2, 54); g.globalAlpha = 1; g.letterSpacing = "0px"; g.font = "900 58px Mozer"; g.fillText(a, x, 114); const tw = g.measureText(a).width;
+    g.font = "900 26px Mozer"; g.letterSpacing = "4px"; const pw = g.measureText(b).width + 30; g.fillStyle = c; rr(g, x + tw + 16, 70, pw, 44, 22); g.fill(); g.fillStyle = "#14151c"; g.fillText(b, x + tw + 31, 102); g.letterSpacing = "0px";
     if (i) { g.fillStyle = "rgba(239,233,220,.14)"; g.fillRect(x - 34, 44, 3, H - 88); }
   });
 });
@@ -504,7 +505,7 @@ function makePaper(type) {
 function removePaper(p) { p.state = "gone"; machines.forEach((m) => { m.papers = m.papers.filter((q) => q !== p); }); scene.remove(p.g); p.tex.dispose(); p.mesh.material.dispose(); p.mesh.geometry.dispose(); papers = papers.filter((q) => q !== p); hud(); }
 const open = () => papers.filter((p) => p.type !== "kudos" && p.state !== "gone" && p.state !== "fly" && !p.late);
 const doneP = (p) => p.need.every((n, i) => !n || p.seal[i]);
-function info(p, hint) { const n = $("now"); if (!p && !hint) return n.classList.remove("on"); if (hint) { $("nowT").textContent = hint[0]; $("nowS").textContent = hint[1]; } else { $("nowT").textContent = p.type === "gold" ? "Easy ship" : p.title; const i = p.need.findIndex((x, j) => x && !p.seal[j]); $("nowS").textContent = p.type === "gold" ? "Any box · pick up the phone" : i < 0 ? "Ready · pick the skill, then the phone" : "Next · " + MN[i] + " (" + VB[i] + ")"; } n.classList.add("on"); }
+function info(p, hint) { const n = $("now"); if (!p && !hint) return n.classList.remove("on"); if (hint) { $("nowT").textContent = hint[0]; $("nowS").textContent = hint[1]; } else { $("nowT").textContent = p.type === "gold" ? "Easy ship" : p.title; const i = p.need.findIndex((x, j) => x && !p.seal[j]); $("nowS").textContent = p.type === "gold" ? "Any box · pick up the phone" : i < 0 ? "Ready · pick the skill, then the phone" : "Next · Master " + MN[i] + " (" + VB[i] + ")"; } n.classList.add("on"); }
 
 /* ---------- temps, particules, popups, son ---------- */
 const tweens = []; const tw = (d, fn, done, delay = 0) => tweens.push({ t: -delay, d, fn, done }); const after = (d, fn) => tw(0.0001, () => {}, fn, d);
@@ -635,7 +636,7 @@ function pickAt() {
   const tl = hs.find((x) => x.object.userData.kind === "tool"); if (tl) return tl.object.userData; if (hs[0].object.userData.kind === "lever") return hs[0].object.userData; const dh = hs.find((x) => x.object.userData.kind === "die"); if (dh) return dh.object.userData; const cu = hs.find((x) => x.object.userData.kind === "cup"); if (cu) return cu.object.userData;
   return hs.filter((x) => x.object.userData.kind === "paper").map((x) => x.object.userData).sort((a, b) => (b.ref.state === "loaded") - (a.ref.state === "loaded") || b.ref.ord - a.ref.ord)[0];
 }
-const HINT = [["Guidelines · Press", "Roll it across the brief"], ["Copy · Sign", "Sign the brief"], ["Check · Stamp", "Drop it on the brief"]];
+const HINT = [["Master Guidelines · Press", "Roll it across the brief"], ["Master Copy · Sign", "Sign the brief"], ["Master Check · Stamp", "Drop it on the brief"]];
 canvas.addEventListener("pointerdown", (e) => {
   if (!G.on || G.out > 0 || G.auto || drag) return; if (!setN(e)) return; const h = pickAt(); if (!h) return;
   if (h.kind === "lever") return pull();
