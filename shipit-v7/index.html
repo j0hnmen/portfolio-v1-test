@@ -146,7 +146,7 @@ const BRIEFS = [
 const TRAPS = [["Make it pop??", "No format · no date"], ["Something for the thing", "See thread (which one?)"], ["Need visuals. ASAP.", "For… everything"], ["Same as last time but different", "Ref: none"], ["Quick one!!", "Details to follow (never)"]];
 const KUDOS = ["Loved the last campaign. Thank you!", "The deck landed. Client is thrilled.", "Coffee's on me this week.", "Best landing page we ever shipped."];
 const WHO = ["Léa", "Tom", "Sarah", "Inès", "Max", "Jo", "Nora", "Sam"], MN = ["Guidelines", "Copy", "Check"], VB = ["Press", "Sign", "Stamp"];
-const SK = [{ n: "Social Ads", s: "/aos-social-ads", c: YELLOW, ink: "#1b1c25" }, { n: "Web Design", s: "/aos-web-design", c: BLUE, ink: "#f4f0e6" }, { n: "General Brand", s: "/aos-general-brand", c: GREEN, ink: "#1b1c25" }];
+const SK = [{ n: "Social Media", s: "/aos-social-media", c: YELLOW, ink: "#1b1c25" }, { n: "Web Design", s: "/aos-web-design", c: BLUE, ink: "#f4f0e6" }, { n: "General Brand", s: "/aos-general-brand", c: GREEN, ink: "#1b1c25" }];
 
 /* ---------- rendu : sombre, une lampe, des dégradés ---------- */
 const canvas = $("c");
@@ -543,7 +543,7 @@ function endDay() {
   if (G.shipped > 0) { const mx = Math.max(...G.kinds); c = G.cmp === 0 && G.shipped >= 12 ? 3 : pick([0, 1, 2].filter((i) => G.kinds[i] === mx)); }
   let own = owned(); const fresh = c >= 0 && !own.includes(c); if (fresh) { own = [...own, c]; try { localStorage.setItem("shipit-cards", JSON.stringify(own)); } catch (e) {} }
   $("deF").textContent = `${G.shipped} briefs shipped · ${G.score} pts`;
-  const KN = ["Social Ads", "Web Design", "General Brand"], KC = ["#fff186", "#8a85ff", "#3be9ce"], top = c >= 0 && c < 3 ? KN[c] : "";
+  const KN = ["Social Media", "Web Design", "General Brand"], KC = ["#fff186", "#8a85ff", "#3be9ce"], top = c >= 0 && c < 3 ? KN[c] : "";
   const stats = `<div class="stats">${KN.map((n, i) => `<span class="k" style="--c:${KC[i]}"><b>${G.kinds[i]}</b>${n}</span>`).join("")}<span><b>${G.cmp}</b>${G.cmp === 1 ? "complaint" : "complaints"}</span><span><b>×${Math.max(1, G.bestPull)}</b>best call</span></div>`;
   const why = c < 0 ? "" : c === 3 ? `<p class="why"><b>Why this card.</b> ${G.shipped} briefs and not one complaint. That is the rare one.</p>` : `<p class="why"><b>Why this card.</b> ${G.kinds[c]} of your ${G.shipped} briefs went to ${top}${[0, 1, 2].filter((i) => G.kinds[i] === G.kinds[c]).length > 1 ? " (a tie, picked at random)" : ""}. The Artist card needs 12 briefs and no complaint.</p>`;
   $("deC").innerHTML = stats + (c < 0 ? '<p>No brief shipped, no card today.</p>' : `<div class="card c${c}"><small><span>${CARDS[c][1]}</span><span>${c + 1}/4</span></small><div class="ph">N</div><b>Nabil,<br>${CARDS[c][0]}</b><small style="margin-top:6px"><span>${CARDS[c][2]}</span><span>${fresh ? "New" : "Double"}</span></small></div>`) + `${why}<div class="coll">${[0, 1, 2, 3].map((i) => `<i class="${own.includes(i) ? "on" : ""}"></i>`).join("")}</div><div class="cl">Collect them all · ${own.length}/4</div>`;
