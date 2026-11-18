@@ -293,26 +293,29 @@ const machines = SK.map((S, i) => {
   const outF = label("", S.n, S.ink, TW - 0.4, 0.42); outF.position.set(0, 0.04, TD / 2); hinge.add(outF);
   hinge.rotation.x = OPEN; return { i, g, inner, hinge, papers: [], j: 0 };
 });
-/* téléphone : on décroche pour shipper (combiné à gauche, corps allongé) */
-const lever = new THREE.Group(), phone = new THREE.Group(); scene.add(lever); lever.add(phone);
-{
-  const C1 = mat(0xe9e0c6, { roughness: 0.42 }), C2 = mat(0xdcd2b6, { roughness: 0.45 });
-  const b = box(2.35, 0.4, 3.05, C1, 0.2); b.position.y = 0.2; phone.add(b);
-  const b2 = box(2.41, 0.12, 3.11, C2, 0.08); b2.position.y = 0.06; phone.add(b2);
-  [-1.05, 1.05].forEach((z) => { const cr = box(1.0, 0.22, 0.9, C2, 0.1); cr.position.set(-0.62, 0.46, z); phone.add(cr); });
-  const pl = box(0.92, 0.03, 0.6, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(0.66, 0.41, -1.04); phone.add(pl);
-  const l = label("Pick up to", "Ship", "#1b1c25", 0.78, 0.46); l.position.set(0.68, 0.43, -1.04); phone.add(l);
-  for (let i = 0; i < 12; i++) { const kx = cyl(0.12, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 16); kx.position.set(0.36 + (i % 3) * 0.3, 0.43, -0.4 + ((i / 3) | 0) * 0.31); kx.castShadow = false; phone.add(kx); }
-  const dg = flat(cv(330, 410, (g) => { g.fillStyle = "#3a352a"; g.font = "900 44px Mozer"; g.textAlign = "center"; g.textBaseline = "middle"; "123456789*0#".split("").forEach((c, i) => g.fillText(c, 55 + (i % 3) * 110, 52 + ((i / 3) | 0) * 103)); }), 0.9, 1.23); dg.position.set(0.66, 0.47, 0.065); phone.add(dg);
-  const st = box(0.84, 0.02, 0.46, mat(0xfaf7ee, { roughness: 0.5 }), 0.02); st.position.set(0.66, 0.405, 1.12); phone.add(st);
-  const hs = new THREE.Group(); hs.position.set(-0.62, 0.8, 0); phone.add(hs); lever.hs = hs;
-  const bar = box(0.66, 0.34, 2.96, C1, 0.17); hs.add(bar);
-  [-1.05, 1.05].forEach((z) => { const e = box(0.9, 0.48, 0.9, C1, 0.22); e.position.set(0, -0.1, z); hs.add(e); });
-  const pts = []; for (let i = 0; i <= 150; i++) { const q = i / 150, cx = -1.05 - Math.sin(q * Math.PI) * 0.8, cz = 1.35 - q * 1.5, cy = 0.4 * (1 - q) * (1 - q) + 0.09, a = q * Math.PI * 2 * 17; pts.push(V3(cx, cy + Math.sin(a) * 0.075, cz + Math.cos(a) * 0.075)); }
-  const cord = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 420, 0.026, 6), C2); cord.castShadow = true; phone.add(cord);
-  const h = hitBox(2.7, 1.4, 3.3); h.position.y = 0.6; h.userData = { kind: "lever" }; phone.add(h); lever.hb = h; lever.busy = false;
+/* téléphone : on décroche pour shipper. Vertical (combiné à gauche) en desktop, horizontal (combiné au fond) en mobile */
+const lever = new THREE.Group(); scene.add(lever); lever.busy = false;
+function buildPhone(hz) {
+  const ph = new THREE.Group(), C1 = mat(0xe9e0c6, { roughness: 0.42 }), C2 = mat(0xdcd2b6, { roughness: 0.45 }), P = (a, b) => (hz ? [b, a] : [a, b]), at = (o, a, y, b) => { const [x, z] = P(a, b); o.position.set(hz ? -x : x, y, z); return o; };
+  const bx = (a, h, b, m, r) => { const [w, d] = P(a, b); return box(w, h, d, m, r); };
+  ph.add(at(bx(2.35, 0.4, 3.05, C1, 0.2), 0, 0.2, 0), at(bx(2.41, 0.12, 3.11, C2, 0.08), 0, 0.06, 0));
+  [-1.05, 1.05].forEach((z) => ph.add(at(bx(1.0, 0.22, 0.9, C2, 0.1), -0.62, 0.46, z)));
+  const lx = hz ? -0.85 : 0.66, lz = hz ? 0.52 : -1.04;
+  const pl = box(0.92, 0.03, 0.6, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(lx, 0.41, lz); ph.add(pl);
+  const l = label("Pick up to", "Ship", "#1b1c25", 0.78, 0.46); l.position.set(lx + 0.02, 0.43, lz); ph.add(l);
+  const kx0 = hz ? 0.42 : 0.36, kz0 = hz ? 0.0 : -0.4, dz = hz ? 0.27 : 0.31;
+  for (let i = 0; i < 12; i++) { const kx = cyl(hz ? 0.105 : 0.12, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 16); kx.position.set(kx0 + (i % 3) * 0.3, 0.43, kz0 + ((i / 3) | 0) * dz); kx.castShadow = false; ph.add(kx); }
+  const dg = flat(cv(330, 410, (g) => { g.fillStyle = "#3a352a"; g.font = "900 44px Mozer"; g.textAlign = "center"; g.textBaseline = "middle"; "123456789*0#".split("").forEach((c, i) => g.fillText(c, 55 + (i % 3) * 110, 52 + ((i / 3) | 0) * 103)); }), 0.9, dz * 3.97); dg.position.set(kx0 + 0.3, 0.47, kz0 + dz * 1.5); ph.add(dg);
+  if (!hz) { const st = box(0.84, 0.02, 0.46, mat(0xfaf7ee, { roughness: 0.5 }), 0.02); st.position.set(0.66, 0.405, 1.12); ph.add(st); }
+  const hs = new THREE.Group(); at(hs, -0.62, 0.8, 0); ph.add(hs); ph.hs = hs; ph.hs0 = hs.position.clone();
+  hs.add(bx(0.66, 0.34, 2.96, C1, 0.17)); [-1.05, 1.05].forEach((z) => { const e = bx(0.9, 0.48, 0.9, C1, 0.22), [x, zz] = P(0, z); e.position.set(x, -0.1, zz); hs.add(e); });
+  const pts = []; for (let i = 0; i <= 150; i++) { const q = i / 150, a = q * Math.PI * 2 * 17, cy = 0.4 * (1 - q) * (1 - q) + 0.09 + Math.sin(a) * 0.075; pts.push(hz ? V3(-1.35 - Math.sin(q * Math.PI) * 0.75 + Math.cos(a) * 0.075, cy, -0.62 + q * 1.3) : V3(-1.05 - Math.sin(q * Math.PI) * 0.8, cy, 1.35 - q * 1.5 + Math.cos(a) * 0.075)); }
+  const cord = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 420, 0.026, 6), C2); cord.castShadow = true; ph.add(cord);
+  const h = hz ? hitBox(3.3, 1.4, 2.7) : hitBox(2.7, 1.4, 3.3); h.position.y = 0.6; h.userData = { kind: "lever" }; ph.add(h); ph.hb = h; ph.hz = hz; lever.add(ph); return ph;
 }
-const setHS = (v) => { lever.hs.position.y = 0.8 + v * 1.0; lever.hs.position.x = -0.62 - v * 0.3; lever.hs.rotation.set(v * 0.2, v * 0.3, -v * 0.45); };
+const phV = buildPhone(false), phH = buildPhone(true); let phone = phV; lever.hb = phV.hb;
+const usePhone = (hz, sc) => { phone = hz ? phH : phV; phV.visible = !hz; phH.visible = hz; phone.scale.setScalar(sc); lever.hb = phone.hb; };
+const setHS = (v) => { const h = phone.hs, o = phone.hs0; h.position.y = o.y + v * 1.0; if (phone.hz) { h.position.z = o.z - v * 0.3; h.rotation.set(-v * 0.45, v * 0.2, 0); } else { h.position.x = o.x - v * 0.3; h.rotation.set(v * 0.2, v * 0.3, -v * 0.45); } };
 /* déchiqueteuse : pour les briefs flous */
 const bin = new THREE.Group(); scene.add(bin);
 {
@@ -383,11 +386,11 @@ let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20;
 function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
-    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(2.0 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); phone.scale.setScalar(1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
+    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(2.0 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
     INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -1.75; CUP0[1] = -2.45; hS.position.set(3.45, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15);
   } else {
-    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.55, 0, 6.45); phone.scale.setScalar(0.78); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
-    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.65; pad.position.set(0, 0.008, 3.65); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.12); camT.set(0, 0, -0.3);
+    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
+    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3);
   }
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
