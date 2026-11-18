@@ -73,19 +73,24 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 .ov p{font:15px/1.5 Akke,Georgia,serif;max-width:500px;margin:18px auto 0;opacity:.8}
 #start{overflow:auto;align-items:start}#start>.tuto{margin:auto;padding:8px 0;max-width:1120px;width:100%}
 .tuto h1{font-size:clamp(46px,8vw,104px)}.tuto .lead{margin-top:12px;opacity:.9;font-size:16px}.tuto .rules{margin-top:20px;max-width:560px}
-.path{list-style:none;margin:26px auto 0;padding:0;display:grid;grid-template-columns:1fr 2.1fr 1fr 1fr;gap:14px;counter-reset:st}
-.path li{position:relative;display:flex;flex-direction:column;align-items:center;background:rgba(239,233,220,.06);border:1px solid rgba(239,233,220,.16);border-radius:18px;padding:22px 14px 20px}
-.path li>em{position:absolute;left:14px;top:10px;font:900 30px/1 Mozer;font-style:normal;opacity:.9}
-.path li:not(:last-child)::after{content:"→";position:absolute;right:-7px;top:50%;translate:50% -50%;font:900 20px/1 Mozer;z-index:2;background:var(--cream);color:var(--ink);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;padding-bottom:2px}
-.path .pics{display:flex;gap:14px;justify-content:center;align-items:flex-start;min-height:clamp(96px,10vw,132px)}
-.path i{display:block;width:clamp(96px,10vw,132px);aspect-ratio:1;border-radius:50%;background:#1b1c25 center/cover no-repeat;box-shadow:0 0 0 3px var(--c,rgba(239,233,220,.5)),0 16px 28px -10px rgba(0,0,0,.85)}
-.path figure{margin:0;display:flex;flex-direction:column;align-items:center}.path figure i{width:clamp(78px,7.6vw,104px)}
-.path figcaption{margin-top:10px;font:900 13px/1 Mozer;text-transform:uppercase;letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:5px}
-.path figcaption u{text-decoration:none;font:900 10px/1 Mozer;letter-spacing:.14em;padding:4px 8px 3px;border-radius:99px;color:var(--ink);background:var(--c)}
-.path small{margin-top:14px;font:700 10px/1.2 Mozer;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
-.path b{margin-top:5px;font:900 clamp(19px,1.9vw,26px)/1 Mozer;text-transform:uppercase}
-.path span{margin-top:7px;font:13.5px/1.35 Akke,Georgia,serif;opacity:.78;max-width:230px}
-@media (max-width:760px){.path{grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.path li{padding:16px 10px 14px}.path li.w{grid-column:1/-1}.path li:not(:last-child)::after{display:none}.path i{width:84px}.path .pics{min-height:84px;gap:10px}.path figure i{width:74px}.tuto h1{font-size:44px}.tuto .lead{font-size:14px}.path li>em{font-size:24px;left:10px;top:8px}}
+@media (max-width:760px){.tuto h1{font-size:54px}.tuto .lead{font-size:14px}}
+/* tuto immersif : un cadre arrondi entoure l'objet dans la scène, le reste est assombri */
+.tut{position:fixed;inset:0;z-index:18;display:none;touch-action:none}.tut.on{display:block}
+.tut-hole{position:fixed;left:50%;top:50%;width:0;height:0;border-radius:24px;pointer-events:none;box-shadow:0 0 0 4px var(--blue),0 0 46px 10px rgba(86,79,255,.55),0 0 0 200vmax rgba(8,8,13,.78),inset 0 0 60px rgba(86,79,255,.5);transition:left .6s cubic-bezier(.3,.9,.25,1),top .6s cubic-bezier(.3,.9,.25,1),width .6s cubic-bezier(.3,.9,.25,1),height .6s cubic-bezier(.3,.9,.25,1)}
+.tut-hole::after{content:"";position:absolute;inset:-4px;border-radius:28px;border:2px solid #8f89ff;animation:tuP 1.8s ease-out infinite}
+@keyframes tuP{from{opacity:.9;inset:-4px;border-radius:28px}to{opacity:0;inset:-22px;border-radius:44px}}
+.tut-card{position:fixed;left:50%;top:50%;width:min(350px,calc(100vw - 28px));background:#14151c;border-radius:20px;padding:16px 18px 16px;text-align:left;box-shadow:inset 0 0 0 2px var(--blue),0 26px 50px -14px #000;transition:left .6s cubic-bezier(.3,.9,.25,1),top .6s cubic-bezier(.3,.9,.25,1)}
+.tut-card small{display:flex;justify-content:space-between;font:700 10px/1 Mozer;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow)}.tut-card small u{text-decoration:none;color:var(--cream);opacity:.55}
+.tut-card b{display:block;margin-top:9px;font:900 clamp(26px,3.4vw,36px)/.95 Mozer;text-transform:uppercase;color:var(--cream)}
+.tut-card span{display:block;margin-top:8px;font:15px/1.38 Akke,Georgia,serif;color:var(--cream);opacity:.85}
+.tut-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.tut-nav button{font:900 16px Mozer;text-transform:uppercase;letter-spacing:.03em;border:0;cursor:pointer;border-radius:99px;padding:11px 22px 10px;background:var(--cream);color:var(--ink)}
+.tut-nav .k{background:none;color:var(--cream);opacity:.55;padding:11px 4px 10px;font-size:12px;letter-spacing:.14em}
+.tut-nav .go{flex:1;font-size:22px;padding:16px 20px 14px;border-radius:18px;color:#fff;background:linear-gradient(180deg,#5751ff,#1c14f2);box-shadow:0 0 0 4px var(--blue),0 0 44px 4px rgba(86,79,255,.75),inset 0 0 26px rgba(255,255,255,.16);animation:tuG 1.5s ease-in-out infinite;transition:scale .2s}
+.tut-nav .go:active{scale:.96}@media (hover:hover){.tut-nav .go:hover{scale:1.04}}
+@keyframes tuG{50%{box-shadow:0 0 0 7px rgba(86,79,255,.55),0 0 74px 14px rgba(86,79,255,.9),inset 0 0 26px rgba(255,255,255,.16)}}
+.tut.last .k{display:none}
+@media (prefers-reduced-motion:reduce){.tut-hole::after,.tut-nav .go{animation:none}}
 .how{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
 .how div{background:rgba(239,233,220,.07);border:1px solid rgba(239,233,220,.18);border-radius:10px;padding:10px 14px 11px;min-width:130px}
 .how small{display:block;font:700 10px/1 Mozer;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
@@ -141,15 +146,10 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <b>ERR 529</b> · Model overload
 <b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
+<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
-  <ol class="path">
-    <li><em>1</em><div class="pics"><i id="tu0"></i></div><small>Fax</small><b>A brief comes in</b><span>Read what it asks for.</span></li>
-    <li class="w"><em>2</em><div class="pics"><figure style="--c:#7d77ff"><i id="tu1"></i><figcaption>Guidelines<u>Press</u></figcaption></figure><figure style="--c:#fff186"><i id="tu2"></i><figcaption>Copy<u>Sign</u></figcaption></figure><figure style="--c:#3be9ce"><i id="tu3"></i><figcaption>Check<u>Stamp</u></figcaption></figure></div><small>The 3 Masters</small><b>Press, sign, stamp</b><span>In that order, on the brief.</span></li>
-    <li><em>3</em><div class="pics"><i id="tu4"></i></div><small>The 3 skills</small><b>Pick the box</b><span>Social Media, Web Interface or Brand Design. Two briefs per box.</span></li>
-    <li><em>4</em><div class="pics"><i id="tu5"></i></div><small>Phone</small><b>Ship</b><span>Pick it up: every box ships at once.</span></li>
-  </ol>
   <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 18:00 to win a card.</p>
   <div class="btns"><button class="o" id="bC">Relax</button><button id="bN">Normal</button><button class="o" id="bH">Hard</button></div>
 </div></div>
@@ -452,6 +452,17 @@ function spill(dx = 1, dz = 0) {
 
 /* ---------- layout ---------- */
 let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20; const EL = 1.16, INB = { x: 0, z: 0 }, RET = { x: 0, z: 0 };
+/* collisions : un brief ne traverse plus les objets. Porté, il passe au-dessus ; posé, il glisse à côté. */
+const OBST = [];
+const half = (p) => { const c = Math.abs(Math.cos(p.rot)), s_ = Math.abs(Math.sin(p.rot)); return [(p.w * c + p.h * s_) / 2, (p.w * s_ + p.h * c) / 2]; };
+const hits = (p, x, z, o) => { const [a, b] = half(p), dx = o.hw + a - Math.abs(x - o.x), dz = o.hd + b - Math.abs(z - o.z); return dx > 0 && dz > 0 ? [dx, dz] : null; };
+function liftOver(p) { let h = 0; for (const o of OBST) if (hits(p, p.x, p.z, o)) h = Math.max(h, o.h); return h; }
+function pushOut(p) { // après un lâcher hors d'une boîte : on dégage le brief des objets, par le plus court chemin
+  for (let n = 0; n < 3; n++) for (const o of OBST) { if (o.bin) continue; const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p);
+    if (o.box || q[1] <= q[0]) { const fwd = o.box || p.tz >= o.z; p.tz = fwd ? o.z + o.hd + b + 0.08 : o.z - o.hd - b - 0.08; if (p.tz > BZ - 0.6 || p.tz < -BZ + 0.8) { p.tz = clamp(p.tz, -BZ + 0.8, BZ - 0.6); p.tx = p.tx >= o.x ? o.x + o.hw + a + 0.08 : o.x - o.hw - a - 0.08; } }
+    else p.tx = p.tx >= o.x ? o.x + o.hw + a + 0.08 : o.x - o.hw - a - 0.08;
+    p.tx = clamp(p.tx, -BX + 0.6, BX - 0.6); p.tz = clamp(p.tz, -BZ + 0.8, BZ - 0.6); }
+}
 function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
@@ -462,6 +473,8 @@ function layout() {
     INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
   if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
+  OBST.length = 0; machines.forEach((m) => OBST.push({ x: m.g.position.x, z: m.g.position.z - 0.35, hw: TW / 2, hd: TD / 2 + 0.35, h: 0.85, box: m })); // la boîte + son couvercle ouvert derrière
+  OBST.push({ x: lever.position.x, z: lever.position.z, hw: portrait ? 1.6 : 1.0, hd: portrait ? 0.9 : 1.75, h: 0.95 }, { x: fax.position.x, z: fax.position.z, hw: portrait ? 1.0 : 1.3, hd: portrait ? 1.3 : 1.0, h: 1.3 }, { x: pot.position.x, z: pot.position.z, hw: 0.95, hd: 1.1, h: 1.9 }, { x: lamp.position.x, z: lamp.position.z, hw: 0.75, hd: 0.75, h: 0.5 }, { x: RET.x, z: RET.z, hw: 1.5, hd: 1.0, h: 1.0, bin: true });
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + (portrait ? 2.4 : 0.25); clipP[2].constant = clipP[3].constant = BZ + 0.25;
@@ -764,7 +777,7 @@ function release() {
     if (p.type === "kudos") { p.x = p.tx; p.z = p.tz; S.gold(); score(50, V3(p.x, 1, p.z), "Nice"); burst(V3(p.x, 0.6, p.z), 10); flyOff(p, V3(p.x, 6, p.z - 2), 1.3); return; } // le mot gentil s'envole quand on le lâche
     const m = machines.find((m) => Math.abs(p.tx - m.g.position.x) < TW / 2 + 0.15 && Math.abs(p.tz - m.g.position.z) < TD / 2 + 0.2);
     if (m) { if (!load(p, m)) { p.tz = m.g.position.z + 3.2; p.wob = 1; S.no(); popup(m.g.position.clone().setY(1.6), "Box full · pick up the phone", true); } return; }
-    if (Math.abs(p.tx - RET.x) < 1.5 && Math.abs(p.tz - RET.z) < 1.0) return ret(p); S.drop(); p.x = p.tx; p.z = p.tz; if (cup.state === "idle" && loc(p, cup.x, cup.z)[2]) spill(cup.x - p.x || 1, cup.z - p.z); return; }
+    if (Math.abs(p.tx - RET.x) < 1.5 && Math.abs(p.tz - RET.z) < 1.0) return ret(p); S.drop(); p.x = p.tx; p.z = p.tz; pushOut(p); /* p.x et p.z rejoignent la cible en glissant */ if (cup.state === "idle" && loc(p, cup.x, cup.z)[2]) spill(cup.x - p.x || 1, cup.z - p.z); return; }
   if (d.type === "tool") { const t = d.t; t.down = false; info(null); if (t.i === 2) { if (die.off && Math.hypot(die.x - t.tx, die.z - t.tz) < 1.0) { t.state = "idle"; t.x = t.tx; t.z = t.tz; return fixDie(); } return slam(t); } t.state = "idle"; S.drop(); }
 }
 canvas.addEventListener("pointerup", release); canvas.addEventListener("pointercancel", release);
@@ -875,7 +888,7 @@ function update(dt, T) {
     if (p.dirty) compose(p); if (p.state === "print" || p.state === "fly" || p.state === "gone") continue;
     if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1); p.trot = (li - 0.5) * 0.22; } else { p.tsc = 1; p.trot = p.rot; }
     const a = k(dt, p.state === "drag" ? 28 : 15), px = p.x, pz = p.z; p.x = lerp(p.x, p.tx, a); p.z = lerp(p.z, p.tz, a);
-    p.lift = lerp(p.lift, p.state === "drag" ? 0.45 : 0, k(dt, 14)); p.pop = Math.max(0, p.pop - dt * 3); p.wob = Math.max(0, p.wob - dt * 2.5); p.sc = lerp(p.sc, p.tsc, k(dt, 14));
+    p.lift = lerp(p.lift, p.state === "drag" ? Math.max(0.45, liftOver(p)) : p.state === "free" ? liftOver(p) : 0, k(dt, 14)); /* lâché sur un objet : il reste en l'air le temps de glisser à côté */ p.pop = Math.max(0, p.pop - dt * 3); p.wob = Math.max(0, p.wob - dt * 2.5); p.sc = lerp(p.sc, p.tsc, k(dt, 14));
     const g = p.g; g.position.set(p.x, lerp(g.position.y, p.y + p.lift * 0.9 + Math.sin(p.pop * Math.PI) * 0.25, k(dt, 20)), p.z);
     const vx = (p.x - px) / Math.max(dt, 1e-3), vz = (p.z - pz) / Math.max(dt, 1e-3);
     if (p.state === "drag" && cup.state === "idle") { const dx = cup.x - p.x, dz = cup.z - p.z, c = Math.cos(p.rot), s_ = Math.sin(p.rot), lx = dx * c - dz * s_, lz = dx * s_ + dz * c; if (Math.abs(lx) < p.w / 2 + 0.45 && Math.abs(lz) < p.h / 2 + 0.45) { const sp = Math.hypot(vx, vz), n = Math.hypot(dx, dz) || 1; if (sp > 9 && cup.sips > 0) spill(vx, vz); else { cup.tx = clamp(cup.x + (dx / n) * 0.55 + vx * dt, -BX + 0.6, BX - 0.6); cup.tz = clamp(cup.z + (dz / n) * 0.55 + vz * dt, -BZ + 0.6, BZ - 0.6); cup.wob = 1; cup.placed = true; if (cup.sips > 0 && cup.warn < G.t) { cup.warn = G.t + 2; popup(V3(cup.x, 1.4, cup.z), "Careful", true); } } } }
@@ -931,7 +944,31 @@ function tutoShots() {
   R.setPixelRatio(pr); layout();
 }
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(tutoShots, 250));
-$("bN").onclick = $("bP").onclick = () => start("normal"); $("bH").onclick = () => start("hard"); $("bC").onclick = $("bC2").onclick = () => start("chill"); $("bR").onclick = $("bA").onclick = () => start(G.mode || "normal"); // Retry / Play again : même mode
+/* tuto immersif, après l'écran d'accueil : fax, Masters, skills, téléphone, puis le lancement */
+const TUT = [
+  { o: () => [fax], s: "Fax", b: "A brief comes in", p: "Read what it asks for." },
+  { o: () => [pad, hM, ...tools.map((t) => t.g)], s: "The 3 Masters", b: "Press, sign, stamp", p: "Guidelines, Copy, Check. In that order, on the brief." },
+  { o: () => [hS, ...machines.map((m) => m.g)], s: "The 3 skills", b: "Pick the box", p: "Social Media, Web Interface or Brand Design. Two briefs per box." },
+  { o: () => [phone], s: "Phone", b: "Ship", p: "Pick it up: every box ships at once." }];
+let tutI = -1, tutMode = "normal", tutTm = 0;
+function tutRect(objs, mg) {
+  const b = new THREE.Box3(), bb = new THREE.Box3(); objs.forEach((o) => { o.updateWorldMatrix(true, true); bb.setFromObject(o); b.union(bb); }); cam.updateMatrixWorld();
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (let i = 0; i < 8; i++) { const v = V3(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).project(cam), x = (v.x * 0.5 + 0.5) * innerWidth, y = (-v.y * 0.5 + 0.5) * innerHeight; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  return [Math.max(8, x0 - mg), Math.max(8, y0 - mg), Math.min(innerWidth - 8, x1 + mg), Math.min(innerHeight - 8, y1 + mg)];
+}
+function tutPlace() {
+  if (tutI < 0) return; const [x0, y0, x1, y1] = tutRect(TUT[tutI].o(), 14), h = $("tutH").style, c = $("tutC"), W = innerWidth, H = innerHeight, m = 16, cw = c.offsetWidth, ch = c.offsetHeight, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  h.left = x0 + "px"; h.top = y0 + "px"; h.width = x1 - x0 + "px"; h.height = y1 - y0 + "px";
+  let l, t; if (H - y1 >= ch + m * 2) { t = y1 + m; l = cx - cw / 2; } else if (y0 >= ch + m * 2) { t = y0 - m - ch; l = cx - cw / 2; } else if (W - x1 >= cw + m * 2) { l = x1 + m; t = cy - ch / 2; } else if (x0 >= cw + m * 2) { l = x0 - m - cw; t = cy - ch / 2; } else { l = cx - cw / 2; t = H - ch - m; }
+  c.style.left = clamp(l, 14, W - cw - 14) + "px"; c.style.top = clamp(t, 14, H - ch - 14) + "px";
+}
+function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = `${i + 1} / ${TUT.length}`; $("tutB").textContent = s.b; $("tutP").textContent = s.p; n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
+function tutOpen(mode) { tutMode = mode; $("start").classList.add("hide"); $("tut").classList.add("on"); tutShow(0); clearInterval(tutTm); tutTm = setInterval(tutPlace, 300); }
+function tutEnd() { if (tutI < 0) return; tutI = -1; clearInterval(tutTm); $("tut").classList.remove("on"); start(tutMode); }
+$("tutN").onclick = () => (tutI >= TUT.length - 1 ? tutEnd() : tutShow(tutI + 1)); $("tutK").onclick = tutEnd;
+addEventListener("keydown", (e) => { if (tutI < 0) return; if (e.key === "Escape") tutEnd(); else if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") { e.preventDefault(); $("tutN").click(); } else if (e.key === "ArrowLeft" && tutI > 0) tutShow(tutI - 1); });
+addEventListener("resize", () => setTimeout(tutPlace, 80));
+$("bN").onclick = () => tutOpen("normal"); $("bH").onclick = () => tutOpen("hard"); $("bC").onclick = () => tutOpen("chill"); $("bP").onclick = () => start("normal"); $("bC2").onclick = () => start("chill"); $("bR").onclick = $("bA").onclick = () => start(G.mode || "normal"); // Retry / Play again : même mode
 $("mute").onclick = () => { muted = !muted; $("mute").textContent = muted ? "Sound off" : "Sound on"; };
 requestAnimationFrame(loop);
 window.__g = { die, dropDie, endDay, cup, spill, drink, scr: (x, z) => { const v = V3(x, 0.05, z).project(cam); return [(v.x * 0.5 + 0.5) * innerWidth, (-v.y * 0.5 + 0.5) * innerHeight]; }, G, start, spawn, outage, toggleAuto, tools, machines, lever, pull, get papers() { return papers; }, update: (dt) => update(dt, (TT_ += dt)) };
