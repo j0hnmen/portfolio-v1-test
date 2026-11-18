@@ -883,7 +883,7 @@ function autoUse(t, p, done) {
 const SLOTS = [{ p: null }, { p: null }, { p: null }, { p: null }];
 function autopilot() {
   if (G.busy > 0 || G.out > 0) return; const wait = (s) => { G.busy = s; };
-  const kd = papers.find((p) => p.type === "kudos" && p.state === "free"); if (kd) { stick(kd); return wait(0.3); }
+  /* Assets OS ne touche pas aux stickers : ils restent pour le joueur */
   if (die.off && !die.fly) { const t2 = tools[2], x0 = die.x, z0 = die.z; die.fly = true; tw(0.35, (q) => { die.x = die.tx = lerp(x0, t2.x, ease(q)); die.z = die.tz = lerp(z0, t2.z, ease(q)); die.lift = Math.sin(q * Math.PI) * 0.8; }, () => { die.fly = false; fixDie(); }); return wait(0.5); } if (die.fly) return;
   const free = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id);
   const move = (p, x, z, fn) => { p.state = "fly"; p.ord = ++ord; const a = p.g.position.clone(), b = V3(x, 0.05, z); tw(0.32, (q) => { const e = ease(q); p.g.position.lerpVectors(a, b, e); p.g.position.y += Math.sin(q * Math.PI) * 1.2; }, () => { p.state = "free"; p.x = p.tx = x; p.z = p.tz = z; fn(); }); wait(0.45); };
@@ -949,7 +949,7 @@ function update(dt, T) {
   for (let i = bits.length - 1; i >= 0; i--) { const c = bits[i]; c.l -= dt; c.v.y -= 18 * dt; c.m.position.addScaledVector(c.v, dt); c.m.rotation.x += c.r.x * dt; c.m.rotation.y += c.r.y * dt; if (c.l <= 0 || c.m.position.y < 0) { scene.remove(c.m); bits.splice(i, 1); } }
   if (G.on) {
     G.t += dt; G.slow -= dt; { const c = $("cof"), on = G.slow > 0 || G.x2; if (on !== c.classList.contains("on")) c.classList.toggle("on", on); if (on) { const v = (G.slow > 0 ? (G.slowWhy || "Coffee break") + " · " + Math.ceil(G.slow) + "s" : "") + (G.x2 ? (G.slow > 0 ? " · " : "") + "Next call ×2" : ""); if (c.textContent !== v) c.textContent = v; } } G.spawnT -= dt * (G.slow > 0 ? 0.3 : 1); if (G.spawnT <= 0) { const iv = G.mode === "chill" ? 8 : (G.mode === "hard" ? IVH : IV)[Math.min(G.lvl, IV.length - 1)]; G.spawnT = spawn() ? iv * (G.t < 8 ? 0.5 : 1) : 1.5; }
-    if (!G.auto && G.slow <= 0 && G.t > 4 && G.spawnT > 0.7 && !papers.some((p) => p.state === "free" || p.state === "drag" || p.state === "print")) G.spawnT = 0.7; // plus rien sur le bureau (même si les boîtes sont chargées) : un brief sort tout de suite
+    if (G.slow <= 0 && G.t > 4 && G.spawnT > 0.7 && !papers.some((p) => p.type !== "kudos" && (p.state === "free" || p.state === "drag" || p.state === "print"))) G.spawnT = 0.7; /* vaut aussi pendant le relais Assets OS ; un sticker qui traîne ne compte pas */ // plus rien sur le bureau (même si les boîtes sont chargées) : un brief sort tout de suite
     if (G.out > 0) { G.out -= dt; if (G.out <= 0) { document.body.classList.remove("outage"); lampOn = 1; S.on(); late_(380, () => S.on()); G.outT = G.mode === "hard" ? rnd(30, 48) - Math.min(10, G.lvl * 2) : 999; /* Normal : une seule panne par journée */ } }
     else if (G.mode !== "chill" && G.lvl >= 3) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
