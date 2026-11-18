@@ -587,7 +587,23 @@ function why(k, title, text) { const e = $("why"), im = e.querySelector("i"); im
 function banner(a, b) { const e = $("ban"); e.querySelector("b").textContent = a; e.querySelector("span").textContent = b; e.classList.remove("on"); void e.offsetWidth; e.classList.add("on"); }
 let AC = null, muted = false; const late_ = (ms, fn) => setTimeout(fn, ms);
 function snd(f, d = 0.08, type = "square", vol = 0.05, slide = 0) { if (!AC || muted || AC.state !== "running") return; const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + d); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + 0.02); }
-const S = { fax() { [0, 70, 140, 210, 280].forEach((d) => late_(d, () => snd(1500 + Math.random() * 500, 0.04, "square", 0.025))); }, pick() { snd(420, 0.05, "triangle", 0.05, 160); }, drop() { snd(200, 0.06, "triangle", 0.07, -70); }, thunk() { snd(85, 0.18, "sine", 0.34, -45); snd(700, 0.03, "square", 0.02); }, no() { snd(150, 0.14, "sawtooth", 0.045, -60); }, scr() { snd(2400 + Math.random() * 900, 0.015, "sawtooth", 0.012); }, rol() { snd(120 + Math.random() * 40, 0.05, "triangle", 0.03); }, done() { snd(880, 0.06, "triangle", 0.06); late_(70, () => snd(1320, 0.09, "triangle", 0.06)); }, ship() { [660, 990, 1320, 1760].forEach((f, i) => late_(i * 60, () => snd(f, 0.1, "triangle", 0.06))); }, gold() { [660, 880, 1100, 1320, 1760, 2200].forEach((f, i) => late_(i * 55, () => snd(f, 0.12, "triangle", 0.06))); }, lose() { snd(220, 0.5, "sawtooth", 0.07, -170); }, tick() { snd(1000, 0.02, "square", 0.02); }, out() { snd(300, 0.6, "sawtooth", 0.06, -260); }, on() { snd(160, 0.35, "triangle", 0.06, 420); }, jam() { snd(300, 0.08, "square", 0.05); late_(90, () => snd(210, 0.12, "square", 0.05)); }, fix() { snd(500, 0.06, "triangle", 0.07); late_(70, () => snd(1000, 0.1, "triangle", 0.07)); }, lever() { [0, 90, 180].forEach((d, i) => late_(d, () => { snd([941, 1209, 852][i], 0.07, "sine", 0.06); snd([1336, 697, 1477][i], 0.07, "sine", 0.06); })); } };
+/* sons : la palette du téléphone et du modem (tonalités DTMF, tonalité d'invitation, occupé, porteuses de modem) */
+function tone(fs, d = 0.08, vol = 0.04, delay = 0) { if (!AC || muted || AC.state !== "running") return; const t = AC.currentTime + delay, g = AC.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.006); g.gain.setValueAtTime(vol, t + Math.max(0.008, d - 0.012)); g.gain.linearRampToValueAtTime(0.0001, t + d); g.connect(AC.destination); fs.forEach((f) => { const o = AC.createOscillator(); o.type = "sine"; o.frequency.value = f; o.connect(g); o.start(t); o.stop(t + d + 0.02); }); }
+const FSK = [980, 1180, 1650, 1850];
+const S = {
+  fax() { for (let i = 0; i < 8; i++) tone([FSK[(Math.random() * 4) | 0]], 0.038, 0.028, i * 0.042); }, // le fax « parle » comme un modem
+  pick() { tone([697, 1209], 0.05, 0.03); }, drop() { tone([941, 1336], 0.055, 0.03); snd(140, 0.05, "sine", 0.05, -40); }, // touches 1 et 0
+  thunk() { snd(85, 0.18, "sine", 0.34, -45); tone([350, 440], 0.05, 0.03); },
+  no() { tone([480, 620], 0.2, 0.05); }, // occupé
+  scr() { snd(2400 + Math.random() * 900, 0.015, "sawtooth", 0.012); }, rol() { snd(120 + Math.random() * 40, 0.05, "triangle", 0.03); },
+  done() { tone([980], 0.05, 0.045); tone([1180], 0.08, 0.045, 0.06); }, // deux porteuses : c'est validé
+  ship() { [1650, 1850, 2100].forEach((f, i) => tone([f], 0.09, 0.045, i * 0.07)); },
+  gold() { tone([300, 600], 0.13, 0.06); tone([300, 600], 0.13, 0.06, 0.17); tone([2100], 0.34, 0.045, 0.36); }, // « bong bong » puis la tonalité de réponse
+  lose() { tone([480, 620], 0.22, 0.06); tone([480, 620], 0.22, 0.06, 0.34); },
+  tick() { tone([1209], 0.018, 0.02); },
+  out() { snd(350, 0.6, "sine", 0.06, -250); snd(440, 0.6, "sine", 0.06, -330); }, on() { tone([350, 440], 0.3, 0.045); }, // la tonalité s'éteint, puis revient
+  jam() { tone([480, 620], 0.08, 0.05); tone([480, 620], 0.08, 0.05, 0.13); }, fix() { tone([770, 1336], 0.07, 0.045); tone([852, 1477], 0.09, 0.045, 0.08); },
+  lever() { [[941, 1336], [697, 1209], [852, 1477]].forEach((f, i) => tone(f, 0.07, 0.05, i * 0.09)); } };
 
 /* ---------- jeu ---------- */
 const G = { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
@@ -679,11 +695,11 @@ function asset(m, kind) {
   const a = m.g.position.clone().add(V3(0, 0.3, 0)), top = a.clone().add(V3(0, 2.6, 0.6)), out = top.clone().add(portrait ? V3(2, 6, 14) : V3(4, 8, 12)); scene.add(mesh); burst(top);
   tw(0.45, (q) => { const e = back(q); mesh.position.lerpVectors(a, top, e); mesh.scale.setScalar(0.2 + 0.8 * e); mesh.rotation.set(-0.5 * e, q * Math.PI * 2, 0); }, () => tw(0.5, (q) => { const e = q * q * q; mesh.position.lerpVectors(top, out, e); mesh.rotation.z = e * 1.4; }, () => { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }, 0.45));
 }
-let modemBuf = null; // le son d'une connexion Internet d'époque, joué quand on décroche
-function modemLoad() { if (modemBuf !== null || !AC) return; modemBuf = false; fetch("modem.mp3").then((r) => r.arrayBuffer()).then((b) => AC.decodeAudioData(b)).then((b) => { modemBuf = b; }).catch(() => {}); }
-function modem() { if (!modemBuf || !AC || muted || AC.state !== "running") return; const src = AC.createBufferSource(), gn = AC.createGain(); src.buffer = modemBuf; gn.gain.value = 0.2; src.connect(gn).connect(AC.destination); src.start(); }
+const SMP = { tel: null, modem: null }; // les deux sons du téléphone (fichiers fournis par Nabil)
+function modemLoad() { if (SMP.asked || !AC) return; SMP.asked = true; ["tel", "modem"].forEach((k) => fetch(k + ".mp3").then((r) => r.arrayBuffer()).then((b) => AC.decodeAudioData(b)).then((b) => { SMP[k] = b; }).catch(() => {})); }
+function sample(k, vol) { const b = SMP[k]; if (!b || !AC || muted || AC.state !== "running") return false; const src = AC.createBufferSource(), gn = AC.createGain(); src.buffer = b; gn.gain.value = vol; src.connect(gn).connect(AC.destination); src.start(); return true; }
 function pull() {
-  if (lever.busy || !G.on) return; lever.busy = true; S.lever(); modem(); const ld = machines.filter((m) => m.papers.length);
+  if (lever.busy || !G.on) return; lever.busy = true; { const n = machines.reduce((a, m) => a + m.papers.length, 0); if (!sample(n >= 2 ? "modem" : "tel", n >= 2 ? 0.3 : 0.26)) S.lever(); } /* peu à expédier : le téléphone ; deux briefs ou plus : le modem */ const ld = machines.filter((m) => m.papers.length);
   tw(0.28, (q) => { setHS(back(q)); }, () => {
     if (!ld.length) { popup(lever.position.clone().setY(1.6), "Nothing to ship", true); S.no(); return tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.25); }
     ld.forEach((m) => { m.busy = true; m.h0 = m.hinge.rotation.x; });
