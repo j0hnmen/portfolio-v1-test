@@ -210,7 +210,7 @@ const BRIEFS = [
   ["Webinar landing page", "URL · /webinar", 1], ["Pricing section", "Site · /pricing", 1], ["Feature page hero", "Site · above the fold", 1], ["Waitlist page", "URL · /waitlist", 1], ["Changelog page", "Site · /changelog", 1], ["Case study page", "Site · /customers", 1],
   ["Q4 sales deck", "Slides · 16:9", 2], ["Event badge", "Print · 90 × 120 mm", 2], ["Business card", "Print · 85 × 55 mm", 2], ["Investor update", "Slides · 12 pages", 2], ["Booth poster", "Print · A1", 2], ["Email signature", "PNG · 600 px", 2]];
 const TRAPS = [["Make it pop??", "No format · no date"], ["Something for the thing", "See thread (which one?)"], ["Need visuals. ASAP.", "For… everything"], ["Same as last time but different", "Ref: none"], ["Quick one!!", "Details to follow (never)"]];
-const KUDOS = ["Loved the last campaign. Thank you!", "The deck landed. Client is thrilled.", "Coffee's on me this week.", "Best landing page we ever shipped."];
+const KUDOS = ["Loved the last campaign. Thank you!", "The deck landed. Client is thrilled.", "Coffee's on me this week.", "Best landing page we ever shipped.", "Sales closed the deal with your one deck.", "The CEO reposted it. Twice.", "Print came back perfect. Not one typo.", "You made the brand look expensive."];
 const WHO = ["Léa", "Tom", "Sarah", "Inès", "Max", "Jo", "Nora", "Sam"], MN = ["Guidelines", "Copy", "Check"], VB = ["Press", "Sign", "Stamp"];
 const SK = [{ n: "Social Media", s: "/aos-social-media", c: YELLOW, ink: "#1b1c25" }, { n: "Web Interface", s: "/aos-web-interface", c: BLUE, ink: "#f4f0e6" }, { n: "Brand Design", s: "/aos-brand-design", c: GREEN, ink: "#1b1c25" }];
 
@@ -513,7 +513,7 @@ function liftOver(p) { /* porté : on monte un peu avant d'arriver sur l'objet (
   return h / 0.9; }
 function wallClamp(p) { for (const o of OBST) { if (!o.wall) continue; const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p); if (q[1] <= q[0]) p.tz = p.tz >= o.z ? o.z + o.hd + b : o.z - o.hd - b; else p.tx = p.tx >= o.x ? o.x + o.hw + a : o.x - o.hw - a; } }
 function pushOut(p) { // après un lâcher hors d'une boîte : on dégage le brief des objets, par le plus court chemin
-  for (let n = 0; n < 3; n++) for (const o of OBST) { if (o.bin) continue; const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p);
+  for (let n = 0; n < 3; n++) for (const o of OBST) { const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p);
     if (o.box || q[1] <= q[0]) { const fwd = o.box || p.tz >= o.z; p.tz = fwd ? o.z + o.hd + b + 0.08 : o.z - o.hd - b - 0.08; if (p.tz > BZ - 0.6 || p.tz < -BZ + 0.8) { p.tz = clamp(p.tz, -BZ + 0.8, BZ - 0.6); p.tx = p.tx >= o.x ? o.x + o.hw + a + 0.08 : o.x - o.hw - a - 0.08; } }
     else p.tx = p.tx >= o.x ? o.x + o.hw + a + 0.08 : o.x - o.hw - a - 0.08;
     p.tx = clamp(p.tx, -BX + 0.6, BX - 0.6); p.tz = clamp(p.tz, -BZ + 0.8, BZ - 0.6); }
@@ -524,13 +524,13 @@ function layout() {
     BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
     INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.18); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
   } else {
-    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
+    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-4.85, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
     INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.42); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
   if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
   OBST.length = 0; machines.forEach((m) => OBST.push({ x: m.g.position.x, z: m.g.position.z - 0.35, hw: TW / 2, hd: TD / 2 + 0.35, h: 0.85, box: m })); // la boîte + son couvercle ouvert derrière
   /* hauteurs réelles (combiné, bac du fax, tête de la cafetière) : un brief porté passe franchement au-dessus. La lampe est un mur : on ne passe pas à travers son pied ni son bras. */
-  OBST.push({ x: lever.position.x, z: lever.position.z, hw: portrait ? 1.7 : 1.1, hd: portrait ? 1.0 : 1.85, h: 1.75 }, { x: fax.position.x, z: fax.position.z - (portrait ? 0 : 0.25), hw: portrait ? 1.35 : 1.45, hd: portrait ? 1.45 : 1.3, h: 2.35 }, { x: pot.position.x, z: pot.position.z, hw: 1.0, hd: 1.2, h: 2.75 }, { x: lamp.position.x, z: lamp.position.z, hw: 0.8, hd: 0.8, h: 0.5, wall: true }, { x: RET.x, z: RET.z, hw: 1.6, hd: 1.1, h: 1.35, bin: true });
+  OBST.push({ x: lever.position.x, z: lever.position.z, hw: portrait ? 1.7 : 1.1, hd: portrait ? 1.0 : 1.85, h: 1.75 }, { x: fax.position.x, z: fax.position.z - (portrait ? 0 : 0.25), hw: portrait ? 1.35 : 1.45, hd: portrait ? 1.45 : 1.3, h: 2.35 }, { x: pot.position.x, z: pot.position.z, hw: 1.0, hd: 1.2, h: 2.75 }, { x: lamp.position.x, z: lamp.position.z, hw: 0.8, hd: 0.8, h: 0.5, wall: true }, { x: RET.x + 0.15 * bin.scale.x, z: RET.z, hw: 1.75 * bin.scale.x, hd: 1.15 * bin.scale.x, h: 2.5 * bin.scale.x, bin: true });
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + (portrait ? 2.4 : 0.25); clipP[2].constant = clipP[3].constant = BZ + 0.25;
@@ -571,7 +571,7 @@ function wrap(g, txt, max) { const out = []; let line = ""; for (const w of txt.
 function drawBase(p) {
   const g = p.bctx, W = p.cw, H = p.ch, K = p.L.k, ink = p.ink; g.fillStyle = p.bg; g.fillRect(0, 0, W, H); g.textBaseline = "top"; g.fillStyle = ink; let mx = 24, y = 26, tf = "900 46px Mozer", up = true, lh = 45, al = "left";
   const hh = String(9 + ((p.id * 7) % 9)).padStart(2, "0") + ":" + String((p.id * 13) % 60).padStart(2, "0"), yEnd = H - 74;
-  if (K === "kudos") { g.strokeStyle = "rgba(37,35,45,.3)"; g.lineWidth = 2; g.strokeRect(W - 86, 20, 62, 74); g.fillStyle = "#564fff"; g.font = "40px serif"; g.fillText("♥", W - 72, 36); g.fillStyle = ink; g.font = "700 28px Mozer"; wrap(g, p.title, W - 130).forEach((l, i) => g.fillText(l, 26, 30 + i * 32)); g.font = "italic 18px Georgia"; g.fillText("— " + p.who, 26, H - 96); g.font = "700 13px Mozer"; g.letterSpacing = "3px"; g.globalAlpha = 0.6; g.fillText("TAP TO KEEP", 26, H - 50); g.letterSpacing = "0px"; g.globalAlpha = 1; }
+  if (K === "kudos") { g.strokeStyle = "rgba(37,35,45,.3)"; g.lineWidth = 2; g.strokeRect(W - 86, 20, 62, 74); g.fillStyle = "#564fff"; g.font = "40px serif"; g.fillText("♥", W - 72, 36); g.fillStyle = ink; g.font = "700 35px Mozer"; wrap(g, p.title, W - 130).forEach((l, i) => g.fillText(l, 26, 26 + i * 39)); g.font = "italic 18px Georgia"; g.fillText("— " + p.who, 26, H - 96); g.font = "700 13px Mozer"; g.letterSpacing = "3px"; g.globalAlpha = 0.6; g.fillText("TAP TO KEEP", 26, H - 50); g.letterSpacing = "0px"; g.globalAlpha = 1; }
   else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); { const sv = document.querySelector("#aosEnd svg"), sc = (W * 0.74) / 822; g.save(); g.translate(W / 2 - 411 * sc - 124 * sc, 66 - 156 * sc); g.scale(sc, sc); g.fillStyle = "#25232d"; sv.querySelectorAll("path").forEach((q) => g.fill(new Path2D(q.getAttribute("d")))); g.restore(); } g.font = "900 34px Mozer"; g.fillText("BREAK TIME", W / 2, H - 116); g.font = "700 15px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETS OS TAKES OVER", W / 2, H - 74); g.letterSpacing = "0px"; g.textAlign = "left"; }
   else {
     if (K === "fax") { for (let yy = 0; yy < H; yy += 46) { g.fillStyle = "rgba(0,0,0,.025)"; g.fillRect(0, yy, W, 20); } g.fillStyle = ink; g.font = `14px ${MONO}`; g.globalAlpha = 0.8; g.fillText(`FAX ${hh} · P.01/01 · FROM ${p.who.toUpperCase()}`, mx, 30); g.setLineDash([3, 4]); g.lineWidth = 2; g.strokeStyle = ink; g.beginPath(); g.moveTo(mx, 56); g.lineTo(W - mx, 56); g.stroke(); g.setLineDash([]); g.globalAlpha = 1; y = 76; tf = `700 34px ${MONO}`; lh = 39; }
@@ -628,7 +628,7 @@ function makePaper(type) {
     if (G.lvl >= 1) { const q = Math.random(); if (q < 0.22) { p.need = [1, 0, 1]; p.note = "Visual only. No copy."; } else if (q < 0.38) { p.need = [0, 1, 1]; p.note = "Text change only."; } }
   }
   if (type === "trap") { const b = pick(TRAPS); p.title = b[0]; p.meta = b[1]; p.note = "???"; }
-  if (type === "kudos") p.title = pick(KUDOS);
+  if (type === "kudos") { if (!G.kbag || !G.kbag.length) G.kbag = [...KUDOS].sort(() => Math.random() - 0.5); p.title = G.kbag.pop(); } /* jamais deux fois le même dans une partie */
   p.bg = pick(L.bg); p.ink = L.dark ? "#f0ece0" : L.k === "kraft" ? "#33241a" : L.k === "graph" ? "#33308f" : "#25232d"; p.cw = Math.round(L.w * PPU); p.ch = Math.round(L.h * PPU); p.poly = outline(L);
   const mk = (w, h) => { const c = document.createElement("canvas"); c.width = w; c.height = h; return c; };
   p.base = mk(p.cw, p.ch); p.bctx = p.base.getContext("2d"); p.mk = mk(p.cw, p.ch); p.mctx = p.mk.getContext("2d"); const c = mk(p.cw, p.ch); p.ctx = c.getContext("2d"); p.pat = p.mctx.createPattern(brand, "repeat");
@@ -683,7 +683,7 @@ const S = {
 const G = { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
 const IV = [9.5, 8.0, 6.8, 5.9, 5.3, 4.9, 4.6, 4.3, 4.1, 3.9], IVH = [7.5, 6.4, 5.5, 4.8, 4.3, 3.9, 3.6, 3.4, 3.2, 3.0]; // secondes entre deux briefs, par niveau : Normal, Hard
 const LV = [null, ["Lvl 2", "Fine print. Some briefs skip a Master."], ["Lvl 3", "The stamp may lose its die. Put it back."], ["Lvl 4", "Power may go out. The fax won't."]];
-const FORCE = { 1: ["kudos"], 2: ["intern", "trap"], 3: ["kudos"] }; // le brief doré : une seule fois par partie
+const FORCE = { 1: ["kudos"], 2: ["intern", "trap", "kudos"], 3: ["kudos"] }; /* un mot gentil par niveau (celui du niveau 1 arrive vers 9:50) */ // le brief doré : une seule fois par partie
 $("pips").innerHTML = "<i></i>".repeat(MAX);
 let press = 0;
 function hud() {
@@ -697,7 +697,7 @@ function complaint(pos, txt, card) { G.combo = 0; popup(pos, txt, true); S.lose(
 function levelUp() { const L = Math.max(Math.floor(G.shipped / 3), Math.min(3, Math.floor(G.t / (DAY / 4)))); /* un niveau tous les 3 briefs, et au moins un par quart de journée : 4 niveaux pour tout le monde */ if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
   [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.busy = false; m.full = false; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
-  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, crois: 0, trap0: false, gold0: false, x2: false, burst: false, autoShip: 0, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; crois.visible = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
+  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, crois: 0, trap0: false, gold0: false, kud0: false, kbag: null, x2: false, burst: false, autoShip: 0, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; crois.visible = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   aosUI(false); $("why").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume(); modemLoad();
 }
@@ -723,7 +723,7 @@ function endDay() {
 function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((540 + clamp(G.t / DAY, 0, 1) * 540) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 18:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
 function spawn(force) {
   const L = G.lvl, r = Math.random(); let type = "brief";
-  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (G.t > 25 && r < 0.08) type = "kudos"; else if (G.t > 14 && r < (G.mode === "hard" ? 0.24 : 0.19)) type = "trap"; else if (L >= 2 && r < 0.27) type = "intern";
+  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (!G.kud0 && G.t > 16) { G.kud0 = true; type = "kudos"; } else if (G.t > 14 && r < (G.mode === "hard" ? 0.24 : 0.19)) type = "trap"; else if (L >= 2 && r < 0.27) type = "intern";
   if (type !== "kudos" && open().length >= MAX) { if (G.mode === "chill") return false; const o = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id)[0]; if (o) tooLate(o); }
   const fr = fax.rotation.y, fd = V3(Math.sin(fr), 0, Math.cos(fr)), fs = V3(Math.cos(fr), 0, -Math.sin(fr)).multiplyScalar(0.15), p = makePaper(type), a = fax.position.clone().add(fs).addScaledVector(fd, 0.1).setY(0.3), b = fax.position.clone().add(fs).addScaledVector(fd, 1.9).setY(0.3);
   p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.rx = true;
@@ -810,8 +810,9 @@ function pickAt() {
 const HINT = [["Master Guidelines · Press", "Roll it across the brief"], ["Master Copy · Sign", "Sign the brief"], ["Master Check · Stamp", "Drop it on the brief"]];
 canvas.addEventListener("pointerdown", (e) => {
   if (!G.on || drag) return; if (!setN(e)) return; const h = pickAt(); if (!h) return;
-  if (G.out > 0 || G.auto) { if (h.kind === "food") h.what === "c" ? biteC() : bite(); return; } // relais ou panne : seul le casse-croûte répond
-  if (h.kind === "food") return h.what === "c" ? biteC() : bite(); if (h.kind === "lever") return pull();
+  if (h.kind === "food") { canvas.setPointerCapture(e.pointerId); drag = { type: "food", what: h.what }; (h.what === "c" ? crois : sand).position.y = 0.35; S.pick(); return; } /* on le prend, il est mangé quand on lâche (aussi pendant un relais ou une panne) */
+  if (G.out > 0 || G.auto) return;
+  if (h.kind === "lever") return pull();
   canvas.setPointerCapture(e.pointerId);
   if (h.kind === "die") { drag = { type: "die", dx: hit.x - die.x, dz: hit.z - die.z }; document.body.classList.add("drag"); S.pick(); return; }
   if (h.kind === "cup") { if (cup.state !== "idle") return; drag = { type: "cup", dx: hit.x - cup.x, dz: hit.z - cup.z, sx: e.clientX, sy: e.clientY, moved: false }; cup.state = "drag"; document.body.classList.add("drag"); return; }
@@ -831,6 +832,7 @@ canvas.addEventListener("pointermove", (e) => {
 function release() {
   if (!drag) return; const d = drag; drag = null; document.body.classList.remove("drag");
   if (d.type === "fix") { d.t.hold = false; return; }
+  if (d.type === "food") { (d.what === "c" ? crois : sand).position.y = 0; if (G.on) d.what === "c" ? biteC() : bite(); return; }
   if (d.type === "die") { const t = tools[2]; if (Math.hypot(die.tx - t.x, die.tz - t.z) < 1.0) fixDie(); else S.drop(); return; }
   if (d.type === "cup") { if (cup.state !== "drag") return; cup.state = "idle"; if (!d.moved) return drink(); if (cup.sips < 1 && Math.hypot(cup.tx - pot.position.x, cup.tz - pot.position.z - 0.42) < 1.5) refill(); else S.drop(); return; }
   if (d.type === "paper") { const p = d.p; if (p.state !== "drag") return; p.state = "free";
