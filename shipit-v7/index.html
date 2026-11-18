@@ -62,8 +62,8 @@ body.drag canvas#c{cursor:grabbing}
 body.outage .err{display:block}
 body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.outage .mute{font-family:ui-monospace,"SF Mono",Menlo,monospace!important;letter-spacing:0!important;color:#e9e7f2}body.outage .sc{color:#8f89ff}
 .auto{position:fixed;left:50%;top:max(58px,calc(env(safe-area-inset-top) + 58px));translate:-50% 0;z-index:6;background:var(--cream);color:var(--ink);font:700 11px Mozer;letter-spacing:.14em;text-transform:uppercase;padding:8px 13px;border-radius:99px;display:none}
-.auto.on{display:flex;align-items:center;gap:12px}
-.auto{padding:10px 18px 12px 16px!important;border-radius:16px!important;box-shadow:0 16px 30px -10px #000}.auto svg{height:clamp(26px,3.4vw,38px);width:auto;display:block;color:var(--ink);margin-top:-3px}.auto svg path[fill="#8a85ff"]{fill:#564fff}
+.auto.on{display:flex;align-items:center;justify-content:center;gap:14px}
+.auto{padding:12px 20px 14px!important;border-radius:16px!important;box-shadow:0 16px 30px -10px #000;line-height:1}.auto svg{height:clamp(26px,3.4vw,38px);width:auto;display:block;color:var(--ink);margin:0!important;flex:none}.auto svg path[fill="#8a85ff"]{fill:#564fff}
 .mute{position:fixed;left:clamp(12px,2vw,28px);top:max(74px,calc(env(safe-area-inset-top) + 74px));z-index:6;font:700 10px Mozer;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;color:var(--cream);opacity:.45;cursor:pointer;padding:8px 0}
 .ov{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(8,8,13,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .5s;padding:22px;text-align:center}
 .ov.hide{opacity:0;pointer-events:none}
@@ -90,6 +90,16 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 .tut-nav .go:active{scale:.96}@media (hover:hover){.tut-nav .go:hover{scale:1.04}}
 @keyframes tuG{50%{box-shadow:0 0 0 7px rgba(86,79,255,.55),0 0 74px 14px rgba(86,79,255,.9),inset 0 0 26px rgba(255,255,255,.16)}}
 .tut.last .k{display:none}
+.tut-bon,.tut-note{display:none}.tut.bon .tut-bon{display:flex;gap:12px;justify-content:space-between;margin-top:14px}.tut.bon .tut-card{width:min(440px,calc(100vw - 28px))}.tut.bon #tutP{display:none}
+.tut-bon figure{margin:0;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tut-bon i{display:block;width:clamp(72px,20vw,96px);aspect-ratio:1;border-radius:50%;background:#1b1c25 center/cover no-repeat;box-shadow:0 0 0 2px var(--blue),0 12px 22px -10px #000}
+.tut-bon figcaption{margin-top:10px;font:900 13px/1.1 Mozer;text-transform:uppercase;letter-spacing:.04em;color:var(--cream)}
+.tut-bon figcaption u{display:block;margin-top:5px;text-decoration:none;font:13px/1.25 Akke,Georgia,serif;text-transform:none;letter-spacing:0;opacity:.8}
+.tut.bon .tut-note{display:block;margin:14px 0 0;max-width:none;font:13px/1.35 Akke,Georgia,serif;color:var(--yellow);opacity:.95;text-align:left}
+.tut.bon{background:rgba(8,8,13,.78)}.tut.bon .tut-hole{opacity:0}
+/* étape secondaire (shredder) : cadre fin, sans halo */
+.tut.sec .tut-hole{box-shadow:0 0 0 2px rgba(239,233,220,.8),0 0 0 200vmax rgba(8,8,13,.78)}.tut.sec .tut-hole::after{display:none}
+.tut.sec .tut-card{box-shadow:inset 0 0 0 1.5px rgba(239,233,220,.45),0 26px 50px -14px #000}.tut.sec .tut-card b{font-size:clamp(20px,2.4vw,26px)}.tut.sec .tut-card small{color:var(--cream)}
 @media (prefers-reduced-motion:reduce){.tut-hole::after,.tut-nav .go{animation:none}}
 .btns button.play{font-size:clamp(26px,3.4vw,34px);padding:16px 54px 14px}
 .alt{display:flex;gap:22px;justify-content:center;margin-top:14px}.alt .ul{background:none;border:0;cursor:pointer;color:var(--cream);font:700 12px/1 Mozer;letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px;opacity:.72;padding:10px 4px}.alt .ul[hidden]{display:none}
@@ -149,7 +159,7 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <b>ERR 529</b> · Model overload
 <b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
-<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
+<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:00 · Sandwich<u>3 bites, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>16:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
@@ -319,12 +329,16 @@ function dropDie() { const t = tools[2]; if (die.off || !G.on || t.state !== "id
   tw(0.45, (q) => { die.x = die.tx = lerp(x0, x1, q); die.z = die.tz = lerp(z0, z1, q); die.lift = Math.sin(q * Math.PI) * 1.1; die.g.rotation.y = q * 5; }, () => { die.fly = false; die.lift = 0; snd(1400, 0.05, "square", 0.04); late_(70, () => snd(1100, 0.06, "square", 0.03)); popup(V3(die.x, 1.2, die.z), "The die fell off · put it back", true); }); }
 function fixDie() { const t = tools[2]; die.off = false; die.g.visible = false; t.parts.rub.visible = true; S.fix(); popup(V3(t.x, 1.4, t.z), "Fixed"); }
 /* ---------- skills : 3 boîtes à couvercle ---------- */
-function lidTex(kind, S) {
-  return cv(460, 520, (g, W, H) => {
-    g.strokeStyle = g.fillStyle = S.ink; g.lineWidth = 16; g.lineJoin = g.lineCap = "round"; g.save(); g.translate(W / 2 - 128, 40); g.scale(1.0, 1.0);
+function skDraw(g, kind) { /* pictos des skills, dans un carré de 256 */
     if (kind === 0) { g.beginPath(); g.moveTo(40, 108); g.lineTo(96, 108); g.lineTo(176, 56); g.lineTo(176, 200); g.lineTo(96, 148); g.lineTo(40, 148); g.closePath(); g.fill(); g.beginPath(); g.arc(176, 128, 46, -0.9, 0.9); g.stroke(); g.fillRect(64, 148, 28, 56); }
     else if (kind === 1) { rr(g, 28, 48, 200, 160, 18); g.stroke(); g.beginPath(); g.moveTo(28, 92); g.lineTo(228, 92); g.stroke(); [56, 82, 108].forEach((x) => { g.beginPath(); g.arc(x, 70, 7, 0, 7); g.fill(); }); g.fillRect(56, 118, 96, 16); g.fillRect(56, 150, 144, 14); g.fillRect(56, 176, 110, 14); }
     else { g.beginPath(); g.arc(80, 86, 44, 0, 7); g.fill(); g.fillRect(140, 44, 84, 84); g.beginPath(); g.moveTo(128, 136); g.lineTo(190, 224); g.lineTo(66, 224); g.closePath(); g.fill(); }
+}
+function icoTex(kind, S) { return cv(256, 256, (g) => { g.strokeStyle = g.fillStyle = S.ink; g.lineWidth = 16; g.lineJoin = g.lineCap = "round"; skDraw(g, kind); }); }
+function lidTex(kind, S) {
+  return cv(460, 520, (g, W, H) => {
+    g.strokeStyle = g.fillStyle = S.ink; g.lineWidth = 16; g.lineJoin = g.lineCap = "round"; g.save(); g.translate(W / 2 - 128, 40); g.scale(1.0, 1.0);
+    skDraw(g, kind);
     g.restore(); g.textAlign = "center"; g.textBaseline = "top"; let fs = 74; g.font = `900 ${fs}px Mozer`; const n = S.n.toUpperCase(); while (g.measureText(n).width > W - 50) g.font = `900 ${--fs}px Mozer`; g.fillText(n, W / 2, 318);
     g.font = "700 26px ui-monospace,Menlo,monospace"; g.globalAlpha = 0.7; g.fillText(S.s, W / 2, 410);
   });
@@ -340,7 +354,7 @@ const machines = SK.map((S, i) => {
   const hinge = new THREE.Group(); hinge.position.set(0, 0.4, -TD / 2); inner.add(hinge);
   const lid = box(TW, 0.07, TD, m, 0.03); lid.position.z = TD / 2; hinge.add(lid);
   const inF = flat(lidTex(i, S), TD * 0.86 * 460 / 520, TD * 0.86); inF.rotation.x = Math.PI / 2; inF.position.set(0, -0.04, TD / 2); hinge.add(inF);
-  const outF = label("", S.n, S.ink, TW - 0.4, 0.42); outF.position.set(0, 0.04, TD / 2); hinge.add(outF);
+  const outF = flat(icoTex(i, S), 1.25, 1.25); outF.position.set(0, 0.04, TD / 2); hinge.add(outF); /* couvercle fermé : le picto du skill */
   hinge.rotation.x = OPEN; return { i, g, inner, hinge, papers: [], j: 0 };
 });
 /* téléphone : on décroche pour shipper. Vertical (combiné à gauche) en desktop, horizontal (combiné au fond) en mobile */
@@ -388,7 +402,7 @@ strips(12, true);
 const CUP0 = [0, 0], cup = { g: new THREE.Group(), x: 0, z: 0, tx: 0, tz: 0, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, warn: 0, wob: 0, hint: false }; scene.add(cup.g);
 const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: cv(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.5, "rgba(255,255,255,.35)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }), color: 0xffc94a, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(glow);
 {
-  const c = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.42, 0.75, 32, 1, true), mat(CREAM, { roughness: 0.45, side: THREE.DoubleSide, emissive: CREAM, emissiveIntensity: 0.22 })); c.position.y = 0.38; c.castShadow = true; cup.g.add(c);
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.42, 0.75, 32, 1, true), mat(CREAM, { roughness: 0.45, side: THREE.DoubleSide, emissive: CREAM, emissiveIntensity: 0.22 })); c.position.y = 0.38; c.castShadow = true; cup.g.add(c); cup.body = c;
   const bt = cyl(0.42, 0.04, mat(CREAM, { roughness: 0.45 }), 32); bt.position.y = 0.03; cup.g.add(bt);
   const co = new THREE.Mesh(new THREE.CylinderGeometry(0.44, 0.44, 0.03, 32), new THREE.MeshBasicMaterial({ color: 0x4f2c14 })); cup.g.add(co); cup.co = co;
   const fo = new THREE.Mesh(new THREE.RingGeometry(0.3, 0.44, 32), new THREE.MeshBasicMaterial({ color: 0x7a5230, side: THREE.DoubleSide })); fo.rotation.x = -Math.PI / 2; fo.position.y = 0.017; co.add(fo);
@@ -428,10 +442,10 @@ const pot = new THREE.Group(); scene.add(pot);
   const tower = box(1.5, 2.2, 0.6, K, 0.1); tower.position.set(0, 1.1, -0.6); pot.add(tower);
   const head = box(1.6, 0.5, 1.25, K, 0.14); head.position.set(0, 2.15, -0.3); pot.add(head);
   const bask = cyl(0.3, 0.42, K, 24, 0.55); bask.position.set(0, 1.72, 0.05); pot.add(bask);
-  const lamp_ = box(0.16, 0.06, 0.04, new THREE.MeshBasicMaterial({ color: 0xffb04a }), 0.01); lamp_.position.set(0.5, 0.14, 1.09); pot.add(lamp_);
+  const lamp_ = box(0.16, 0.06, 0.04, new THREE.MeshBasicMaterial({ color: 0xffb04a }), 0.01); lamp_.position.set(0.5, 0.14, 1.09); pot.add(lamp_); pot.led = lamp_;
   const body = new THREE.Group(); body.position.set(0, 0.25, 0.42); pot.add(body); pot.body = body;
   const gl = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.64, 1.0, 32, 1, true), new THREE.MeshPhysicalMaterial({ color: 0xdfe6f2, roughness: 0.05, transparent: true, opacity: 0.3, side: THREE.DoubleSide, depthWrite: false })); gl.position.y = 0.5; body.add(gl);
-  const cof = cyl(0.6, 0.6, new THREE.MeshStandardMaterial({ color: 0x4a2a14, roughness: 0.25, emissive: 0x2a1407, emissiveIntensity: 0.6 }), 32, 0.56); cof.position.y = 0.32; body.add(cof);
+  const cof = cyl(0.6, 0.6, new THREE.MeshStandardMaterial({ color: 0x4a2a14, roughness: 0.25, emissive: 0x2a1407, emissiveIntensity: 0.6 }), 32, 0.56); cof.position.y = 0.32; body.add(cof); pot.cof = cof;
   const rim = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.055, 10, 32), K); rim.rotation.x = Math.PI / 2; rim.position.y = 1.0; body.add(rim);
   const hd = new THREE.Mesh(new THREE.TorusGeometry(0.36, 0.075, 10, 20, Math.PI), K); hd.rotation.z = -Math.PI / 2; hd.position.set(0.6, 0.55, 0); hd.castShadow = true; body.add(hd);
 }
@@ -462,6 +476,10 @@ let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20;
 const OBST = [];
 const half = (p) => { const c = Math.abs(Math.cos(p.rot)), s_ = Math.abs(Math.sin(p.rot)); return [(p.w * c + p.h * s_) / 2, (p.w * s_ + p.h * c) / 2]; };
 const hits = (p, x, z, o) => { const [a, b] = half(p), dx = o.hw + a - Math.abs(x - o.x), dz = o.hd + b - Math.abs(z - o.z); return dx > 0 && dz > 0 ? [dx, dz] : null; };
+const fitBox = (p) => Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1);
+function lidClamp(p) { /* le couvercle ouvert est un mur : un brief porté ne passe pas au travers */
+  const [a, b] = half(p); for (const m of machines) { if (m.full) continue; const mx = m.g.position.x, mz = m.g.position.z, inb = Math.abs(p.tx - mx) < TW / 2 + 0.15 && Math.abs(p.tz - mz) < TD / 2 + 0.2, sc = inb ? fitBox(p) : 1; if (Math.abs(p.tx - mx) < TW / 2 + a * sc - 0.05) p.tz = Math.max(p.tz, mz - TD / 2 + 0.14 + b * sc); }
+}
 function liftOver(p) { let h = 0; for (const o of OBST) if (hits(p, p.x, p.z, o)) h = Math.max(h, o.h); return h; }
 function pushOut(p) { // après un lâcher hors d'une boîte : on dégage le brief des objets, par le plus court chemin
   for (let n = 0; n < 3; n++) for (const o of OBST) { if (o.bin) continue; const q = hits(p, p.tx, p.tz, o); if (!q) continue; const [a, b] = half(p);
@@ -473,7 +491,7 @@ function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
     BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
-    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -1.75; CUP0[1] = -2.45; hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
+    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
   } else {
     BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
     INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
@@ -616,13 +634,14 @@ const S = {
   pick() { hiss(0.08, 0.1, 1300, 0.8); snd(170, 0.05, "sine", 0.05, -60); }, // le papier qu'on attrape
   drop() { hiss(0.07, 0.09, 600, 0.7, "lowpass"); snd(115, 0.08, "sine", 0.1, -50); }, // on pose : un choc mat
   thunk() { snd(60, 0.26, "sine", 0.45, -28); hiss(0.06, 0.16, 260, 0.7, "lowpass"); }, // le tampon : grave
-  no() { tone([480, 620], 0.18, 0.04); hiss(0.05, 0.05, 500, 0.8, "lowpass"); },
+  no() { tone([146, 174], 0.22, 0.075); snd(98, 0.2, "sine", 0.1, -22); hiss(0.05, 0.04, 320, 0.8, "lowpass"); }, // l'erreur : grave
+  kudos() { [1568, 2093, 2637, 3136].forEach((f, i) => tone([f], 0.1, 0.034, i * 0.06)); }, // le mot gentil : très aigu
   scr() { hiss(0.035, 0.06, 3000 + Math.random() * 800, 2.2); }, // la plume qui gratte
-  rol() { hiss(0.14, 0.13, 380 + Math.random() * 120, 1.1); snd(88 + Math.random() * 26, 0.1, "triangle", 0.06); }, // le rouleau qui passe
+  rol() { hiss(0.2, 0.04, 480 + Math.random() * 90, 0.5, "lowpass"); snd(84 + Math.random() * 10, 0.16, "sine", 0.028); }, // le rouleau qui passe : doux, sans grain
   done() { hiss(0.03, 0.09, 1100, 3); snd(330, 0.1, "triangle", 0.06); late_(75, () => snd(495, 0.12, "triangle", 0.055)); },
   ship() { [520, 660, 880].forEach((f, i) => late_(i * 70, () => { snd(f, 0.13, "triangle", 0.06); hiss(0.02, 0.03, 1500, 2); })); },
   gold() { tone([300, 600], 0.13, 0.06); tone([300, 600], 0.13, 0.06, 0.17); late_(360, () => snd(880, 0.3, "triangle", 0.06)); },
-  lose() { tone([480, 620], 0.22, 0.045); tone([480, 620], 0.22, 0.045, 0.34); snd(90, 0.3, "sine", 0.12, -40); },
+  lose() { tone([130, 155], 0.24, 0.08); tone([110, 131], 0.3, 0.08, 0.3); snd(70, 0.4, "sine", 0.14, -24); },
   tick() { hiss(0.014, 0.07, 2400, 4); snd(190, 0.02, "sine", 0.03); }, // un tic d'horloge, pas un bip
   out() { snd(350, 0.6, "sine", 0.06, -250); snd(440, 0.6, "sine", 0.06, -330); }, on() { tone([350, 440], 0.3, 0.04); },
   jam() { hiss(0.05, 0.1, 400, 0.8, "lowpass"); snd(160, 0.1, "square", 0.04, -50); }, fix() { hiss(0.03, 0.09, 900, 2); snd(260, 0.07, "triangle", 0.07); late_(70, () => snd(390, 0.1, "triangle", 0.07)); },
@@ -697,7 +716,7 @@ function resolve(p, i) {
 }
 function mark(t, a, b) {
   const p = paperAt(b[0], b[1]); if (!p) return; const d = Math.hypot(b[0] - a[0], b[1] - a[1]); if (d < 1e-4 || d > 2.5) return;
-  if (t.i === 0) { paintRoll(p, a, b, t.pang ?? t.ang, t.ang); p.roll += d; if (Math.random() < 0.55) S.rol(); if (p.roll > 0.75) resolve(p, 0); }
+  if (t.i === 0) { paintRoll(p, a, b, t.pang ?? t.ang, t.ang); p.roll += d; if (Math.random() < 0.4) S.rol(); if (p.roll > 0.75) resolve(p, 0); }
   else { inkPen(p, a, b); p.sign += d; if (Math.random() < 0.5) S.scr(); if (p.sign > 1.7) resolve(p, 1); }
 }
 function slam(t, cb) {
@@ -772,7 +791,7 @@ canvas.addEventListener("pointerdown", (e) => {
 });
 canvas.addEventListener("pointermove", (e) => {
   par.x = (e.clientX / innerWidth) * 2 - 1; par.y = (e.clientY / innerHeight) * 2 - 1; if (!drag || !setN(e)) return;
-  if (drag.type === "paper") { drag.p.tx = clamp(hit.x - drag.dx, -BX + 0.6, BX - 0.6); drag.p.tz = clamp(hit.z - drag.dz, -BZ + 0.8, BZ - 0.6); }
+  if (drag.type === "paper") { drag.p.tx = clamp(hit.x - drag.dx, -BX + 0.6, BX - 0.6); drag.p.tz = clamp(hit.z - drag.dz, -BZ + 0.8, BZ - 0.6); lidClamp(drag.p); }
   if (drag.type === "tool") { drag.t.tx = clamp(hit.x - drag.dx, -BX + 0.3, BX - 0.3); drag.t.tz = clamp(hit.z - drag.dz, -BZ + 0.3, BZ - 0.3); }
   if (drag.type === "die") { die.tx = clamp(hit.x - drag.dx, -BX + 0.5, BX - 0.5); die.tz = clamp(hit.z - drag.dz, -BZ + 0.5, BZ - 0.5); }
   if (drag.type === "cup") { if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 7) { drag.moved = true; cup.placed = true; } if (drag.moved) { cup.tx = clamp(hit.x - drag.dx, -BX + 0.6, BX - 0.6); cup.tz = clamp(hit.z - drag.dz, -BZ + 0.6, BZ - 0.6); if (cup.sips < 1 && Math.hypot(cup.tx - pot.position.x, cup.tz - pot.position.z - 0.42) < 1.5) { drag = null; document.body.classList.remove("drag"); cup.tx = pot.position.x + 0.15; cup.tz = pot.position.z + 1.75; refill(); } } }
@@ -783,7 +802,7 @@ function release() {
   if (d.type === "die") { const t = tools[2]; if (Math.hypot(die.tx - t.x, die.tz - t.z) < 1.0) fixDie(); else S.drop(); return; }
   if (d.type === "cup") { if (cup.state !== "drag") return; cup.state = "idle"; if (!d.moved) return drink(); if (cup.sips < 1 && Math.hypot(cup.tx - pot.position.x, cup.tz - pot.position.z - 0.42) < 1.5) refill(); else S.drop(); return; }
   if (d.type === "paper") { const p = d.p; if (p.state !== "drag") return; p.state = "free";
-    if (p.type === "kudos") { p.x = p.tx; p.z = p.tz; S.gold(); score(50, V3(p.x, 1, p.z), "Nice"); burst(V3(p.x, 0.6, p.z), 10); flyOff(p, V3(p.x, 6, p.z - 2), 1.3); return; } // le mot gentil s'envole quand on le lâche
+    if (p.type === "kudos") { p.x = p.tx; p.z = p.tz; S.kudos(); score(50, V3(p.x, 1, p.z), "Nice"); burst(V3(p.x, 0.6, p.z), 10); flyOff(p, V3(p.x, 6, p.z - 2), 1.3); return; } // le mot gentil s'envole quand on le lâche
     const m = machines.find((m) => Math.abs(p.tx - m.g.position.x) < TW / 2 + 0.15 && Math.abs(p.tz - m.g.position.z) < TD / 2 + 0.2);
     if (m) { if (!load(p, m)) { p.tz = m.g.position.z + 3.2; p.wob = 1; S.no(); popup(m.g.position.clone().setY(1.6), "Box full · pick up the phone", true); } return; }
     if (Math.abs(p.tx - RET.x) < 1.5 && Math.abs(p.tz - RET.z) < 1.0) return ret(p); S.drop(); p.x = p.tx; p.z = p.tz; pushOut(p); /* p.x et p.z rejoignent la cible en glissant */ if (cup.state === "idle" && loc(p, cup.x, cup.z)[2]) spill(cup.x - p.x || 1, cup.z - p.z); return; }
@@ -807,7 +826,7 @@ function autoUse(t, p, done) {
 const SLOTS = [{ p: null }, { p: null }, { p: null }, { p: null }];
 function autopilot() {
   if (G.busy > 0 || G.out > 0) return; const wait = (s) => { G.busy = s; };
-  const kd = papers.find((p) => p.type === "kudos" && p.state === "free"); if (kd) { S.gold(); score(50, V3(kd.x, 1, kd.z), "Nice"); flyOff(kd, V3(kd.x, 6, kd.z - 2), 1.3); return wait(0.3); }
+  const kd = papers.find((p) => p.type === "kudos" && p.state === "free"); if (kd) { S.kudos(); score(50, V3(kd.x, 1, kd.z), "Nice"); flyOff(kd, V3(kd.x, 6, kd.z - 2), 1.3); return wait(0.3); }
   if (die.off && !die.fly) { const t2 = tools[2], x0 = die.x, z0 = die.z; die.fly = true; tw(0.35, (q) => { die.x = die.tx = lerp(x0, t2.x, ease(q)); die.z = die.tz = lerp(z0, t2.z, ease(q)); die.lift = Math.sin(q * Math.PI) * 0.8; }, () => { die.fly = false; fixDie(); }); return wait(0.5); } if (die.fly) return;
   const free = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id);
   const move = (p, x, z, fn) => { p.state = "fly"; p.ord = ++ord; const a = p.g.position.clone(), b = V3(x, 0.05, z); tw(0.32, (q) => { const e = ease(q); p.g.position.lerpVectors(a, b, e); p.g.position.y += Math.sin(q * Math.PI) * 1.2; }, () => { p.state = "free"; p.x = p.tx = x; p.z = p.tz = z; fn(); }); wait(0.45); };
@@ -873,7 +892,7 @@ function update(dt, T) {
   for (let i = bits.length - 1; i >= 0; i--) { const c = bits[i]; c.l -= dt; c.v.y -= 18 * dt; c.m.position.addScaledVector(c.v, dt); c.m.rotation.x += c.r.x * dt; c.m.rotation.y += c.r.y * dt; if (c.l <= 0 || c.m.position.y < 0) { scene.remove(c.m); bits.splice(i, 1); } }
   if (G.on) {
     G.t += dt; G.slow -= dt; { const c = $("cof"), on = G.slow > 0 || G.x2; if (on !== c.classList.contains("on")) c.classList.toggle("on", on); if (on) { const v = (G.slow > 0 ? (G.slowWhy || "Coffee break") + " · " + Math.ceil(G.slow) + "s" : "") + (G.x2 ? (G.slow > 0 ? " · " : "") + "Next call ×2" : ""); if (c.textContent !== v) c.textContent = v; } } G.spawnT -= dt * (G.slow > 0 ? 0.3 : 1); if (G.spawnT <= 0) { const iv = G.mode === "chill" ? 8 : (G.mode === "hard" ? IVH : IV)[Math.min(G.lvl, IV.length - 1)]; G.spawnT = spawn() ? iv * (G.t < 8 ? 0.5 : 1) : 1.5; }
-    if (!G.auto && G.slow <= 0 && G.t > 4 && G.spawnT > 1 && !open().length && !machines.some((m) => m.papers.length)) G.spawnT = 1; // bureau vide : pas d'attente
+    if (!G.auto && G.slow <= 0 && G.t > 4 && G.spawnT > 0.7 && !papers.some((p) => p.state === "free" || p.state === "drag" || p.state === "print")) G.spawnT = 0.7; // plus rien sur le bureau (même si les boîtes sont chargées) : un brief sort tout de suite
     if (G.out > 0) { G.out -= dt; if (G.out <= 0) { document.body.classList.remove("outage"); lampOn = 1; S.on(); G.outT = G.mode === "hard" ? rnd(30, 48) - Math.min(10, G.lvl * 2) : 999; /* Normal : une seule panne par journée */ } }
     else if (G.mode !== "chill" && G.lvl >= 3) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
@@ -895,7 +914,7 @@ function update(dt, T) {
   const stack = papers.filter((p) => p.state === "free" || p.state === "drag").sort((a, b) => a.ord - b.ord); stack.forEach((p, i) => (p.y = 0.03 + i * 0.02));
   for (const p of papers) {
     if (p.dirty) compose(p); if (p.state === "print" || p.state === "fly" || p.state === "gone") continue;
-    if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1); p.trot = (li - 0.5) * 0.22; } else { p.tsc = 1; p.trot = p.rot; }
+    if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = fitBox(p); p.trot = (li - 0.5) * 0.22; } else { p.tsc = machines.some((m) => !m.full && Math.abs(p.x - m.g.position.x) < TW / 2 + 0.15 && Math.abs(p.z - m.g.position.z) < TD / 2 + 0.2) ? fitBox(p) : 1; p.trot = p.rot; } /* au-dessus d'une boîte, le brief prend déjà la taille de la boîte */
     const a = k(dt, p.state === "drag" ? 28 : 15), px = p.x, pz = p.z; p.x = lerp(p.x, p.tx, a); p.z = lerp(p.z, p.tz, a);
     p.lift = lerp(p.lift, p.state === "drag" ? Math.max(0.45, liftOver(p)) : p.state === "free" ? liftOver(p) : 0, k(dt, 14)); /* lâché sur un objet : il reste en l'air le temps de glisser à côté */ p.pop = Math.max(0, p.pop - dt * 3); p.wob = Math.max(0, p.wob - dt * 2.5); p.sc = lerp(p.sc, p.tsc, k(dt, 14));
     const g = p.g; g.position.set(p.x, lerp(g.position.y, p.y + p.lift * 0.9 + Math.sin(p.pop * Math.PI) * 0.25, k(dt, 20)), p.z);
@@ -924,11 +943,11 @@ function update(dt, T) {
   { const px = cup.x, pz = cup.z, a = k(dt, cup.state === "drag" ? 26 : 12); cup.x = lerp(cup.x, cup.tx, a); cup.z = lerp(cup.z, cup.tz, a); const sp = Math.hypot(cup.x - px, cup.z - pz) / Math.max(dt, 1e-3);
     if (cup.state === "drag") { cup.lift = lerp(cup.lift, 0.3, k(dt, 12)); if (sp > 24 && cup.sips > 0) { drag = null; document.body.classList.remove("drag"); spill(cup.x - px, cup.z - pz); } } else if (cup.state === "idle") cup.lift = lerp(cup.lift, 0, k(dt, 12));
     cup.wob = Math.max(0, cup.wob - dt * 2); cup.g.position.set(cup.x, cup.lift, cup.z); cup.g.rotation.x = cup.tilt; cup.g.rotation.z = -cup.tz_ + Math.sin(cup.wob * 30) * 0.08 * cup.wob; if (cup.state !== "spilt") cup.g.rotation.y = lerp(cup.g.rotation.y, 0, 0.2);
-    cup.co.visible = cup.sips > 0; cup.co.material.color.setRGB(0.075, 0.025, 0.007).multiplyScalar(0.25 + 0.75 * lampOn); const cy = 0.2 + cup.sips * 0.47; cup.co.position.y = lerp(cup.co.position.y, cy, 0.2); cup.co.scale.setScalar((0.4 + 0.08 * cup.co.position.y / 0.75) / 0.44);
+    cup.co.visible = cup.sips > 0; cup.co.material.color.setRGB(0.075, 0.025, 0.007).multiplyScalar(0.25 + 0.75 * lampOn); cup.body.material.emissiveIntensity = 0.22 * lampOn; pot.led.material.color.setHex(0xffb04a).multiplyScalar(lampOn); pot.cof.material.emissiveIntensity = 0.6 * lampOn; /* panne : plus rien ne brille */ const cy = 0.2 + cup.sips * 0.47; cup.co.position.y = lerp(cup.co.position.y, cy, 0.2); cup.co.scale.setScalar((0.4 + 0.08 * cup.co.position.y / 0.75) / 0.44);
     { const nb = open().length, hot = clamp((nb - 4) / 2, 0, 1), sp = 5 + hot * 4, want = G.on && cup.sips > 0 && cup.state === "idle" && nb >= 4 ? 0.5 + hot * 0.4 + Math.sin(T * sp) * (0.2 - hot * 0.1) : 0; glow.material.opacity = lerp(glow.material.opacity, Math.min(1, want) * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + hot * 2.4 + Math.sin(T * sp) * 0.3); // plus le backlog monte, plus la tasse brille
       if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it"); } if (nb >= 6 && want && !cup.hint2) { cup.hint2 = true; popup(V3(cup.x, 1.6, cup.z), "Coffee slows the fax · tap it", true); } }
     steamT -= dt; if (steamT <= 0 && lampOn) { steamT = 0.16; if (steamN++ % 2 || cup.sips < 1 || cup.state !== "idle") puff(pot.position.x, 1.4, pot.position.z + 0.42); else puff(cup.x, 0.85, cup.z); }
-    for (const s of steam) { if (s.l <= 0) continue; s.l -= dt; const q = 1 - s.l / s.L; s.sp.position.y += dt * 0.6; s.sp.position.x += s.vx * dt + Math.sin(T * 2 + s.L * 9) * 0.002; s.sp.scale.setScalar(0.35 + q * 1.0); s.sp.material.opacity = Math.sin(q * Math.PI) * 0.3; if (s.l <= 0) s.sp.visible = false; } }
+    for (const s of steam) { if (s.l <= 0) continue; s.l -= dt; const q = 1 - s.l / s.L; s.sp.position.y += dt * 0.6; s.sp.position.x += s.vx * dt + Math.sin(T * 2 + s.L * 9) * 0.002; s.sp.scale.setScalar(0.35 + q * 1.0); s.sp.material.opacity = Math.sin(q * Math.PI) * 0.3 * lampOn; if (s.l <= 0) s.sp.visible = false; } }
   for (const m of machines) { if (!m.busy) { const full = m.papers.length >= CAP && m.papers.every((p) => p.state === "loaded" && Math.hypot(p.x - p.tx, p.z - p.tz) < 0.25); if (full && !m.full) { S.drop(); m.j = Math.max(m.j, 0.35); } m.full = full; m.hinge.rotation.x = lerp(m.hinge.rotation.x, full ? 0 : OPEN, k(dt, full ? 16 : 10)); }
     m.j = Math.max(0, m.j - dt * 2); const j = m.j; m.inner.position.y = Math.sin(j * 26) * 0.03 * j; m.inner.rotation.z = Math.sin(j * 22) * 0.012 * j; }
   camUpdate(dt);
@@ -949,6 +968,9 @@ function tutoShots() {
     R.setPixelRatio(1); R.setSize(S_, S_, false);
     shot("tu0", fax.position.x, fax.position.z, 8.5, 0.7, 0.3, 0.82, "fax"); tools.forEach((t, i) => shot("tu" + (i + 1), t.x, t.z + (i === 0 ? 0.4 : 0), i === 1 ? 5.2 : 5.6, i === 2 ? 0.5 : 0.3, 0.3, 0.82, "t" + i));
     shot("tu4", machines[1].g.position.x, machines[1].g.position.z, 13.5, 0.9, 0.12, 0.7, "box"); shot("tu5", lever.position.x, lever.position.z, 8, 0.6, -0.3, 0.82, "phone"); shot("tuX", bin.position.x, bin.position.z, 7, 0.5, 0.35, 0.82, "bin");
+    shot("tuB0", cup.x, cup.z, 4.4, 0.4, 0.3, 0.95, "cup"); /* bonus du tuto : la tasse, le sandwich, le croissant */
+    sand.chunks.forEach((c) => (c.visible = true)); sand.visible = true; sand.position.set(SAND.x, 0, SAND.z); sand.updateMatrixWorld(true); shot("tuB1", SAND.x, SAND.z, 6.2, 0.3, 0.3, 0.95, "sand"); sand.visible = false;
+    crois.visible = true; crois.scale.setScalar(crois.s0); crois.position.set(SAND.x, 0, SAND.z); crois.updateMatrixWorld(true); shot("tuB2", SAND.x, SAND.z, 4.6, 0.3, 0.3, 0.95, "crois"); crois.visible = false;
   } catch (e) {}
   R.setPixelRatio(pr); layout();
 }
@@ -958,7 +980,10 @@ const TUT = [
   { o: () => [fax], s: "Fax", b: "A brief comes in", p: "Read what it asks for." },
   { o: () => [pad, hM, ...tools.map((t) => t.g)], s: "The 3 Masters", b: "Press, sign, stamp", p: "Guidelines, Copy, Check. In that order, on the brief." },
   { o: () => [hS, ...machines.map((m) => m.g)], s: "The 3 skills", b: "Pick the box", p: "Social Media, Web Interface or Brand Design. Two briefs per box." },
-  { o: () => [phone], s: "Phone", b: "Ship", p: "Pick it up: every box ships at once." }];
+  { o: () => [phone], s: "Phone", b: "Ship", p: "Pick it up: every box ships at once." },
+  { o: () => [bin], sec: true, s: "Also", b: "Unclear brief? Shred it", p: "No format, no date: it goes in the shredder, not in a box." },
+  { bon: true, s: "Bonus", b: "Take a break", p: "" }];
+const TUTN = TUT.filter((q) => !q.sec && !q.bon).length;
 let tutI = -1, tutMode = "normal", tutTm = 0;
 function tutRect(objs, mg) {
   const b = new THREE.Box3(), bb = new THREE.Box3(); objs.forEach((o) => { o.updateWorldMatrix(true, true); bb.setFromObject(o); b.union(bb); }); cam.updateMatrixWorld();
@@ -966,12 +991,13 @@ function tutRect(objs, mg) {
   return [Math.max(8, x0 - mg), Math.max(8, y0 - mg), Math.min(innerWidth - 8, x1 + mg), Math.min(innerHeight - 8, y1 + mg)];
 }
 function tutPlace() {
-  if (tutI < 0) return; const [x0, y0, x1, y1] = tutRect(TUT[tutI].o(), 14), h = $("tutH").style, c = $("tutC"), W = innerWidth, H = innerHeight, m = 16, cw = c.offsetWidth, ch = c.offsetHeight, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  if (tutI < 0) return; const [x0, y0, x1, y1] = TUT[tutI].bon ? [innerWidth / 2, innerHeight / 2, innerWidth / 2, innerHeight / 2] : tutRect(TUT[tutI].o(), 14), h = $("tutH").style, c = $("tutC"), W = innerWidth, H = innerHeight, m = 16, cw = c.offsetWidth, ch = c.offsetHeight, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
   h.left = x0 + "px"; h.top = y0 + "px"; h.width = x1 - x0 + "px"; h.height = y1 - y0 + "px";
   let l, t; if (H - y1 >= ch + m * 2) { t = y1 + m; l = cx - cw / 2; } else if (y0 >= ch + m * 2) { t = y0 - m - ch; l = cx - cw / 2; } else if (W - x1 >= cw + m * 2) { l = x1 + m; t = cy - ch / 2; } else if (x0 >= cw + m * 2) { l = x0 - m - cw; t = cy - ch / 2; } else { l = cx - cw / 2; t = H - ch - m; }
+  if (TUT[tutI].bon) { l = (W - cw) / 2; t = (H - ch) / 2; }
   c.style.left = clamp(l, 14, W - cw - 14) + "px"; c.style.top = clamp(t, 14, H - ch - 14) + "px";
 }
-function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = `${i + 1} / ${TUT.length}`; $("tutB").textContent = s.b; $("tutP").textContent = s.p; n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
+function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = i < TUTN ? `${i + 1} / ${TUTN}` : ""; $("tut").classList.toggle("sec", !!s.sec); $("tut").classList.toggle("bon", !!s.bon); $("tutB").textContent = s.b; $("tutP").textContent = s.p; n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
 function tutOpen(mode) { tutMode = mode; $("start").classList.add("hide"); $("tut").classList.add("on"); tutShow(0); clearInterval(tutTm); tutTm = setInterval(tutPlace, 300); }
 function tutEnd() { if (tutI < 0) return; tutI = -1; mem("shipit-tuto", "1"); clearInterval(tutTm); $("tut").classList.remove("on"); start(tutMode); }
 $("tutN").onclick = () => (tutI >= TUT.length - 1 ? tutEnd() : tutShow(tutI + 1)); $("tutK").onclick = tutEnd;
