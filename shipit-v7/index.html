@@ -387,7 +387,7 @@ function layout() {
     BX = 3.95; BZ = 7.85; OPEN = -1.8; fax.position.set(-2.45, 0, -6.8); lamp.position.set(-0.25, 0, -7.45); lever.position.set(2.35, 0, 6.75); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.6));
     INB.x = -2.0; INB.z = -0.2; RET.x = -2.3; RET.z = 6.75; pad.position.set(0, 0.008, 4.05); pot.position.set(1.75, 0, -6.9); CUP0[0] = 3.3; CUP0[1] = -5.55; hS.position.set(-1.1, 0.011, -2.12); hM.position.set(-1.1, 0.011, 2.52); camT.set(0, 0, -0.3);
   }
-  machines.forEach((m) => (m.hinge.rotation.x = OPEN)); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
+  machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + 0.25; clipP[2].constant = clipP[3].constant = BZ + 0.25;
   bin.position.set(RET.x, 0, RET.z); desk.scale.set(BX * 2 + 0.6, 1, BZ * 2 + 0.6); desk.position.set(0, -0.3, 0);
@@ -528,7 +528,7 @@ function score(n, pos, txt) { G.score = Math.max(0, G.score + n); popup(pos, (n 
 function complaint(pos, why) { G.combo = 0; popup(pos, why, true); S.lose(); shake = 1; if (G.mode === "chill") return; G.cmp++; hud(); if (G.cmp >= 3) gameOver(); }
 function levelUp() { const L = Math.floor(G.shipped / 3); if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
-  [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
+  [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.busy = false; m.full = false; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
   Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0 }); document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   $("auto").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume();
@@ -603,7 +603,8 @@ function pull() {
   if (lever.busy || !G.on) return; lever.busy = true; S.lever(); const ld = machines.filter((m) => m.papers.length);
   tw(0.28, (q) => { setHS(back(q)); }, () => {
     if (!ld.length) { popup(lever.position.clone().setY(1.6), "Nothing to ship", true); S.no(); return tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.25); }
-    tw(0.14, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(OPEN, 0, q * q))), () => {
+    ld.forEach((m) => { m.busy = true; m.h0 = m.hinge.rotation.x; });
+    tw(0.14, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(m.h0, 0, q * q))), () => {
       shake = Math.max(shake, 0.5); S.thunk(); let ok = 0; const res = [];
       const isGood = (p, m) => p.type === "gold" || (p.type !== "trap" && doneP(p) && p.kind === m.i);
       const good = ld.reduce((n, m) => n + m.papers.filter((p) => isGood(p, m)).length, 0);
@@ -615,7 +616,7 @@ function pull() {
         const pts = gold ? 500 : Math.round(100 * (1 + Math.min(G.combo - 1, 8) * 0.25) * good / 10) * 10; removePaper(p);
         res.push(() => after(pi * 0.16, () => { asset(m, kind); gold ? S.gold() : S.ship(); score(pts, pos, gold ? "Easy ship" : G.combo > 1 ? "×" + G.combo : ""); }));
       }); });
-      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); G.bestPull = Math.max(G.bestPull, ok); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
+      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); ld.forEach((m) => { m.busy = false; m.full = false; }); G.bestPull = Math.max(G.bestPull, ok); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
       tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.55);
     });
   });
@@ -751,7 +752,8 @@ function update(dt, T) {
     { const want = G.on && cup.sips > 0 && cup.state === "idle" && open().length >= 4 ? 0.55 + Math.sin(T * 5) * 0.25 : 0; glow.material.opacity = lerp(glow.material.opacity, want * lampOn, 0.1); glow.position.set(cup.x, 0.7, cup.z); glow.scale.setScalar(2.6 + Math.sin(T * 5) * 0.25); if (want && !cup.hint) { cup.hint = true; popup(V3(cup.x, 1.6, cup.z), "Need a break? Tap the coffee"); } }
     steamT -= dt; if (steamT <= 0 && lampOn) { steamT = 0.16; if (steamN++ % 2 || cup.sips < 1 || cup.state !== "idle") puff(pot.position.x, 1.4, pot.position.z + 0.42); else puff(cup.x, 0.85, cup.z); }
     for (const s of steam) { if (s.l <= 0) continue; s.l -= dt; const q = 1 - s.l / s.L; s.sp.position.y += dt * 0.6; s.sp.position.x += s.vx * dt + Math.sin(T * 2 + s.L * 9) * 0.002; s.sp.scale.setScalar(0.35 + q * 1.0); s.sp.material.opacity = Math.sin(q * Math.PI) * 0.3; if (s.l <= 0) s.sp.visible = false; } }
-  for (const m of machines) { m.j = Math.max(0, m.j - dt * 2); const j = m.j; m.inner.position.y = Math.sin(j * 26) * 0.03 * j; m.inner.rotation.z = Math.sin(j * 22) * 0.012 * j; }
+  for (const m of machines) { if (!m.busy) { const full = m.papers.length >= CAP && m.papers.every((p) => p.state === "loaded" && Math.hypot(p.x - p.tx, p.z - p.tz) < 0.25); if (full && !m.full) { S.drop(); m.j = Math.max(m.j, 0.35); } m.full = full; m.hinge.rotation.x = lerp(m.hinge.rotation.x, full ? 0 : OPEN, k(dt, full ? 16 : 10)); }
+    m.j = Math.max(0, m.j - dt * 2); const j = m.j; m.inner.position.y = Math.sin(j * 26) * 0.03 * j; m.inner.rotation.z = Math.sin(j * 22) * 0.012 * j; }
   camUpdate(dt);
 }
 let last = performance.now(), run = true, TT_ = 0;
