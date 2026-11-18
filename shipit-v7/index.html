@@ -383,11 +383,11 @@ let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20;
 function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
-    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(2.0 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); phone.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
+    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(2.0 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); phone.scale.setScalar(1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
     INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -1.75; CUP0[1] = -2.45; hS.position.set(3.45, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15);
   } else {
-    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.55); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.75); lever.position.set(2.55, 0, 6.45); phone.scale.setScalar(0.78); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.6));
-    INB.x = 0.1; INB.z = -0.45; RET.x = -2.3; RET.z = 6.6; pad.position.set(0, 0.008, 3.65); pot.position.set(0.55, 0, -6.6); CUP0[0] = 2.75; CUP0[1] = -6.15; hS.position.set(-1.1, 0.011, -2.12); hM.position.set(-1.1, 0.011, 2.12); camT.set(0, 0, -0.3);
+    BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.55, 0, 6.45); phone.scale.setScalar(0.78); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
+    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.65; pad.position.set(0, 0.008, 3.65); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.12); camT.set(0, 0, -0.3);
   }
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
@@ -689,7 +689,7 @@ function autopilot() {
     if (p.type === "trap") return move(p, RET.x, RET.z, () => ret(p));
     const i = p.type === "gold" ? -1 : p.need.findIndex((n, j) => n && !p.seal[j]);
     if (i < 0) { const m = machines[p.type === "gold" ? machines.findIndex((x) => x.papers.length < CAP) : p.kind]; if (m && m.papers.length < CAP) return move(p, m.g.position.x, m.g.position.z, () => load(p, m)); continue; }
-    if (p.slot == null) { SLOTS.forEach((q) => { if (q.p && (q.p.state === "gone" || q.p.state === "loaded" || q.p.late)) q.p = null; }); const sp = portrait ? [[-0.55, 0.3], [2.15, 0.3]] : [[-3.9, 0.35], [-0.9, 0.35], [2.1, 0.35], [5.1, 0.35]], si = SLOTS.findIndex((q, j) => !q.p && j < sp.length); if (si < 0) continue; SLOTS[si].p = p; p.slot = si; return move(p, sp[si][0], sp[si][1], () => { p.rot = 0; }); }
+    if (p.slot == null) { SLOTS.forEach((q) => { if (q.p && (q.p.state === "gone" || q.p.state === "loaded" || q.p.late)) q.p = null; }); const sp = portrait ? [[-0.5, 0.6], [2.2, 0.6]] : [[-3.9, 0.35], [-0.9, 0.35], [2.1, 0.35], [5.1, 0.35]], si = SLOTS.findIndex((q, j) => !q.p && j < sp.length); if (si < 0) continue; SLOTS[si].p = p; p.slot = si; return move(p, sp[si][0], sp[si][1], () => { p.rot = 0; }); }
     if (tools[i].state === "idle") { wait(9); autoUse(tools[i], p, () => { G.busy = 0.15; }); return; }
   }
   if (machines.some((m) => m.papers.length) && !lever.busy) { pull(); return wait(1.3); }
