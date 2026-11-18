@@ -25,9 +25,13 @@ body.drag canvas#c{cursor:grabbing}
 .pips i.on{background:var(--cream)}.pips i.on.w{background:var(--yellow)}.pips i.on.d{background:var(--yellow);animation:bl .3s infinite}
 @keyframes bl{50%{opacity:.25}}
 .cof{display:none;margin-top:7px;font:700 11px Mozer;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);background:var(--yellow);padding:5px 10px 4px;border-radius:99px}.cof.on{display:inline-block}
-.right{text-align:right;display:flex;gap:14px;align-items:flex-start}
-.clock{width:clamp(50px,5vw,68px);flex:none;margin-top:2px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}.clock svg{display:block;width:100%;height:auto}.clock .cf{fill:#14151c;stroke:var(--cream);stroke-width:2.5}.clock .cp{fill:var(--cream);opacity:.92}.clock .ct line{stroke:var(--cream);stroke-width:2;stroke-linecap:round}.clock .ct line.e{stroke:var(--yellow);stroke-width:3.4}.clock line{stroke-linecap:round}.clock .ho{stroke:#14151c;stroke-width:5.5}.clock .ho.b{stroke-width:7.5}.clock .hm{stroke:var(--cream);stroke-width:2.4}.clock .hh{stroke:var(--yellow);stroke-width:4}.clock .cc{fill:var(--yellow);stroke:#14151c;stroke-width:1.5}
-@media (max-width:560px){.right{flex-direction:column-reverse;align-items:flex-end;gap:6px}.clock{width:46px}}
+.right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.clock{width:clamp(86px,8.2vw,116px);flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.55))}.clock svg{display:block;width:100%;height:auto}
+.clock .kn{fill:#efe9dc}.clock .kr{fill:none;stroke:#efe9dc;stroke-width:1.6}.clock .bz{fill:#0c0c11;stroke:#efe9dc;stroke-width:1.4}.clock .cf{fill:#f6f2e8}
+.clock .cp{fill:var(--blue);opacity:.88}.clock .ct line{stroke:#14151c;stroke-width:.7}.clock .ct line.h{stroke-width:1.9}
+.clock .cn text{font:600 8.6px Akke,Georgia,serif;fill:#14151c;text-anchor:middle;dominant-baseline:central}
+.clock line{stroke-linecap:round}.clock .hm{stroke:#14151c;stroke-width:2.2}.clock .hh{stroke:#14151c;stroke-width:4.2}.clock .cc{fill:#14151c}.clock .cd{fill:#f6f2e8}
+@media (max-width:560px){.clock{width:66px}.right{gap:7px}}
 .sc{font:900 clamp(28px,3.6vw,48px)/.9 Mozer;font-variant-numeric:tabular-nums}
 .sub{font:700 10px Mozer;letter-spacing:.14em;text-transform:uppercase;margin-top:3px;opacity:.75}
 .cmp{display:flex;gap:5px;justify-content:flex-end;margin-top:6px}
@@ -58,14 +62,19 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
 .ov p{font:15px/1.5 Akke,Georgia,serif;max-width:500px;margin:18px auto 0;opacity:.8}
 #start{overflow:auto;align-items:start}#start>.tuto{margin:auto;padding:8px 0;max-width:1120px;width:100%}
 .tuto h1{font-size:clamp(46px,8vw,104px)}.tuto .lead{margin-top:12px;opacity:.9;font-size:16px}.tuto .rules{margin-top:20px;max-width:560px}
-.path{list-style:none;margin:26px auto 0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:8px 14px}
-.path li{position:relative;display:flex;flex-direction:column;align-items:center;gap:0}
-.path li i{display:block;width:clamp(70px,7.4vw,104px);aspect-ratio:1;border-radius:50%;background:#1b1c25 center/cover no-repeat;box-shadow:0 0 0 2.5px var(--c,rgba(239,233,220,.45)),0 14px 26px -10px rgba(0,0,0,.8)}
-.path li:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:clamp(24px,2.8vw,40px);font:900 18px/1 Mozer;opacity:.45;translate:50% 0}
-.path small{margin-top:12px;font:700 10px/1.2 Mozer;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--cream));opacity:.9}
-.path b{margin-top:5px;font:900 clamp(17px,1.7vw,23px)/1 Mozer;text-transform:uppercase}
-.path span{margin-top:6px;font:13px/1.35 Akke,Georgia,serif;opacity:.75;max-width:170px}
-@media (max-width:760px){.path{grid-template-columns:repeat(2,1fr);gap:18px 10px;margin-top:18px}.path li:not(:last-child)::after{display:none}.path li i{width:74px}.tuto h1{font-size:44px}.tuto .lead{font-size:14px}}
+.path{list-style:none;margin:26px auto 0;padding:0;display:grid;grid-template-columns:1fr 2.1fr 1fr 1fr;gap:14px;counter-reset:st}
+.path li{position:relative;display:flex;flex-direction:column;align-items:center;background:rgba(239,233,220,.06);border:1px solid rgba(239,233,220,.16);border-radius:18px;padding:22px 14px 20px}
+.path li>em{position:absolute;left:14px;top:10px;font:900 30px/1 Mozer;font-style:normal;opacity:.9}
+.path li:not(:last-child)::after{content:"→";position:absolute;right:-7px;top:50%;translate:50% -50%;font:900 20px/1 Mozer;z-index:2;background:var(--cream);color:var(--ink);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;padding-bottom:2px}
+.path .pics{display:flex;gap:14px;justify-content:center;align-items:flex-start;min-height:clamp(96px,10vw,132px)}
+.path i{display:block;width:clamp(96px,10vw,132px);aspect-ratio:1;border-radius:50%;background:#1b1c25 center/cover no-repeat;box-shadow:0 0 0 3px var(--c,rgba(239,233,220,.5)),0 16px 28px -10px rgba(0,0,0,.85)}
+.path figure{margin:0;display:flex;flex-direction:column;align-items:center}.path figure i{width:clamp(78px,7.6vw,104px)}
+.path figcaption{margin-top:10px;font:900 13px/1 Mozer;text-transform:uppercase;letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:5px}
+.path figcaption u{text-decoration:none;font:900 10px/1 Mozer;letter-spacing:.14em;padding:4px 8px 3px;border-radius:99px;color:var(--ink);background:var(--c)}
+.path small{margin-top:14px;font:700 10px/1.2 Mozer;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.path b{margin-top:5px;font:900 clamp(19px,1.9vw,26px)/1 Mozer;text-transform:uppercase}
+.path span{margin-top:7px;font:13.5px/1.35 Akke,Georgia,serif;opacity:.78;max-width:230px}
+@media (max-width:760px){.path{grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.path li{padding:16px 10px 14px}.path li.w{grid-column:1/-1}.path li:not(:last-child)::after{display:none}.path i{width:84px}.path .pics{min-height:84px;gap:10px}.path figure i{width:74px}.tuto h1{font-size:44px}.tuto .lead{font-size:14px}.path li>em{font-size:24px;left:10px;top:8px}}
 .how{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
 .how div{background:rgba(239,233,220,.07);border:1px solid rgba(239,233,220,.18);border-radius:10px;padding:10px 14px 11px;min-width:130px}
 .how small{display:block;font:700 10px/1 Mozer;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
@@ -109,7 +118,7 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
 <div class="hud">
   <div class="logo" id="logo">Ship<br>It!</div>
   <div class="mid"><small>Backlog</small><div class="pips" id="pips"></div><div class="cof" id="cof"></div></div>
-  <div class="right"><div class="clock" id="clock" aria-hidden="true"><svg viewBox="-50 -50 100 100"><circle r="47.5" class="cf"/><path id="ckP" class="cp" d=""/><g id="ckT" class="ct"></g><g id="ckM"><line y1="6" y2="-34" class="ho"/><line y1="6" y2="-34" class="hm"/></g><g id="ckH"><line y1="4" y2="-22" class="ho b"/><line y1="4" y2="-22" class="hh"/></g><circle r="3.4" class="cc"/></svg></div><div class="rs"><div class="sc" id="sc">0</div><div class="sub" id="sub"></div><div class="cmp" id="cmp"><i></i><i></i><i></i></div></div></div>
+  <div class="right"><div class="rs"><div class="sc" id="sc">0</div><div class="sub" id="sub"></div><div class="cmp" id="cmp"><i></i><i></i><i></i></div></div><div class="clock" id="clock" aria-hidden="true"><svg viewBox="-52 -60 104 112"><rect x="-5" y="-59" width="10" height="9" rx="2.5" class="kn"/><circle cy="-52" r="6.5" class="kr"/><circle r="49" class="bz"/><circle r="42.5" class="cf"/><path id="ckP" class="cp" d=""/><g id="ckT" class="ct"></g><g id="ckN" class="cn"></g><g id="ckM"><line y1="7" y2="-33" class="hm"/></g><g id="ckH"><line y1="5" y2="-21" class="hh"/></g><circle r="3.6" class="cc"/><circle r="1.2" class="cd"/></svg></div></div>
 </div>
 <div class="auto" id="auto">Autopilot · AssetsOS<i></i></div>
 <div class="ban" id="ban"><b></b><span></span></div>
@@ -120,12 +129,10 @@ body.outage .err{display:block}.err b{animation:bl .5s infinite}
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
   <ol class="path">
-    <li><i id="tu0"></i><small>1 · Fax</small><b>A brief comes in</b><span>Read what it asks for.</span></li>
-    <li style="--c:#7d77ff"><i id="tu1"></i><small>2 · Master Guidelines</small><b>Press</b><span>Roll the brand across the brief.</span></li>
-    <li style="--c:#fff186"><i id="tu2"></i><small>3 · Master Copy</small><b>Sign</b><span>Sign it with the pen.</span></li>
-    <li style="--c:#3be9ce"><i id="tu3"></i><small>4 · Master Check</small><b>Stamp</b><span>Drop the stamp on it.</span></li>
-    <li><i id="tu4"></i><small>5 · Skills</small><b>Pick the box</b><span>Social Media, Web Interface or Brand Design. Two briefs per box.</span></li>
-    <li><i id="tu5"></i><small>6 · Phone</small><b>Ship</b><span>Pick up the phone: every box ships at once.</span></li>
+    <li><em>1</em><div class="pics"><i id="tu0"></i></div><small>Fax</small><b>A brief comes in</b><span>Read what it asks for.</span></li>
+    <li class="w"><em>2</em><div class="pics"><figure style="--c:#7d77ff"><i id="tu1"></i><figcaption>Guidelines<u>Press</u></figcaption></figure><figure style="--c:#fff186"><i id="tu2"></i><figcaption>Copy<u>Sign</u></figcaption></figure><figure style="--c:#3be9ce"><i id="tu3"></i><figcaption>Check<u>Stamp</u></figcaption></figure></div><small>The 3 Masters</small><b>Press, sign, stamp</b><span>In that order, on the brief.</span></li>
+    <li><em>3</em><div class="pics"><i id="tu4"></i></div><small>The 3 skills</small><b>Pick the box</b><span>Social Media, Web Interface or Brand Design. Two briefs per box.</span></li>
+    <li><em>4</em><div class="pics"><i id="tu5"></i></div><small>Phone</small><b>Ship</b><span>Pick it up: every box ships at once.</span></li>
   </ol>
   <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 18:00 to win a card.</p>
   <div class="btns"><button id="bN">Normal</button><button class="o" id="bC">Chill</button></div>
@@ -383,6 +390,14 @@ const sand = new THREE.Group(); scene.add(sand); sand.visible = false; const SAN
     sw.add(c); return c; });
   const hb = hitBox(2.7, 0.9, 2.7); hb.position.y = 0.45; hb.userData = { kind: "food" }; sand.add(hb); sand.hb = hb;
 }
+const crois = new THREE.Group(); scene.add(crois); crois.visible = false; crois.s0 = 1;
+{
+  const nap = box(1.9, 0.03, 1.9, mat(0xf4f0e6, { roughness: 0.5 }), 0.01); nap.position.y = 0.015; nap.rotation.y = 0.5; crois.add(nap); // la serviette
+  const C1 = mat(0xd7953f, { roughness: 0.55 }), C2 = mat(0xbd7a2c, { roughness: 0.5 });
+  [[-0.62, 0.3, 0.17], [-0.36, 0.08, 0.25], [0, 0, 0.31], [0.36, 0.08, 0.25], [0.62, 0.3, 0.17]].forEach(([x, z, r], i) => { // un croissant : cinq renflements sur un arc
+    const b = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), i % 2 ? C2 : C1); b.scale.set(1.25, 0.8, 1.15); b.position.set(x, r * 0.8 + 0.03, z - 0.12); b.rotation.y = -x * 0.9; b.castShadow = true; crois.add(b); });
+  const hb = hitBox(2.2, 0.9, 2.2); hb.position.y = 0.45; hb.userData = { kind: "food", what: "c" }; crois.add(hb); crois.hb = hb; crois.rotation.y = -0.3;
+}
 const pot = new THREE.Group(); scene.add(pot);
 {
   const K = mat(0x1a1a20, { roughness: 0.38 });
@@ -424,13 +439,13 @@ let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20;
 function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
-    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(2.0 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
-    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -1.75; CUP0[1] = -2.45; hS.position.set(3.45, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1);
+    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
+    INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -1.75; CUP0[1] = -2.45; hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.4); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
   } else {
     BX = 3.95; BZ = 7.85; OPEN = -1.62; fax.position.set(-3.45, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-2.3, 0, -6.25); lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.1));
-    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72);
+    INB.x = 0.2; INB.z = 0.15; RET.x = -1.95; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.5, 0, -6.1); CUP0[0] = 2.7; CUP0[1] = -5.75; hS.position.set(3.45, 0.011, -1.62); hM.position.set(-1.1, 0.011, 2.62); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
-  if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z);
+  if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + (portrait ? 2.4 : 0.25); clipP[2].constant = clipP[3].constant = BZ + 0.25;
@@ -573,7 +588,7 @@ function complaint(pos, why) { G.combo = 0; popup(pos, why, true); S.lose(); sha
 function levelUp() { const L = Math.max(Math.floor(G.shipped / 3), Math.min(4, Math.floor(G.t / (DAY / 5)))); /* un niveau tous les 3 briefs, et au moins un par cinquième de journée : tout le monde voit les 5 */ if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
   [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.busy = false; m.full = false; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
-  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, x2: false, burst: false, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
+  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, crois: 0, x2: false, burst: false, autoShip: 0, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; crois.visible = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   $("auto").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume();
 }
@@ -662,7 +677,7 @@ function pull() {
         const pts = (gold ? 200 : Math.round(100 * (1 + Math.min(G.combo - 1, 8) * 0.25) * good / 10) * 10) * dbl; removePaper(p);
         res.push(() => after(pi * 0.16, () => { asset(m, kind); gold ? S.gold() : S.ship(); score(pts, pos, gold ? "Golden brief" : (G.combo > 1 ? "×" + G.combo : "") + (dbl > 1 ? " lunch ×2" : "")); }));
       }); });
-      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); ld.forEach((m) => { m.busy = false; m.full = false; }); G.bestPull = Math.max(G.bestPull, ok); if (ok) G.x2 = false; if (wasGold) after(0.9, () => aosBurst(12)); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
+      tw(0.34, (q) => ld.forEach((m) => (m.hinge.rotation.x = lerp(0, OPEN, back(q)))), () => { res.forEach((f) => f()); ld.forEach((m) => { m.busy = false; m.full = false; }); G.bestPull = Math.max(G.bestPull, ok); if (ok) G.x2 = false; if (G.auto && !G.burst) { G.autoShip += ok; if (G.autoShip >= 5) after(1.6, () => { if (G.on && G.auto && !G.burst) endAuto(); }); } if (wasGold) after(0.9, () => aosBurst(12)); if (ok >= 2) banner(["", "", "Double ship", "Triple ship", "Quad ship", "Penta ship", "Full house"][ok], "×" + ok + " on every asset"); levelUp(); hud(); }, 0.32);
       tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.55);
     });
   });
@@ -672,15 +687,16 @@ function pull() {
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), plane = new THREE.Plane(V3(0, 1, 0), 0), hit = V3(0, 0, 0); let drag = null;
 const setN = (e) => { ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, cam); return ray.ray.intersectPlane(plane, hit); };
 function pickAt() {
-  const hs = ray.intersectObjects([lever.hb, cup.hb, ...(G.lunch === 1 ? [sand.hb] : []), ...(die.off && !die.fly ? [die.hb] : []), ...tools.map((t) => t.hb), ...papers.filter((p) => p.state === "free" || p.state === "loaded").map((p) => p.mesh)], false); if (!hs.length) return null;
+  const hs = ray.intersectObjects([lever.hb, cup.hb, ...(G.lunch === 1 ? [sand.hb] : []), ...(G.crois === 1 ? [crois.hb] : []), ...(die.off && !die.fly ? [die.hb] : []), ...tools.map((t) => t.hb), ...papers.filter((p) => p.state === "free" || p.state === "loaded").map((p) => p.mesh)], false); if (!hs.length) return null;
   if (hs[0].object.userData.kind === "food") return hs[0].object.userData;
   const tl = hs.find((x) => x.object.userData.kind === "tool"); if (tl) return tl.object.userData; if (hs[0].object.userData.kind === "lever") return hs[0].object.userData; const dh = hs.find((x) => x.object.userData.kind === "die"); if (dh) return dh.object.userData; const cu = hs.find((x) => x.object.userData.kind === "cup"); if (cu) return cu.object.userData;
   return hs.filter((x) => x.object.userData.kind === "paper").map((x) => x.object.userData).sort((a, b) => (b.ref.state === "loaded") - (a.ref.state === "loaded") || b.ref.ord - a.ref.ord)[0];
 }
 const HINT = [["Master Guidelines · Press", "Roll it across the brief"], ["Master Copy · Sign", "Sign the brief"], ["Master Check · Stamp", "Drop it on the brief"]];
 canvas.addEventListener("pointerdown", (e) => {
-  if (!G.on || G.out > 0 || G.auto || drag) return; if (!setN(e)) return; const h = pickAt(); if (!h) return;
-  if (h.kind === "lever") return pull(); if (h.kind === "food") return bite();
+  if (!G.on || drag) return; if (!setN(e)) return; const h = pickAt(); if (!h) return;
+  if (G.out > 0 || G.auto) { if (h.kind === "food") h.what === "c" ? biteC() : bite(); return; } // relais ou panne : seul le casse-croûte répond
+  if (h.kind === "food") return h.what === "c" ? biteC() : bite(); if (h.kind === "lever") return pull();
   canvas.setPointerCapture(e.pointerId);
   if (h.kind === "die") { drag = { type: "die", dx: hit.x - die.x, dz: hit.z - die.z }; document.body.classList.add("drag"); S.pick(); return; }
   if (h.kind === "cup") { if (cup.state !== "idle") return; drag = { type: "cup", dx: hit.x - cup.x, dz: hit.z - cup.z, sx: e.clientX, sy: e.clientY, moved: false }; cup.state = "drag"; document.body.classList.add("drag"); return; }
@@ -741,16 +757,17 @@ function autopilot() {
   if (machines.some((m) => m.papers.length) && !lever.busy) { pull(); return wait(1.3); }
 }
 const KON = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]; let ki = 0;
-function toggleAuto() { if (!G.on) return; G.auto = !G.auto; G.burst = false; G.busy = 0; G.autoLeft = G.autoMax = AUTO; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); $("auto").classList.toggle("on", G.auto); if (G.auto) { release(); S.gold(); } }
+function toggleAuto() { if (!G.on) return; G.auto = !G.auto; G.burst = false; G.autoShip = 0; G.busy = 0; G.autoLeft = G.autoMax = AUTO; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); $("auto").classList.toggle("on", G.auto); if (G.auto) { release(); S.gold(); } }
 addEventListener("keydown", (e) => { ki = e.key === KON[ki] || e.key.toLowerCase() === KON[ki] ? ki + 1 : e.key === KON[0] ? 1 : 0; if (ki === KON.length) { ki = 0; toggleAuto(); } });
 let taps = 0, tapT = 0; $("logo").addEventListener("pointerdown", () => { const n = performance.now(); taps = n - tapT < 500 ? taps + 1 : 1; tapT = n; if (taps >= 5) { taps = 0; toggleAuto(); } });
 
 /* ---------- horloge : aiguilles + part claire = le temps qu'il reste avant 18:00 ---------- */
-$("ckT").innerHTML = [...Array(12)].map((_, i) => `<line transform="rotate(${i * 30})" y1="-45.5" y2="${i % 3 ? -42 : -39.5}"${i === 6 ? ' class="e"' : ""}/>`).join("");
+$("ckT").innerHTML = [...Array(60)].map((_, i) => `<line transform="rotate(${i * 6})" y1="-41" y2="${i % 5 ? -39 : -36.5}"${i % 5 ? "" : ' class="h"'}/>`).join("");
+$("ckN").innerHTML = [...Array(12)].map((_, i) => { const n = i || 12, a = (i * 30 * Math.PI) / 180; return `<text x="${(Math.sin(a) * 29.5).toFixed(1)}" y="${(-Math.cos(a) * 29.5).toFixed(1)}">${n}</text>`; }).join("");
 let ckA = -1;
 function clockSet(dp) {
   const a = 270 + 270 * dp; if (Math.abs(a - ckA) < 0.15) return; ckA = a;
-  const r = 36.5, pt = (deg) => [(Math.sin((deg * Math.PI) / 180) * r).toFixed(1), (-Math.cos((deg * Math.PI) / 180) * r).toFixed(1)], A = pt(a), B = pt(540), sw = 270 * (1 - dp);
+  const r = 42.5, pt = (deg) => [(Math.sin((deg * Math.PI) / 180) * r).toFixed(1), (-Math.cos((deg * Math.PI) / 180) * r).toFixed(1)], A = pt(a), B = pt(540), sw = 270 * (1 - dp);
   $("ckP").setAttribute("d", sw < 0.6 ? "" : `M0 0L${A[0]} ${A[1]}A${r} ${r} 0 ${sw > 180 ? 1 : 0} 1 ${B[0]} ${B[1]}Z`);
   $("ckH").setAttribute("transform", `rotate(${a.toFixed(1)})`); $("ckM").setAttribute("transform", `rotate(${((dp * 3240) % 360).toFixed(1)})`);
 }
@@ -758,26 +775,29 @@ clockSet(0);
 /* ---------- midi : un jambon-beurre, trois bouchées avant 14:00 ---------- */
 function lunchIn() {
   G.lunch = 1; G.bites = 0; sand.busy = false; sand.chunks.forEach((c) => (c.visible = true)); sand.visible = true; sand.position.set(BX + 3.5, 0, SAND.z);
-  tw(0.7, (q) => { sand.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); banner("12:00 · Lunch", "Jambon-beurre on the right. Three bites before 14:00."); S.gold();
+  tw(0.7, (q) => { sand.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); S.gold();
+  aosBurst(DAY / 9, ["12:00 · Lunch break", "AssetsOS takes the desk for an hour. Eat."], ["13:00 · Back to you", "That was AssetsOS."]);
 }
-function lunchOut(done) {
-  if (G.lunch !== 1) return; G.lunch = 2; const x0 = sand.position.x; tw(0.5, (q) => { sand.position.x = lerp(x0, BX + 3.8, q * q); }, () => { sand.visible = false; });
-  if (!done) popup(V3(SAND.x, 1.4, SAND.z), "14:00 · lunch is over", true);
-}
+function lunchOut() { if (G.lunch !== 1) return; G.lunch = 2; const x0 = sand.position.x; tw(0.5, (q) => { sand.position.x = lerp(x0, BX + 3.8, q * q); }, () => { sand.visible = false; }); }
 function bite() {
-  if (G.lunch !== 1 || sand.busy || !G.on) return; sand.busy = true; const n = ++G.bites, c = sand.chunks[3 - n], at = V3(SAND.x, 1.5, SAND.z);
+  if (G.lunch !== 1 || sand.busy || !G.on) return; sand.busy = true; const n = ++G.bites, c = sand.chunks[3 - n];
   tw(0.3, (q) => { sand.position.y = Math.sin(q * Math.PI) * 0.5; sand.rotation.z = Math.sin(q * Math.PI) * 0.16; }, () => {
     sand.position.y = 0; sand.rotation.z = 0; sand.busy = false; c.visible = false; burst(V3(SAND.x, 0.6, SAND.z), 8); snd(170, 0.12, "square", 0.06, -70);
-    G.slow = Math.max(G.slow, 0) + 10; G.slowWhy = "Lunch break";
-    if (n === 1) popup(at, "Bite 1/3 · the fax slows down");
-    if (n === 2) score(100, at, "Bite 2/3");
-    if (n >= 3) { G.x2 = true; banner("Lunch done", "Your next call ships double."); S.gold(); after(0.6, () => lunchOut(true)); }
+    score(50, V3(SAND.x, 1.5, SAND.z), "Yum"); if (n >= 3) after(0.5, lunchOut);
   });
 }
+function croisIn() { G.crois = 1; crois.visible = true; crois.scale.setScalar(crois.s0); crois.position.set(BX + 3.5, 0, SAND.z); tw(0.7, (q) => { crois.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); banner("16:00 · Croissant", "One bite. You earned it."); S.gold(); }
+function croisOut() { if (G.crois !== 1) return; G.crois = 2; const x0 = crois.position.x; tw(0.5, (q) => { crois.position.x = lerp(x0, BX + 3.8, q * q); }, () => { crois.visible = false; }); }
+function biteC() {
+  if (G.crois !== 1 || !G.on) return; G.crois = 2; burst(V3(SAND.x, 0.6, SAND.z), 10); snd(170, 0.12, "square", 0.06, -70); score(100, V3(SAND.x, 1.5, SAND.z), "Croissant");
+  tw(0.25, (q) => { crois.scale.setScalar(crois.s0 * (1 - q)); }, () => { crois.visible = false; });
+}
 /* ---------- brief doré : AssetsOS prend le bureau quelques secondes, puis rend la main ---------- */
-function aosBurst(sec) {
-  if (G.auto || !G.on) return; G.auto = true; G.burst = true; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null));
-  $("auto").classList.add("on"); release(); S.gold(); banner("AssetsOS takes over", sec + " seconds. Watch it work.");
+function aosBurst(sec, on, off) {
+  if (!G.on || (G.auto && !G.burst)) return; G.backMsg = off || ["Back to you", "That was AssetsOS."];
+  if (G.auto) { G.autoLeft = Math.max(G.autoLeft, sec); G.autoMax = Math.max(G.autoMax, sec); } // déjà en relais : on prolonge
+  else { G.auto = true; G.burst = true; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); $("auto").classList.add("on"); release(); S.gold(); }
+  banner(...(on || ["AssetsOS takes over", Math.round(sec) + " seconds. Watch it work."]));
 }
 
 /* ---------- boucle ---------- */
@@ -792,10 +812,11 @@ function update(dt, T) {
     else if (G.mode === "normal" && G.lvl >= 4) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode === "normal" && n >= 4) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = Math.max(0.18, 0.85 - (n - 4) * 0.2); S.tick(); } }
     { const dp = clamp(G.t / DAY, 0, 1); clockSet(dp);
-      if (!G.lunch && dp >= 3 / 9) lunchIn(); if (G.lunch === 1 && dp >= 5 / 9) lunchOut(false);
+      if (!G.lunch && dp >= 3 / 9) lunchIn(); if (G.lunch === 1 && dp >= 4 / 9) lunchOut();
+      if (!G.crois && dp >= 7 / 9) croisIn(); if (G.crois === 1 && dp >= 8 / 9) croisOut();
       if (!G.auto) { levelUp(); if (!G.warned && dp >= 8 / 9) { G.warned = true; banner("17:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
     if (G.auto) { G.autoLeft -= dt; $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
-      if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); $("auto").classList.remove("on"); banner("Back to you", "That was AssetsOS."); } }
+      if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); $("auto").classList.remove("on"); banner(...(G.backMsg || ["Back to you", "That was AssetsOS."])); } }
     if (G.auto && !frozen) { G.busy -= dt; G.autoT -= dt; if (G.autoT <= 0) { G.autoT = 0.12; autopilot(); } }
   }
   /* lumière : lampe, pression, panne */
