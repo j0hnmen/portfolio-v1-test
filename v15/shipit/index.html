@@ -137,9 +137,9 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <div class="aosfr"></div>
 <div class="now" id="now"><small id="nowS"></small><b id="nowT"></b></div>
 <div class="err"><span class="d">// desk.js · line 529</span>
-<span class="k">await</span> claude.ship(briefs)
-<b>ERR 529</b> · Model overloaded
-<span class="d">retrying</span><i>…</i></div>
+<span class="k">await</span> desk.ship(briefs)
+<b>ERR 529</b> · Model overload
+<b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
@@ -376,7 +376,7 @@ const bin = new THREE.Group(); scene.add(bin);
   bin.strips = [];
 }
 function strips(n, now) { for (let i = 0; i < n && bin.strips.length < 70; i++) { const st = box(0.07, rnd(0.4, 0.8), 0.02, mat(0xf4f0e6), 0.005); st.castShadow = false; const y1 = rnd(0.3, 0.75); st.position.set(rnd(-1.05, 1.05), now ? y1 : 1.25, rnd(-0.6, 0.6)); st.rotation.set(rnd(-0.3, 0.3), rnd(0, 3), rnd(-0.4, 0.4)); bin.add(st); bin.strips.push(st); if (!now) tw(0.5, (q) => { st.position.y = lerp(1.25, y1, q * q); }, null, 0.25 + i * 0.07); } }
-function shredFx() { tw(0.9, (q) => { bin.ck.rotation.x = q * Math.PI * 4; }); strips(7); for (let i = 0; i < 5; i++) late_(i * 120, () => snd(180 + Math.random() * 120, 0.09, "sawtooth", 0.03)); }
+function shredFx() { tw(0.9, (q) => { bin.ck.rotation.x = q * Math.PI * 4; }); strips(7); if (!sample("shred", 0.1)) for (let i = 0; i < 5; i++) late_(i * 120, () => hiss(0.09, 0.06, 900, 0.8)); }
 strips(12, true);
 /* café : une tasse qu'on peut boire (ou renverser) et une cafetière qui fume */
 const CUP0 = [0, 0], cup = { g: new THREE.Group(), x: 0, z: 0, tx: 0, tz: 0, sips: 1, state: "idle", tilt: 0, tz_: 0, lift: 0, placed: false, warn: 0, wob: 0, hint: false }; scene.add(cup.g);
@@ -503,7 +503,7 @@ function drawBase(p) {
   const g = p.bctx, W = p.cw, H = p.ch, K = p.L.k, ink = p.ink; g.fillStyle = p.bg; g.fillRect(0, 0, W, H); g.textBaseline = "top"; g.fillStyle = ink; let mx = 24, y = 26, tf = "900 46px Mozer", up = true, lh = 45, al = "left";
   const hh = String(9 + ((p.id * 7) % 9)).padStart(2, "0") + ":" + String((p.id * 13) % 60).padStart(2, "0"), yEnd = H - 74;
   if (K === "kudos") { g.strokeStyle = "rgba(37,35,45,.3)"; g.lineWidth = 2; g.strokeRect(W - 86, 20, 62, 74); g.fillStyle = "#564fff"; g.font = "40px serif"; g.fillText("♥", W - 72, 36); g.fillStyle = ink; g.font = "700 28px Mozer"; wrap(g, p.title, W - 130).forEach((l, i) => g.fillText(l, 26, 30 + i * 32)); g.font = "italic 18px Georgia"; g.fillText("— " + p.who, 26, H - 96); g.font = "700 13px Mozer"; g.letterSpacing = "3px"; g.globalAlpha = 0.6; g.fillText("TAP TO KEEP", 26, H - 50); g.letterSpacing = "0px"; g.globalAlpha = 1; }
-  else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); { const sv = document.querySelector("#aosEnd svg"), sc = (W * 0.74) / 822; g.save(); g.translate(W / 2 - 411 * sc - 124 * sc, 66 - 156 * sc); g.scale(sc, sc); g.fillStyle = "#25232d"; sv.querySelectorAll("path").forEach((q) => g.fill(new Path2D(q.getAttribute("d")))); g.restore(); } g.font = "700 16px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETS OS TAKES OVER", W / 2, H - 78); g.letterSpacing = "0px"; g.textAlign = "left"; }
+  else if (K === "gold") { const gr = g.createLinearGradient(0, 0, W, H); [[0, "#b8962e"], [0.3, "#fff0a8"], [0.5, "#d9bb48"], [0.65, "#fff6c6"], [1, "#b18f2a"]].forEach(([o, c]) => gr.addColorStop(o, c)); g.fillStyle = gr; g.fillRect(0, 0, W, H); g.strokeStyle = "#fff6c4"; g.lineWidth = 6; rr(g, 14, 14, W - 28, H - 28, 16); g.stroke(); g.fillStyle = "#25232d"; g.textAlign = "center"; g.font = "22px serif"; g.fillText("★  ★  ★", W / 2, 30); { const sv = document.querySelector("#aosEnd svg"), sc = (W * 0.74) / 822; g.save(); g.translate(W / 2 - 411 * sc - 124 * sc, 66 - 156 * sc); g.scale(sc, sc); g.fillStyle = "#25232d"; sv.querySelectorAll("path").forEach((q) => g.fill(new Path2D(q.getAttribute("d")))); g.restore(); } g.font = "900 34px Mozer"; g.fillText("BREAK TIME", W / 2, H - 116); g.font = "700 15px Mozer"; g.letterSpacing = "3px"; g.fillText("ANY BOX · ASSETS OS TAKES OVER", W / 2, H - 74); g.letterSpacing = "0px"; g.textAlign = "left"; }
   else {
     if (K === "fax") { for (let yy = 0; yy < H; yy += 46) { g.fillStyle = "rgba(0,0,0,.025)"; g.fillRect(0, yy, W, 20); } g.fillStyle = ink; g.font = `14px ${MONO}`; g.globalAlpha = 0.8; g.fillText(`FAX ${hh} · P.01/01 · FROM ${p.who.toUpperCase()}`, mx, 30); g.setLineDash([3, 4]); g.lineWidth = 2; g.strokeStyle = ink; g.beginPath(); g.moveTo(mx, 56); g.lineTo(W - mx, 56); g.stroke(); g.setLineDash([]); g.globalAlpha = 1; y = 76; tf = `700 34px ${MONO}`; lh = 39; }
     if (K === "sticky") { g.fillStyle = "rgba(0,0,0,.08)"; g.fillRect(0, 0, W, 44); g.fillStyle = ink; y = 64; tf = "italic 900 40px Mozer"; up = false; lh = 41; }
@@ -556,7 +556,7 @@ function makePaper(type) {
   const L = SPEC[type] || pick(LOOKS), p = { id: ++uid, type, L, need: [1, 1, 1], seal: [0, 0, 0], pen: [0, 0, 0], roll: 0, sign: 0, kind: -1, who: pick(WHO), note: "", title: "", meta: "", x: 0, z: 0, tx: 0, tz: 0, rot: 0, ord: ++ord, state: "print", lift: 0, sc: 1, tsc: 1, pop: 0, wob: 0, y: 0.03, w: L.w, h: L.h };
   if (type === "brief" || type === "intern") {
     if (!G.bag.length) G.bag = BRIEFS.map((_, i) => i).sort(() => Math.random() - 0.5); const b = BRIEFS[G.bag.pop()]; p.title = b[0]; p.meta = b[1]; p.kind = b[2];
-    if (G.lvl >= 2) { const q = Math.random(); if (q < 0.25) { p.need = [1, 0, 1]; p.note = "Visual only. No copy."; } else if (G.lvl >= 3 && q < 0.4) { p.need = [0, 1, 1]; p.note = "Text change only."; } }
+    if (G.lvl >= 1) { const q = Math.random(); if (q < 0.22) { p.need = [1, 0, 1]; p.note = "Visual only. No copy."; } else if (q < 0.38) { p.need = [0, 1, 1]; p.note = "Text change only."; } }
   }
   if (type === "trap") { const b = pick(TRAPS); p.title = b[0]; p.meta = b[1]; p.note = "???"; }
   if (type === "kudos") p.title = pick(KUDOS);
@@ -575,7 +575,7 @@ function makePaper(type) {
 function removePaper(p) { p.state = "gone"; machines.forEach((m) => { m.papers = m.papers.filter((q) => q !== p); }); scene.remove(p.g); p.tex.dispose(); p.mesh.material.dispose(); p.mesh.geometry.dispose(); papers = papers.filter((q) => q !== p); hud(); }
 const open = () => papers.filter((p) => p.type !== "kudos" && p.state !== "gone" && p.state !== "fly" && !p.late);
 const doneP = (p) => p.need.every((n, i) => !n || p.seal[i]);
-function info(p, hint) { const n = $("now"); if (!p && !hint) return n.classList.remove("on"); if (hint) { $("nowT").textContent = hint[0]; $("nowS").textContent = hint[1]; } else { $("nowT").textContent = p.type === "gold" ? "Golden brief" : p.title; const i = p.need.findIndex((x, j) => x && !p.seal[j]); $("nowS").textContent = p.type === "gold" ? "Any box, then the phone · Assets OS takes over" : i < 0 ? "Ready · pick the skill, then the phone" : "Next · Master " + MN[i] + " (" + VB[i] + ")"; } n.classList.add("on"); }
+function info(p, hint) { const n = $("now"); if (!p && !hint) return n.classList.remove("on"); if (hint) { $("nowT").textContent = hint[0]; $("nowS").textContent = hint[1]; } else { $("nowT").textContent = p.type === "gold" ? "Break time" : p.title; const i = p.need.findIndex((x, j) => x && !p.seal[j]); $("nowS").textContent = p.type === "gold" ? "Any box, then the phone · Assets OS takes over" : i < 0 ? "Ready · pick the skill, then the phone" : "Next · Master " + MN[i] + " (" + VB[i] + ")"; } n.classList.add("on"); }
 
 /* ---------- temps, particules, popups, son ---------- */
 const tweens = []; const tw = (d, fn, done, delay = 0) => tweens.push({ t: -delay, d, fn, done }); const after = (d, fn) => tw(0.0001, () => {}, fn, d);
@@ -587,29 +587,33 @@ function why(k, title, text) { const e = $("why"), im = e.querySelector("i"); im
 function banner(a, b) { const e = $("ban"); e.querySelector("b").textContent = a; e.querySelector("span").textContent = b; e.classList.remove("on"); void e.offsetWidth; e.classList.add("on"); }
 let AC = null, muted = false; const late_ = (ms, fn) => setTimeout(fn, ms);
 function snd(f, d = 0.08, type = "square", vol = 0.05, slide = 0) { if (!AC || muted || AC.state !== "running") return; const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime; o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + d); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + 0.02); }
-/* sons : la palette du téléphone et du modem (tonalités DTMF, tonalité d'invitation, occupé, porteuses de modem) */
+/* sons : de la matière (papier, bois, bruit filtré) + quelques tonalités de téléphone pour le fax et les erreurs */
 function tone(fs, d = 0.08, vol = 0.04, delay = 0) { if (!AC || muted || AC.state !== "running") return; const t = AC.currentTime + delay, g = AC.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.006); g.gain.setValueAtTime(vol, t + Math.max(0.008, d - 0.012)); g.gain.linearRampToValueAtTime(0.0001, t + d); g.connect(AC.destination); fs.forEach((f) => { const o = AC.createOscillator(); o.type = "sine"; o.frequency.value = f; o.connect(g); o.start(t); o.stop(t + d + 0.02); }); }
+let NB = null; // une seconde de bruit blanc, filtrée à la demande : frottements, chocs, grain
+function hiss(d, vol, f, q = 1, type = "bandpass", delay = 0) { if (!AC || muted || AC.state !== "running") return; if (!NB) { NB = AC.createBuffer(1, AC.sampleRate, AC.sampleRate); const c = NB.getChannelData(0); for (let i = 0; i < c.length; i++) c[i] = Math.random() * 2 - 1; } const t = AC.currentTime + delay, src = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain(); src.buffer = NB; src.loop = true; fl.type = type; fl.frequency.value = f; fl.Q.value = q; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); src.connect(fl).connect(g).connect(AC.destination); src.start(t, Math.random() * 0.6); src.stop(t + d + 0.03); }
 const FSK = [980, 1180, 1650, 1850];
 const S = {
-  fax() { for (let i = 0; i < 8; i++) tone([FSK[(Math.random() * 4) | 0]], 0.038, 0.028, i * 0.042); }, // le fax « parle » comme un modem
-  pick() { tone([697, 1209], 0.05, 0.03); }, drop() { tone([941, 1336], 0.055, 0.03); snd(140, 0.05, "sine", 0.05, -40); }, // touches 1 et 0
-  thunk() { snd(85, 0.18, "sine", 0.34, -45); tone([350, 440], 0.05, 0.03); },
-  no() { tone([480, 620], 0.2, 0.05); }, // occupé
-  scr() { snd(2400 + Math.random() * 900, 0.015, "sawtooth", 0.012); }, rol() { snd(120 + Math.random() * 40, 0.05, "triangle", 0.03); },
-  done() { tone([980], 0.05, 0.045); tone([1180], 0.08, 0.045, 0.06); }, // deux porteuses : c'est validé
-  ship() { [1650, 1850, 2100].forEach((f, i) => tone([f], 0.09, 0.045, i * 0.07)); },
-  gold() { tone([300, 600], 0.13, 0.06); tone([300, 600], 0.13, 0.06, 0.17); tone([2100], 0.34, 0.045, 0.36); }, // « bong bong » puis la tonalité de réponse
-  lose() { tone([480, 620], 0.22, 0.06); tone([480, 620], 0.22, 0.06, 0.34); },
-  tick() { tone([1209], 0.018, 0.02); },
-  out() { snd(350, 0.6, "sine", 0.06, -250); snd(440, 0.6, "sine", 0.06, -330); }, on() { tone([350, 440], 0.3, 0.045); }, // la tonalité s'éteint, puis revient
-  jam() { tone([480, 620], 0.08, 0.05); tone([480, 620], 0.08, 0.05, 0.13); }, fix() { tone([770, 1336], 0.07, 0.045); tone([852, 1477], 0.09, 0.045, 0.08); },
+  fax() { for (let i = 0; i < 8; i++) tone([FSK[(Math.random() * 4) | 0]], 0.038, 0.028, i * 0.042); },
+  pick() { hiss(0.08, 0.1, 1300, 0.8); snd(170, 0.05, "sine", 0.05, -60); }, // le papier qu'on attrape
+  drop() { hiss(0.07, 0.09, 600, 0.7, "lowpass"); snd(115, 0.08, "sine", 0.1, -50); }, // on pose : un choc mat
+  thunk() { snd(60, 0.26, "sine", 0.45, -28); hiss(0.06, 0.16, 260, 0.7, "lowpass"); }, // le tampon : grave
+  no() { tone([480, 620], 0.18, 0.04); hiss(0.05, 0.05, 500, 0.8, "lowpass"); },
+  scr() { hiss(0.035, 0.06, 3000 + Math.random() * 800, 2.2); }, // la plume qui gratte
+  rol() { hiss(0.14, 0.13, 380 + Math.random() * 120, 1.1); snd(88 + Math.random() * 26, 0.1, "triangle", 0.06); }, // le rouleau qui passe
+  done() { hiss(0.03, 0.09, 1100, 3); snd(330, 0.1, "triangle", 0.06); late_(75, () => snd(495, 0.12, "triangle", 0.055)); },
+  ship() { [520, 660, 880].forEach((f, i) => late_(i * 70, () => { snd(f, 0.13, "triangle", 0.06); hiss(0.02, 0.03, 1500, 2); })); },
+  gold() { tone([300, 600], 0.13, 0.06); tone([300, 600], 0.13, 0.06, 0.17); late_(360, () => snd(880, 0.3, "triangle", 0.06)); },
+  lose() { tone([480, 620], 0.22, 0.045); tone([480, 620], 0.22, 0.045, 0.34); snd(90, 0.3, "sine", 0.12, -40); },
+  tick() { hiss(0.014, 0.07, 2400, 4); snd(190, 0.02, "sine", 0.03); }, // un tic d'horloge, pas un bip
+  out() { snd(350, 0.6, "sine", 0.06, -250); snd(440, 0.6, "sine", 0.06, -330); }, on() { tone([350, 440], 0.3, 0.04); },
+  jam() { hiss(0.05, 0.1, 400, 0.8, "lowpass"); snd(160, 0.1, "square", 0.04, -50); }, fix() { hiss(0.03, 0.09, 900, 2); snd(260, 0.07, "triangle", 0.07); late_(70, () => snd(390, 0.1, "triangle", 0.07)); },
   lever() { [[941, 1336], [697, 1209], [852, 1477]].forEach((f, i) => tone(f, 0.07, 0.05, i * 0.09)); } };
 
 /* ---------- jeu ---------- */
 const G = { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: false, mode: "normal", t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0, outT: 40, out: 0, auto: false, autoT: 0, busy: 0, bag: [], lvl: 0, tickT: 0 }, MAX = 7;
-const IV = [10, 9.2, 8.5, 7.9, 7.4, 7.0, 6.6, 6.3, 6.0, 5.8], IVH = [7.5, 6.8, 6.2, 5.6, 5.1, 4.7, 4.4, 4.1, 3.9, 3.7]; // secondes entre deux briefs, par niveau : Normal, Hard
-const LV = [null, ["Lvl 2", "Read twice. Unclear brief? Shred it."], ["Lvl 3", "Fine print. Some briefs skip a Master."], ["Lvl 4", "The stamp may lose its die. Put it back."], ["Lvl 5", "The lamp may go out. The fax won't."]];
-const FORCE = { 1: ["trap", "gold"], 2: ["kudos"], 3: ["intern", "trap"], 4: ["kudos"] }; // le brief doré : une seule fois par partie
+const IV = [9.5, 8.0, 6.8, 5.9, 5.3, 4.9, 4.6, 4.3, 4.1, 3.9], IVH = [7.5, 6.4, 5.5, 4.8, 4.3, 3.9, 3.6, 3.4, 3.2, 3.0]; // secondes entre deux briefs, par niveau : Normal, Hard
+const LV = [null, ["Lvl 2", "Fine print. Some briefs skip a Master."], ["Lvl 3", "The stamp may lose its die. Put it back."], ["Lvl 4", "Power may go out. The fax won't."]];
+const FORCE = { 1: ["kudos"], 2: ["intern", "trap"], 3: ["kudos"] }; // le brief doré : une seule fois par partie
 $("pips").innerHTML = "<i></i>".repeat(MAX);
 let press = 0;
 function hud() {
@@ -620,10 +624,10 @@ function hud() {
 }
 function score(n, pos, txt, big) { G.score = Math.max(0, G.score + n); popup(pos, (n > 0 ? "+" + n + " " : "") + (txt || "") + (n < 0 ? " " + n : ""), n < 0, big); hud(); }
 function complaint(pos, txt, card) { G.combo = 0; popup(pos, txt, true); S.lose(); shake = 1; const c = card || ["", txt, ""]; if (G.mode === "chill") return why(c[0], c[1], c[2]); G.cmp++; hud(); why(c[0], "Complaint " + G.cmp + "/3 · " + c[1], c[2]); if (G.cmp >= 3) gameOver("3 complaints"); }
-function levelUp() { const L = Math.max(Math.floor(G.shipped / 3), Math.min(4, Math.floor(G.t / (DAY / 5)))); /* un niveau tous les 3 briefs, et au moins un par cinquième de journée : tout le monde voit les 5 */ if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
+function levelUp() { const L = Math.max(Math.floor(G.shipped / 3), Math.min(3, Math.floor(G.t / (DAY / 4)))); /* un niveau tous les 3 briefs, et au moins un par quart de journée : 4 niveaux pour tout le monde */ if (L > G.lvl) { for (let q = G.lvl + 1; q <= L; q++) if (FORCE[q]) G.forced.push(...FORCE[q]); G.lvl = L; const v = LV[L] || ["Lvl " + (L + 1), "Faster."]; banner(v[0], v[1]); } }
 function start(mode) {
   [...papers].forEach(removePaper); tweens.length = 0; cupReset(); die.off = false; die.fly = false; die.g.visible = false; tools[2].parts.rub.visible = true; bin.strips.forEach((st) => bin.remove(st)); bin.strips = []; strips(12, true); ["aosEnd", "dayEnd"].forEach((id) => $(id).classList.add("hide")); machines.forEach((m) => { m.papers = []; m.busy = false; m.full = false; m.hinge.rotation.x = OPEN; }); tools.forEach((t) => { t.state = "idle"; t.jam = false; t.down = false; t.placed = false; t.lift = 0; }); layout();
-  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, crois: 0, x2: false, burst: false, autoShip: 0, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; crois.visible = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
+  Object.assign(G, { bestPull: 0, kinds: [0, 0, 0], autoLeft: 45, forced: [], slow: 0, on: true, mode, t: 0, score: 0, shipped: 0, cmp: 0, combo: 0, spawnT: 0.6, outT: rnd(24, 34), out: 0, auto: false, busy: 0, bag: [], lvl: 0, warned: false, lunch: 0, bites: 0, crois: 0, trap0: false, gold0: false, x2: false, burst: false, autoShip: 0, autoMax: AUTO, slowWhy: "Coffee break" }); sand.visible = false; sand.busy = false; crois.visible = false; ckA = -1; document.body.classList.remove("outage"); lever.busy = false; setHS(0);
   aosUI(false); $("why").classList.remove("on"); $("start").classList.add("hide"); $("over").classList.add("hide"); info(null); hud();
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume(); modemLoad();
 }
@@ -646,7 +650,7 @@ function endDay() {
 function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((540 + clamp(G.t / DAY, 0, 1) * 540) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 18:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
 function spawn(force) {
   const L = G.lvl, r = Math.random(); let type = "brief";
-  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (L >= 1 && r < 0.09) type = "kudos"; else if (L >= 1 && r < (G.mode === "hard" ? 0.24 : 0.18)) type = "trap"; else if (L >= 3 && r < 0.27) type = "intern";
+  if (force) type = force; else if (G.forced.length) type = G.forced.shift(); else if (G.t > 25 && r < 0.08) type = "kudos"; else if (G.t > 14 && r < (G.mode === "hard" ? 0.24 : 0.19)) type = "trap"; else if (L >= 2 && r < 0.27) type = "intern";
   if (type !== "kudos" && open().length >= MAX) { if (G.mode === "chill") return false; const o = open().filter((p) => p.state === "free").sort((a, b) => a.id - b.id)[0]; if (o) tooLate(o); }
   const fr = fax.rotation.y, fd = V3(Math.sin(fr), 0, Math.cos(fr)), fs = V3(Math.cos(fr), 0, -Math.sin(fr)).multiplyScalar(0.15), p = makePaper(type), a = fax.position.clone().add(fs).addScaledVector(fd, 0.1).setY(0.3), b = fax.position.clone().add(fs).addScaledVector(fd, 1.9).setY(0.3);
   p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.scr.material.emissiveIntensity = 2.4;
@@ -671,13 +675,13 @@ function resolve(p, i) {
 }
 function mark(t, a, b) {
   const p = paperAt(b[0], b[1]); if (!p) return; const d = Math.hypot(b[0] - a[0], b[1] - a[1]); if (d < 1e-4 || d > 2.5) return;
-  if (t.i === 0) { paintRoll(p, a, b, t.pang ?? t.ang, t.ang); p.roll += d; if (Math.random() < 0.3) S.rol(); if (p.roll > 0.75) resolve(p, 0); }
+  if (t.i === 0) { paintRoll(p, a, b, t.pang ?? t.ang, t.ang); p.roll += d; if (Math.random() < 0.55) S.rol(); if (p.roll > 0.75) resolve(p, 0); }
   else { inkPen(p, a, b); p.sign += d; if (Math.random() < 0.5) S.scr(); if (p.sign > 1.7) resolve(p, 1); }
 }
 function slam(t, cb) {
   t.state = "slam"; const l0 = t.lift; tw(0.13, (q) => { t.lift = lerp(l0, 0, q * q); }, () => { t.lift = 0; t.state = "idle"; if (die.off) { S.no(); popup(V3(t.x, 1.4, t.z), "No die · no stamp", true); return cb && cb(); } S.thunk(); shake = Math.max(shake, 0.35); if (cup.state === "idle" && Math.hypot(t.x - cup.x, t.z - cup.z) < 0.85) spill(cup.x - t.x || 1, cup.z - t.z); const p = paperAt(t.x, t.z);
     if (p && p.type !== "kudos") { const ok = p.type !== "gold" && p.need[2] && !p.seal[2] && p.need.every((n, j) => j >= 2 || !n || p.seal[j]); stampInk(p, t.x, t.z, ok || !!p.seal[2]); resolve(p, 2); p.pop = Math.max(p.pop, 0.4);
-      if (ok && G.lvl >= 3 && Math.random() < Math.min(0.35, 0.14 + G.lvl * 0.03) * (G.mode === "hard" ? 1 : 0.45)) after(0.4, () => dropDie()); }
+      if (ok && G.lvl >= 2 && Math.random() < Math.min(0.35, 0.14 + G.lvl * 0.03) * (G.mode === "hard" ? 1 : 0.45)) after(0.4, () => dropDie()); }
     cb && cb(); });
 }
 function unjam() { const t = tools[2]; t.jam = false; t.hold = false; t.state = "idle"; t.fix = 0; S.fix(); popup(V3(t.x, 1.4, t.z), "Fixed"); }
@@ -695,11 +699,11 @@ function asset(m, kind) {
   const a = m.g.position.clone().add(V3(0, 0.3, 0)), top = a.clone().add(V3(0, 2.6, 0.6)), out = top.clone().add(portrait ? V3(2, 6, 14) : V3(4, 8, 12)); scene.add(mesh); burst(top);
   tw(0.45, (q) => { const e = back(q); mesh.position.lerpVectors(a, top, e); mesh.scale.setScalar(0.2 + 0.8 * e); mesh.rotation.set(-0.5 * e, q * Math.PI * 2, 0); }, () => tw(0.5, (q) => { const e = q * q * q; mesh.position.lerpVectors(top, out, e); mesh.rotation.z = e * 1.4; }, () => { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }, 0.45));
 }
-const SMP = { tel: null, modem: null }; // les deux sons du téléphone (fichiers fournis par Nabil)
-function modemLoad() { if (SMP.asked || !AC) return; SMP.asked = true; ["tel", "modem"].forEach((k) => fetch(k + ".mp3").then((r) => r.arrayBuffer()).then((b) => AC.decodeAudioData(b)).then((b) => { SMP[k] = b; }).catch(() => {})); }
+const SMP = { tel: null, shred: null }; // sons fournis par Nabil : le téléphone, et la « neige » pour la déchiqueteuse
+function modemLoad() { if (SMP.asked || !AC) return; SMP.asked = true; ["tel", "shred"].forEach((k) => fetch(k + ".mp3").then((r) => r.arrayBuffer()).then((b) => AC.decodeAudioData(b)).then((b) => { SMP[k] = b; }).catch(() => {})); }
 function sample(k, vol) { const b = SMP[k]; if (!b || !AC || muted || AC.state !== "running") return false; const src = AC.createBufferSource(), gn = AC.createGain(); src.buffer = b; gn.gain.value = vol; src.connect(gn).connect(AC.destination); src.start(); return true; }
 function pull() {
-  if (lever.busy || !G.on) return; lever.busy = true; { const n = machines.reduce((a, m) => a + m.papers.length, 0); if (!sample(n >= 2 ? "modem" : "tel", n >= 2 ? 0.3 : 0.26)) S.lever(); } /* peu à expédier : le téléphone ; deux briefs ou plus : le modem */ const ld = machines.filter((m) => m.papers.length);
+  if (lever.busy || !G.on) return; lever.busy = true; if (!sample("tel", 0.17)) S.lever(); const ld = machines.filter((m) => m.papers.length);
   tw(0.28, (q) => { setHS(back(q)); }, () => {
     if (!ld.length) { popup(lever.position.clone().setY(1.6), "Nothing to ship", true); S.no(); return tw(0.3, (q) => { setHS(1 - ease(q)); }, () => { lever.busy = false; S.drop(); }, 0.25); }
     ld.forEach((m) => { m.busy = true; m.h0 = m.hinge.rotation.x; });
@@ -849,10 +853,12 @@ function update(dt, T) {
     G.t += dt; G.slow -= dt; { const c = $("cof"), on = G.slow > 0 || G.x2; if (on !== c.classList.contains("on")) c.classList.toggle("on", on); if (on) { const v = (G.slow > 0 ? (G.slowWhy || "Coffee break") + " · " + Math.ceil(G.slow) + "s" : "") + (G.x2 ? (G.slow > 0 ? " · " : "") + "Next call ×2" : ""); if (c.textContent !== v) c.textContent = v; } } G.spawnT -= dt * (G.slow > 0 ? 0.3 : 1); if (G.spawnT <= 0) { const iv = G.mode === "chill" ? 8 : (G.mode === "hard" ? IVH : IV)[Math.min(G.lvl, IV.length - 1)]; G.spawnT = spawn() ? iv * (G.t < 8 ? 0.5 : 1) : 1.5; }
     if (!G.auto && G.slow <= 0 && G.t > 4 && G.spawnT > 1 && !open().length && !machines.some((m) => m.papers.length)) G.spawnT = 1; // bureau vide : pas d'attente
     if (G.out > 0) { G.out -= dt; if (G.out <= 0) { document.body.classList.remove("outage"); lampOn = 1; S.on(); G.outT = G.mode === "hard" ? rnd(30, 48) - Math.min(10, G.lvl * 2) : 999; /* Normal : une seule panne par journée */ } }
-    else if (G.mode !== "chill" && G.lvl >= 4) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
+    else if (G.mode !== "chill" && G.lvl >= 3) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
     { const dp = clamp(G.t / DAY, 0, 1); clockSet(dp);
       if (!G.lunch && dp >= 3 / 9) lunchIn(); if (G.lunch === 1 && dp >= 4 / 9) lunchOut();
+      if (!G.trap0 && G.t > 12) { G.trap0 = true; G.forced.push("trap"); } // le premier brief flou arrive dès le matin
+      if (!G.gold0 && dp >= 6.4 / 9 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
       if (!G.crois && dp >= 7 / 9) croisIn(); if (G.crois === 1 && dp >= 8 / 9) croisOut();
       if (!G.auto) { levelUp(); if (!G.warned && dp >= 8 / 9) { G.warned = true; banner("17:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
     if (G.auto) { G.autoLeft -= dt; $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
