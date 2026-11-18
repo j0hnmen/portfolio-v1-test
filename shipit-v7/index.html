@@ -299,20 +299,20 @@ const lever = new THREE.Group(), phone = new THREE.Group(); scene.add(lever); le
   const C1 = mat(0xe9e0c6, { roughness: 0.42 }), C2 = mat(0xdcd2b6, { roughness: 0.45 });
   const b = box(2.35, 0.4, 3.05, C1, 0.2); b.position.y = 0.2; phone.add(b);
   const b2 = box(2.41, 0.12, 3.11, C2, 0.08); b2.position.y = 0.06; phone.add(b2);
-  [-1.05, 1.05].forEach((z) => { const cr = box(0.84, 0.2, 0.74, C2, 0.1); cr.position.set(-0.62, 0.45, z); phone.add(cr); });
-  const pl = box(1.06, 0.03, 0.62, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(0.56, 0.41, -1.02); phone.add(pl);
-  const l = label("Pick up to", "Ship", "#1b1c25", 0.86, 0.5); l.position.set(0.6, 0.43, -1.02); phone.add(l);
-  for (let i = 0; i < 12; i++) { const kx = cyl(0.12, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 16); kx.position.set(0.23 + (i % 3) * 0.33, 0.43, -0.4 + ((i / 3) | 0) * 0.31); kx.castShadow = false; phone.add(kx); }
-  const dg = flat(cv(330, 410, (g) => { g.fillStyle = "#3a352a"; g.font = "900 44px Mozer"; g.textAlign = "center"; g.textBaseline = "middle"; "123456789*0#".split("").forEach((c, i) => g.fillText(c, 55 + (i % 3) * 110, 52 + ((i / 3) | 0) * 103)); }), 0.99, 1.23); dg.position.set(0.56, 0.47, 0.065); phone.add(dg);
-  const st = box(0.9, 0.02, 0.46, mat(0xfaf7ee, { roughness: 0.5 }), 0.02); st.position.set(0.56, 0.405, 1.12); phone.add(st);
-  const hs = new THREE.Group(); hs.position.set(-0.62, 0.7, 0); phone.add(hs); lever.hs = hs;
-  const bar = box(0.46, 0.24, 2.9, C1, 0.12); hs.add(bar);
-  [-1.05, 1.05].forEach((z) => { const e = box(0.66, 0.34, 0.74, C1, 0.16); e.position.set(0, -0.07, z); hs.add(e); });
+  [-1.05, 1.05].forEach((z) => { const cr = box(1.0, 0.22, 0.9, C2, 0.1); cr.position.set(-0.62, 0.46, z); phone.add(cr); });
+  const pl = box(0.92, 0.03, 0.6, mat(0xf7f3e6, { roughness: 0.3 }), 0.02); pl.position.set(0.66, 0.41, -1.04); phone.add(pl);
+  const l = label("Pick up to", "Ship", "#1b1c25", 0.78, 0.46); l.position.set(0.68, 0.43, -1.04); phone.add(l);
+  for (let i = 0; i < 12; i++) { const kx = cyl(0.12, 0.07, mat(0xf4eedd, { roughness: 0.4 }), 16); kx.position.set(0.36 + (i % 3) * 0.3, 0.43, -0.4 + ((i / 3) | 0) * 0.31); kx.castShadow = false; phone.add(kx); }
+  const dg = flat(cv(330, 410, (g) => { g.fillStyle = "#3a352a"; g.font = "900 44px Mozer"; g.textAlign = "center"; g.textBaseline = "middle"; "123456789*0#".split("").forEach((c, i) => g.fillText(c, 55 + (i % 3) * 110, 52 + ((i / 3) | 0) * 103)); }), 0.9, 1.23); dg.position.set(0.66, 0.47, 0.065); phone.add(dg);
+  const st = box(0.84, 0.02, 0.46, mat(0xfaf7ee, { roughness: 0.5 }), 0.02); st.position.set(0.66, 0.405, 1.12); phone.add(st);
+  const hs = new THREE.Group(); hs.position.set(-0.62, 0.8, 0); phone.add(hs); lever.hs = hs;
+  const bar = box(0.66, 0.34, 2.96, C1, 0.17); hs.add(bar);
+  [-1.05, 1.05].forEach((z) => { const e = box(0.9, 0.48, 0.9, C1, 0.22); e.position.set(0, -0.1, z); hs.add(e); });
   const pts = []; for (let i = 0; i <= 150; i++) { const q = i / 150, cx = -1.05 - Math.sin(q * Math.PI) * 0.8, cz = 1.35 - q * 1.5, cy = 0.4 * (1 - q) * (1 - q) + 0.09, a = q * Math.PI * 2 * 17; pts.push(V3(cx, cy + Math.sin(a) * 0.075, cz + Math.cos(a) * 0.075)); }
   const cord = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 420, 0.026, 6), C2); cord.castShadow = true; phone.add(cord);
   const h = hitBox(2.7, 1.4, 3.3); h.position.y = 0.6; h.userData = { kind: "lever" }; phone.add(h); lever.hb = h; lever.busy = false;
 }
-const setHS = (v) => { lever.hs.position.y = 0.7 + v * 1.0; lever.hs.position.x = -0.62 - v * 0.3; lever.hs.rotation.set(v * 0.2, v * 0.3, -v * 0.45); };
+const setHS = (v) => { lever.hs.position.y = 0.8 + v * 1.0; lever.hs.position.x = -0.62 - v * 0.3; lever.hs.rotation.set(v * 0.2, v * 0.3, -v * 0.45); };
 /* déchiqueteuse : pour les briefs flous */
 const bin = new THREE.Group(); scene.add(bin);
 {
