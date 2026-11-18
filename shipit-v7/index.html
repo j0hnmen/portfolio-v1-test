@@ -91,6 +91,9 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 @keyframes tuG{50%{box-shadow:0 0 0 7px rgba(86,79,255,.55),0 0 74px 14px rgba(86,79,255,.9),inset 0 0 26px rgba(255,255,255,.16)}}
 .tut.last .k{display:none}
 @media (prefers-reduced-motion:reduce){.tut-hole::after,.tut-nav .go{animation:none}}
+.btns button.play{font-size:clamp(26px,3.4vw,34px);padding:16px 54px 14px}
+.alt{display:flex;gap:22px;justify-content:center;margin-top:14px}.alt .ul{background:none;border:0;cursor:pointer;color:var(--cream);font:700 12px/1 Mozer;letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px;opacity:.72;padding:10px 4px}.alt .ul[hidden]{display:none}
+.ov p.unl{margin-top:16px;font:900 15px/1 Mozer;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);opacity:1}.ov p.unl[hidden]{display:none}
 .how{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
 .how div{background:rgba(239,233,220,.07);border:1px solid rgba(239,233,220,.18);border-radius:10px;padding:10px 14px 11px;min-width:130px}
 .how small{display:block;font:700 10px/1 Mozer;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
@@ -151,7 +154,8 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 9:00 to 18:00. Every brief takes the same path.</p>
   <p class="rules">Keep the backlog under seven. Three complaints and the client walks. Make it to 18:00 to win a card.</p>
-  <div class="btns"><button class="o" id="bC">Relax</button><button id="bN">Normal</button><button class="o" id="bH">Hard</button></div>
+  <div class="btns"><button class="play" id="bN">Play</button></div>
+  <div class="alt"><button class="ul" id="bC">Play relax</button><button class="ul" id="bH" hidden>Play hard</button></div>
 </div></div>
 <div class="ov hide" id="over"><div>
   <h1 class="go">Game<br>Over</h1>
@@ -170,7 +174,9 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
   <h2 id="deT">18:00.<br>Day shipped.</h2>
   <div class="fin" id="deF" style="margin-top:10px"></div>
   <div id="deC"></div>
+  <p class="unl" id="deU" hidden>Hard mode unlocked.</p>
   <div class="btns"><button id="bA">Play again</button><a class="lk" href="../v15/assets-os.html" style="background:none;box-shadow:inset 0 0 0 1.5px rgba(239,233,220,.5)">About Assets OS</a></div>
+  <div class="alt"><button class="ul" id="bH2" hidden>Play hard</button></div>
 </div></div>
 <script type="module">
 import * as THREE from "three";
@@ -645,6 +651,8 @@ function start(mode) {
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } else AC.resume(); modemLoad();
 }
 const AUTO = 45, DAY = 180, CARDS = [["Marketing Designer", "1960s", "The ad man"], ["Web Designer", "1980s", "The geek"], ["Brand Designer", "1970s", "The poster maker"], ["Artist", "1950s", "The dreamer"]];
+const mem = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; };
+function hardUI(first) { const on = mem("shipit-done") === "1"; $("bH").hidden = !on; $("bH2").hidden = !on; $("deU").hidden = !first; }
 function owned() { try { return JSON.parse(localStorage.getItem("shipit-cards") || "[]"); } catch (e) { return []; } }
 function endAuto() { G.on = false; G.auto = false; release(); rumble = 0; aosUI(false); info(null); late_(500, () => $("aosEnd").classList.remove("hide")); }
 function endDay() {
@@ -658,6 +666,7 @@ function endDay() {
   const tp = Math.min(3, own.length), ex = new Date(Date.now() + 30 * 864e5), exs = String(ex.getDate()).padStart(2, "0") + String(ex.getMonth() + 1).padStart(2, "0");
   const perk = tp ? `<div class="perk"><b>${tp} extra Active Template${tp > 1 ? "s" : ""}</b><span>One card, one template on your first AssetsOS build. Up to three.</span><code>AOS-${tp}T-${exs}</code><small>Give this code at kickoff · valid until ${ex.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</small></div>` : "";
   $("deC").innerHTML = stats + (c < 0 ? '<p>No brief shipped, no card today.</p>' : `<div class="card c${c}"><small><span>${CARDS[c][1]}</span><span>${c + 1}/4</span></small><div class="ph">N</div><b>Nabil,<br>${CARDS[c][0]}</b><small style="margin-top:6px"><span>${CARDS[c][2]}</span><span>${fresh ? "New" : "Double"}</span></small></div>`) + `${perk}${why}<div class="coll">${[0, 1, 2, 3].map((i) => `<i class="${own.includes(i) ? "on" : ""}"></i>`).join("")}</div><div class="cl">Collect them all · ${own.length}/4</div>`;
+  { const first = G.mode !== "chill" && mem("shipit-done") !== "1"; if (first) mem("shipit-done", "1"); hardUI(first); } /* une journée finie en Normal : le mode Hard est débloqué (Relax ne compte pas) */
   late_(600, () => { $("dayEnd").classList.remove("hide"); S.gold(); });
 }
 function gameOver(why) { if (!G.on) return; G.on = false; release(); rumble = 0; $("fin").textContent = `${why ? why + " · " : ""}${G.shipped} briefs shipped · ${G.score} pts`; { const mn = Math.floor((540 + clamp(G.t / DAY, 0, 1) * 540) / 10) * 10; $("finP").textContent = `The client walked at ${Math.floor(mn / 60)}:${String(mn % 60).padStart(2, "0")}. Make it to 18:00 to ship the day and win a card.`; } late_(700, () => { $("over").classList.remove("hide"); S.thunk(); }); }
@@ -964,11 +973,12 @@ function tutPlace() {
 }
 function tutShow(i) { tutI = i; const s = TUT[i], last = i === TUT.length - 1, n = $("tutN"); $("tutS").textContent = s.s; $("tutI").textContent = `${i + 1} / ${TUT.length}`; $("tutB").textContent = s.b; $("tutP").textContent = s.p; n.textContent = last ? "Start the day" : "Next"; n.className = last ? "go" : ""; $("tut").classList.toggle("last", last); tutPlace(); }
 function tutOpen(mode) { tutMode = mode; $("start").classList.add("hide"); $("tut").classList.add("on"); tutShow(0); clearInterval(tutTm); tutTm = setInterval(tutPlace, 300); }
-function tutEnd() { if (tutI < 0) return; tutI = -1; clearInterval(tutTm); $("tut").classList.remove("on"); start(tutMode); }
+function tutEnd() { if (tutI < 0) return; tutI = -1; mem("shipit-tuto", "1"); clearInterval(tutTm); $("tut").classList.remove("on"); start(tutMode); }
 $("tutN").onclick = () => (tutI >= TUT.length - 1 ? tutEnd() : tutShow(tutI + 1)); $("tutK").onclick = tutEnd;
 addEventListener("keydown", (e) => { if (tutI < 0) return; if (e.key === "Escape") tutEnd(); else if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") { e.preventDefault(); $("tutN").click(); } else if (e.key === "ArrowLeft" && tutI > 0) tutShow(tutI - 1); });
 addEventListener("resize", () => setTimeout(tutPlace, 80));
-$("bN").onclick = () => tutOpen("normal"); $("bH").onclick = () => tutOpen("hard"); $("bC").onclick = () => tutOpen("chill"); $("bP").onclick = () => start("normal"); $("bC2").onclick = () => start("chill"); $("bR").onclick = $("bA").onclick = () => start(G.mode || "normal"); // Retry / Play again : même mode
+const go = (m) => (mem("shipit-tuto") === "1" ? start(m) : tutOpen(m)); /* le tuto ne passe qu'une fois */
+$("bN").onclick = () => go("normal"); $("bH").onclick = () => go("hard"); $("bC").onclick = () => go("chill"); $("bH2").onclick = () => start("hard"); hardUI(false); $("bP").onclick = () => start("normal"); $("bC2").onclick = () => start("chill"); $("bR").onclick = $("bA").onclick = () => start(G.mode || "normal"); // Retry / Play again : même mode
 $("mute").onclick = () => { muted = !muted; $("mute").textContent = muted ? "Sound off" : "Sound on"; };
 requestAnimationFrame(loop);
 window.__g = { die, dropDie, endDay, cup, spill, drink, scr: (x, z) => { const v = V3(x, 0.05, z).project(cam); return [(v.x * 0.5 + 0.5) * innerWidth, (-v.y * 0.5 + 0.5) * innerHeight]; }, G, start, spawn, outage, toggleAuto, tools, machines, lever, pull, get papers() { return papers; }, update: (dt) => update(dt, (TT_ += dt)) };
