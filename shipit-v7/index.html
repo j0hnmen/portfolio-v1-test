@@ -360,7 +360,7 @@ function lidTex(kind, S) {
     g.font = "700 26px ui-monospace,Menlo,monospace"; g.globalAlpha = 0.7; g.fillText(S.s, W / 2, 410);
   });
 }
-const TW = 2.3, TD = 2.15, CAP = 2; let OPEN = -1.95;
+const TW = 2.3, TD = 2.15, CAP = 2; let OPEN = -1.95, BS = 1; /* BS : échelle des boîtes (plus petites sur mobile) */
 const machines = SK.map((S, i) => {
   const g = new THREE.Group(), inner = new THREE.Group(); g.add(inner); scene.add(g); const m = mat(S.c, { roughness: 0.58 });
   const base = box(TW, 0.08, TD, m, 0.03); base.position.y = 0.04; inner.add(base);
@@ -493,9 +493,9 @@ let BX = 9, BZ = 5.2, portrait = false; const camT = V3(0, 0, 0); let camD = 20;
 const OBST = [];
 const half = (p) => { const c = Math.abs(Math.cos(p.rot)), s_ = Math.abs(Math.sin(p.rot)); return [(p.w * c + p.h * s_) / 2, (p.w * s_ + p.h * c) / 2]; };
 const hits = (p, x, z, o) => { const [a, b] = half(p), dx = o.hw + a - Math.abs(x - o.x), dz = o.hd + b - Math.abs(z - o.z); return dx > 0 && dz > 0 ? [dx, dz] : null; };
-const fitBox = (p) => Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1);
+const fitBox = (p) => Math.min((TW - 0.55) / p.w, (TD - 0.4) / p.h, 1) * BS;
 function lidClamp(p) { /* le couvercle ouvert est un mur : un brief porté ne passe pas au travers */
-  const [a, b] = half(p); for (const m of machines) { if (m.full) continue; const mx = m.g.position.x, mz = m.g.position.z, inb = Math.abs(p.tx - mx) < TW / 2 + 0.15 && Math.abs(p.tz - mz) < TD / 2 + 0.2, sc = inb ? fitBox(p) : 1; if (Math.abs(p.tx - mx) < TW / 2 + a * sc - 0.05) p.tz = Math.max(p.tz, mz - TD / 2 + 0.14 + b * sc); }
+  const [a, b] = half(p); for (const m of machines) { if (m.full) continue; const mx = m.g.position.x, mz = m.g.position.z, inb = Math.abs(p.tx - mx) < (TW * BS) / 2 + 0.15 && Math.abs(p.tz - mz) < (TD * BS) / 2 + 0.2, sc = inb ? fitBox(p) : 1; if (Math.abs(p.tx - mx) < (TW * BS) / 2 + a * sc - 0.05) p.tz = Math.max(p.tz, mz - (TD * BS) / 2 + 0.14 + b * sc); }
 }
 function faxScreen(T) { /* redessiné seulement quand ce qu'il affiche change */
   const g = fax.sg, W = 384, H = 192; if (G.spawnT > fax.lt + 0.05 || G.spawnT > fax.m0) fax.m0 = Math.max(0.5, G.spawnT); fax.lt = G.spawnT;
@@ -528,16 +528,16 @@ function pushOut(p) { // après un lâcher hors d'une boîte : on dégage le bri
 function layout() {
   const w = innerWidth, h = innerHeight; R.setSize(w, h, false); cam.aspect = w / h; portrait = w / h < 0.85; let rest;
   if (!portrait) {
-    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; OPEN = -1.95;
+    BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; fax.scale.setScalar(1); OPEN = -1.95; BS = 1; machines.forEach((m) => m.g.scale.setScalar(1));
     INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hM.position.set(-0.9, 0.011, 2.18); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
   } else {
-    BX = 3.95; BZ = 7.85; OPEN = -2.12; /* couvercles bien penchés en arrière : on lit le nom du skill */ fax.position.set(-4.85, 0, -0.05); fax.rotation.y = Math.PI / 2; lamp.position.set(-1.6, 0, -13.5); /* mobile : lampe hors champ, seule sa lumière reste */ lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); machines.forEach((m, i) => m.g.position.set(-2.55 + i * 2.55, 0, -3.0));
-    INB.x = -1.9; INB.z = 0.15; /* mobile : le brief se pose juste devant le fax, pas de l'autre côté */ RET.x = -2.3; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(60, 0, -60); CUP0[0] = 60; CUP0[1] = -58; /* mobile : pas de café, on gagne la place */ hS.position.set(3.45, 0.011, -1.52); hM.position.set(-1.1, 0.011, 2.42); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
+    BX = 3.95; BZ = 7.85; OPEN = -2.12; /* couvercles bien penchés en arrière : on lit le nom du skill */ fax.position.set(-2.75, 0, -3.8); fax.rotation.y = 0; fax.scale.setScalar(0.8); lamp.position.set(-1.6, 0, -13.5); /* mobile : lampe hors champ, seule sa lumière reste */ lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); BS = 0.72; machines.forEach((m, i) => { m.g.scale.setScalar(BS); m.g.position.set(-0.35 + i * 1.78, 0, -3.55); }); /* mobile : trois petites boîtes en haut à droite, le fax en haut à gauche */
+    INB.x = -2.2; INB.z = -0.5; /* mobile : le brief tombe du fax vers le bas, loin des boîtes */ RET.x = -2.3; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(60, 0, -60); CUP0[0] = 60; CUP0[1] = -58; /* mobile : pas de café, on gagne la place */ hS.position.set(3.45, 0.011, -2.2); hM.position.set(-1.1, 0.011, 2.42); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
   if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
-  OBST.length = 0; machines.forEach((m) => OBST.push({ x: m.g.position.x, z: m.g.position.z - 0.35, hw: TW / 2, hd: TD / 2 + 0.35, h: 0.85, box: m })); // la boîte + son couvercle ouvert derrière
+  OBST.length = 0; machines.forEach((m) => OBST.push({ x: m.g.position.x, z: m.g.position.z - 0.35, hw: (TW * BS) / 2, hd: (TD * BS) / 2 + 0.35, h: 0.85, box: m })); // la boîte + son couvercle ouvert derrière
   /* hauteurs réelles (combiné, bac du fax, tête de la cafetière) : un brief porté passe franchement au-dessus. La lampe est un mur : on ne passe pas à travers son pied ni son bras. */
-  OBST.push({ x: lever.position.x, z: lever.position.z, hw: portrait ? 1.7 : 1.1, hd: portrait ? 1.0 : 1.85, h: 1.75 }, { x: fax.position.x, z: fax.position.z - (portrait ? 0 : 0.25), hw: portrait ? 1.35 : 1.45, hd: portrait ? 1.45 : 1.3, h: 2.35 }, { x: pot.position.x, z: pot.position.z, hw: 1.0, hd: 1.2, h: 2.75 }, { x: lamp.position.x, z: lamp.position.z, hw: 0.8, hd: 0.8, h: 0.5, wall: true }, { x: RET.x + 0.15 * bin.scale.x, z: RET.z, hw: 1.75 * bin.scale.x, hd: 1.15 * bin.scale.x, h: 2.5 * bin.scale.x, bin: true });
+  OBST.push({ x: lever.position.x, z: lever.position.z, hw: portrait ? 1.7 : 1.1, hd: portrait ? 1.0 : 1.85, h: 1.75 }, { x: fax.position.x, z: fax.position.z - 0.25, hw: portrait ? 1.2 : 1.45, hd: portrait ? 1.1 : 1.3, h: portrait ? 1.9 : 2.35 }, { x: pot.position.x, z: pot.position.z, hw: 1.0, hd: 1.2, h: 2.75 }, { x: lamp.position.x, z: lamp.position.z, hw: 0.8, hd: 0.8, h: 0.5, wall: true }, { x: RET.x + 0.15 * bin.scale.x, z: RET.z, hw: 1.75 * bin.scale.x, hd: 1.15 * bin.scale.x, h: 2.5 * bin.scale.x, bin: true });
   machines.forEach((m) => { if (!m.full && !m.busy) m.hinge.rotation.x = OPEN; }); if (!cup.placed) { cup.x = cup.tx = CUP0[0]; cup.z = cup.tz = CUP0[1]; }
   dsh.scale.set((BX * 2 + 0.6) * 1.75, (BZ * 2 + 0.6) * 1.75, 1); dsh.position.x = 2.2; dsh.position.z = 2.6;
   clipP[0].constant = clipP[1].constant = BX + (portrait ? 2.4 : 0.25); clipP[2].constant = clipP[3].constant = BZ + 0.25;
@@ -866,7 +866,7 @@ function release() {
   if (d.type === "cup") { if (cup.state !== "drag") return; cup.state = "idle"; if (!d.moved) return drink(); if (cup.sips < 1 && Math.hypot(cup.tx - pot.position.x, cup.tz - pot.position.z - 0.42) < 1.5) refill(); else S.drop(); return; }
   if (d.type === "paper") { const p = d.p; if (p.state !== "drag") return; p.state = "free";
     if (p.type === "kudos") { p.x = p.tx; p.z = p.tz; stick(p); return; } /* le sticker se colle à la table là où on le lâche */
-    const m = machines.find((m) => Math.abs(p.tx - m.g.position.x) < TW / 2 + 0.15 && Math.abs(p.tz - m.g.position.z) < TD / 2 + 0.2);
+    const m = machines.find((m) => Math.abs(p.tx - m.g.position.x) < (TW * BS) / 2 + 0.15 && Math.abs(p.tz - m.g.position.z) < (TD * BS) / 2 + 0.2);
     if (m) { if (!load(p, m)) { p.tz = m.g.position.z + 3.2; p.wob = 1; S.no(); popup(m.g.position.clone().setY(1.6), "Box full · pick up the phone", true); } return; }
     if (Math.abs(p.tx - RET.x) < 1.5 && Math.abs(p.tz - RET.z) < 1.0) return ret(p); S.drop(); p.x = p.tx; p.z = p.tz; pushOut(p); /* p.x et p.z rejoignent la cible en glissant */ if (cup.state === "idle" && loc(p, cup.x, cup.z)[2]) spill(cup.x - p.x || 1, cup.z - p.z); return; }
   if (d.type === "tool") { const t = d.t; t.down = false; info(null); if (t.i === 2) { if (die.off && Math.hypot(die.x - t.tx, die.z - t.tz) < 1.0) { t.state = "idle"; t.x = t.tx; t.z = t.tz; return fixDie(); } return slam(t); } t.state = "idle"; S.drop(); }
@@ -979,7 +979,7 @@ function update(dt, T) {
   for (const p of papers) {
     if (p.state === "stuck") { const g = p.g, a = k(dt, 16); p.x = lerp(p.x, p.tx, a); p.z = lerp(p.z, p.tz, a); g.position.set(p.x, lerp(g.position.y, p.sy, a), p.z); g.rotation.x = lerp(g.rotation.x, 0, a); g.rotation.z = lerp(g.rotation.z, 0, a); g.scale.setScalar(lerp(g.scale.x, 0.6, a)); continue; } /* collé : bien à plat, un peu plus petit, sans ombre, légèrement terni */
     if (p.dirty) compose(p); if (p.state === "print" || p.state === "fly" || p.state === "gone") continue;
-    if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = fitBox(p); p.trot = (li - 0.5) * 0.22; } else { p.tsc = machines.some((m) => !m.full && Math.abs(p.x - m.g.position.x) < TW / 2 + 0.15 && Math.abs(p.z - m.g.position.z) < TD / 2 + 0.2) ? fitBox(p) : p.type === "kudos" ? 0.78 : 1; p.trot = p.rot; } /* au-dessus d'une boîte, le brief prend déjà la taille de la boîte */
+    if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = fitBox(p); p.trot = (li - 0.5) * 0.22; } else { p.tsc = machines.some((m) => !m.full && Math.abs(p.x - m.g.position.x) < (TW * BS) / 2 + 0.15 && Math.abs(p.z - m.g.position.z) < (TD * BS) / 2 + 0.2) ? fitBox(p) : p.type === "kudos" ? 0.78 : 1; p.trot = p.rot; } /* au-dessus d'une boîte, le brief prend déjà la taille de la boîte */
     const a = k(dt, p.state === "drag" ? 28 : 15), px = p.x, pz = p.z; p.x = lerp(p.x, p.tx, a); p.z = lerp(p.z, p.tz, a);
     p.lift = lerp(p.lift, p.state === "drag" ? Math.max(0.45, liftOver(p)) : p.state === "free" ? liftOver(p) : 0, k(dt, p.state === "drag" ? 24 : 14)); /* lâché sur un objet : il reste en l'air le temps de glisser à côté */ p.pop = Math.max(0, p.pop - dt * 3); p.wob = Math.max(0, p.wob - dt * 2.5); p.sc = lerp(p.sc, p.tsc, k(dt, 14));
     const g = p.g; g.position.set(p.x, lerp(g.position.y, p.y + p.lift * 0.9 + Math.sin(p.pop * Math.PI) * 0.25, k(dt, 20)), p.z);
