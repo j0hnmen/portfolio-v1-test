@@ -852,7 +852,7 @@ canvas.addEventListener("pointerdown", (e) => {
 });
 canvas.addEventListener("pointermove", (e) => {
   par.x = (e.clientX / innerWidth) * 2 - 1; par.y = (e.clientY / innerHeight) * 2 - 1; if (!drag || !setN(e)) return;
-  if (drag.type === "paper") { drag.p.tx = clamp(hit.x - drag.dx, -BX - 1.2, BX + 1.2); drag.p.tz = clamp(hit.z - drag.dz, -BZ - 0.6, BZ + 0.8); /* porté, il peut dépasser les bords ; il revient dans le cadre au lâcher */ lidClamp(drag.p); wallClamp(drag.p); }
+  if (drag.type === "paper") { drag.p.tx = clamp(hit.x - drag.dx, -BX - 1.2, BX + 1.2); drag.p.tz = clamp(hit.z - drag.dz, -BZ - 0.6, BZ + 0.8); /* porté, il peut dépasser les bords ; il revient dans le cadre au lâcher */ const bx = machines.find((m) => !m.full && m.papers.length < CAP && Math.abs(hit.x - m.g.position.x) < (TW * BS) / 2 + 0.2 && Math.abs(hit.z - m.g.position.z) < (TD * BS) / 2 + 0.3); if (bx) { drag.p.tx = bx.g.position.x; drag.p.tz = bx.g.position.z; } else { lidClamp(drag.p); wallClamp(drag.p); } /* le doigt est sur une boîte : le brief s'y aimante, quelle que soit sa taille ou l'endroit où on le tient */ }
   if (drag.type === "food") { const x = clamp(hit.x, -BX + 0.5, BX - 0.5), z = clamp(hit.z, -BZ + 0.5, BZ - 0.5); if (drag.c) { drag.c.position.copy(drag.c.parent.worldToLocal(V3(x, 0.55, z))); } else crois.position.set(x, 0.35, z); }
   if (drag.type === "tool") { drag.t.tx = clamp(hit.x - drag.dx, -BX + 0.3, BX - 0.3); drag.t.tz = clamp(hit.z - drag.dz, -BZ + 0.3, BZ - 0.3); }
   if (drag.type === "die") { die.tx = clamp(hit.x - drag.dx, -BX + 0.5, BX - 0.5); die.tz = clamp(hit.z - drag.dz, -BZ + 0.5, BZ - 0.5); }
