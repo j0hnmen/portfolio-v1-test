@@ -660,7 +660,7 @@ function makePaper(type) {
     if (G.lvl >= 1) { const q = Math.random(); if (q < 0.22) { p.need = [1, 0, 1]; p.note = "Visual only. No copy."; } else if (q < 0.38) { p.need = [0, 1, 1]; p.note = "Text change only."; } }
   }
   if (type === "trap") { const b = pick(TRAPS); p.title = b[0]; p.meta = b[1]; p.note = "???"; }
-  if (type === "kudos") { p.title = ["Print came back perfect.\nNot one typpo.", "The CEO reposted it.\nTwice.", "Loved the last\ncampaign.\nThank you!", "The landing page\nconverted\nmy grandpa.", "Sales took the credit.\nWe know it was you\nthough.", "No feedback.\nEnjoy life.", "You made the brand\nlook expensive", ""][L.d]; } /* un texte par forme, comme les stickers imprimés */ /* jamais deux fois le même dans une partie */
+  if (type === "kudos") { p.title = ["Print came back perfect.\nNot one typpo.", "The CEO reposted it.\nTwice.", "Loved the last campaign.\nThank you!", "The landing page\nconverted\nmy grandpa.", "Sales took the credit.\nWe know it was you\nthough.", "No feedback.\nEnjoy life.", "You made the brand\nlook expensive", ""][L.d]; } /* un texte par forme, comme les stickers imprimés */ /* jamais deux fois le même dans une partie */
   p.bg = pick(L.bg); p.ink = L.dark ? "#f0ece0" : L.k === "kraft" ? "#33241a" : L.k === "graph" ? "#33308f" : "#25232d"; p.cw = Math.round(L.w * PPU); p.ch = Math.round(L.h * PPU); p.poly = outline(L);
   const mk = (w, h) => { const c = document.createElement("canvas"); c.width = w; c.height = h; return c; };
   p.base = mk(p.cw, p.ch); p.bctx = p.base.getContext("2d"); p.mk = mk(p.cw, p.ch); p.mctx = p.mk.getContext("2d"); const c = mk(p.cw, p.ch); p.ctx = c.getContext("2d"); p.pat = p.mctx.createPattern(brand, "repeat");
