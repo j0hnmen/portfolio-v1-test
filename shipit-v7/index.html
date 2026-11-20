@@ -741,7 +741,7 @@ function owned() { try { return JSON.parse(localStorage.getItem("shipit-cards") 
 function endAuto() { G.on = false; G.auto = false; release(); rumble = 0; aosUI(false); info(null); late_(500, () => $("aosEnd").classList.remove("hide")); }
 function endDay() {
   G.on = false; release(); rumble = 0; info(null); let c = -1;
-  if (G.shipped > 0) { const mx = Math.max(...G.kinds); c = G.cmp === 0 && G.shipped >= 12 ? 3 : pick([0, 1, 2].filter((i) => G.kinds[i] === mx)); }
+  if (G.shipped > 0) { const mx = Math.max(...G.kinds); c = G.cmp === 0 && G.shipped >= 12 && [0, 1, 2].every((i) => owned().includes(i)) ? 3 : pick([0, 1, 2].filter((i) => G.kinds[i] === mx)); }
   let own = owned(); const fresh = c >= 0 && !own.includes(c); if (fresh) { own = [...own, c]; try { localStorage.setItem("shipit-cards", JSON.stringify(own)); } catch (e) {} }
   $("deF").textContent = `${G.shipped} briefs shipped · ${G.score} pts`;
   const KN = ["Social Media", "Web Interface", "Brand Design"], KC = ["#fff186", "#8a85ff", "#3be9ce"], top = c >= 0 && c < 3 ? KN[c] : "";
@@ -970,7 +970,7 @@ function update(dt, T) {
       if (!G.gold0 && dp >= 4.9 / 7 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
       if (!G.crois && dp >= 5 / 7) croisIn(); if (G.crois === 1 && dp >= 6 / 7) croisOut(); /* croissant de 15:00 à 16:00 */
       if (!G.auto) { levelUp(); if (!G.warned && dp >= 6 / 7) { G.warned = true; banner("16:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
-    if (G.auto) { G.autoLeft -= dt; if (G.burst && !lever.busy) { const n = Math.floor((1 - G.autoLeft / (G.autoMax || 1)) * 4); if (n > (G.hsN || 0) && n < 4) { G.hsN = n; tw(0.6, (q) => { if (!lever.busy) setHS(Math.sin(q * Math.PI) * 0.6); }); } } /* Assets OS : le combiné se soulève trois fois (au quart, à la moitié, aux trois quarts) pour rappeler de décrocher */ $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
+    if (G.auto) { G.autoLeft -= dt; if (!lever.busy && machines.reduce((a, m) => a + (m.busy ? 0 : m.papers.length), 0) >= 3) pull(); /* Assets OS décroche tout seul dès que 3 assets attendent dans les skills */ if (G.burst && !lever.busy) { const n = Math.floor((1 - G.autoLeft / (G.autoMax || 1)) * 4); if (n > (G.hsN || 0) && n < 4) { G.hsN = n; tw(0.6, (q) => { if (!lever.busy) setHS(Math.sin(q * Math.PI) * 0.6); }); } } /* Assets OS : le combiné se soulève trois fois (au quart, à la moitié, aux trois quarts) pour rappeler de décrocher */ $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
       if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(false); banner(...(G.backMsg || ["Back to you", "That was Assets OS."])); } }
     if (G.auto && !frozen) { G.busy -= dt; G.autoT -= dt; if (G.autoT <= 0) { G.autoT = 0.12; autopilot(); } }
   }
