@@ -530,9 +530,9 @@ function layout() {
   if (!portrait) {
     BX = 9.1; BZ = 5.3; fax.position.set(-7.2, 0, -3.95); lamp.position.set(-4.5, 0, -4.55); machines.forEach((m, i) => m.g.position.set(0.95 + i * 2.6, 0, -3.35)); lever.position.set(7.55, 0, 3.6); usePhone(false, 1); bin.scale.setScalar(1); fax.rotation.y = 0; fax.scale.setScalar(1); OPEN = -1.95; BS = 1; machines.forEach((m) => m.g.scale.setScalar(1));
     INB.x = -7.2; INB.z = 0.2; RET.x = -7.2; RET.z = 4.25; pad.position.set(0.2, 0.008, 3.95); pot.position.set(-1.75, 0, -4.05); CUP0[0] = -4.1; CUP0[1] = -3.2; /* sous la lampe, loin du passage des briefs */ hS.position.set(2.4, 0.011, -1.82); hS.visible = true; hS2.visible = false; hM.position.set(-0.9, 0.011, 2.18); camT.set(0, 0, -0.15); SAND.x = 7.45; SAND.z = 0.55; sand.scale.setScalar(1); crois.s0 = 1; crois.scale.setScalar(1);
-    if (/[?&]lay=b/.test(location.search)) { machines.forEach((m, i) => m.g.position.set(-2.6 + i * 2.6, 0, -3.35)); hS.position.set(-1.15, 0.011, -1.82); lamp.position.set(7.1, 0, -4.6); lamp.scale.x = -1; pot.position.set(4.75, 0, -4.05); CUP0[0] = 5.9; CUP0[1] = -3.0; } else lamp.scale.x = 1; /* essai ?lay=b : les 3 skills au milieu en haut, lampe et café à droite */
+    machines.forEach((m, i) => m.g.position.set(-2.6 + i * 2.6, 0, -3.35)); hS.position.set(-1.15, 0.011, -1.82); lamp.position.set(7.1, 0, -4.6); lamp.scale.x = -1; pot.position.set(4.75, 0, -4.05); CUP0[0] = 5.9; CUP0[1] = -3.0; /* desktop : les 3 skills au milieu en haut (au-dessus des Masters), lampe et café à droite */
   } else {
-    BX = 3.95; BZ = 7.85; OPEN = -2.12; /* couvercles bien penchés en arrière : on lit le nom du skill */ fax.position.set(-2.75, 0, -3.8); fax.rotation.y = 0; fax.scale.setScalar(0.8); lamp.position.set(-2.9, 0, -6.6); /* mobile : lampe, cafetière et tasse dans la bande du haut */ lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); BS = 0.72; machines.forEach((m, i) => { m.g.scale.setScalar(BS); m.g.position.set(-0.35 + i * 1.78, 0, -3.55); }); /* mobile : trois petites boîtes en haut à droite, le fax en haut à gauche */
+    BX = 3.95; BZ = 7.85; OPEN = -2.12; /* couvercles bien penchés en arrière : on lit le nom du skill */ fax.position.set(-2.75, 0, -3.8); fax.rotation.y = 0; fax.scale.setScalar(0.8); lamp.scale.x = 1; lamp.position.set(-2.9, 0, -6.6); /* mobile : lampe, cafetière et tasse dans la bande du haut */ lever.position.set(2.2, 0, 6.85); usePhone(true, 0.8); bin.scale.setScalar(0.8); BS = 0.72; machines.forEach((m, i) => { m.g.scale.setScalar(BS); m.g.position.set(-0.35 + i * 1.78, 0, -3.55); }); /* mobile : trois petites boîtes en haut à droite, le fax en haut à gauche */
     INB.x = -2.2; INB.z = -0.5; /* mobile : le brief tombe du fax vers le bas, loin des boîtes */ RET.x = -2.3; RET.z = 6.8; pad.position.set(0, 0.008, 4.15); pot.position.set(0.3, 0, -6.6); CUP0[0] = 2.0; CUP0[1] = -6.2; hS.position.set(1.05, 0.011, -2.2); hS.visible = false; hS2.visible = true; hS2.position.copy(hS.position); hM.position.set(-1.1, 0.011, 2.42); camT.set(0, 0, -0.3); SAND.x = 2.85; SAND.z = 2.0; sand.scale.setScalar(0.72); crois.s0 = 0.75; crois.scale.setScalar(0.75);
   }
   if (sand.visible && G.lunch === 1) sand.position.set(SAND.x, 0, SAND.z); if (crois.visible && G.crois === 1) crois.position.set(SAND.x, 0, SAND.z);
@@ -761,7 +761,7 @@ function spawn(force) {
   const fr = fax.rotation.y, fd = V3(Math.sin(fr), 0, Math.cos(fr)), fs = V3(Math.cos(fr), 0, -Math.sin(fr)).multiplyScalar(0.15), p = makePaper(type), a = fax.position.clone().add(fs).addScaledVector(fd, 0.1).setY(0.3), b = fax.position.clone().add(fs).addScaledVector(fd, 1.9).setY(0.3);
   p.g.position.copy(a); p.g.rotation.y = fr; p.g.scale.setScalar(0.78); S.fax(); fax.rx = true;
   tw(0.8, (q) => { const st = Math.min(1, Math.ceil(q * 7) / 7); p.g.position.lerpVectors(a, b, st); fax.rotation.z = Math.sin(q * 60) * 0.01 * (1 - q); }, () => {
-    fax.rotation.z = 0; fax.rx = false; if (p.state === "gone") return; const c = V3(INB.x + rnd(-0.3, 0.3), 0.05, INB.z + rnd(-0.4, 0.4)), r0 = rnd(-0.14, 0.14);
+    fax.rotation.z = 0; fax.rx = false; if (p.state === "gone") return; const c = V3(INB.x + rnd(-0.3, 0.3), 0.07 + papers.filter((q) => q.state === "free" || q.state === "drag").length * 0.02, INB.z + rnd(-0.4, 0.4)), r0 = rnd(-0.14, 0.14); /* il se pose au sommet de la pile, pas dedans : plus de fusion avec les briefs déjà là */
     tw(0.42, (q) => { const e = ease(q); p.g.position.lerpVectors(b, c, e); p.g.position.y += Math.sin(q * Math.PI) * 1.4; p.g.scale.setScalar(0.78 + 0.22 * e); p.g.rotation.y = lerp(fr, r0, e); }, () => { p.state = "free"; p.x = p.tx = c.x; p.z = p.tz = c.z; p.rot = r0; p.ord = ++ord; S.drop(); hud(); });
   }); hud(); return true;
 }
@@ -949,7 +949,7 @@ function biteC() {
 function aosBurst(sec, on, off) {
   if (!G.on || (G.auto && !G.burst)) return; G.backMsg = off || ["Back to you", "That was Assets OS."];
   if (G.auto) { G.autoLeft = Math.max(G.autoLeft, sec); G.autoMax = Math.max(G.autoMax, sec); } // déjà en relais : on prolonge
-  else { G.auto = true; G.burst = true; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(true, "Just ship it"); release(); S.gold(); }
+  else { G.auto = true; G.burst = true; G.hsN = 0; G.busy = 0; G.autoLeft = G.autoMax = sec; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(true, "Just ship it"); release(); S.gold(); }
   banner(...(on || ["Assets OS takes over", Math.round(sec) + " seconds. Watch it work."]));
 }
 
@@ -970,7 +970,7 @@ function update(dt, T) {
       if (!G.gold0 && dp >= 4.9 / 7 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
       if (!G.crois && dp >= 5 / 7) croisIn(); if (G.crois === 1 && dp >= 6 / 7) croisOut(); /* croissant de 15:00 à 16:00 */
       if (!G.auto) { levelUp(); if (!G.warned && dp >= 6 / 7) { G.warned = true; banner("16:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
-    if (G.auto) { G.autoLeft -= dt; $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
+    if (G.auto) { G.autoLeft -= dt; if (G.burst && !lever.busy) { const n = Math.floor((1 - G.autoLeft / (G.autoMax || 1)) * 4); if (n > (G.hsN || 0) && n < 4) { G.hsN = n; tw(0.6, (q) => { if (!lever.busy) setHS(Math.sin(q * Math.PI) * 0.6); }); } } /* Assets OS : le combiné se soulève trois fois (au quart, à la moitié, aux trois quarts) pour rappeler de décrocher */ $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
       if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(false); banner(...(G.backMsg || ["Back to you", "That was Assets OS."])); } }
     if (G.auto && !frozen) { G.busy -= dt; G.autoT -= dt; if (G.autoT <= 0) { G.autoT = 0.12; autopilot(); } }
   }
@@ -987,7 +987,7 @@ function update(dt, T) {
     if (p.state === "loaded") { const li = p.m.papers.indexOf(p); p.tx = p.m.g.position.x + (li - 0.5) * 0.16; p.tz = p.m.g.position.z + (li - 0.5) * 0.1; p.y = 0.1 + li * 0.035; p.tsc = fitBox(p); p.trot = (li - 0.5) * 0.22; } else { p.tsc = machines.some((m) => !m.full && Math.abs(p.x - m.g.position.x) < (TW * BS) / 2 + 0.15 && Math.abs(p.z - m.g.position.z) < (TD * BS) / 2 + 0.2) ? fitBox(p) : p.type === "kudos" ? 0.78 : 1; p.trot = p.rot; } /* au-dessus d'une boîte, le brief prend déjà la taille de la boîte */
     const a = k(dt, p.state === "drag" ? 28 : 15), px = p.x, pz = p.z; p.x = lerp(p.x, p.tx, a); p.z = lerp(p.z, p.tz, a);
     p.lift = lerp(p.lift, p.state === "drag" ? Math.max(0.45, liftOver(p)) : p.state === "free" ? liftOver(p) : 0, k(dt, p.state === "drag" ? 24 : 14)); /* lâché sur un objet : il reste en l'air le temps de glisser à côté */ p.pop = Math.max(0, p.pop - dt * 3); p.wob = Math.max(0, p.wob - dt * 2.5); p.sc = lerp(p.sc, p.tsc, k(dt, 14));
-    const g = p.g; g.position.set(p.x, lerp(g.position.y, p.y + p.lift * 0.9 + Math.sin(p.pop * Math.PI) * 0.25, k(dt, 20)), p.z);
+    const g = p.g; g.position.set(p.x, Math.max(p.state === "free" || p.state === "drag" ? p.y : -1, lerp(g.position.y, p.y + p.lift * 0.9 + Math.sin(p.pop * Math.PI) * 0.25, k(dt, 20))), p.z); /* jamais sous sa place dans la pile : pas de fusion avec un sticker ou un brief posé dessus */
     const vx = (p.x - px) / Math.max(dt, 1e-3), vz = (p.z - pz) / Math.max(dt, 1e-3);
     if (p.state === "drag" && cup.state === "idle") { const dx = cup.x - p.x, dz = cup.z - p.z, c = Math.cos(p.rot), s_ = Math.sin(p.rot), lx = dx * c - dz * s_, lz = dx * s_ + dz * c; if (Math.abs(lx) < p.w / 2 + 0.45 && Math.abs(lz) < p.h / 2 + 0.45) { const sp = Math.hypot(vx, vz), n = Math.hypot(dx, dz) || 1; if (sp > 9 && cup.sips > 0) spill(vx, vz); else { cup.tx = clamp(cup.x + (dx / n) * 0.55 + vx * dt, -BX + 0.6, BX - 0.6); cup.tz = clamp(cup.z + (dz / n) * 0.55 + vz * dt, -BZ + 0.6, BZ - 0.6); cup.wob = 1; cup.placed = true; if (cup.sips > 0 && cup.warn < G.t) { cup.warn = G.t + 2; popup(V3(cup.x, 1.4, cup.z), "Careful", true); } } } }
     g.rotation.z = lerp(g.rotation.z, clamp(-vx * 0.025, -0.4, 0.4) + Math.sin(p.wob * 28) * 0.09 * p.wob, 0.25); g.rotation.x = lerp(g.rotation.x, clamp(vz * 0.025, -0.4, 0.4) - p.lift * 0.08, 0.25); g.rotation.y = lerp(g.rotation.y, p.trot, 0.2);
