@@ -146,6 +146,10 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 .auto svg{height:clamp(30px,3.6vw,42px)!important;overflow:visible;color:var(--cream)!important}.auto svg path[fill="#8a85ff"]{fill:#8a85ff!important}
 .auto #autoT{font:900 clamp(20px,2.4vw,28px)/1 Mozer!important;letter-spacing:.03em;color:var(--yellow);padding:4px 0 0 20px;border-left:2px solid rgba(239,233,220,.25);align-self:stretch;display:flex;align-items:center;white-space:nowrap}
 .auto i{height:5px!important;background:linear-gradient(90deg,#5751ff,#8a85ff)!important}
+/* relais Assets OS : le contour bleu se trace autour du badge au fil du temps et se referme en boucle à la fin (remplace la barre du bas) */
+.auto i{display:none!important}
+.auto{box-shadow:inset 0 0 0 2px rgba(86,79,255,.28),0 0 44px rgba(86,79,255,.5),0 18px 34px -10px #000!important}
+.auto::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from 0deg,var(--blue) calc(var(--p,0)*1turn),transparent 0);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 @media (max-aspect-ratio:85/100){.auto{padding:9px 14px 20px!important;gap:10px!important;border-radius:14px!important}.auto svg{height:19px!important}.auto #autoT{font-size:13px!important;padding:2px 0 0 10px!important}.auto i{height:3px!important}}
 @keyframes autoInP{0%{translate:-50% var(--cy);scale:.6;opacity:0}10%{translate:-50% var(--cy);scale:1.45;opacity:1}58%{translate:-50% var(--cy);scale:1.45;opacity:1}100%{translate:-50% 0;scale:1;opacity:1}}
 </style>
@@ -970,7 +974,7 @@ function update(dt, T) {
       if (!G.gold0 && dp >= 4.9 / 7 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
       if (!G.crois && dp >= 5 / 7) croisIn(); if (G.crois === 1 && dp >= 6 / 7) croisOut(); /* croissant de 15:00 à 16:00 */
       if (!G.auto) { levelUp(); if (!G.warned && dp >= 6 / 7) { G.warned = true; banner("16:00", "Last hour. Ship what you can."); } if (G.t >= DAY) return endDay(); } }
-    if (G.auto) { G.autoLeft -= dt; if (!lever.busy && machines.reduce((a, m) => a + (m.busy ? 0 : m.papers.length), 0) >= 3) pull(); /* Assets OS décroche tout seul dès que 3 assets attendent dans les skills */ if (G.burst && !lever.busy) { const n = Math.floor((1 - G.autoLeft / (G.autoMax || 1)) * 4); if (n > (G.hsN || 0) && n < 4) { G.hsN = n; tw(0.6, (q) => { if (!lever.busy) setHS(Math.sin(q * Math.PI) * 0.6); }); } } /* Assets OS : le combiné se soulève trois fois (au quart, à la moitié, aux trois quarts) pour rappeler de décrocher */ $("auto").lastChild.style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
+    if (G.auto) { G.autoLeft -= dt; if (!lever.busy && machines.reduce((a, m) => a + (m.busy ? 0 : m.papers.length), 0) >= 3) pull(); /* Assets OS décroche tout seul dès que 3 assets attendent dans les skills */ if (G.burst && !lever.busy) { const n = Math.floor((1 - G.autoLeft / (G.autoMax || 1)) * 4); if (n > (G.hsN || 0) && n < 4) { G.hsN = n; tw(0.6, (q) => { if (!lever.busy) setHS(Math.sin(q * Math.PI) * 0.6); }); } } /* Assets OS : le combiné se soulève trois fois (au quart, à la moitié, aux trois quarts) pour rappeler de décrocher */ $("auto").style.setProperty("--p", clamp(1 - G.autoLeft / (G.autoMax || AUTO), 0, 1).toFixed(3));
       if (G.autoLeft <= 0) { if (!G.burst) return endAuto(); G.auto = false; G.burst = false; G.busy = 0; SLOTS.forEach((q) => (q.p = null)); papers.forEach((p) => (p.slot = null)); aosUI(false); banner(...(G.backMsg || ["Back to you", "That was Assets OS."])); } }
     if (G.auto && !frozen) { G.busy -= dt; G.autoT -= dt; if (G.autoT <= 0) { G.autoT = 0.12; autopilot(); } }
   }
