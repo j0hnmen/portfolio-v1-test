@@ -49,6 +49,11 @@ body.drag canvas#c{cursor:grabbing}
 .whyc b{display:block;font:900 clamp(17px,2.2vw,22px)/1.05 Mozer;text-transform:uppercase;color:var(--yellow);text-align:left}
 .whyc span{display:block;margin-top:5px;font:14px/1.3 Akke,Georgia,serif;color:var(--cream);text-align:left}
 .aosfr{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:0;transition:opacity .5s}
+/* au lancement : halo flou sur tout l'écran, puis il s'efface et le tracé commence */
+@keyframes aosFlash{0%{box-shadow:inset 0 0 0 4px rgba(86,79,255,0),inset 0 0 110px rgba(86,79,255,0)}12%,55%{box-shadow:inset 0 0 0 4px var(--blue),inset 0 0 150px rgba(86,79,255,.75)}100%{box-shadow:inset 0 0 0 4px rgba(86,79,255,0),inset 0 0 110px rgba(86,79,255,0)}}
+@keyframes aosTrace{0%,70%{opacity:0}100%{opacity:1}}
+body.aos .aosfr{animation:aosFlash 2.4s ease both}
+body.aos .aosfr::before,body.aos .aosfr::after{animation:aosTrace 2.4s ease both}
 /* le halo flou suit le trait : il se dévoile lui aussi au fil du relais */
 .aosfr::before{content:"";position:absolute;inset:0;box-shadow:inset 0 0 110px rgba(86,79,255,.6);-webkit-mask:conic-gradient(from 0deg,#000 calc(var(--p,0)*366deg - 6deg),transparent calc(var(--p,0)*366deg));mask:conic-gradient(from 0deg,#000 calc(var(--p,0)*366deg - 6deg),transparent calc(var(--p,0)*366deg))}
 /* le contour bleu de l'écran se trace au fil du relais Assets OS (départ en haut au centre) et se referme en boucle à la fin */
