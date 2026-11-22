@@ -19,6 +19,8 @@ body.drag canvas#c{cursor:grabbing}
 .hud{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;justify-content:space-between;align-items:flex-start;padding:max(12px,env(safe-area-inset-top)) clamp(12px,2vw,28px) 0;pointer-events:none}
 .logo{font:900 clamp(22px,2.8vw,38px)/.86 Mozer;text-transform:uppercase;pointer-events:auto}
 .mid{text-align:center;padding-top:2px}
+/* Backlog centré sur l'écran (et donc sur le logo Assets OS), plus entre le logo et le score */
+.hud .mid{position:absolute;left:50%;translate:-50% 0;top:max(12px,env(safe-area-inset-top))}
 .mid small{font:700 10px Mozer;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
 .pips{display:flex;gap:4px;margin-top:5px;justify-content:center}
 .pips i{width:clamp(16px,2.4vw,30px);height:10px;border-radius:3px;background:rgba(239,233,220,.16);transition:background .2s}
