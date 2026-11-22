@@ -183,7 +183,7 @@ body.outage .hud,body.outage .hud *,body.outage .now *,body.outage .ban *,body.o
 <b>ERR 529</b> · Model overload
 <b>Power outage</b> <span class="d">· retrying</span><i>…</i></div>
 <button class="mute" id="mute">Sound on</button>
-<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><b class="tut-n">1</b><b class="tut-n">2</b><b class="tut-n">3</b><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:30 · Sandwich<u>3 pieces, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>15:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
+<div class="tut" id="tut" aria-live="polite"><div class="tut-hole" id="tutH"></div><b class="tut-n">1</b><b class="tut-n">2</b><b class="tut-n">3</b><div class="tut-card" id="tutC"><small><em id="tutS" style="font-style:normal"></em><u id="tutI"></u></small><b id="tutB"></b><span id="tutP"></span><div class="tut-bon"><figure><i id="tuB0"></i><figcaption>Coffee<u>Tap it: the fax slows down</u></figcaption></figure><figure><i id="tuB1"></i><figcaption>12:00 · Sandwich<u>3 pieces, +50 each</u></figcaption></figure><figure><i id="tuB2"></i><figcaption>15:00 · Croissant<u>1 bite, +100</u></figcaption></figure></div><p class="tut-note">Careful with the cup: knock it over and coffee spills on your briefs. −200.</p><div class="tut-nav"><button class="k" id="tutK">Skip</button><button id="tutN">Next</button></div></div></div>
 <div class="ov" id="start"><div class="tuto">
   <h1>Ship<br>It!</h1>
   <p class="lead">One working day, 10:00 to 17:00. Every brief takes the same path.</p>
@@ -939,11 +939,11 @@ function clockSet(dp) {
 clockSet(0);
 $("auto").prepend(Object.assign(document.querySelector("#aosEnd svg").cloneNode(true), { id: "" })); // le logo AssetsOS dans le badge de relais
 const aosUI = (on, label) => { { const sv = $("auto").querySelector("svg"); if (sv) sv.setAttribute("viewBox", "124 156 822 156"); } /* cadre = le mot seul : la signature déborde dessous et ne compte pas dans l'alignement */ $("auto").classList.toggle("on", on); document.body.classList.toggle("aos", on); if (label) $("autoT").textContent = label; };
-/* ---------- midi : un jambon-beurre, trois bouchées avant 14:00 ---------- */
+/* ---------- midi : un jambon-beurre, trois bouchées, de 12:00 à 13:00 ---------- */
 function lunchIn() {
   G.lunch = 1; G.bites = 0; sand.busy = false; sand.chunks.forEach((c) => (c.visible = true)); sand.visible = true; sand.position.set(BX + 3.5, 0, SAND.z);
   tw(0.7, (q) => { sand.position.x = lerp(BX + 3.5, SAND.x, back(q)); }); S.gold();
-  aosBurst(DAY / 7, ["12:30 · Lunch break", "Assets OS takes the desk for an hour. Eat."], ["13:30 · Back to you", "That was Assets OS."]);
+  aosBurst(DAY / 7, ["12:00 · Lunch break", "Assets OS takes the desk for an hour. Eat."], ["13:00 · Back to you", "That was Assets OS."]);
 }
 function lunchOut() { if (G.lunch !== 1) return; G.lunch = 2; const x0 = sand.position.x; tw(0.5, (q) => { sand.position.x = lerp(x0, BX + 3.8, q * q); }, () => { sand.visible = false; }); }
 function bite() {
@@ -979,7 +979,7 @@ function update(dt, T) {
     else if (G.mode !== "chill" && G.lvl >= 3) { G.outT -= dt; if (G.outT <= 0) { G.outT = 99; outage(); } }
     const n = open().length; if (G.mode !== "chill" && n >= 5) { G.tickT -= dt; if (G.tickT <= 0) { G.tickT = n >= 7 ? 0.34 : n === 6 ? 0.7 : 1.25; S.tick(); } }
     { const dp = clamp(G.t / DAY, 0, 1); clockSet(dp);
-      if (!G.lunch && dp >= 2.5 / 7) lunchIn(); if (G.lunch === 1 && dp >= 3.5 / 7) lunchOut();
+      if (!G.lunch && dp >= 2 / 7) lunchIn(); if (G.lunch === 1 && dp >= 3 / 7) lunchOut();
       if (!G.trap0 && G.t > 12) { G.trap0 = true; G.forced.push("trap"); } // le premier brief flou arrive dès le matin
       if (!G.gold0 && dp >= 4.9 / 7 && !G.auto) { G.gold0 = true; G.forced.push("gold"); } // le brief doré : en fin d'après-midi (15 h 25), quand ça se corse
       if (!G.crois && dp >= 5 / 7) croisIn(); if (G.crois === 1 && dp >= 6 / 7) croisOut(); /* croissant de 15:00 à 16:00 */
