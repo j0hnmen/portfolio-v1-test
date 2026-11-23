@@ -46,7 +46,7 @@
   </div>
   <div class="hq-logo">${AOS_MARK(logo)}</div>
   <div class="hq-win hq-cw">
-    <div class="hq-head"><span class="hq-dots"><i></i><i></i><i></i></span><span class="hq-agt">AI Agent</span><span class="hq-chip">AssetsOS</span></div>
+    <div class="hq-head"><span class="hq-dots"><i></i><i></i><i></i></span><span class="hq-agt"><svg class="agtic" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.00,13.05 L23.00,10.95 L1.00,10.95 L1.00,13.05ZM21.00,18.41 L22.05,16.59 L3.00,5.59 L1.95,7.41ZM16.59,22.05 L18.41,21.00 L7.41,1.95 L5.59,3.00ZM10.95,23.00 L13.05,23.00 L13.05,1.00 L10.95,1.00ZM5.59,21.00 L7.41,22.05 L18.41,3.00 L16.59,1.95ZM1.95,16.59 L3.00,18.41 L22.05,7.41 L21.00,5.59Z"/></svg>AI Agent</span><span class="hq-chip">AssetsOS</span></div>
     <div class="hq-body">${SC.map(s=>`<div class="hq-scn" data-s="${s.id}">${chat(s)}</div>`).join("")}</div>
     <div class="hq-bar"><span class="hq-ptx"></span><i class="hq-caret"></i><span class="hq-send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></span></div>
   </div>
