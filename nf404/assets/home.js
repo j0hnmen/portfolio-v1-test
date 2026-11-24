@@ -165,11 +165,11 @@ const CV=(function(){
     nodes.forEach(n=>n.el.querySelectorAll('[data-cl]').forEach(b=>b.addEventListener('pointerdown',e=>{ e.stopPropagation(); const k=b.dataset.cl; if(k==='open'||k==='play') return; /* play = ouvre le vrai site dans un nouvel onglet */ e.preventDefault(); select(n); if(k==='stop'){ liveOff(n); return; } })));
     // sites intégrés : le vrai site s'affiche directement dans la frame, sans texte, une fois l'arrivée terminée
     if(LIVE&&!MOB) setTimeout(()=>nodes.forEach(n=>{ if(n.type==='frame'&&P[n.pi]&&P[n.pi].link) liveOn(n); }),2600);
-    add({type:'note',name:'Note',x:1130,y:-560,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
+    if(!window.NFG) add({type:'note',name:'Note',x:1130,y:-560,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
     // post-it : le Konami code, à taper sur la page
-    add({type:'note',cls:'postit',name:'Post-it',x:-1370,y:330,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
-    add({type:'shape',cls:'ell',name:'Ellipse',x:1160,y:-190,w:170,h:170,r:0,fill:'#564FFF'});
-    add({type:'shape',cls:'rect',name:'Rectangle',x:1130,y:120,w:210,h:130,r:-12,fill:'#3BE9CE'});
+    add({type:'note',cls:'postit',name:'Post-it',x:window.NFG?-700:-1370,y:window.NFG?-60:330,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
+    add({type:'shape',cls:'ell',name:'Ellipse',x:window.NFG?470:1160,y:window.NFG?40:-190,w:window.NFG?130:170,h:window.NFG?130:170,r:0,fill:'#564FFF'});
+    add({type:'shape',cls:'rect',name:'Rectangle',x:window.NFG?-470:1130,y:window.NFG?170:120,w:window.NFG?170:210,h:window.NFG?105:130,r:-12,fill:'#3BE9CE'});
     // gribouillis au feutre : entourés, soulignés, flèches, petites notes — ils se dessinent après l'arrivée
     const IB='#564FFF', IK='#202020', IG='#12BFA2'; let di=0; // vert de la DA, un cran plus soutenu pour se lire sur le papier
     const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(6.2+(di++)*.28).toFixed(2);
@@ -178,21 +178,21 @@ const CV=(function(){
     // le sous-titre entouré
     ink('Scribble',-385,SUBY-46.4,770,112,-1.5,'M70,22 C200,6 380,4 520,10 C660,16 712,38 700,66 C688,98 470,106 300,102 C130,98 10,86 14,60 C18,40 40,30 96,20');
     // « hello! » au-dessus du nom
-    ink('Note',-760,-160,240,90,-8,'M14,74 C70,62 150,62 214,70','#564FFF',5,note(window.NFG?'oops!':'hello!',18,52,46));
+    if(!window.NFG) ink('Note',-760,-160,240,90,-8,'M14,74 C70,62 150,62 214,70','#564FFF',5,note('hello!',18,52,46));
     // flèche vers L'Atelier Figma
     if(!window.NFG) ink('Arrow',pos[0][0]+200-28,pos[0][1]-56-138,270,150,0,'M92,60 C62,70 40,98 28,138 M28,138 L18,112 M28,138 L50,120',IK,5,note('latest',100,56,46,IK));
     // le post-it Konami entouré + « try it! »
-    ink('Scribble',-1402,302,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22',IG,5);
-    ink('Note',-1390,190,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IG,5,note('try it!',6,56,46,IG));
+    ink('Scribble',window.NFG?-732:-1402,window.NFG?-88:302,316,210,-4,'M30,40 C120,8 250,6 296,40 C330,70 312,170 270,192 C200,214 80,212 30,186 C2,160 0,70 24,48 C40,30 70,24 100,22',IG,5);
+    ink('Note',window.NFG?-720:-1390,window.NFG?-200:190,240,130,-6,'M156,34 C196,44 212,74 206,116 M206,116 L192,92 M206,116 L222,96',IG,5,note('try it!',6,56,46,IG));
     // calque de code : « click me » avec flèche
     if(!window.NFG) ink('Arrow',1065,410,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('click me',70,138,46));
     // double soulignement sous la note
-    ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
+    if(!window.NFG) ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
     // page provisoire : Filly, un simple calque vectoriel posé de travers en bas du canvas, qui arrive en dernier
-    if(window.NFG){ add({type:'note',cls:'back404',name:'Back home',x:-700,y:SUBY+40,w:270,h:0,r:-4,html:'<div class="fb">This page doesn’t exist. <b>Click here to go back to the canvas.</b></div>'}); ink('Arrow',-420,SUBY-10,230,150,0,'M206,40 C150,14 70,26 24,84 M24,84 L32,52 M24,84 L56,84',IB,5,note('this way',70,138,46)); }
-    if(window.HOLDGO&&window.AOSSVG){ add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:650,y:MOB?720:-40,w:MOB?300:360,h:MOB?56:67,r:-5,html:window.AOSSVG}); } /* logo AssetsOS : un clic ouvre assetsos.nabilamara.com */
-    if(window.FILLY){ const w=MOB?200:120, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:14,y:MOB?740:398,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
-    if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||NAMEL.includes(n)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
+    if(window.NFG) add({type:'note',cls:'inst404',name:'Detached instance',x:330,y:SUBY+10,w:300,h:0,r:4,html:'<div class="fb"><svg class="dtic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7.5 11.6 6a4 4 0 0 1 5.7 5.7l-1.6 1.6M14 16.5 12.4 18a4 4 0 0 1-5.7-5.7l1.6-1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4l2.2 2.2M20 20l-2.2-2.2M8.5 3v2M3 8.5h2M15.5 21v-2M21 15.5h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Oops, an instance was detached it seems.</div>'});
+    if(window.HOLDGO&&window.AOSSVG){ add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:window.NFG?360:650,y:MOB?720:window.NFG?-290:-40,w:MOB?300:360,h:MOB?56:67,r:-5,html:window.AOSSVG}); } /* logo AssetsOS : un clic ouvre assetsos.nabilamara.com */
+    if(window.FILLY&&!window.NFG){ const w=MOB?200:120, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:14,y:MOB?740:398,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
+    if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||NAMEL.includes(n)||(window.NFG&&n.name==='Scribble'&&n.x===-385)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
         if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
       for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
     center(); }
@@ -251,7 +251,6 @@ const CV=(function(){
       n.w=nw; n.h=nh; n.x=cx-nw/2; n.y=cy-nh/2; n.moved=true; place(n); } });
   const up=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null; if(!act) return; const a=act; act=null; hintOff();
     if(LIVE&&!MOB&&a.k==='move'&&a.n.type==='frame'&&a.n.el.querySelector('.cl')&&!a.n.el.querySelector('.lv')&&(document.elementFromPoint(e.clientX,e.clientY)||document.body).closest('.clb')&&Math.hypot(e.clientX-a.sx,e.clientY-a.sy)<5&&performance.now()-a.t<320){ liveOn(a.n); return; } /* site arrêté : un clic sur l'image le relance */
-    if(window.NFG&&a.k==='move'&&a.n.el.classList.contains('back404')&&Math.hypot(e.clientX-a.sx,e.clientY-a.sy)<5&&performance.now()-a.t<320){ location.href=document.baseURI; return; }
     if(window.HOLDGO&&a.k==='move'&&a.n.el.classList.contains('aosv')&&Math.hypot(e.clientX-a.sx,e.clientY-a.sy)<5&&performance.now()-a.t<320){ window.open('https://assetsos.nabilamara.com','_blank','noopener'); return; }
     if(a.k==='move'&&a.n.type==='frame'&&!a.n.el.querySelector('.cl')&&Math.hypot(e.clientX-a.sx,e.clientY-a.sy)<5&&performance.now()-a.t<320){ lastN=null; openProject(a.n.pi,null); return; }
     if(a.k==='draw'){ if(a.n.w<6&&a.n.h<6){ a.n.w=a.n.h=140; a.n.x-=70; a.n.y-=70; place(a.n); } setTool('select'); sTick(); }
