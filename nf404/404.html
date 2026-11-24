@@ -389,7 +389,7 @@ html.src .back404{display:none}
 <div class="tip" id="tip" aria-hidden="true"><svg viewBox="0 0 80 78"><path d="M2.43566 10.2293C0.557465 5.39905 5.25275 0.609822 10.1193 2.39242L73.3458 25.5526C78.9768 27.6152 78.4617 35.7432 72.6153 37.078L47.5001 42.8104C46.8028 42.9697 46.2429 43.4878 46.0304 44.1707L37.6398 71.1424C35.9468 76.5842 28.3421 76.8476 26.2765 71.536L2.43566 10.2293Z" fill="#000" stroke="#fff" stroke-width="5"/></svg><span><i></i></span><b class="pv"><img alt=""></b></div>
 <div class="srcbg" id="srcbg" aria-hidden="true"></div>
 <div class="srctoast" id="srctoast" role="status"></div>
-<script src="assets/core.js?v=cef6f8ed"></script><script>window.FILLY={src:"img/filly-layer.svg?v=2"};</script><script src="assets/home.js?v=nf2412"></script><script src="assets/ui.js?v=5a1ab410"></script>
+<script src="assets/core.js?v=cef6f8ed"></script><script>window.FILLY={src:"img/filly-layer.svg?v=2"};</script><script src="assets/home.js?v=nf2413"></script><script src="assets/ui.js?v=5a1ab410"></script>
 <script>(()=>{const t=document.getElementById("tools");if(t)document.body.appendChild(t);})();</script>
 <div class="mwrap"><div class="mveil" id="mveil" role="dialog" aria-labelledby="mtitle">
   <div class="mbox">
@@ -424,8 +424,6 @@ cp.textContent=ok?'Copied ✓':'Selected';cp.classList.add('ok');setTimeout(()=>
 </script>
 <script>(()=>{const H=document.documentElement,b=document.querySelector(".mbuild span");const f=()=>{b.textContent=H.lang==="fr"?"Discutons":"Let’s talk"};new MutationObserver(f).observe(H,{attributes:true,attributeFilter:["lang"]});f();})();</script>
 <a class="back404" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5m6-7-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back to the canvas</span></a>
-<script>/* 404 : deux glitchs « console mode » de 0,2 s pendant que 404 arrive */
-(()=>{const H=document.documentElement;if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const g=(t)=>setTimeout(()=>{if(H.classList.contains("src"))return;H.classList.add("src");setTimeout(()=>H.classList.remove("src"),200)},t);g(700);g(1250);})();</script>
 <script>/* 404 : la signature ramène à la home */document.getElementById("home").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();location.href=document.baseURI},true);</script>
 </body>
 </html>
