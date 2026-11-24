@@ -168,8 +168,8 @@ const CV=(function(){
     if(!window.NFG) add({type:'note',name:'Note',x:1130,y:-560,w:250,h:0,r:5,html:'<div class="fb">Everything moves, rotates, stretches. Add shapes, scribble. Click a project to open it.</div>'});
     // post-it : le Konami code, à taper sur la page
     add({type:'note',cls:'postit',name:'Post-it',x:window.NFG?-700:-1370,y:window.NFG?-60:330,w:250,h:0,r:-6,html:'<div class="fb"><b>Konami code</b><span class="kc">↑ ↑ ↓ ↓ ← → ← →<br>B A ⏎</span></div>'});
-    add({type:'shape',cls:'ell',name:'Ellipse',x:window.NFG?470:1160,y:window.NFG?40:-190,w:window.NFG?130:170,h:window.NFG?130:170,r:0,fill:'#564FFF'});
-    add({type:'shape',cls:'rect',name:'Rectangle',x:window.NFG?-470:1130,y:window.NFG?170:120,w:window.NFG?170:210,h:window.NFG?105:130,r:-12,fill:'#3BE9CE'});
+    add({type:'shape',cls:'ell',name:'Ellipse',x:window.NFG?397:1160,y:window.NFG?238:-190,w:window.NFG?130:170,h:window.NFG?130:170,r:0,fill:'#564FFF'});
+    add({type:'shape',cls:'rect',name:'Rectangle',x:window.NFG?-336:1130,y:window.NFG?-428:120,w:window.NFG?170:210,h:window.NFG?105:130,r:-12,fill:'#3BE9CE'});
     // gribouillis au feutre : entourés, soulignés, flèches, petites notes — ils se dessinent après l'arrivée
     const IB='#564FFF', IK='#202020', IG='#12BFA2'; let di=0; // vert de la DA, un cran plus soutenu pour se lire sur le papier
     const ink=(name,x,y,w,h,r,d,c=IB,sw=6,txt='')=>{ const dl=(6.2+(di++)*.28).toFixed(2);
@@ -189,15 +189,15 @@ const CV=(function(){
     // double soulignement sous la note
     if(!window.NFG) ink('Scribble',1130,-406,260,30,5,'M6,10 C80,4 180,6 254,12 M30,24 C100,18 170,20 236,26',IG,5);
     // page provisoire : Filly, un simple calque vectoriel posé de travers en bas du canvas, qui arrive en dernier
-    if(window.NFG) add({type:'note',cls:'inst404',name:'Detached instance',x:330,y:SUBY+10,w:300,h:0,r:4,html:'<div class="fb"><svg class="dtic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7.5 11.6 6a4 4 0 0 1 5.7 5.7l-1.6 1.6M14 16.5 12.4 18a4 4 0 0 1-5.7-5.7l1.6-1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4l2.2 2.2M20 20l-2.2-2.2M8.5 3v2M3 8.5h2M15.5 21v-2M21 15.5h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Oops, an instance was detached it seems.</div>'});
-    if(window.HOLDGO&&window.AOSSVG){ add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:window.NFG?360:650,y:MOB?720:window.NFG?-290:-40,w:MOB?300:360,h:MOB?56:67,r:-5,html:window.AOSSVG}); } /* logo AssetsOS : un clic ouvre assetsos.nabilamara.com */
+    if(window.NFG) add({type:'note',cls:'inst404',name:'Detached instance',x:-153,y:274,w:300,h:0,r:4,html:'<div class="fb"><svg class="dtic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7.5 11.6 6a4 4 0 0 1 5.7 5.7l-1.6 1.6M14 16.5 12.4 18a4 4 0 0 1-5.7-5.7l1.6-1.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 4l2.2 2.2M20 20l-2.2-2.2M8.5 3v2M3 8.5h2M15.5 21v-2M21 15.5h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Oops, an instance was detached it seems.</div>'});
+    if(window.HOLDGO&&window.AOSSVG){ add({type:'path',cls:'vec aosv',name:'AssetsOS',x:MOB?250:window.NFG?432:650,y:MOB?720:window.NFG?-68:-40,w:MOB?300:360,h:MOB?56:67,r:-5,html:window.AOSSVG}); } /* logo AssetsOS : un clic ouvre assetsos.nabilamara.com */
     if(window.FILLY&&!window.NFG){ const w=MOB?200:120, h=Math.round(w*408/380); add({type:'path',cls:'vec filly',name:'Filly',x:MOB?-90:14,y:MOB?740:398,w,h,r:-9,html:`<img src="${window.FILLY.src}" alt="" draggable="false" style="width:100%;height:100%;display:block;pointer-events:none">`}); }
     if(MOB){ for(const n of [...nodes]){ const keep=n.type==='frame'||n.name==='Filly'||NAMEL.includes(n)||(window.NFG&&n.name==='Scribble'&&n.x===-385)||(n.el.classList.contains('ink')&&['Scribble','Note','Arrow'].includes(n.name)&&(n.y===198||n.name==='Note'&&n.x===-760||n.name==='Arrow'&&n.x===236));
         if(!keep){ n.el.remove(); nodes.splice(nodes.indexOf(n),1); } }
       for(const n of nodes){ if(n.name==='Note'&&n.el.classList.contains('ink')){ n.x=-470; n.y=-420; place(n); } if(n.name==='Arrow'){ n.x=230; n.y=-1390; place(n); } } }
     center(); }
   // vue d'ouverture : le logo au centre, les projets autour
-  function center(){ z=MOB?Math.min(innerWidth*.94/1320,innerHeight*.9/2450):innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400*1.3,innerHeight*.86/1680*1.3,1.2); px=innerWidth/2; py=innerHeight/2; apply(); }
+  function center(){ if(window.NFG&&!MOB){ z=Math.min(innerWidth/2195,innerHeight/1128,1.2); px=innerWidth/2-33*z; py=innerHeight/2-31*z; apply(); return; } /* 404 : cadrage plus serré */ z=MOB?Math.min(innerWidth*.94/1320,innerHeight*.9/2450):innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400*1.3,innerHeight*.86/1680*1.3,1.2); px=innerWidth/2; py=innerHeight/2; apply(); }
   // retour à la vue d'ouverture (nom au centre), en glissant
   let homeRaf=0; function home(ms=900){ cancelAnimationFrame(homeRaf); const z0=z,x0=px,y0=py, z1=MOB?Math.min(innerWidth*.94/1320,innerHeight*.9/2450):innerWidth<=760?Math.min(innerWidth*.92/900,1):Math.min(innerWidth*.86/2400*1.3,innerHeight*.86/1680*1.3,1.2), x1=innerWidth/2, y1=innerHeight/2, t0=performance.now();
     const st=t=>{ const k=Math.min(1,(t-t0)/ms), e=1-Math.pow(1-k,3); z=z0+(z1-z0)*e; px=x0+(x1-x0)*e; py=y0+(y1-y0)*e; apply(); if(k<1) homeRaf=requestAnimationFrame(st); }; homeRaf=requestAnimationFrame(st); }
