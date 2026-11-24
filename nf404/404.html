@@ -174,7 +174,7 @@ html.src .back404{display:none}
 <body class="pg-home">
 <div class="holdbar" role="status"><i class="hb-tape" aria-hidden="true"></i><span class="hb-in"><svg class="hb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 22 20.5H2z" fill="#202020"/><path d="M12 9.6v5.2" stroke="#FFF186" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.3" fill="#FFF186"/></svg><span class="hb-tx"><span data-i="hold">Building website…</span><small class="holdsoon" data-i="holdsoon">Coming Jan 2027</small></span></span><i class="hb-tape" aria-hidden="true"></i></div>
 <header class="top">
-  <a class="mono" href="#" id="home" aria-label="Nabil Amara, accueil"><svg class="nsig" viewBox="-14 -14 864 706" aria-hidden="true"><defs><mask id="nsm" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1200"><path class="nsc" pathLength="1" d=""/></mask></defs><g mask="url(#nsm)"><path class="nsf" d=""/></g></svg></a>
+  <a class="mono" href="./" id="home" aria-label="Nabil Amara, accueil"><svg class="nsig" viewBox="-14 -14 864 706" aria-hidden="true"><defs><mask id="nsm" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1400" height="1200"><path class="nsc" pathLength="1" d=""/></mask></defs><g mask="url(#nsm)"><path class="nsf" d=""/></g></svg></a>
   <div class="modes" role="group" aria-label="Affichage">
     <button id="mCanvas" aria-pressed="false" hidden>Canvas</button><button id="mRing" aria-pressed="true">Tiles</button><button id="mList" aria-pressed="false">List</button>
   </div>
@@ -426,5 +426,6 @@ cp.textContent=ok?'Copied ✓':'Selected';cp.classList.add('ok');setTimeout(()=>
 <a class="back404" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5m6-7-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back to the canvas</span></a>
 <script>/* 404 : deux glitchs « console mode » de 0,2 s pendant que 404 arrive */
 (()=>{const H=document.documentElement;if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const g=(t)=>setTimeout(()=>{if(H.classList.contains("src"))return;H.classList.add("src");setTimeout(()=>H.classList.remove("src"),200)},t);g(700);g(1250);})();</script>
+<script>/* 404 : la signature ramène à la home */document.getElementById("home").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();location.href=document.baseURI},true);</script>
 </body>
 </html>
