@@ -420,7 +420,8 @@ el.dataset.tip=t;el.setAttribute('data-plain','');},true);
 (()=>{const t=document.getElementById('tip'),sv=t&&t.querySelector('svg'),base=sv&&sv.querySelector('path');if(!base||sv.querySelector('.ring'))return;
 ['ring','run'].forEach(c=>{const q=base.cloneNode();q.setAttribute('class',c);q.setAttribute('fill','none');q.removeAttribute('stroke');q.removeAttribute('stroke-width');q.setAttribute('pathLength','1');sv.insertBefore(q,base);});
 const SEL='a[href],button,summary,[role=button],label[for],[data-tip],.node.frame,.node.aosv';
-document.addEventListener('pointerover',e=>t.classList.toggle('lk',!!(e.target.closest&&e.target.closest(SEL))));})();</script>
+const code=m=>m.classList.contains('frame')&&m._n&&typeof P!=='undefined'&&P[m._n.pi]&&P[m._n.pi].link;
+document.addEventListener('pointerover',e=>{const m=e.target.closest&&e.target.closest(SEL);t.classList.toggle('lk',!!m&&!code(m));});})();</script>
 <style>.tip svg{overflow:visible;filter:drop-shadow(0 4px 8px rgba(0,0,0,.26));transition:filter .25s}.tip svg .ring,.tip svg .run{stroke-width:13;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .25s}.tip svg .ring{stroke:#564fff}.tip svg .run{stroke:#5fe6ff;stroke-dasharray:.34 .66}.tip.lk svg .ring{opacity:1}.tip.lk svg .run{opacity:1;animation:currun 1.5s linear infinite}@keyframes currun{to{stroke-dashoffset:-1}}.tip.lk svg{filter:drop-shadow(0 9px 12px rgba(0,0,0,.42))}@media (prefers-reduced-motion:reduce){.tip.lk svg .run{animation:none;opacity:0}}</style>
 </body>
 </html>
