@@ -426,7 +426,8 @@ cp.textContent=ok?'Copied ✓':'Selected';cp.classList.add('ok');setTimeout(()=>
 <a class="back404" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5m6-7-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back to the canvas</span></a>
 <script>/* 404 : la signature ramène à la home */document.getElementById("home").addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();location.href=document.baseURI},true);</script>
 <script>/* canvas : libellé du curseur au survol des projets et d'AssetsOS */
-document.addEventListener('pointerover',e=>{const el=e.target.closest&&e.target.closest('.node.frame,.node.aosv');if(!el||!window.HOLDGO)return;const fr=document.documentElement.lang==='fr';let t;
+const ARR=el=>el.getAnimations&&el.getAnimations().some(a=>a.playState==='running');
+document.addEventListener('pointerover',e=>{const el=e.target.closest&&e.target.closest('.node.frame,.node.aosv');if(!el||!window.HOLDGO)return;if(ARR(el)){el.removeAttribute('data-tip');return;}const fr=document.documentElement.lang==='fr';let t;
 if(el.classList.contains('aosv'))t=fr?'Découvrir AssetsOS':'Discover AssetsOS';
 else{const n=el._n,p=n&&typeof P!=='undefined'?P[n.pi]:null,u=p&&HOLDGO[p.id];if(!u)return;if(!/linkedin\.com/.test(u)){el.removeAttribute('data-tip');return;}t=fr?'Voir le post':'See the post';}
 el.dataset.tip=t;el.setAttribute('data-plain','');},true);
@@ -435,7 +436,7 @@ el.dataset.tip=t;el.setAttribute('data-plain','');},true);
 ['ring','run'].forEach(c=>{const q=base.cloneNode();q.setAttribute('class',c);q.setAttribute('fill','none');q.removeAttribute('stroke');q.removeAttribute('stroke-width');q.setAttribute('pathLength','1');sv.insertBefore(q,base);});
 const SEL='a[href],button,summary,[role=button],label[for],[data-tip],.node.frame,.node.aosv';
 const code=m=>m.classList.contains('frame')&&m._n&&typeof P!=='undefined'&&P[m._n.pi]&&P[m._n.pi].link;
-document.addEventListener('pointerover',e=>{const m=e.target.closest&&e.target.closest(SEL);t.classList.toggle('lk',!!m&&!code(m));});})();</script>
+document.addEventListener('pointerover',e=>{const m=e.target.closest&&e.target.closest(SEL);t.classList.toggle('lk',!!m&&!code(m)&&!(m.matches('.node')&&m.getAnimations().some(a=>a.playState==='running')));});})();</script>
 <style>.tip svg{overflow:visible;filter:drop-shadow(0 4px 8px rgba(0,0,0,.26));transition:filter .25s}.tip svg .ring,.tip svg .run{stroke-width:13;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .25s}.tip svg .ring{stroke:#564fff}.tip svg .run{stroke:#5fe6ff;stroke-dasharray:.34 .66}.tip.lk svg .ring{opacity:1}.tip.lk svg .run{opacity:1;animation:currun 1.5s linear infinite}@keyframes currun{to{stroke-dashoffset:-1}}.tip.lk svg{filter:drop-shadow(0 9px 12px rgba(0,0,0,.42))}@media (prefers-reduced-motion:reduce){.tip.lk svg .run{animation:none;opacity:0}}</style>
 </body>
 </html>
