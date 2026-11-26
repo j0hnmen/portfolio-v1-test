@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-hold>
 <head>
-<base href="/portfolio-v1-test/live-test/">
+<base href="/">
 <title>404 · Nabil Amara</title>
 <meta name="description" content="Nabil Amara, AI Creative Designer in Paris. Brand, web &amp; marketing. Selected work: L’Atelier Figma, Sorare, Sport [Gen], Inktober, Figma’s ABC. New website in progress.">
 
@@ -428,7 +428,7 @@ cp.textContent=ok?'Copied ✓':'Selected';cp.classList.add('ok');setTimeout(()=>
 <script>/* canvas : libellé du curseur au survol des projets et d'AssetsOS */
 document.addEventListener('pointerover',e=>{const el=e.target.closest&&e.target.closest('.node.frame,.node.aosv');if(!el||!window.HOLDGO)return;const fr=document.documentElement.lang==='fr';let t;
 if(el.classList.contains('aosv'))t=fr?'Découvrir AssetsOS':'Discover AssetsOS';
-else{const n=el._n,p=n&&typeof P!=='undefined'?P[n.pi]:null,u=p&&HOLDGO[p.id];if(!u)return;t=/linkedin\.com/.test(u)?(fr?'Voir le post':'See the post'):(fr?'Voir le site':'Visit the site');}
+else{const n=el._n,p=n&&typeof P!=='undefined'?P[n.pi]:null,u=p&&HOLDGO[p.id];if(!u)return;if(!/linkedin\.com/.test(u)){el.removeAttribute('data-tip');return;}t=fr?'Voir le post':'See the post';}
 el.dataset.tip=t;el.setAttribute('data-plain','');},true);
 /* curseur au survol d'un lien : comme sur le site V1.5, un anneau bleu entoure la flèche et un trait cyan file dessus */
 (()=>{const t=document.getElementById('tip'),sv=t&&t.querySelector('svg'),base=sv&&sv.querySelector('path');if(!base||sv.querySelector('.ring'))return;
